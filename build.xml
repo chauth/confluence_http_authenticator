@@ -1,0 +1,45 @@
+<project name="Confluence Remote User Authenticator" basedir="." default="package">
+
+	<property name="lib.dir" value="${basedir}/lib" />
+	<property name="src.dir" value="${basedir}/src" />
+	<property name="build-lib.dir" value="${basedir}/build-lib" />
+	<property name="build.dir" value="${basedir}/build" />
+	<property name="dist.dir" value="${basedir}/dist" />
+
+	<property name="version" value="1.0" />
+	<property name="jar.name" value="remoteUserAuth-${version}.jar" />
+
+	<path id="build-path">
+		<fileset dir="${build-lib.dir}" includes="**/*.jar" />
+	</path>
+
+	<!-- Prepare directory structure for build -->
+	<target name="build-init">
+		<mkdir dir="${build.dir}" />
+	</target>
+
+	<!-- Compile core (non-test) classes -->
+	<target name="compile" depends="build-init">
+		<mkdir dir="${build.dir}" />
+
+		<javac srcdir="${src.dir}" destdir="${build.dir}" includes="**/*.java" debug="on" source="1.4">
+			<classpath refid="build-path" />
+		</javac>
+	</target>
+
+	<!-- Create JAR file -->
+	<target name="package" depends="compile">
+		<mkdir dir="${dist.dir}" />
+
+		<jar destfile="${dist.dir}/${jar.name}" basedir="${build.dir}" whenempty="fail">
+			<zipfileset file="conf/remoteUserAuthenticator.properties" />
+		</jar>
+	</target>
+
+	<!-- Removes all build generated content -->
+	<target name="clean">
+		<delete dir="${build.dir}" />
+		<delete dir="${dist.dir}" />
+	</target>
+
+</project>
