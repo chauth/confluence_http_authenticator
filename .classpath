@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="build-lib/atlassian-bucket-2006.03.14.branch.jar"/>
+	<classpathentry kind="lib" path="build-lib/atlassian-user-0.6.0e.jar"/>
+	<classpathentry kind="lib" path="build-lib/log4j-1.2.12.jar"/>
+	<classpathentry kind="lib" path="build-lib/seraph-0.7.13.jar"/>
+	<classpathentry kind="lib" path="build-lib/servlet-api.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
