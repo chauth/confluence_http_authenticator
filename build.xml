@@ -8,7 +8,7 @@
 
         <property name="test.classes.directory" value="${basedir}/test-classes" />
 
-	<property name="version" value="1.1" />
+	<property name="version" value="1.2" />
 	<property name="jar.name" value="remoteUserAuth-${version}.jar" />
 
 	<path id="build-path">

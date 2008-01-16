@@ -24,43 +24,24 @@
  * limitations under the License.
  */
 
-//Note: the original version of the Confluence 2.5+  modification was in duke
-//package, not Georgetown
 //TODO: modify package to reflect genericity
 package edu.georgetown.middleware.confluence;
 
 //~--- JDK imports ------------------------------------------------------------
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.security.Principal;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
-import java.util.Set;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-
-//~--- non-JDK imports --------------------------------------------------------
 
 import com.atlassian.confluence.user.ConfluenceAuthenticator;
 import com.atlassian.confluence.user.UserAccessor;
 import com.atlassian.seraph.config.SecurityConfig;
 import com.atlassian.user.Group;
 import com.atlassian.user.User;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.security.Principal;
+import java.util.*;
 
 /**
  * An authenticator that uses the REMOTE_USER header as proof of authentication.
@@ -101,94 +82,6 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
 
     //~--- static fields ------------------------------------------------------
 
-    private final static Properties CONFIG_PROPERTIES;
-
-    /**
-     * create.user init parameter name
-     */
-    private final static String CREATE_USERS = "create.users";
-
-    /**
-     * default.role init parameter name
-     */
-    private final static String DEFAULT_ROLES = "default.roles";
-
-    /**
-     * Name of email address header property
-     */
-    private final static String EMAIL_HEADER_NAME_PROPERTY = "header.email";
-
-    /**
-     * Name of full name header property
-     */
-    private final static String FULLNAME_HEADER_NAME_PROPERTY =
-        "header.fullname";
-
-    /**
-     * Location of configuration file on classpath
-     */
-    private final static String PROPERTY_FILE =
-        "/remoteUserAuthenticator.properties";
-
-    /**
-     * Name of list of attributes (separated by comma or semicolon) in the
-     * header as indication of dynamic roles to be used
-     */
-    private final static String ROLES_ATTRIB_NAMES =
-        "header.dynamicroles.attributenames";
-
-    /**
-     * Prefix to be used for mapping of different roles. i.e.
-     * header.dynamicroles.fromvalue=toRoleValue
-     */
-    private final static String ROLES_ATTRIB_PREFIX = "header.dynamicroles.";
-
-    /** separator used in in reading roles */
-    private final static String SEPARATOR = "[,; ]";
-
-    /**
-     * update.info init parameter name
-     */
-    private final static String UPDATE_INFO = "update.info";
-
-    /** update.roles init parameter name */
-    private final static String UPDATE_ROLES = "update.roles";
-
-    /**
-     * Set of header names to be watchfull for dynamic roles
-     * (from PROPERTY_FILE. set in static block)
-     */
-    private static Set attribHeaders;
-
-    /**
-     * Whether to create accounts for new users or not
-     * (from PROPERTY_FILE. set in static block)
-     */
-    private static boolean createUsers;
-
-    /**
-     * Default roles for newly created users
-     * (from PROPERTY_FILE. set in static block)
-     */
-    private static List defaultRoles;
-
-    /**
-     * HTTP Header name that contains a user's email address
-     * (from PROPERTY_FILE. set in static block)
-     */
-    private static String emailHeaderName;
-
-    /**
-     * HTTP Header name that contains a user's full name
-     * (from PROPERTY_FILE. set in static block)
-     */
-    private static String fullNameHeaderName;
-
-    /**
-     * Remember the role mapping
-     */
-    private static Map mapRole = new HashMap(10);
-
     /**
      * Serial version UID
      */
@@ -200,17 +93,7 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
     private final static Log log =
         LogFactory.getLog(RemoteUserAuthenticator.class);
 
-    /**
-     * Whether or not to update name/email info for previously created users
-     * (from PROPERTY_FILE. set in static block)
-     */
-    private static boolean updateInfo;
-
-    /**
-     * Whether to update roles for new users or not
-     * (from PROPERTY_FILE. set in static block)
-     */
-    private static boolean updateRoles;
+    private static ShibAuthConfiguration config;
 
     //~--- static initializers ------------------------------------------------
 
@@ -218,146 +101,10 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
      * Initialize properties from property file
      */
     static {
-        if (log.isDebugEnabled()) {
-            log.debug("Initializing authenticator using property file "
-                      + PROPERTY_FILE);
-        }
-
-        InputStream propsIn =
-            RemoteUserAuthenticator.class.getResourceAsStream(PROPERTY_FILE);
-
-        CONFIG_PROPERTIES = new Properties();
-
-        try {
-            CONFIG_PROPERTIES.load(propsIn);
-
-            // Load create users property
-            createUsers = Boolean.valueOf(
-                CONFIG_PROPERTIES.getProperty(CREATE_USERS)).booleanValue();
-
-            if (log.isDebugEnabled()) {
-                log.debug("Setting create new users to " + createUsers);
-            }
-
-            // Load udpate info property
-            updateInfo = Boolean.valueOf(
-                CONFIG_PROPERTIES.getProperty(UPDATE_INFO)).booleanValue();
-
-            if (log.isDebugEnabled()) {
-                log.debug("Setting update user information to " + updateInfo);
-            }
-
-            // Load update role property
-            updateRoles = Boolean.valueOf(
-                CONFIG_PROPERTIES.getProperty(UPDATE_ROLES)).booleanValue();
-
-            if (log.isDebugEnabled()) {
-                log.debug("Setting update user roles to " + updateRoles);
-            }
-
-            // Load default roles
-            defaultRoles = new ArrayList();
-
-            String roles = CONFIG_PROPERTIES.getProperty(DEFAULT_ROLES);
-
-            if (roles != null) {
-                roles = roles.trim();
-
-                // depending on input from user, this could have empty strings
-                defaultRoles.addAll(Arrays.asList(roles.split(SEPARATOR)));
-
-                // clean up all empty roles, if exists
-                for (Iterator roleIterator = defaultRoles.iterator();
-                        roleIterator.hasNext(); ) {
-                    String role = (String) roleIterator.next();
-
-                    if (role.trim().length() == 0) {
-                        roleIterator.remove();
-                    }
-                }
-
-                if (log.isDebugEnabled()) {
-                    for (Iterator it =
-                            defaultRoles.iterator(); it.hasNext(); ) {
-                        log.debug("Adding role " + it.next().toString()
-                                  + " to list of default user roles");
-                    }
-                }
-            }
-
-            fullNameHeaderName =
-                CONFIG_PROPERTIES.getProperty(FULLNAME_HEADER_NAME_PROPERTY);
-
-            if (log.isDebugEnabled()) {
-                log.debug(
-                    "HTTP Header that may contain user's full name set to: "
-                    + fullNameHeaderName);
-            }
-
-            emailHeaderName =
-                CONFIG_PROPERTIES.getProperty(EMAIL_HEADER_NAME_PROPERTY);
-
-            if (log.isDebugEnabled()) {
-                log.debug(
-                    "HTTP Header that may contain user's email address set to: "
-                    + emailHeaderName);
-            }
-
-            // fill in the header names to be monitored
-            attribHeaders = new HashSet();
-
-            List attribNames = null;
-
-            // Load dynamic roles property
-            String attribNameStr =
-                CONFIG_PROPERTIES.getProperty(ROLES_ATTRIB_NAMES);
-
-            if (attribNameStr != null) {
-                attribNames = Arrays.asList(attribNameStr.split(SEPARATOR));
-
-                if (log.isDebugEnabled()) {
-                    for (Iterator it = attribNames.iterator(); it.hasNext(); ) {
-                        String attrib =
-                            it.next().toString().trim().toLowerCase();
-
-                        if (attrib.length() == 0) {
-                            continue;
-                        }
-
-                        log.debug("Reading dynamic attribute: " + attrib);
-                        attribHeaders.add(attrib);
-                    }
-                }
-            }
-
-            // remember the map from incoming attribute to confluence's group
-            for (Enumeration propEnum = CONFIG_PROPERTIES.propertyNames();
-                    propEnum.hasMoreElements(); ) {
-                String prop = propEnum.nextElement().toString();
-
-                // register as lower case in the map (dont think there would be
-                // conflict between upper/lower cases
-                String shibAttribFromConfig = prop.trim().toLowerCase();
-
-                if (shibAttribFromConfig.startsWith(ROLES_ATTRIB_PREFIX)
-                        &&!shibAttribFromConfig.startsWith(
-                            ROLES_ATTRIB_NAMES)) {
-                    String roleStr = CONFIG_PROPERTIES.getProperty(prop);
-                    String roleKey = shibAttribFromConfig.substring(ROLES_ATTRIB_PREFIX.length());
-
-                    //this is the map from shib_key = conf_group1, group2, etc
-                    mapRole.put(roleKey,
-                                Arrays.asList(roleStr.trim().split(SEPARATOR)));
-
-                    if (log.isDebugEnabled()) {
-                        log.debug("Found role mapping declared as " + prop);
-                    }
-                }
-            }
-        } catch (IOException e) {
-            log.warn(
-                "Unable to read properties file, using default properties", e);
-        }
+        //TODO: use UI to configure if possible
+        //TODO: use Spring to configure config loader, etc.
+        
+        config = ShibAuthConfigLoader.getShibAuthConfiguration();
     }
 
     //~--- methods ------------------------------------------------------------
@@ -427,7 +174,7 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
         UserAccessor userAccessor = getUserAccessor();
         Principal    user         = null;
 
-        if (createUsers) {
+        if (config.isCreateUsers()) {
             if (log.isInfoEnabled()) {
                 log.info("Creating user account for " + userid);
             }
@@ -527,10 +274,10 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
     //~--- get methods --------------------------------------------------------
 
     private String getEmailAddress(HttpServletRequest request) {
-        String emailAddress = request.getHeader(emailHeaderName);
+        String emailAddress = request.getHeader(config.getEmailHeaderName());
 
         log.debug("Got emailAddress '" + emailAddress + "' for header '"
-                  + emailHeaderName + "'");
+                  + config.getEmailHeaderName() + "'");
 
         if ((emailAddress != null) && (emailAddress.length() > 0)) {
             emailAddress = emailAddress.toLowerCase();
@@ -540,10 +287,10 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
     }
 
     private String getFullName(HttpServletRequest request, String userid) {
-        String fullName = request.getHeader(fullNameHeaderName);
+        String fullName = request.getHeader(config.getFullNameHeaderName());
 
         log.debug("Got fullName '" + fullName + "' for header '"
-                  + fullNameHeaderName + "'");
+                  + config.getFullNameHeaderName() + "'");
 
         if ((fullName == null) || (fullName.length() == 0)) {
             fullName = userid;
@@ -553,6 +300,8 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
     }
 
     private Collection getRolesFromHeader(HttpServletRequest request) {
+
+        Set attribHeaders = config.getAttribHeaders();
 
         // check if we're interested in some headers
         if (attribHeaders.isEmpty()) {
@@ -565,27 +314,27 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
 
         for (Enumeration en =
                 request.getHeaderNames(); en.hasMoreElements(); ) {
-            String header     = en.nextElement().toString();
-            String trimHeader = header.trim().toLowerCase();
+            String headerName     = en.nextElement().toString();
+            String trimmedLowercasedHeaderName = headerName.trim().toLowerCase();
 
             if (log.isDebugEnabled()) {
-                log.debug("Analyzing header \"" + header
+                log.debug("Analyzing header \"" + headerName
                           + "\" for a mapped role = "
-                          + request.getHeader(header));
+                          + request.getHeader(headerName));
             }
 
             // see if this header is something we'd be interested in
-            if (attribHeaders.contains(trimHeader)) {
-                String[] roles = request.getHeader(header).split(SEPARATOR);
+            if (attribHeaders.contains(trimmedLowercasedHeaderName)) {
+                String headerValue = request.getHeader(headerName);
+                List roles = StringUtil.toListOfNonEmptyStringsDelimitedByCommaOrSemicolon(headerValue);
 
-                for (int i = 0; i < roles.length; i++) {
-                    String role = roles[i].trim().toLowerCase();
+                for (int i = 0; i < roles.size(); i++) {
 
-                    if (role.length() == 0) {
-                        continue;
-                    }
+                    // According to Bruc Liong, this is case-insensitive to make it easier on the admin.
 
-                    List confluenceGroups = (List) mapRole.get(role);
+                    String lowercaseRole = ((String)roles.get(i)).toLowerCase();
+
+                    List confluenceGroups = (List) config.getMapRole().get(lowercaseRole);
 
                     if (confluenceGroups != null) {
                         dynamicRoles.addAll(confluenceGroups);
@@ -596,7 +345,7 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
                                 confRoles += confluenceGroups.get(j).toString();
                                 if(j != 0) confRoles += ",";
                             }
-                            log.debug("Mapping role \"" + role + "\" to \""
+                            log.debug("Mapping role \"" + lowercaseRole + "\" to \""
                                       + confRoles + "\"");
                         }
                     }
@@ -683,13 +432,13 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
                 updateUser(user, fullName, emailAddress);
             }
         } else {
-            if (updateInfo) {
+            if (config.isUpdateInfo()) {
                 updateUser(user, fullName, emailAddress);
             }
         }
 
-        if (updateRoles || newUser) {
-            assignUserToRoles((User) user, defaultRoles);
+        if (config.isUpdateRoles() || newUser) {
+            assignUserToRoles((User) user, config.getDefaultRoles());
             assignUserToRoles((User) user, getRolesFromHeader(request));
         }
 
