@@ -1,0 +1,7 @@
+
+
+requires Maven 2 to build.
+
+To build, type:
+mvn clean install
+
