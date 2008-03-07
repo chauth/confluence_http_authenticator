@@ -1,3 +1,9 @@
+
+<!--
+*** THIS IS NO LONGER USED - IS JUST HERE FOR REFERENCE
+-->
+
+
 <project name="Confluence Remote User Authenticator" basedir="." default="package">
 
 	<property name="lib.dir" value="${basedir}/lib" />
