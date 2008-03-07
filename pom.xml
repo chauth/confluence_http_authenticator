@@ -1,0 +1,258 @@
+<!--
+ * Copyright (c) 2008, Shibboleth Authenticator for Confluence Team
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ *     * Redistributions of source code must retain the above copyright notice,
+ *       this list of conditions and the following disclaimer.
+ *     * Redistributions in binary form must reproduce the above copyright
+ *       notice, this list of conditions and the following disclaimer in the
+ *       documentation and/or other materials provided with the distribution.
+ *     * Neither the name of the Custom Space User Management Plugin Development Team
+ *       nor the names of its contributors may be used to endorse or promote
+ *       products derived from this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+ * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
+-->
+
+        <!--
+        The following file is used to build this plugin using Maven 2. See README for details on how to build.
+        -->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>shibauth</groupId>
+    <artifactId>permission-management</artifactId>
+    <!--note: for now we are just building the jar. may turn into an actual plugin later, but don't have time to mess with that now.-->
+    <packaging>jar</packaging>
+
+    <name>Shibboleth Authenticator for Confluence Plugin</name>
+    <version>1.3-SNAPSHOT</version>
+    <url>http://confluence.atlassian.com/display/CONFEXT/Shibboleth+Authenticator+for+Confluence</url>
+    <description>A seraph authenticator for Confluence for Shibboleth
+    </description>
+
+    <properties>
+        <!-- The plugin key. This will be injected into the atlassian-plugins.xml file when built. -->
+        <!-- NOTE: because we needed to make sure this would be backwards compatible with earlier versions, we left raju kadam in the key name. -->
+        <!-- if you ever change this, be sure to change constant(s) in the code.  -->
+        <atlassian.plugin.key>shibauth</atlassian.plugin.key>
+    </properties>
+
+    <issueManagement>
+        <system>Atlassian Developer JIRA</system>
+        <url>http://developer.atlassian.com/jira/browse/SHBL</url>
+    </issueManagement>
+
+    <scm>
+        <connection>scm:svn:http://svn.atlassian.com/svn/public/contrib/confluence/shibboleth-authenticator/trunk
+        </connection>
+        <developerConnection>
+            scm:svn:https://svn.atlassian.com/svn/public/contrib/confluence/shibboleth-authenticator/trunk
+        </developerConnection>
+        <url>http://svn.atlassian.com/fisheye/browse/public/contrib/confluence/shibboleth-authenticator/trunk</url>
+    </scm>
+    
+    <licenses>
+        <license>
+            <name>BSD-Style License</name>
+            <distribution>manual</distribution>
+            <comments>
+ Copyright (c) 2008, Shibboleth Authenticator for Confluence Team
+ All rights reserved.
+
+ Redistribution and use in source and binary forms, with or without
+ modification, are permitted provided that the following conditions are met:
+
+     * Redistributions of source code must retain the above copyright notice,
+       this list of conditions and the following disclaimer.
+     * Redistributions in binary form must reproduce the above copyright
+       notice, this list of conditions and the following disclaimer in the
+       documentation and/or other materials provided with the distribution.
+     * Neither the name of the Custom Space User Management Plugin Development Team
+       nor the names of its contributors may be used to endorse or promote
+       products derived from this software without specific prior written permission.
+
+ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+ LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ POSSIBILITY OF SUCH DAMAGE.
+            </comments>
+        </license>
+    </licenses>
+
+    <developers>
+        <developer>
+            <name>Chad LaJoie</name>
+            <roles>
+                <role>Developer - v1.0</role>
+            </roles>
+        </developer>
+
+        <developer>
+            <name>Gary S. Weaver</name>
+            <email>gary.weaver@duke.edu</email>
+            <organization>Duke University</organization>
+            <organizationUrl>http://www.oit.duke.edu/</organizationUrl>
+            <roles>
+                <role>Developer - v1.1 -</role>
+            </roles>
+            <timezone>-4</timezone>
+        </developer>
+
+        <developer>
+            <name>Bruc Liong</name>
+            <roles>
+                <role>Developer - v1.2</role>
+            </roles>
+        </developer>
+    </developers>
+
+    <organization>
+        <name>Shibboleth Authenticator for Confluence Team</name>
+        <url>http://confluence.atlassian.com/display/CONFEXT/Shibboleth+Authenticator+for+Confluence</url>
+    </organization>
+
+    <dependencies>
+        <!-- scope provided means it is only used for compilation and not included in jar -->
+        <dependency>
+            <groupId>com.atlassian.confluence</groupId>
+            <artifactId>confluence</artifactId>
+            <version>2.7.2</version>
+            <scope>provided</scope>
+        </dependency>        
+
+        <dependency>
+            <groupId>commons-logging</groupId>
+            <artifactId>commons-logging</artifactId>
+            <version>1.1</version>
+            <scope>provided</scope>
+            <exclusions>
+                <!-- Bamboo build complains about log4j not being in there... not sure why
+                <exclusion>
+                    <groupId>log4j</groupId>
+                    <artifactId>log4j</artifactId>
+                </exclusion>
+                -->
+                <exclusion>
+                    <groupId>logkit</groupId>
+                    <artifactId>logkit</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>avalon-framework</groupId>
+                    <artifactId>avalon-framework</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>javax.servlet</groupId>
+                    <artifactId>servlet-api</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <!-- only needed for testing -->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>3.8.1</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <!--  ensure we build what we're targetting -->
+            <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.4</source>
+                    <target>1.4</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+    <repositories>
+        <repository>
+            <id>atlassian-m2-contrib</id>
+            <name>Atlassian Maven 2 Contributor Repository</name>
+            <url>http://svn.atlassian.com/svn/public/contrib/repository/maven2</url>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+
+        <repository>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+            <id>atlassian-m2-repository</id>
+            <name>Atlassian Maven 2 Repository</name>
+            <url>http://repository.atlassian.com/maven2</url>
+        </repository>
+
+        <repository>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+            <id>central-m2-repository</id>
+            <name>Central Maven 2 Repository</name>
+            <url>http://repo1.maven.org/maven2</url>
+        </repository>
+
+        <repository>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+            <id>Codehaus Snapshots</id>
+            <url>http://snapshots.repository.codehaus.org</url>
+        </repository>
+    </repositories>
+
+    <pluginRepositories>
+        <pluginRepository>
+            <id>atlassian-m2-contrib</id>
+            <name>Atlassian Maven 2 Contributor Repository</name>
+            <url>http://svn.atlassian.com/svn/public/contrib/repository/maven2</url>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </pluginRepository>
+
+        <pluginRepository>
+            <id>codehaus.org</id>
+            <name>CodeHaus Plugin Snapshots</name>
+            <url>http://repository.codehaus.org</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </pluginRepository>
+    </pluginRepositories>
+
+</project>
