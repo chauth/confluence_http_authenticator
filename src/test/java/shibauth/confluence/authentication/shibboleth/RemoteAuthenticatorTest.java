@@ -1,4 +1,4 @@
-package edu.duke.middleware.confluence;
+package shibauth.confluence.authentication.shibboleth;
 
 import junit.framework.TestCase;
 
