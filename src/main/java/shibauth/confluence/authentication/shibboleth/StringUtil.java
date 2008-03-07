@@ -12,7 +12,7 @@
  * limitations under the License.
  */
 
-package edu.georgetown.middleware.confluence;
+package shibauth.confluence.authentication.shibboleth;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -24,8 +24,7 @@
  * limitations under the License.
  */
 
-//TODO: modify package to reflect genericity
-package edu.georgetown.middleware.confluence;
+package shibauth.confluence.authentication.shibboleth;
 
 //~--- JDK imports ------------------------------------------------------------
 

@@ -12,7 +12,7 @@
  * limitations under the License.
  */
 
-package edu.georgetown.middleware.confluence;
+package shibauth.confluence.authentication.shibboleth;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
