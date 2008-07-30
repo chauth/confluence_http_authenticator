@@ -36,7 +36,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>shibauth</groupId>
-    <artifactId>permission-management</artifactId>
+    <artifactId>remoteUserAuth</artifactId>
     <!--note: for now we are just building the jar. may turn into an actual plugin later, but don't have time to mess with that now.-->
     <packaging>jar</packaging>
 
@@ -116,7 +116,10 @@
             <organization>Duke University</organization>
             <organizationUrl>http://www.oit.duke.edu/</organizationUrl>
             <roles>
-                <role>Developer - v1.1 -</role>
+                <role>Developer - v1.1 - additional checks/logging and some small refactoring. Version 1.1 should work with Confluence 2.3-2.6.x and possibly later versions.,
+                                  v1.2 - refactor config loading, constants, utility method, and added configuration VO.,
+                                  v1.3 - change of package name to shibauth, since no longer maintained by Georgetown, and Duke, Melcoe, Helsinki making changes now. Migrated to Maven 2. Integrated patch and made contributed UTF-8 fixes optional.
+                </role>
             </roles>
             <timezone>-4</timezone>
         </developer>
@@ -124,7 +127,14 @@
         <developer>
             <name>Bruc Liong</name>
             <roles>
-                <role>Developer - v1.2</role>
+                <role>Developer - v1.2 - allow optional mapping of the values of 0-to-many HTTP Headers (fed by shib attributes) to Confluence group names (see properties file for how to do this)</role>
+            </roles>
+        </developer>
+
+        <developer>
+            <name>Juha Ojaluoma</name>
+            <roles>
+                <role>Developer - v1.3 - UTF-8 patch for SHBL-5. when there is something not using utf-8 involved, 16-bit characters get bytes 83 c2 inserted between. Submitted patch to convert fullname to UTF-8 to fix. (Note: this patch was changed so that it converts all header values to UTF-8.</role>
             </roles>
         </developer>
     </developers>

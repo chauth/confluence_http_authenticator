@@ -1,27 +1,37 @@
 /*
- * Modified 2008-01-07 to add role mapping from shibboleth
- * attribute (role) to confluence group membership.
- * Copyright [2008] [Macquarie University - MELCOE - MAMS]
- *
- * Modified 2007-05-21 from Georgetown version so it would strip @duke.edu
- * from user id and changed package to duke.
- * Copyright [2007] [Duke University]
- * modification of original edu.georgetown.middleware.confluence version:
- * Copyright [2006] [Georgetown University]
- * Original version can be found here:
- * https://svn.middleware.georgetown.edu/confluence/remoteAuthn
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ Copyright (c) 2008, Shibboleth Authenticator for Confluence Team
+ All rights reserved.
+
+ Redistribution and use in source and binary forms, with or without
+ modification, are permitted provided that the following conditions are met:
+
+ * Redistributions of source code must retain the above copyright notice,
+   this list of conditions and the following disclaimer.
+ * Redistributions in binary form must reproduce the above copyright
+   notice, this list of conditions and the following disclaimer in the
+   documentation and/or other materials provided with the distribution.
+ * Neither the name of the Custom Space User Management Plugin Development Team
+   nor the names of its contributors may be used to endorse or promote
+   products derived from this software without specific prior written permission.
+
+ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+ LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ POSSIBILITY OF SUCH DAMAGE.
+ */
+
+/*
+ * Modified 2008-07-29 to fix UTF-8 encoding [Helsinki University], made UTF-8 fix optional [Duke University]
+ * Modified 2008-01-07 to add role mapping from shibboleth attribute (role) to confluence group membership. [Macquarie University - MELCOE - MAMS], refactor config loading, constants, utility method, and added configuration VO [Duke University]
+ * Modified 2007-05-21 additional checks/logging and some small refactoring. Changed to use UserAccessor so should work with Confluence 2.3+ [Duke University]
+ * Original version by Georgetown University. Original version (v1.0) can be found here: https://svn.middleware.georgetown.edu/confluence/remoteAuthn
  */
 
 package shibauth.confluence.authentication.shibboleth;
@@ -49,6 +59,7 @@ import java.util.*;
  * <i>/remoteUserAuthenticator.properties</i> on the classpath. This file
  * may contain the following properties:
  * <ul>
+ * <li><strong>convert.to.utf8</strong> - Convert all incoming header values to UTF-8</li>
  * <li><strong>create.users</strong> - Indicates whether accounts should be
  * created for individuals the first they are encountered
  * (acceptable values: true/false)</li>
@@ -102,7 +113,7 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
     static {
         //TODO: use UI to configure if possible
         //TODO: use Spring to configure config loader, etc.
-        
+
         config = ShibAuthConfigLoader.getShibAuthConfiguration();
     }
 
@@ -115,7 +126,9 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
      */
     private void assignUserToRoles(User user, Collection roles) {
         if (roles.size() == 0) {
-            log.debug("No roles specified, not adding any roles...");
+            if (log.isDebugEnabled()) {
+                log.debug("No roles specified, not adding any roles...");
+            }
         } else {
             UserAccessor userAccessor = getUserAccessor();
 
@@ -275,8 +288,21 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
     private String getEmailAddress(HttpServletRequest request) {
         String emailAddress = request.getHeader(config.getEmailHeaderName());
 
-        log.debug("Got emailAddress '" + emailAddress + "' for header '"
+        if (log.isDebugEnabled()) {
+            log.debug("Got emailAddress '" + emailAddress + "' for header '"
                   + config.getEmailHeaderName() + "'");
+        }
+
+        if (config.isConvertToUTF8()) {
+            String tmp = StringUtil.convertToUTF8(emailAddress);
+            if (tmp != null) {
+                emailAddress = tmp;
+		        if (log.isDebugEnabled()) {
+                    log.debug("emailAddress converted to UTF-8 '" + emailAddress + "' for header '"
+                      + config.getEmailHeaderName() + "'");
+                }
+            }
+        }
 
         if ((emailAddress != null) && (emailAddress.length() > 0)) {
             emailAddress = emailAddress.toLowerCase();
@@ -288,8 +314,21 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
     private String getFullName(HttpServletRequest request, String userid) {
         String fullName = request.getHeader(config.getFullNameHeaderName());
 
+        if (log.isDebugEnabled()) {
         log.debug("Got fullName '" + fullName + "' for header '"
                   + config.getFullNameHeaderName() + "'");
+        }
+
+        if (config.isConvertToUTF8()) {
+            String tmp = StringUtil.convertToUTF8(fullName);
+            if (tmp != null) {
+                fullName = tmp;
+		        if (log.isDebugEnabled()) {
+                    log.debug("fullName converted to UTF-8 '" + fullName + "' for header '"
+                      + config.getFullNameHeaderName() + "'");
+                }
+            }
+        }
 
         if ((fullName == null) || (fullName.length() == 0)) {
             fullName = userid;
@@ -325,6 +364,17 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
             // see if this header is something we'd be interested in
             if (attribHeaders.contains(trimmedLowercasedHeaderName)) {
                 String headerValue = request.getHeader(headerName);
+
+                if (config.isConvertToUTF8()) {
+                    String tmp = StringUtil.convertToUTF8(headerName);
+                    if (tmp != null) {
+                        headerValue = tmp;
+                        if (log.isDebugEnabled()) {
+                            log.debug("header value converted to UTF-8 '" + headerValue + "' for header '" + trimmedLowercasedHeaderName + "'");
+                        }
+                    }
+                }
+
                 List roles = StringUtil.toListOfNonEmptyStringsDelimitedByCommaOrSemicolon(headerValue);
 
                 for (int i = 0; i < roles.size(); i++) {
@@ -344,8 +394,10 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
                                 confRoles += confluenceGroups.get(j).toString();
                                 if(j != 0) confRoles += ",";
                             }
-                            log.debug("Mapping role \"" + lowercaseRole + "\" to \""
+                            if (log.isDebugEnabled()) {
+                                log.debug("Mapping role \"" + lowercaseRole + "\" to \""
                                       + confRoles + "\"");
+                            }
                         }
                     }
                 }
