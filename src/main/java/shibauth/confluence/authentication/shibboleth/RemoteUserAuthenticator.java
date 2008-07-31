@@ -352,6 +352,7 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
 
         for (Enumeration en =
                 request.getHeaderNames(); en.hasMoreElements(); ) {
+
             String headerName     = en.nextElement().toString();
             String trimmedLowercasedHeaderName = headerName.trim().toLowerCase();
 
@@ -363,40 +364,59 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
 
             // see if this header is something we'd be interested in
             if (attribHeaders.contains(trimmedLowercasedHeaderName)) {
-                String headerValue = request.getHeader(headerName);
+                Enumeration headerValues = request.getHeaders(headerName);
 
-                if (config.isConvertToUTF8()) {
-                    String tmp = StringUtil.convertToUTF8(headerName);
-                    if (tmp != null) {
-                        headerValue = tmp;
-                        if (log.isDebugEnabled()) {
-                            log.debug("header value converted to UTF-8 '" + headerValue + "' for header '" + trimmedLowercasedHeaderName + "'");
-                        }
-                    }
-                }
+                if (headerValues!=null) {
 
-                List roles = StringUtil.toListOfNonEmptyStringsDelimitedByCommaOrSemicolon(headerValue);
+                    while (headerValues.hasMoreElements()) {
+                        String headerValue = (String)headerValues.nextElement();
 
-                for (int i = 0; i < roles.size(); i++) {
+                        if (headerValue!=null) {
 
-                    // According to Bruc Liong, this is case-insensitive to make it easier on the admin.
-
-                    String lowercaseRole = ((String)roles.get(i)).toLowerCase();
-
-                    List confluenceGroups = (List) config.getMapRole().get(lowercaseRole);
-
-                    if (confluenceGroups != null) {
-                        dynamicRoles.addAll(confluenceGroups);
-
-                        if (log.isDebugEnabled()) {
-                            String confRoles = "";
-                            for(int j=confluenceGroups.size()-1;j>-1;j--){
-                                confRoles += confluenceGroups.get(j).toString();
-                                if(j != 0) confRoles += ",";
+                            if (config.isConvertToUTF8()) {
+                                String tmp = StringUtil.convertToUTF8(headerName);
+                                if (tmp != null) {
+                                    headerValue = tmp;
+                                    if (log.isDebugEnabled()) {
+                                        log.debug("header value converted to UTF-8 '" + headerValue + "' for header '" +
+                                                trimmedLowercasedHeaderName + "'");
+                                    }
+                                }
                             }
+            
+                            List roles = StringUtil.toListOfNonEmptyStringsDelimitedByCommaOrSemicolon(headerValue);
+
+                            for (int i = 0; i < roles.size(); i++) {
+
+                                // According to Bruc Liong, this is case-insensitive to make it easier on the admin.
+
+                                String lowercaseRole = ((String)roles.get(i)).toLowerCase();
+
+                                List confluenceGroups = (List) config.getMapRole().get(lowercaseRole);
+
+                                if (confluenceGroups != null) {
+                                    dynamicRoles.addAll(confluenceGroups);
+
+                                    if (log.isDebugEnabled()) {
+                                        StringBuffer confRoles = new StringBuffer();
+                                        for(int j=confluenceGroups.size()-1; j>-1; j--){
+                                            confRoles.append(confluenceGroups.get(j).toString());
+                                            if (j != 0) {
+                                                confRoles.append(",");
+                                            }
+                                        }
+                                        if (log.isDebugEnabled()) {
+                                            log.debug("Mapping role \"" + lowercaseRole + "\" to \""
+                                                  + confRoles + "\"");
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        else {
                             if (log.isDebugEnabled()) {
-                                log.debug("Mapping role \"" + lowercaseRole + "\" to \""
-                                      + confRoles + "\"");
+                                log.debug("One of header values for headerName '" + headerName +
+                                        "' was null, so was ignored");
                             }
                         }
                     }
