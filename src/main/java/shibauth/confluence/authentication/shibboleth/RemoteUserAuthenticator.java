@@ -286,20 +286,32 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
     //~--- get methods --------------------------------------------------------
 
     private String getEmailAddress(HttpServletRequest request) {
-        String emailAddress = request.getHeader(config.getEmailHeaderName());
+        String emailAddress = null;
 
-        if (log.isDebugEnabled()) {
-            log.debug("Got emailAddress '" + emailAddress + "' for header '"
-                  + config.getEmailHeaderName() + "'");
-        }
+        // assumes it is first value in list, if header is defined multiple times. Otherwise would need to call getHeaders()
+        String headerValue = request.getHeader(config.getEmailHeaderName());
 
-        if (config.isConvertToUTF8()) {
-            String tmp = StringUtil.convertToUTF8(emailAddress);
-            if (tmp != null) {
-                emailAddress = tmp;
-		        if (log.isDebugEnabled()) {
-                    log.debug("emailAddress converted to UTF-8 '" + emailAddress + "' for header '"
+        // the Shibboleth SP sends multiple values as single value, separated by comma or semicolon
+        List values = StringUtil.toListOfNonEmptyStringsDelimitedByCommaOrSemicolon(headerValue);
+
+        if (values!=null && values.size()>0) {
+
+            // use the first email in the list
+            emailAddress = (String)values.get(0);
+
+            if (log.isDebugEnabled()) {
+                log.debug("Got emailAddress '" + emailAddress + "' for header '"
                       + config.getEmailHeaderName() + "'");
+            }
+
+            if (config.isConvertToUTF8()) {
+                String tmp = StringUtil.convertToUTF8(emailAddress);
+                if (tmp != null) {
+                    emailAddress = tmp;
+                    if (log.isDebugEnabled()) {
+                        log.debug("emailAddress converted to UTF-8 '" + emailAddress + "' for header '"
+                          + config.getEmailHeaderName() + "'");
+                    }
                 }
             }
         }
@@ -312,20 +324,32 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
     }
 
     private String getFullName(HttpServletRequest request, String userid) {
-        String fullName = request.getHeader(config.getFullNameHeaderName());
+        String fullName = null;
 
-        if (log.isDebugEnabled()) {
-        log.debug("Got fullName '" + fullName + "' for header '"
-                  + config.getFullNameHeaderName() + "'");
-        }
+        // assumes it is first value in list, if header is defined multiple times. Otherwise would need to call getHeaders()
+        String headerValue = request.getHeader(config.getFullNameHeaderName());
 
-        if (config.isConvertToUTF8()) {
-            String tmp = StringUtil.convertToUTF8(fullName);
-            if (tmp != null) {
-                fullName = tmp;
-		        if (log.isDebugEnabled()) {
-                    log.debug("fullName converted to UTF-8 '" + fullName + "' for header '"
+        // the Shibboleth SP sends multiple values as single value, separated by comma or semicolon
+        List values = StringUtil.toListOfNonEmptyStringsDelimitedByCommaOrSemicolon(headerValue);
+
+        if (values!=null && values.size()>0) {
+
+            // use the first full name in the list
+            fullName = (String)values.get(0);
+
+            if (log.isDebugEnabled()) {
+            log.debug("Got fullName '" + fullName + "' for header '"
                       + config.getFullNameHeaderName() + "'");
+            }
+
+            if (config.isConvertToUTF8()) {
+                String tmp = StringUtil.convertToUTF8(fullName);
+                if (tmp != null) {
+                    fullName = tmp;
+                    if (log.isDebugEnabled()) {
+                        log.debug("fullName converted to UTF-8 '" + fullName + "' for header '"
+                          + config.getFullNameHeaderName() + "'");
+                    }
                 }
             }
         }
@@ -383,7 +407,8 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
                                     }
                                 }
                             }
-            
+
+                            // the Shibboleth SP sends multiple values as single value, separated by comma or semicolon
                             List roles = StringUtil.toListOfNonEmptyStringsDelimitedByCommaOrSemicolon(headerValue);
 
                             for (int i = 0; i < roles.size(); i++) {
