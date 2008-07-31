@@ -62,20 +62,16 @@ public class StringUtil {
 
     public static String convertToUTF8(String s) {
         String converted = null;
-        byte[] bytes = new byte[s.length()];
+        if (s != null) {
+            try {
+                converted = new String(s.getBytes("UTF-8"));
+                if (log.isDebugEnabled()) {
+                    log.debug("Fixed fullname '" + s + "' to UTF-8 '" + converted + "'.");
+                }
 
-        for (int i = 0; i < s.length(); i++) {
-            bytes[i] = (byte) s.charAt(i);
-        }
-
-        try {
-            converted = new String(bytes, "UTF-8");
-            if (log.isDebugEnabled()) {
-                log.debug("Fixed fullname '" + s + "' to UTF-8 '" + converted + "'.");
+            } catch (UnsupportedEncodingException ue) {
+                log.error("Unable to set UTF-8 character encoding for user '" + s + "'!", ue);
             }
-
-        } catch (UnsupportedEncodingException ue) {
-            log.error("Unable to set UTF-8 character encoding for user '" + s + "'!", ue);
         }
 
         return converted;
