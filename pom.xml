@@ -41,7 +41,7 @@
     <packaging>jar</packaging>
 
     <name>Shibboleth Authenticator for Confluence Plugin</name>
-    <version>1.3-SNAPSHOT</version>
+    <version>1.4-SNAPSHOT</version>
     <url>http://confluence.atlassian.com/display/CONFEXT/Shibboleth+Authenticator+for+Confluence</url>
     <description>A seraph authenticator for Confluence for Shibboleth
     </description>
@@ -135,6 +135,13 @@
             <name>Juha Ojaluoma</name>
             <roles>
                 <role>Developer - v1.3 - UTF-8 patch for SHBL-5. when there is something not using utf-8 involved, 16-bit characters get bytes 83 c2 inserted between. Submitted patch to convert fullname to UTF-8 to fix. (Note: this patch was changed so that it converts all header values to UTF-8.</role>
+            </roles>
+        </developer>
+
+        <developer>
+            <name>Vladimir Mencl</name>
+            <roles>
+                <role>Developer - v1.3 - GroupManager injector patch for SHBL-8. Submitted patch to add member, setter/getter for GroupManager and setter implementation uses ContainerManager.getComponent("groupManager") similar to Atlassian implementation of ConfluenceGroupJoiningAuthenticator.java (which appears to have been around since Confluence 2.3+ and should work in 2.2 according to http://confluence.atlassian.com/display/DOC/Automatically+Adding+LDAP+users+to+the+confluence-users+Group . See also: http://jira.atlassian.com/browse/CONF-12158 </role>
             </roles>
         </developer>
     </developers>
