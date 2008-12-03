@@ -28,6 +28,7 @@
  */
 
 /*
+ * Modified 2008-12-03 to encorporate patch from Vladimir Mencl for SHBL-8 related to CONF-12158 (DefaultUserAccessor checks permissions before adding membership in 2.7 and later)
  * Modified 2008-07-29 to fix UTF-8 encoding [Helsinki University], made UTF-8 fix optional [Duke University]
  * Modified 2008-01-07 to add role mapping from shibboleth attribute (role) to confluence group membership. [Macquarie University - MELCOE - MAMS], refactor config loading, constants, utility method, and added configuration VO [Duke University]
  * Modified 2007-05-21 additional checks/logging and some small refactoring. Changed to use UserAccessor so should work with Confluence 2.3+ [Duke University]
@@ -45,6 +46,9 @@ import com.atlassian.user.Group;
 import com.atlassian.user.User;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
+import com.atlassian.spring.container.ContainerManager;
+import com.atlassian.user.GroupManager;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -105,6 +109,9 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
 
     private static ShibAuthConfiguration config;
 
+    /** See SHBL-8, CONF-12158, and http://confluence.atlassian.com/download/attachments/192312/ConfluenceGroupJoiningAuthenticator.java?version=1 */
+    private GroupManager groupManager = null;
+
     //~--- static initializers ------------------------------------------------
 
     /**
@@ -152,11 +159,11 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
                 }
 
                 try {
-                    group = userAccessor.getGroup(role);
-                    userAccessor.addMembership(group, user);
+                    group = getGroupManager().getGroup(role);
+                    getGroupManager().addMembership(group, user);
                 } catch (Throwable e) {
                     log.error("Attempted to add user " + user + " to role "
-                              + role + " but the role does not exist.");
+                              + role + " but the role does not exist.", e);
                 }
             }
         }
@@ -580,4 +587,27 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
 
         return user;
     }
+
+    /**
+     * This is the Atlassian-suggested way of handling the issue noticed by Vladimir Mencl in Confluence 2.9.2 (but not in 2.9) where
+     * addMembership(...) was failing, and apparently it failed because it was expecting that GroupManager was not returning an instance.
+     * I don't think we have a spring config (bean defined in spring config) for this authenticator yet, so wouldn't be set by that or autowiring I guess.
+     * The solution provided by Vladimir Mencl and referred to by Matt Ryall in CONF-12158 is similar to that of the older ConfluenceGroupJoiningAuthenticator.java
+     * provided with Confluence that Matt attached here: http://confluence.atlassian.com/download/attachments/192312/ConfluenceGroupJoiningAuthenticator.java?version=1
+     * See also SHBL-8. Thanks much to Vladimir Mencl for this patch.
+     */
+    public GroupManager getGroupManager() {
+        if (groupManager == null)
+        {
+          groupManager = (GroupManager) ContainerManager.getComponent(
+              "groupManager");
+        };
+        return groupManager;
+    }
+
+    public void setGroupManager(GroupManager groupManager) {
+        this.groupManager = groupManager;
+    };
+
+
 }
