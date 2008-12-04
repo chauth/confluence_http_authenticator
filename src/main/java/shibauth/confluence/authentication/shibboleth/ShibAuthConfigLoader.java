@@ -82,7 +82,7 @@ public class ShibAuthConfigLoader {
             }
 
             // Load convert.to.utf8 property
-            config.setUpdateRoles( Boolean.valueOf(
+            config.setConvertToUTF8( Boolean.valueOf(
                 configProps.getProperty(ShibAuthConstants.CONVERT_TO_UTF8)).booleanValue());
 
             if (log.isDebugEnabled()) {
@@ -136,17 +136,17 @@ public class ShibAuthConfigLoader {
             if (attribNameStr != null) {
                 List attribNames = StringUtil.toListOfNonEmptyStringsDelimitedByCommaOrSemicolon(attribNameStr);
 
-                if (log.isDebugEnabled()) {
-                    for (Iterator it = attribNames.iterator(); it.hasNext(); ) {
+		for (Iterator it = attribNames.iterator(); it.hasNext(); ) {
 
-                        // According to Bruc Liong, this is case-insensitive to make it easier on the admin.
+		    // According to Bruc Liong, this is case-insensitive to make it easier on the admin.
 
-                        String lowercaseAttrib =
-                            it.next().toString().trim().toLowerCase();
+		    String lowercaseAttrib =
+			it.next().toString().trim().toLowerCase();
 
+		    if (log.isDebugEnabled()) {
                         log.debug("Reading dynamic attribute: " + lowercaseAttrib);
-                        attribHeaders.add(lowercaseAttrib);
                     }
+		    attribHeaders.add(lowercaseAttrib);
                 }
             }
 
