@@ -41,7 +41,7 @@
     <packaging>jar</packaging>
 
     <name>Shibboleth Authenticator for Confluence Plugin</name>
-    <version>1.3.1-SNAPSHOT</version>
+    <version>1.3.1</version>
     <url>http://confluence.atlassian.com/display/CONFEXT/Shibboleth+Authenticator+for+Confluence</url>
     <description>A seraph authenticator for Confluence for Shibboleth
     </description>
