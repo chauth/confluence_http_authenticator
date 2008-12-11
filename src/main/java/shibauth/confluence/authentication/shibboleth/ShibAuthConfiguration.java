@@ -53,6 +53,26 @@ public class ShibAuthConfiguration {
     private List defaultRoles;
 
     /**
+     * Roles to be purged automatically of users who don't have attributes to regain membership anymore
+     */
+    private List purgeRoles;
+
+    /**
+     * Automatically reload the configuration file when changed
+     */
+    private boolean reloadConfig;
+
+    /**
+     * Name of the configuration file to be reloaded
+     */
+    private String configFile;
+
+    /**
+     * Last modified stamp of the configuration file
+     */
+    private long configFileLastModified;
+
+    /**
      * HTTP Header name that contains a user's email address
      */
     private String emailHeaderName;
@@ -101,6 +121,38 @@ public class ShibAuthConfiguration {
 
     public void setDefaultRoles(List defaultRoles) {
         this.defaultRoles = defaultRoles;
+    }
+
+    public List getPurgeRoles() {
+        return purgeRoles;
+    }
+
+    public void setPurgeRoles(List purgeRoles) {
+        this.purgeRoles = purgeRoles;
+    }
+
+    public boolean isReloadConfig() {
+        return reloadConfig;
+    }
+
+    public void setReloadConfig(boolean reloadConfig) {
+        this.reloadConfig = reloadConfig;
+    }
+
+    public String getConfigFile() {
+        return configFile;
+    }
+
+    public void setConfigFile(String configFile) {
+        this.configFile = configFile;
+    }
+
+    public long getConfigFileLastModified() {
+        return configFileLastModified;
+    }
+
+    public void setConfigFileLastModified(long configFileLastModified) {
+        this.configFileLastModified = configFileLastModified;
     }
 
     public String getEmailHeaderName() {

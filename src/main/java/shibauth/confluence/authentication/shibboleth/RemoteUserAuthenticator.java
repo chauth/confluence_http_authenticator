@@ -55,6 +55,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.security.Principal;
 import java.util.*;
+import java.io.File;
 
 /**
  * An authenticator that uses the REMOTE_USER header as proof of authentication.
@@ -72,6 +73,10 @@ import java.util.*;
  * updated when the user logs in (acceptable values: true/false)</li>
  * <li><strong>default.roles</strong> - The default roles newly created
  * accounts will be given (format: comma seperated list)</li>
+ * <li><strong>purge.roles</strong> - Roles to be purged automatically of users
+ * who don't have attributes to regain membership anymore</li>
+ * <li><strong>reload.config</strong> - Automatically reload config when
+ * change</li>
  * <li><strong>header.fullname</strong> - The name of the HTTP header that
  * will carry the full name of the user</li>
  * <li><strong>header.email</strong> - The name of the HTTP header that will
@@ -121,8 +126,27 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
         //TODO: use UI to configure if possible
         //TODO: use Spring to configure config loader, etc.
 
-        config = ShibAuthConfigLoader.getShibAuthConfiguration();
+        config = ShibAuthConfigLoader.getShibAuthConfiguration(null);
     }
+
+    /**
+     * Check if the configuration file should be reloaded and reload the configuration.
+     */
+    private void checkReloadConfig() {
+
+        if (config.isReloadConfig() && (config.getConfigFile() != null)) {
+	    
+	    long configFileLastModified = new File(config.getConfigFile()).lastModified();
+
+	    if (configFileLastModified != config.getConfigFileLastModified()) {
+	        log.debug("Config file has been changed, reloading");
+		config = ShibAuthConfigLoader.getShibAuthConfiguration(config);
+	    } else {
+	        log.debug("Config file has not been changed, not reloading");
+	    }
+	}
+    }
+
 
     //~--- methods ------------------------------------------------------------
 
@@ -163,6 +187,55 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
                     getGroupManager().addMembership(group, user);
                 } catch (Throwable e) {
                     log.error("Attempted to add user " + user + " to role "
+                              + role + " but the role does not exist.", e);
+                }
+            }
+        }
+    }
+
+    /**
+     * Purge user from roles it no longer should have (based on current Shibboleth attributes).  
+     * Remove the user from all roles listed in purgeRoles that are not
+     * included in the current list of roles the user would get assigned to
+     * based on the Shibboleth attributes received.
+     *
+     * @param user the user to assign to the roles.
+     * @param rolesToPurge the roles the user should be purged from if they are not in rolesToKeep
+     * @param rolesToKeep the roles the user should keep
+     */
+    private void purgeUserRoles(User user, Collection rolesToPurge, Collection rolesToKeep) {
+	if ( (rolesToPurge == null) || (rolesToPurge.size() == 0) ) {
+            if (log.isDebugEnabled()) {
+                log.debug("No roles to purge specified, not purging any roles...");
+            }
+        } else {
+            UserAccessor userAccessor = getUserAccessor();
+
+            if (log.isDebugEnabled()) {
+                log.debug("Purging roles to user " + user.getName());
+            }
+
+            String role;
+            Group  group;
+
+            for (Iterator it = rolesToPurge.iterator(); it.hasNext(); ) {
+                role = it.next().toString().trim();
+
+                if ( (role.length() == 0) || rolesToKeep.contains(role) ) {
+		    log.debug("Not purging role " + role);
+                    continue;
+                }
+
+                if (log.isDebugEnabled()) {
+                    log.debug("Removing user " + user.getName() + " from role "
+                              + role);
+                }
+
+                try {
+                    group = getGroupManager().getGroup(role);
+                    getGroupManager().removeMembership(group, user);
+                } catch (Throwable e) {
+                    log.error("Attempted to remove user " + user + " from role "
                               + role + " but the role does not exist.", e);
                 }
             }
@@ -513,6 +586,10 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
             return null;
         }
 
+	// Now that we know we will be trying to log the user in, 
+	// let's see if we should reload the config file first
+	checkReloadConfig();
+
         // Convert username to all lowercase
         userid = convertUsername(userid);
 
@@ -541,8 +618,10 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
         }
 
         if (config.isUpdateRoles() || newUser) {
+	    Collection rolesFromHeader = getRolesFromHeader(request);
             assignUserToRoles((User) user, config.getDefaultRoles());
-            assignUserToRoles((User) user, getRolesFromHeader(request));
+            assignUserToRoles((User) user, rolesFromHeader);
+	    purgeUserRoles((User) user, config.getPurgeRoles(), rolesFromHeader);
         }
 
         // Now that we have the user's account, add it to the session and return
@@ -601,13 +680,13 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
         {
           groupManager = (GroupManager) ContainerManager.getComponent(
               "groupManager");
-        };
+        }
         return groupManager;
     }
 
     public void setGroupManager(GroupManager groupManager) {
         this.groupManager = groupManager;
-    };
+    }
 
 
 }

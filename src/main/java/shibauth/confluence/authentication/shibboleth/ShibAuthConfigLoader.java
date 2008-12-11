@@ -35,6 +35,9 @@ import org.apache.commons.logging.LogFactory;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.*;
+import java.net.URL;
+import java.io.File;
+import java.io.FileInputStream;
 
 
 public class ShibAuthConfigLoader {
@@ -42,18 +45,29 @@ public class ShibAuthConfigLoader {
     private final static Log log =
         LogFactory.getLog(ShibAuthConfigLoader.class);
 
-    public static ShibAuthConfiguration getShibAuthConfiguration() {
+    public static ShibAuthConfiguration getShibAuthConfiguration(ShibAuthConfiguration oldConfig) {
         if (log.isDebugEnabled()) {
-            log.debug("Initializing authenticator using property file "
-                      + ShibAuthConstants.PROPERTIES_FILE);
+	    if (oldConfig == null) {
+		log.debug("Initializing authenticator using property resource "
+			  + ShibAuthConstants.PROPERTIES_FILE);
+	    } else {
+		log.debug("Reloading configuration from authenticator from file "
+			  + oldConfig.getConfigFile());
+	    }
         }
-
-        InputStream propsIn =
-            RemoteUserAuthenticator.class.getResourceAsStream(ShibAuthConstants.PROPERTIES_FILE);
 
         ShibAuthConfiguration config = new ShibAuthConfiguration();
 
         try {
+
+	    InputStream propsIn = null;
+	    if (oldConfig == null) {
+		propsIn =
+		    RemoteUserAuthenticator.class.getResourceAsStream(ShibAuthConstants.PROPERTIES_FILE);
+	    } else {
+		propsIn = new FileInputStream(oldConfig.getConfigFile());
+	    }
+
             Properties configProps = new Properties();
             configProps.load(propsIn);
 
@@ -79,6 +93,14 @@ public class ShibAuthConfigLoader {
 
             if (log.isDebugEnabled()) {
                 log.debug("Setting update user roles to " + config.isUpdateRoles());
+            }
+
+            // Load reload.config property
+            config.setReloadConfig( Boolean.valueOf(
+                configProps.getProperty(ShibAuthConstants.RELOAD_CONFIG)).booleanValue());
+
+            if (log.isDebugEnabled()) {
+                log.debug("Setting reload config to " + config.isReloadConfig());
             }
 
             // Load convert.to.utf8 property
@@ -179,6 +201,46 @@ public class ShibAuthConfigLoader {
             }
 
             config.setMapRole(mapRole);
+
+            // Load roles to be purged
+            List purgeRoles = new ArrayList();
+
+            String purgeRolesS = configProps.getProperty(ShibAuthConstants.PURGE_ROLES);
+	    log.debug("purgeRolesS="+purgeRolesS);
+
+            if (purgeRolesS != null) {
+
+                purgeRoles.addAll(StringUtil.toListOfNonEmptyStringsDelimitedByCommaOrSemicolon(purgeRolesS));
+
+                if (log.isDebugEnabled()) {
+                    for (Iterator it =
+                            purgeRoles.iterator(); it.hasNext(); ) {
+                        log.debug("Adding role " + it.next().toString()
+                                  + " to list of roles to be purged");
+                    }
+                }
+            }
+
+            config.setPurgeRoles(purgeRoles);
+
+            // Set the name of the config file for automatic reloading
+	    if (config.isReloadConfig()) {
+
+	        URL configURL = RemoteUserAuthenticator.class.getResource(ShibAuthConstants.PROPERTIES_FILE);
+
+	        if ( (configURL == null) || !configURL.getProtocol().equals("file") ) {
+	            log.error("Configuration file is not a file URL, cannot setup automatic reloading from: "+configURL);
+		} else {
+
+		    String configFile = configURL.getFile();
+		    long configFileLastModified = new File(configFile).lastModified();
+
+		    config.setConfigFile(configFile);
+		    config.setConfigFileLastModified(configFileLastModified);
+
+		    log.info("Setting config file name to " + configFile + " with a lastModified stamp of " + configFileLastModified);
+		}
+	    }
 
         } catch (IOException e) {
             log.warn(

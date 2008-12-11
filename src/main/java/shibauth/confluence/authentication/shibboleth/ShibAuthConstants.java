@@ -49,6 +49,16 @@ public class ShibAuthConstants {
     public final static String DEFAULT_ROLES = "default.roles";
 
     /**
+     * purge.roles init parameter name
+     */
+    public final static String PURGE_ROLES = "purge.roles";
+
+    /**
+     * reload.config init parameter name
+     */
+    public final static String RELOAD_CONFIG = "reload.config";
+
+    /**
      * Name of email address header property
      */
     public final static String EMAIL_HEADER_NAME_PROPERTY = "header.email";
