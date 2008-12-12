@@ -103,6 +103,16 @@ public class ShibAuthConfigLoader {
                 log.debug("Setting reload config to " + config.isReloadConfig());
             }
 
+            // Load reload.config.check.interval property
+	    String reloadConfigCheckIntervalS = configProps.getProperty(ShibAuthConstants.RELOAD_CONFIG_CHECK_INTERVAL);
+	    if (reloadConfigCheckIntervalS != null) {
+		config.setReloadConfigCheckInterval( Long.valueOf(reloadConfigCheckIntervalS).longValue());
+
+		if (log.isDebugEnabled()) {
+		    log.debug("Setting reload config check interval to " + config.getReloadConfigCheckInterval());
+		}
+            }
+
             // Load convert.to.utf8 property
             config.setConvertToUTF8( Boolean.valueOf(
                 configProps.getProperty(ShibAuthConstants.CONVERT_TO_UTF8)).booleanValue());
@@ -206,7 +216,6 @@ public class ShibAuthConfigLoader {
             List purgeRoles = new ArrayList();
 
             String purgeRolesS = configProps.getProperty(ShibAuthConstants.PURGE_ROLES);
-	    log.debug("purgeRolesS="+purgeRolesS);
 
             if (purgeRolesS != null) {
 
@@ -237,8 +246,9 @@ public class ShibAuthConfigLoader {
 
 		    config.setConfigFile(configFile);
 		    config.setConfigFileLastModified(configFileLastModified);
+		    config.setConfigFileLastChecked(System.currentTimeMillis());
 
-		    log.info("Setting config file name to " + configFile + " with a lastModified stamp of " + configFileLastModified);
+		    log.info("Setting config file name to " + configFile + " with a lastModified stamp of " + configFileLastModified + " and a last checked stamp of " + config.getConfigFileLastChecked());
 		}
 	    }
 

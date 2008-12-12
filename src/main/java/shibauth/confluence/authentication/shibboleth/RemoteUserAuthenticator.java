@@ -135,6 +135,9 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
     private void checkReloadConfig() {
 
         if (config.isReloadConfig() && (config.getConfigFile() != null)) {
+	    if (System.currentTimeMillis() < config.getConfigFileLastChecked() + config.getReloadConfigCheckInterval() ) {
+	        return;
+	    }
 	    
 	    long configFileLastModified = new File(config.getConfigFile()).lastModified();
 
@@ -143,6 +146,7 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
 		config = ShibAuthConfigLoader.getShibAuthConfiguration(config);
 	    } else {
 	        log.debug("Config file has not been changed, not reloading");
+		config.setConfigFileLastChecked(System.currentTimeMillis());
 	    }
 	}
     }
@@ -212,7 +216,7 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
             UserAccessor userAccessor = getUserAccessor();
 
             if (log.isDebugEnabled()) {
-                log.debug("Purging roles to user " + user.getName());
+                log.debug("Purging roles from user " + user.getName());
             }
 
             String role;

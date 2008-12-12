@@ -63,6 +63,12 @@ public class ShibAuthConfiguration {
     private boolean reloadConfig;
 
     /**
+     * When reloading the configuration file, how long to wait (in milliseconds) between
+     * checking the configuration file for changes?
+     */
+    private long reloadConfigCheckInterval;
+
+    /**
      * Name of the configuration file to be reloaded
      */
     private String configFile;
@@ -71,6 +77,11 @@ public class ShibAuthConfiguration {
      * Last modified stamp of the configuration file
      */
     private long configFileLastModified;
+
+    /**
+     * System time at when the configuration file was checked the last time
+     */
+    private long configFileLastChecked;
 
     /**
      * HTTP Header name that contains a user's email address
@@ -139,6 +150,14 @@ public class ShibAuthConfiguration {
         this.reloadConfig = reloadConfig;
     }
 
+    public long getReloadConfigCheckInterval() {
+        return reloadConfigCheckInterval;
+    }
+
+    public void setReloadConfigCheckInterval(long reloadConfigCheckInterval) {
+        this.reloadConfigCheckInterval = reloadConfigCheckInterval;
+    }
+
     public String getConfigFile() {
         return configFile;
     }
@@ -153,6 +172,14 @@ public class ShibAuthConfiguration {
 
     public void setConfigFileLastModified(long configFileLastModified) {
         this.configFileLastModified = configFileLastModified;
+    }
+
+    public long getConfigFileLastChecked() {
+        return configFileLastChecked;
+    }
+
+    public void setConfigFileLastChecked(long configFileLastChecked) {
+        this.configFileLastChecked = configFileLastChecked;
     }
 
     public String getEmailHeaderName() {
