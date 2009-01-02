@@ -10,7 +10,7 @@
  * Redistributions in binary form must reproduce the above copyright
    notice, this list of conditions and the following disclaimer in the
    documentation and/or other materials provided with the distribution.
- * Neither the name of the Custom Space User Management Plugin Development Team
+ * Neither the name of the Shibboleth Authenticator for Confluence Team
    nor the names of its contributors may be used to endorse or promote
    products derived from this software without specific prior written permission.
 
@@ -108,7 +108,15 @@ public class ShibAuthConfiguration {
      */
     private static boolean updateRoles;
 
-    private static boolean convertToUTF8;
+    /**
+     * Whether to convert fields to UTF8
+     */
+    private boolean convertToUTF8;
+
+    /**
+     * Whether to update last and previous login OS user properties (these are also used if using atlassian-user schema).
+     */
+    private boolean updateLastLogin;
 
     public Set getAttribHeaders() {
         return attribHeaders;
@@ -222,11 +230,19 @@ public class ShibAuthConfiguration {
         ShibAuthConfiguration.updateRoles = updateRoles;
     }
 
-    public static boolean isConvertToUTF8() {
+    public boolean isConvertToUTF8() {
         return convertToUTF8;
     }
 
-    public static void setConvertToUTF8(boolean convertToUTF8) {
-        ShibAuthConfiguration.convertToUTF8 = convertToUTF8;
+    public void setConvertToUTF8(boolean convertToUTF8) {
+        convertToUTF8 = convertToUTF8;
+    }
+
+    public boolean isUpdateLastLogin() {
+        return updateLastLogin;
+    }
+
+    public void setUpdateLastLogin(boolean updateLastLogin) {
+        this.updateLastLogin = updateLastLogin;
     }
 }

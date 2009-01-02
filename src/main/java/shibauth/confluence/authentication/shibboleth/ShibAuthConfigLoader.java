@@ -10,7 +10,7 @@
  * Redistributions in binary form must reproduce the above copyright
    notice, this list of conditions and the following disclaimer in the
    documentation and/or other materials provided with the distribution.
- * Neither the name of the Custom Space User Management Plugin Development Team
+ * Neither the name of the Shibboleth Authenticator for Confluence Team
    nor the names of its contributors may be used to endorse or promote
    products derived from this software without specific prior written permission.
 
@@ -85,6 +85,14 @@ public class ShibAuthConfigLoader {
 
             if (log.isDebugEnabled()) {
                 log.debug("Setting update user information to " + config.isUpdateInfo());
+            }
+
+            // Load update.lastLoginDate property
+            config.setUpdateLastLogin( Boolean.valueOf(
+                configProps.getProperty(ShibAuthConstants.UPDATE_LAST_LOGIN_DATE)).booleanValue());
+
+            if (log.isDebugEnabled()) {
+                log.debug("Setting update user's last login date and previous login date information to " + config.isUpdateLastLogin());
             }
 
             // Load update.roles property

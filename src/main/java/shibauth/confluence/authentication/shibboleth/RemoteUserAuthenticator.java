@@ -10,7 +10,7 @@
  * Redistributions in binary form must reproduce the above copyright
    notice, this list of conditions and the following disclaimer in the
    documentation and/or other materials provided with the distribution.
- * Neither the name of the Custom Space User Management Plugin Development Team
+ * Neither the name of the Shibboleth Authenticator for Confluence Team
    nor the names of its contributors may be used to endorse or promote
    products derived from this software without specific prior written permission.
 
@@ -56,6 +56,9 @@ import javax.servlet.http.HttpSession;
 import java.security.Principal;
 import java.util.*;
 import java.io.File;
+
+import com.atlassian.confluence.user.UserPreferencesKeys;
+import com.opensymphony.module.propertyset.PropertyException;
 
 /**
  * An authenticator that uses the REMOTE_USER header as proof of authentication.
@@ -367,6 +370,58 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
         }
     }
 
+    /**
+     * Updates last login and previous login dates. Contributed by Erkki Aalto and written by Juha Ojaluoma.
+     *
+     * @author Juha Ojaluoma
+     */
+    private void updateLastLogin(Principal principal) {
+
+        //Set last login date
+
+        // synchronize on the user name -- it's quite alright to update the property sets of two different users
+        // in seperate concurrent transactions, but two concurrent transactions updateing the same user's property
+        // set dies.
+        //synchronized (userid.intern()) {
+        // note: made a few slight changes to code- Gary.
+        UserAccessor userAccessor = getUserAccessor();
+        User user = (User)principal;
+        String userId = user.getName();
+        // TODO: Shouldn't synchronize, because that wouldn't help in a Confluence cluster (diff JVMs) for Confluence Enterprise/Confluence Massive. This should be added as a Confluence bug.
+        synchronized (userId) {
+            try {
+                Date previousLoginDate = userAccessor.getPropertySet(user).getDate(UserPreferencesKeys.PROPERTY_USER_LAST_LOGIN_DATE);
+                if (previousLoginDate != null) {
+                    try {
+                        userAccessor.getPropertySet(user).remove(UserPreferencesKeys.PROPERTY_USER_LAST_LOGIN_DATE);
+                        userAccessor.getPropertySet(user).setDate(UserPreferencesKeys.PROPERTY_USER_LAST_LOGIN_DATE, new Date());
+                        userAccessor.getPropertySet(user).remove(UserPreferencesKeys.PROPERTY_USER_PREVIOUS_LOGIN_DATE);
+                        userAccessor.getPropertySet(user).setDate(UserPreferencesKeys.PROPERTY_USER_PREVIOUS_LOGIN_DATE,previousLoginDate);
+                    }
+                    catch (PropertyException ee) {
+                        log.error("Problem updating last login date/previous login date for user '" + userId + "'", ee);
+                    }
+                } else {
+                    try {
+                        userAccessor.getPropertySet(user).remove(UserPreferencesKeys.PROPERTY_USER_LAST_LOGIN_DATE);
+                        userAccessor.getPropertySet(user).setDate(UserPreferencesKeys.PROPERTY_USER_LAST_LOGIN_DATE, new Date());
+                        userAccessor.getPropertySet(user).remove(UserPreferencesKeys.PROPERTY_USER_PREVIOUS_LOGIN_DATE);
+                        userAccessor.getPropertySet(user).setDate(UserPreferencesKeys.PROPERTY_USER_PREVIOUS_LOGIN_DATE, new Date());
+                    }
+                    catch (PropertyException ee) {
+                        log.error("There was a problem updating last login date/previous login date for user '" + userId + "'", ee);
+                    }
+                }
+            }
+            catch (Exception e) {
+                log.error("Can not retrieve the user ('" + userId + "') to set its Last-Login-Date!", e);
+            }
+            catch (Throwable t) {
+                log.error("Error while setting the user ('" + userId + "') Last-Login-Date!", t);
+            }
+        }
+    }
+
     //~--- get methods --------------------------------------------------------
 
     private String getEmailAddress(HttpServletRequest request) {
@@ -614,10 +669,16 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
             if (user != null) {
                 newUser = true;
                 updateUser(user, fullName, emailAddress);
+                if (config.isUpdateLastLogin()) {
+                    this.updateLastLogin(user);
+                }
             }
         } else {
             if (config.isUpdateInfo()) {
                 updateUser(user, fullName, emailAddress);
+                if (config.isUpdateLastLogin()) {
+                    this.updateLastLogin(user);
+                }
             }
         }
 
