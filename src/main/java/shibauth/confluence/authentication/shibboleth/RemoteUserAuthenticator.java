@@ -371,9 +371,8 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
     }
 
     /**
-     * Updates last login and previous login dates. Contributed by Erkki Aalto and written by Juha Ojaluoma.
-     *
-     * @author Juha Ojaluoma
+     * Updates last login and previous login dates. Originally contributed by Erkki Aalto and written by Jesse Lahtinen of (Finland) Technical University (http://www.tkk.fi) in SHBL-14.
+     * Note bug in USER-254.
      */
     private void updateLastLogin(Principal principal) {
 
