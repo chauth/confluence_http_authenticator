@@ -75,17 +75,30 @@ public class ShibAuthConstants {
         "header.fullname";
 
     /**
-     * Name of list of attributes (separated by comma or semicolon) in the
-     * header as indication of dynamic roles to be used
+     * Prefix to be used for mapping of different roles. i.e.
+     * dynamicroles.header.SHIB-EP-ENTITLEMENT=label1, label2
+     *
+     * See #ROLES_ATTRIB_PREFIX
      */
-    public final static String ROLES_ATTRIB_NAMES =
-        "header.dynamicroles.attributenames";
+    public final static String ROLES_HEADER_PREFIX =
+        "dynamicroles.header.";
 
     /**
      * Prefix to be used for mapping of different roles. i.e.
-     * header.dynamicroles.fromvalue=toRoleValue
+     * dynamicroles.mapper.label1.match=regex
+     * dynamicroles.mapper.label1.transform= group1, group2, $2
      */
-    public final static String ROLES_ATTRIB_PREFIX = "header.dynamicroles.";
+    public final static String ROLES_ATTRIB_PREFIX = "dynamicroles.mapper.";
+
+    /**
+     * Label to represent indicate whether the group be automatically created
+     * when the IdP provides new group non-existent in confluence.
+     */
+    public final static String AUTO_CREATE_GROUP = "dynamicroles.auto_create_role";
+
+    public final static String PART_MATCH = ".match";
+    public final static String PART_TRANSFORM = ".transform";
+    public final static String PART_SENSITIVE = ".casesensitive";
 
     /**
      * update.info init parameter name

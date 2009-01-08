@@ -34,6 +34,7 @@ import org.apache.commons.logging.LogFactory;
 
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 
@@ -47,6 +48,8 @@ public class StringUtil {
     private final static String SEPARATOR = "[,;]";
 
     public static List toListOfNonEmptyStringsDelimitedByCommaOrSemicolon(String s) {
+        if(s == null) return Collections.EMPTY_LIST;
+        
         List results = new ArrayList();
 
         String[] terms = s.split(SEPARATOR);
