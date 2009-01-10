@@ -153,6 +153,16 @@ public class ShibAuthConfigLoader {
                     config.isConvertToUTF8());
             }
 
+            // Load dynamicheaders.output.tolowercase property
+            // default is true when not existing
+            config.setOutputToLowerCase(Boolean.valueOf(
+                configProps.getProperty(ShibAuthConstants.ROLES_OUTPUT_TOLOWER,"true")).
+                booleanValue());
+
+            if (log.isDebugEnabled()) {
+                log.debug("Setting convert group output values to lowercase = " +
+                    config.isOutputToLowerCase());
+            }
 
             // Load default roles
             List defaultRoles = new ArrayList();
@@ -368,7 +378,7 @@ public class ShibAuthConfigLoader {
             }
 
             boolean sensitive = Boolean.valueOf(configProps.getProperty(
-                mapperStr + ShibAuthConstants.PART_SENSITIVE)).booleanValue();
+                mapperStr + ShibAuthConstants.PART_SENSITIVE, "true")).booleanValue();
             GroupMapper mapper = new GroupMapper(name, match, transform,
                 sensitive);
             mappers.add(mapper);

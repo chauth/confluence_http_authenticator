@@ -281,9 +281,7 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
                 String role = group.getName();
                 //log.debug("Checking group "+role+" for purging.");
 
-                //TODO: case sensitive checks ! if confluence role was not created
-                //by this pluggin then it may not match (e.g. HeLLo and hello)
-                if (!rolesToKeep.contains(role)) {
+                if (!StringUtil.containsStringIgnoreCase(rolesToKeep,role)) {
                     //run through the purgeMappers for this role
                     for (Iterator it2 = purgeMappers.iterator(); it2.hasNext();) {
                         GroupMapper mapper = (GroupMapper) it2.next();
@@ -641,6 +639,8 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
                             if (result.length() != 0) {
 
                                 if (!accumulatedRoles.contains(result)) {
+                                    if(config.isOutputToLowerCase())
+                                        result = result.toLowerCase();
                                     accumulatedRoles.add(result);
 
                                     log.debug("Found role mapping from '" +

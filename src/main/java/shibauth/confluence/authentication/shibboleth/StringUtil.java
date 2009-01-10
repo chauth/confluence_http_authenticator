@@ -34,7 +34,9 @@ import org.apache.commons.logging.LogFactory;
 
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 
 
@@ -67,7 +69,7 @@ public class StringUtil {
         String converted = null;
         if (s != null) {
             try {
-                converted = new String(s.getBytes("UTF-8"));
+                converted = new String(s.getBytes("UTF-8"),"UTF-8");
                 if (log.isDebugEnabled()) {
                     log.debug("Fixed fullname '" + s + "' to UTF-8 '" + converted + "'.");
                 }
@@ -78,5 +80,21 @@ public class StringUtil {
         }
 
         return converted;
+    }
+
+    /**
+     * Check if the collection has toCheck str in it, ignoring case sensitivity
+     * @param strings collection of strings
+     * @param toCheck the one to be checked
+     * @return
+     */
+    public static boolean containsStringIgnoreCase(Collection strings,String toCheck){
+        if(toCheck == null) return false;
+
+        //TODO: any better way of doing this comparison?
+        for(Iterator it = strings.iterator(); it.hasNext();){
+            if(toCheck.equalsIgnoreCase((String)it.next())) return true;
+        }
+        return false;
     }
 }

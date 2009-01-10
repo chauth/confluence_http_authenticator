@@ -84,6 +84,14 @@ public class ShibAuthConstants {
         "dynamicroles.header.";
 
     /**
+     * Convert all groups output into lowercase before creating them in
+     * confluence. This is useful to handle confluence's bug of not allowing
+     * group names to be in uppercase
+     */
+    public final static String ROLES_OUTPUT_TOLOWER =
+        "dynamicroles.output.tolowercase";
+
+    /**
      * Prefix to be used for mapping of different roles. i.e.
      * dynamicroles.mapper.label1.match=regex
      * dynamicroles.mapper.label1.transform= group1, group2, $2

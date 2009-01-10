@@ -95,6 +95,12 @@ public class ShibAuthConfiguration {
      * Whether to convert fields to UTF8
      */
     private boolean convertToUTF8;
+
+    /**
+     * Whether to convert the group output to lowercase
+     */
+    private boolean tolowercase;
+
     /**
      * Whether to update last and previous login OS user properties (these are also used if using atlassian-user schema).
      */
@@ -146,6 +152,14 @@ public class ShibAuthConfiguration {
 
     public Collection getPurgeMappings() {
         return purgeMappings;
+    }
+
+    public void setOutputToLowerCase(boolean toLower){
+        tolowercase = toLower;
+    }
+
+    public boolean isOutputToLowerCase(){
+        return tolowercase;
     }
 
     public boolean isCreateUsers() {
