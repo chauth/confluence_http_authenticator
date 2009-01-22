@@ -28,7 +28,8 @@
  */
 
 /*
- * Modified 2009-01-05 to revamped the mapping processing mechanism to handle regex, purging roles, etc (SHBL-6) [Bruc Liong]
+ * Modified 2009-01-22 to make use of ShibLoginFilter (SHBL-16), make updateLastLogin as optional [Bruc Liong]
+ * Modified 2009-01-05 to revamp the mapping processing mechanism to handle regex, purging roles, etc (SHBL-6) [Bruc Liong]
  * Modified 2008-12-03 to encorporate patch from Vladimir Mencl for SHBL-8 related to CONF-12158 (DefaultUserAccessor checks permissions before adding membership in 2.7 and later)
  * Modified 2008-07-29 to fix UTF-8 encoding [Helsinki University], made UTF-8 fix optional [Duke University]
  * Modified 2008-01-07 to add role mapping from shibboleth attribute (role) to confluence group membership. [Macquarie University - MELCOE - MAMS], refactor config loading, constants, utility method, and added configuration VO [Duke University]
@@ -53,6 +54,9 @@ import com.atlassian.user.GroupManager;
 import com.atlassian.confluence.user.UserPreferencesKeys;
 import com.opensymphony.module.propertyset.PropertyException;
 import com.atlassian.user.search.page.Pager;
+import com.atlassian.confluence.event.events.security.LoginEvent;
+import com.atlassian.confluence.event.events.security.LoginFailedEvent;
+import com.atlassian.seraph.auth.AuthenticatorException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -369,16 +373,6 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
         return user;
     }
 
-    /**
-     * Initialize properties
-     *
-     * @param params
-     * @param config
-     */
-    public void init(Map params, SecurityConfig config) {
-        super.init(params, config);
-    }
-
     private void updateUser(Principal user, String fullName,
         String emailAddress) {
         UserAccessor userAccessor = getUserAccessor();
@@ -429,10 +423,11 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
             }
         }
     }
-
+    
     /**
      * Updates last login and previous login dates. Originally contributed by Erkki Aalto and written by Jesse Lahtinen of (Finland) Technical University (http://www.tkk.fi) in SHBL-14.
      * Note bug in USER-254.
+     * Further, this is optional if you are using ShibLoginFilter
      */
     private void updateLastLogin(Principal principal) {
 
@@ -497,6 +492,7 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
             }
         }
     }
+
 
     //~--- get methods --------------------------------------------------------
     private String getEmailAddress(HttpServletRequest request) {
@@ -660,39 +656,54 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
         }
     }
 
-    // Tried overriding login(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse), but
-    // it doesn't get called at all. That sucks because this method can often be called > 20 times per page.
-    /**
-     * @see com.atlassian.seraph.auth.Authenticator#getUser(
+
+	// converting reliance on getUser(request,response) to use login() instead.
+	// the logic flow:
+	// 1) Seraph Login filter, which is based on username/password kicks in (declared at web.xml)
+	// 2) it bails out altogether and identified user as invalid (without calling any of login(request,response) declared here
+	// 3) Seraph Security filter kicks in (declared at web.xml)
+	// 4) it calls getUser(request,response) and assign roles to known user
+	// hence, getUser(request,response) will only be called from Seraph SecurityFilter
+	
+	// this pluggin uses ShibLoginFilter to make sure login is performed, however in the case ShibLoginFilter is
+	// not configured, it will still work ;)
+	
+
+    /** 
+     * @see com.atlassian.confluence.user.ConfluenceAuthenticator#login(
      *      javax.servlet.http.HttpServletRequest,
-     *      javax.servlet.http.HttpServletResponse)
+     *      javax.servlet.http.HttpServletResponse,
+     *      java.lang.String username,
+     *      java.lang.String password,
+     *      boolean cookie)
      *
-     * @param request
-     * @param response
-     *
-     * @return
+     * Check if user has been authenticated by Shib. Username, password, and cookie are totally ignored.
      */
-    public Principal getUser(HttpServletRequest request,
-        HttpServletResponse response) {
+    public boolean login(HttpServletRequest request, HttpServletResponse response, String username, String password, boolean cookie) throws AuthenticatorException{
+		
         if (log.isDebugEnabled()) {
             log.debug(
                 "Request made to " + request.getRequestURL() + " triggered this AuthN check");
         }
-
+        
         HttpSession httpSession = request.getSession();
-        Principal user;
+        Principal user = null;
+
+        // for those interested on the events
+        String remoteIP = request.getRemoteAddr();
+        String remoteHost = request.getRemoteHost();
+
 
         // Check if the user is already logged in
-        if ((httpSession != null) && (httpSession.getAttribute(
-            ConfluenceAuthenticator.LOGGED_IN_KEY) != null)) {
-            user = (Principal) httpSession.getAttribute(
-                ConfluenceAuthenticator.LOGGED_IN_KEY);
+        if (httpSession.getAttribute(ConfluenceAuthenticator.LOGGED_IN_KEY) != null) {
+			user = (Principal) httpSession.getAttribute(
+				ConfluenceAuthenticator.LOGGED_IN_KEY);
 
             if (log.isDebugEnabled()) {
                 log.debug(user.getName() + " already logged in, returning.");
             }
 
-            return user;
+            return true;
         }
 
         // Since they aren't logged in, get the user name from
@@ -704,8 +715,8 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
                 log.debug(
                     "Remote user was null or empty, can not perform authentication");
             }
-
-            return null;
+			getEventManager().publishEvent(new LoginFailedEvent(this, "NoShibUsername", httpSession.getId(), remoteHost, remoteIP));
+            return false;
         }
 
         // Now that we know we will be trying to log the user in,
@@ -732,16 +743,18 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
             if (user != null) {
                 newUser = true;
                 updateUser(user, fullName, emailAddress);
-                if (config.isUpdateLastLogin()) {
-                    this.updateLastLogin(user);
-                }
+                
+                //username will only be null if called from getUser()
+                if (username == null && config.isUpdateLastLogin())
+                    updateLastLogin(user);
             }
         } else {
             if (ShibAuthConfiguration.isUpdateInfo()) {
                 updateUser(user, fullName, emailAddress);
-                if (config.isUpdateLastLogin()) {
-                    this.updateLastLogin(user);
-                }
+                
+                //username will only be null if called from getUser()
+                if (username == null && config.isUpdateLastLogin())
+                    updateLastLogin(user);
             }
         }
 
@@ -764,42 +777,58 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
             log.debug("Logging in user " + user.getName());
         }
 
-        request.getSession().setAttribute(
+        httpSession.setAttribute(
             ConfluenceAuthenticator.LOGGED_IN_KEY, user);
-        request.getSession().setAttribute(
+        httpSession.setAttribute(
             ConfluenceAuthenticator.LOGGED_OUT_KEY, null);
+        
+        getEventManager().publishEvent(new LoginEvent(this, user.getName(), httpSession.getId(), remoteHost, remoteIP));
 
-        return user;
-    }
-
+        return true;
+	}
+	
     /**
-     * {@inheritDoc}
+     * @see com.atlassian.seraph.auth.Authenticator#getUser(
+     *      javax.servlet.http.HttpServletRequest,
+     *      javax.servlet.http.HttpServletResponse)
      *
-     * @param userid
+     * @param request
+     * @param response
      *
      * @return
      */
-    public Principal getUser(String userid) {
+    public Principal getUser(HttpServletRequest request, HttpServletResponse response) {
         if (log.isDebugEnabled()) {
-            log.debug("Getting user " + userid);
+            log.debug(
+                "Request made to " + request.getRequestURL() + " triggered this AuthN2 check");
         }
 
-        UserAccessor userAccessor = getUserAccessor();
-        Principal user = null;
+        HttpSession httpSession = request.getSession(false);
+        Principal user;
 
-        try {
-            user = userAccessor.getUser(userid);
+        // Check if the user is already logged in
+        if ((httpSession != null) && (httpSession.getAttribute(
+            ConfluenceAuthenticator.LOGGED_IN_KEY) != null)) {
+            user = (Principal) httpSession.getAttribute(
+                ConfluenceAuthenticator.LOGGED_IN_KEY);
 
-            if (user == null) {
-                if (log.isDebugEnabled()) {
-                    log.debug("No user account exists for " + userid);
-                }
+            if (log.isDebugEnabled()) {
+                log.debug(user.getName() + " already logged in, returning.");
             }
-        } catch (Throwable t) {
-            log.error("Error getting user", t);
+
+            return user;
         }
 
-        return user;
+		//worst case scenario, this is executed when user has not logged in previously
+		//perhaps admin forgot to change web.xml to use ShibLoginFilter ?
+		try{
+			boolean authenticated = login(request,response,null,null,false);
+			if(!authenticated) return null;
+		}catch(Throwable t){
+			log.error("Failed to authenticate user", t);
+			return null;
+		}
+		return getUser(request,response);
     }
 
     /**
