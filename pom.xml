@@ -170,6 +170,22 @@
             <scope>provided</scope>
         </dependency>        
 
+        <!-- WARNING: use of these may mean that older versions of confluence will not be supported -->
+	<dependency>
+            <groupId>com.atlassian.seraph</groupId>
+            <artifactId>atlassian-seraph</artifactId>
+            <version>0.38</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>opensymphony</groupId>
+            <artifactId>propertyset</artifactId>
+            <version>1.3</version>
+            <scope>provided</scope>
+        </dependency>
+        <!-- END -->
+
         <dependency>
             <groupId>commons-logging</groupId>
             <artifactId>commons-logging</artifactId>
