@@ -498,37 +498,45 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
     private String getEmailAddress(HttpServletRequest request) {
         String emailAddress = null;
 
-        // assumes it is first value in list, if header is defined multiple times. Otherwise would need to call getHeaders()
-        String headerValue = request.getHeader(config.getEmailHeaderName());
+        if (config.getEmailHeaderName()!=null) {
 
-        // the Shibboleth SP sends multiple values as single value, separated by comma or semicolon
-        List values = StringUtil.
-            toListOfNonEmptyStringsDelimitedByCommaOrSemicolon(headerValue);
+            // assumes it is first value in list, if header is defined multiple times. Otherwise would need to call getHeaders()
+            String headerValue = request.getHeader(config.getEmailHeaderName());
 
-        if (values != null && values.size() > 0) {
+            // the Shibboleth SP sends multiple values as single value, separated by comma or semicolon
+            List values = StringUtil.
+                toListOfNonEmptyStringsDelimitedByCommaOrSemicolon(headerValue);
 
-            // use the first email in the list
-            emailAddress = (String) values.get(0);
+            if (values != null && values.size() > 0) {
 
-            if (log.isDebugEnabled()) {
-                log.debug("Got emailAddress '" + emailAddress + "' for header '" + config.
-                    getEmailHeaderName() + "'");
-            }
+                // use the first email in the list
+                emailAddress = (String) values.get(0);
 
-            if (config.isConvertToUTF8()) {
-                String tmp = StringUtil.convertToUTF8(emailAddress);
-                if (tmp != null) {
-                    emailAddress = tmp;
-                    if (log.isDebugEnabled()) {
-                        log.debug("emailAddress converted to UTF-8 '" + emailAddress + "' for header '" + config.
-                            getEmailHeaderName() + "'");
+                if (log.isDebugEnabled()) {
+                    log.debug("Got emailAddress '" + emailAddress + "' for header '" + config.
+                        getEmailHeaderName() + "'");
+                }
+
+                if (config.isConvertToUTF8()) {
+                    String tmp = StringUtil.convertToUTF8(emailAddress);
+                    if (tmp != null) {
+                        emailAddress = tmp;
+                        if (log.isDebugEnabled()) {
+                            log.debug("emailAddress converted to UTF-8 '" + emailAddress + "' for header '" + config.
+                                getEmailHeaderName() + "'");
+                        }
                     }
                 }
             }
-        }
 
-        if ((emailAddress != null) && (emailAddress.length() > 0)) {
-            emailAddress = emailAddress.toLowerCase();
+            if ((emailAddress != null) && (emailAddress.length() > 0)) {
+                emailAddress = emailAddress.toLowerCase();
+            }
+        }
+        else {
+            if (log.isDebugEnabled()) {
+                log.debug("user email address header name in config was null/not specified");
+            }
         }
 
         return emailAddress;
@@ -537,36 +545,48 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
     private String getFullName(HttpServletRequest request, String userid) {
         String fullName = null;
 
-        // assumes it is first value in list, if header is defined multiple times. Otherwise would need to call getHeaders()
-        String headerValue = request.getHeader(config.getFullNameHeaderName());
+        if (config.getFullNameHeaderName()!=null) {
 
-        // the Shibboleth SP sends multiple values as single value, separated by comma or semicolon
-        List values = StringUtil.
-            toListOfNonEmptyStringsDelimitedByCommaOrSemicolon(headerValue);
+            // assumes it is first value in list, if header is defined multiple times. Otherwise would need to call getHeaders()
+            String headerValue = request.getHeader(config.getFullNameHeaderName());
 
-        if (values != null && values.size() > 0) {
+            // the Shibboleth SP sends multiple values as single value, separated by comma or semicolon
+            List values = StringUtil.
+                toListOfNonEmptyStringsDelimitedByCommaOrSemicolon(headerValue);
 
-            // use the first full name in the list
-            fullName = (String) values.get(0);
+            if (values != null && values.size() > 0) {
 
-            if (log.isDebugEnabled()) {
-                log.debug("Got fullName '" + fullName + "' for header '" + config.
-                    getFullNameHeaderName() + "'");
-            }
+                // use the first full name in the list
+                fullName = (String) values.get(0);
 
-            if (config.isConvertToUTF8()) {
-                String tmp = StringUtil.convertToUTF8(fullName);
-                if (tmp != null) {
-                    fullName = tmp;
-                    if (log.isDebugEnabled()) {
-                        log.debug("fullName converted to UTF-8 '" + fullName + "' for header '" + config.
-                            getFullNameHeaderName() + "'");
+                if (log.isDebugEnabled()) {
+                    log.debug("Got fullName '" + fullName + "' for header '" + config.
+                        getFullNameHeaderName() + "'");
+                }
+
+                if (config.isConvertToUTF8()) {
+                    String tmp = StringUtil.convertToUTF8(fullName);
+                    if (tmp != null) {
+                        fullName = tmp;
+                        if (log.isDebugEnabled()) {
+                            log.debug("fullName converted to UTF-8 '" + fullName + "' for header '" + config.
+                                getFullNameHeaderName() + "'");
+                        }
                     }
+                }
+            }
+            else {
+                if (log.isDebugEnabled()) {
+                    log.debug("user full name header name in config was null/not specified");
                 }
             }
         }
 
         if ((fullName == null) || (fullName.length() == 0)) {
+            if (log.isDebugEnabled()) {
+                log.debug("User full name was null or empty. Defaulting full name to user id");
+            }
+
             fullName = userid;
         }
 
