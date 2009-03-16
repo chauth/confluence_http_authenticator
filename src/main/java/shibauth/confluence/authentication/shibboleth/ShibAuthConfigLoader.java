@@ -91,13 +91,13 @@ public class ShibAuthConfigLoader {
             }
 
             // Load update.info property
-            ShibAuthConfiguration.setUpdateInfo(Boolean.valueOf(
+            config.setUpdateInfo(Boolean.valueOf(
                 configProps.getProperty(ShibAuthConstants.UPDATE_INFO)).
                 booleanValue());
 
             if (log.isDebugEnabled()) {
                 log.debug("Setting update user information to " +
-                    ShibAuthConfiguration.isUpdateInfo());
+                    config.isUpdateInfo());
             }
 
             // Load update.lastLoginDate property
@@ -111,13 +111,13 @@ public class ShibAuthConfigLoader {
             }
 
             // Load update.roles property
-            ShibAuthConfiguration.setUpdateRoles(Boolean.valueOf(
+            config.setUpdateRoles(Boolean.valueOf(
                 configProps.getProperty(ShibAuthConstants.UPDATE_ROLES)).
                 booleanValue());
 
             if (log.isDebugEnabled()) {
                 log.debug(
-                    "Setting update user roles to " + ShibAuthConfiguration.
+                    "Setting update user roles to " + config.
                     isUpdateRoles());
             }
 
@@ -273,16 +273,16 @@ public class ShibAuthConfigLoader {
     private static void loadGroupMapping(ShibAuthConfiguration config,
         Properties configProps) {
 
-        ShibAuthConfiguration.setAutoCreateGroup(Boolean.valueOf(
+        config.setAutoCreateGroup(Boolean.valueOf(
             configProps.getProperty(ShibAuthConstants.AUTO_CREATE_GROUP)).
             booleanValue());
-        log.debug("Setting automatic creation of new group to " + ShibAuthConfiguration.
+        log.debug("Setting automatic creation of new group to " + config.
             isAutoCreateGroup());
 
         // Load dynamic roles property
         //#header.dynamicroles.SHIB-EP-ENTITLEMENT=mapper1, mapper2
         //"headers" contains the list of entries such as "SHIB-EP-ENTITLEMENT"
-        List headers = ShibAuthConfiguration.listPostfixes((String[]) configProps.
+        List headers = config.listPostfixes((String[]) configProps.
             keySet().toArray(new String[0]),
             ShibAuthConstants.ROLES_HEADER_PREFIX);
 

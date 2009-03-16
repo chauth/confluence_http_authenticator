@@ -39,58 +39,71 @@ import java.util.Set;
 public class ShibAuthConfiguration {
 
     /**
-     * Set of header names to be watchfull for dynamic roles. Content has
+     * Set of header names to be watchful for dynamic roles. Content has
      * format of Map<attribHeader, Collection<GroupMapper>>
      * where attribHeader is a string, e.g. SHIB-EP-ENTITLEMENT
      */
     private Map groupMappings = new HashMap();
+
     /** list of all mappers that should be doing the purging */
     private List purgeMappings = new ArrayList();
+
     /**
      * Whether to create accounts for new users or not
      */
     private boolean createUsers;
+
     /**
      * Default roles for newly created users
      */
     private List defaultRoles;
+
     /**
      * Automatically reload the configuration file when changed
      */
     private boolean reloadConfig;
+
     /**
      * When reloading the configuration file, how long to wait (in milliseconds) between
      * checking the configuration file for changes?
      */
     private long reloadConfigCheckInterval;
+
     /**
      * Name of the configuration file to be reloaded
      */
     private String configFile;
+
     /**
      * Last modified stamp of the configuration file
      */
     private long configFileLastModified;
+
     /**
      * System time at when the configuration file was checked the last time
      */
     private long configFileLastChecked;
+
     /**
      * HTTP Header name that contains a user's email address
      */
     private String emailHeaderName;
+
     /**
      * HTTP Header name that contains a user's full name
      */
     private String fullNameHeaderName;
+
     /**
      * Whether or not to update name/email info for previously created users
      */
-    private static boolean updateInfo;
+    private boolean updateInfo;
+
     /**
      * Whether to update roles for new users or not
      */
-    private static boolean updateRoles;
+    private boolean updateRoles;
+
     /**
      * Whether to convert fields to UTF8
      */
@@ -105,20 +118,24 @@ public class ShibAuthConfiguration {
      * Whether to update last and previous login OS user properties (these are also used if using atlassian-user schema).
      */
     private boolean updateLastLogin;
-    private static boolean autoCreateGroup;
+
+    /**
+     * Whether or not to automatically create groups.
+     */
+    private boolean autoCreateGroup;
 
     /**
      * Should this pluggin try to create new groups as indicated
      * by IdP (when the group value is non-existent in confluence)
-     * @param autocreate if true then new groups will be automatically
+     * @param autoCreateGroup if true then new groups will be automatically
      * created in confluence, otherwise they will be ignored
      */
-    public static void setAutoCreateGroup(boolean autocreate) {
-        autoCreateGroup = autocreate;
+    public void setAutoCreateGroup(boolean autoCreateGroup) {
+        this.autoCreateGroup = autoCreateGroup;
     }
 
-    public static boolean isAutoCreateGroup() {
-        return autoCreateGroup;
+    public boolean isAutoCreateGroup() {
+        return this.autoCreateGroup;
     }
 
     /**
@@ -234,20 +251,20 @@ public class ShibAuthConfiguration {
         this.fullNameHeaderName = fullNameHeaderName;
     }
 
-    public static boolean isUpdateInfo() {
+    public boolean isUpdateInfo() {
         return updateInfo;
     }
 
-    public static void setUpdateInfo(boolean updateInfo) {
-        ShibAuthConfiguration.updateInfo = updateInfo;
+    public void setUpdateInfo(boolean updateInfo) {
+        this.updateInfo = updateInfo;
     }
 
-    public static boolean isUpdateRoles() {
+    public boolean isUpdateRoles() {
         return updateRoles;
     }
 
-    public static void setUpdateRoles(boolean updateRoles) {
-        ShibAuthConfiguration.updateRoles = updateRoles;
+    public void setUpdateRoles(boolean updateRoles) {
+        this.updateRoles = updateRoles;
     }
 
     public boolean isConvertToUTF8() {
@@ -255,7 +272,7 @@ public class ShibAuthConfiguration {
     }
 
     public void setConvertToUTF8(boolean convertToUTF8) {
-        convertToUTF8 = convertToUTF8;
+        this.convertToUTF8 = convertToUTF8;
     }
 
     public boolean isUpdateLastLogin() {
@@ -266,13 +283,15 @@ public class ShibAuthConfiguration {
         this.updateLastLogin = updateLastLogin;
     }
 
-    /** Given a prefix and list of strings, grab all those that started
+    /**
+     * Given a prefix and list of strings, grab all those that started
      * with 'prefix'.
+     *
      * @param strings complete lists of all strings
      * @param prefix the prefix that we're looking for in a string
      * @return subset of strings that started with the given prefix
      */
-    public static List listPostfixes(String[] strings, String prefix) {
+    public List listPostfixes(String[] strings, String prefix) {
         List list = new ArrayList();
         for (int i = 0; i < strings.length; i++) {
             if (strings[i].startsWith(prefix)) {
@@ -282,6 +301,7 @@ public class ShibAuthConfiguration {
                 }
             }
         }
+
         return list;
     }
 }
