@@ -221,7 +221,7 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
                 try {
                     group = getGroupManager().getGroup(role);
                     if (group == null) {
-                        if (ShibAuthConfiguration.isAutoCreateGroup()) {
+                        if (config.isAutoCreateGroup()) {
                             if (getGroupManager().isCreative()) {
                                 group = getGroupManager().createGroup(role);
                             } else {
@@ -235,7 +235,13 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
                             continue; //no point of attempting to allocate user
                         }
                     }
-                    getGroupManager().addMembership(group, user);
+                    
+                    if (getGroupManager().hasMembership(group, user)) {
+                        log.debug("Skipping " + user.getName() + " to role " + role + " - already a member");
+                    }
+                    else {
+                        getGroupManager().addMembership(group, user);
+                    }
                 } catch (Exception e) {
                     log.error(
                         "Attempted to add user " + user + " to role " + role + " but the role does not exist.",
@@ -769,7 +775,7 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
                     updateLastLogin(user);
             }
         } else {
-            if (ShibAuthConfiguration.isUpdateInfo()) {
+            if (config.isUpdateInfo()) {
                 updateUser(user, fullName, emailAddress);
                 
                 //username will only be null if called from getUser()
@@ -778,7 +784,7 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
             }
         }
 
-        if (ShibAuthConfiguration.isUpdateRoles() || newUser) {
+        if (config.isUpdateRoles() || newUser) {
             Set roles = new HashSet();
 
             //fill up the roles
