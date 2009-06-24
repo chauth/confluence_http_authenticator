@@ -41,7 +41,7 @@
     <packaging>jar</packaging>
 
     <name>Shibboleth Authenticator for Confluence Plugin</name>
-    <version>1.4-SNAPSHOT</version>
+    <version>1.5-SNAPSHOT</version>
     <url>http://confluence.atlassian.com/display/CONFEXT/Shibboleth+Authenticator+for+Confluence</url>
     <description>A seraph authenticator for Confluence for Shibboleth
     </description>
@@ -119,8 +119,9 @@
             <roles>
                 <role>Developer - v1.1 - additional checks/logging and some small refactoring. Version 1.1 should work with Confluence 2.3-2.6.x and possibly later versions.,
                                   v1.2 - refactor config loading, constants, utility method, and added configuration VO.,
-                                  v1.3 - change of package name to shibauth, since no longer maintained by Georgetown, and Duke, Melcoe, Helsinki making changes now. Migrated to Maven 2. Integrated patch and made contributed UTF-8 fixes optional.
-                                  v1.4.1/1.5? - integrated patch from Jesse Lahtinen (Finland Technical Univ) for SHBL-14 (contributed by Erkki Aalto), making it configurable.
+                                  v1.3.1 - change of package name to shibauth, since no longer maintained by Georgetown, and Duke, Melcoe, Helsinki making changes now. Migrated to Maven 2. Integrated patch and made contributed UTF-8 fixes optional.
+                                  v1.4 - integrated patch from Jesse Lahtinen (Finland Technical Univ) for SHBL-14 (contributed by Erkki Aalto), making it configurable.
+                                  v1.5 - integrated patch from Michael Gettes (MIT) for SHBL-21
                 </role>
             </roles>
             <timezone>-4</timezone>
@@ -129,7 +130,9 @@
         <developer>
             <name>Bruc Liong</name>
             <roles>
-                <role>Developer - v1.2 - allow optional mapping of the values of 0-to-many HTTP Headers (fed by shib attributes) to Confluence group names (see properties file for how to do this)</role>
+                <role>Developer - v1.2 - allow optional mapping of the values of 0-to-many HTTP Headers (fed by shib attributes) to Confluence group names (see properties file for how to do this)
+                                  v1.5? - new role mapping code (related to SHBL-18)
+                </role>
             </roles>
         </developer>
 
@@ -143,14 +146,21 @@
         <developer>
             <name>Vladimir Mencl</name>
             <roles>
-                <role>Developer - v1.3 - GroupManager injector patch for SHBL-8 and subsequent SHBL-9 bug fixes. Submitted patch to add member, setter/getter for GroupManager and setter implementation uses ContainerManager.getComponent("groupManager") similar to Atlassian implementation of ConfluenceGroupJoiningAuthenticator.java (which appears to have been around since Confluence 2.3+ and should work in 2.2 according to http://confluence.atlassian.com/display/DOC/Automatically+Adding+LDAP+users+to+the+confluence-users+Group . See also: http://jira.atlassian.com/browse/CONF-12158 </role>
+                <role>Developer - v1.3/1.3.1 - GroupManager injector patch for SHBL-8 and subsequent SHBL-9 bug fixes. Submitted patch to add member, setter/getter for GroupManager and setter implementation uses ContainerManager.getComponent("groupManager") similar to Atlassian implementation of ConfluenceGroupJoiningAuthenticator.java (which appears to have been around since Confluence 2.3+ and should work in 2.2 according to http://confluence.atlassian.com/display/DOC/Automatically+Adding+LDAP+users+to+the+confluence-users+Group . See also: http://jira.atlassian.com/browse/CONF-12158 </role>
             </roles>
         </developer>
 
         <developer>
             <name>Jesse Lahtinen</name>
             <roles>
-                <role>Developer - v1.4.1/1.5? - Erkki Aalto submitted Jesse's patch for SHBL-14 such that the authenticator will now update confluence.user.previous.login.date and confluence.user.last.login.date in os_propertyentry</role>
+                <role>Developer - v1.4 - Erkki Aalto submitted Jesse's patch for SHBL-14 such that the authenticator will now update confluence.user.previous.login.date and confluence.user.last.login.date in os_propertyentry</role>
+            </roles>
+        </developer>
+
+        <developer>
+            <name>Michael Gettes</name>
+            <roles>
+                <role>Developer - v1.5 - Submitted patch to check for existing group membership before adding as fix for SHBL-21</role>
             </roles>
         </developer>
 
