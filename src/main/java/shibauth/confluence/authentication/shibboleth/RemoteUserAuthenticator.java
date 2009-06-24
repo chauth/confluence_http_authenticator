@@ -674,7 +674,7 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
                     }
 
                     if (!found) {
-                        log.warn(
+                        log.debug(
                             "No mapper capable of processing role value=" + headerValue);
                     }
                 }
