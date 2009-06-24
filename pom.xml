@@ -138,12 +138,7 @@
                                   v1.5 - the following: (see also SHBL-18)
 
 		  * resolved SHBL-16, hopefully improve response time slightly for SHBL-15. Also this has made updateLastLogin option to be optional, we're letting confluence to take care of that now.
-
-		  you will need to use the provided LoginFilter, edit web.xml:
-		  <filter-name>login</filter-name>
-		  <!-- <filter-class>com.atlassian.seraph.filter.LoginFilter</filter-class>  -->
-		  <filter-class>shibauth.confluence.authentication.shibboleth.ShibLoginFilter</filter-class>
-
+		  you will need to use the provided LoginFilter, edit web.xml (see wiki release notes for details)
 		  Failure to use this Login Filter in web.xml will produce previous behaviour (i.e. before SHBL-16 fix; updateLastLogin is fully obeyed).
 		  * provided option dynamicroles.output.tolowercase to convert all group output to lower case by default.
 		  * changed StringUtil.convertToUTF8 to have new String(getBytes("UTF-8"),"UTF-8") to see if UTF-8 conversion works, otherwise byte by byte conversion needs to be put in placed.
