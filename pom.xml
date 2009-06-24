@@ -120,8 +120,12 @@
                 <role>Developer - v1.1 - additional checks/logging and some small refactoring. Version 1.1 should work with Confluence 2.3-2.6.x and possibly later versions.,
                                   v1.2 - refactor config loading, constants, utility method, and added configuration VO.,
                                   v1.3.1 - change of package name to shibauth, since no longer maintained by Georgetown, and Duke, Melcoe, Helsinki making changes now. Migrated to Maven 2. Integrated patch and made contributed UTF-8 fixes optional.
-                                  v1.4 - integrated patch from Jesse Lahtinen (Finland Technical Univ) for SHBL-14 (contributed by Erkki Aalto), making it configurable.
-                                  v1.5 - integrated patch from Michael Gettes (MIT) for SHBL-21
+                                  v1.5 -
+* SHBL-21 - applying patch contributed from Michael Gettes because call to hasMembership and only calling addMembership when needed he determined was faster than only calling addMembership. 
+* fix for SHBL-20 and some other possible config related issues not yet noticed. changed from using static values in config to instance. config instance itself is static and gets reloaded, so we don't want static member variables in the configuration instance itself, unless I'm missing something. we should consider moving to spring config for v2.0. config is a little out of hand now.
+* resolving SHBL-18. added null checks for header.fullname and header.email in config and updated config
+* Per some recent commits, there seems to now be a dependency on a newer version of seraph than may be included in earlier versions of confluence. In fact, upping the confluence version (tried several versions) didn't seem to include these. I looked at Atlassian's pom for confluence and it appears that only an earlier version of seraph (not atlassian-seraph) was referenced in earlier builds, and later builds don't include the version they may/may not use. We may end up needing to make changes to the code to make it work with older versions of Confluence, or we may need to change the dependencies (and maybe change versions?) to have a scope that would include these jars in the plugin rather than expect that Confluence provide them, in which case compatibility could be an ongoing issue
+* Implementing patch submitted by Erkki Aalto written by Juha Ojaluoma for SHBL-14. Note that USER-254 possible bug related to this feature. This feature implements a new config option called update.last.login.date (true/false) in config that sets properties for the user in os_propertyentry even if not using osuser schema otherwise according to Erkki. Also updated License text.
                 </role>
             </roles>
             <timezone>-4</timezone>
@@ -131,7 +135,24 @@
             <name>Bruc Liong</name>
             <roles>
                 <role>Developer - v1.2 - allow optional mapping of the values of 0-to-many HTTP Headers (fed by shib attributes) to Confluence group names (see properties file for how to do this)
-                                  v1.5? - new role mapping code (related to SHBL-18)
+                                  v1.5 - the following: (see also SHBL-18)
+
+		  * resolved SHBL-16, hopefully improve response time slightly for SHBL-15. Also this has made updateLastLogin option to be optional, we're letting confluence to take care of that now.
+
+		  you will need to use the provided LoginFilter, edit web.xml:
+		  <filter-name>login</filter-name>
+		  <!-- <filter-class>com.atlassian.seraph.filter.LoginFilter</filter-class>  -->
+		  <filter-class>shibauth.confluence.authentication.shibboleth.ShibLoginFilter</filter-class>
+
+		  Failure to use this Login Filter in web.xml will produce previous behaviour (i.e. before SHBL-16 fix; updateLastLogin is fully obeyed).
+		  * provided option dynamicroles.output.tolowercase to convert all group output to lower case by default.
+		  * changed StringUtil.convertToUTF8 to have new String(getBytes("UTF-8"),"UTF-8") to see if UTF-8 conversion works, otherwise byte by byte conversion needs to be put in placed.
+		  * Revamp of group mapping, ref SHBL-6. Include capabilities of:
+		  ** mapping with regex
+		  ** inspecting only necessary headers for group mapping
+		  ** purging roles with regex
+		  ** multiple regex/mappers can be specified per header
+
                 </role>
             </roles>
         </developer>
