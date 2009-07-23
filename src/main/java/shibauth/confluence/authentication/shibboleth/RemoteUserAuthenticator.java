@@ -63,6 +63,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.security.Principal;
 import java.io.File;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Enumeration;
 import java.util.HashSet;
@@ -734,7 +735,7 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
 
         // Since they aren't logged in, get the user name from
         // the REMOTE_USER header
-        String userid = request.getRemoteUser();
+        String userid = createSafeUserid(request.getRemoteUser());
 
         if ((userid == null) || (userid.length() <= 0)) {
             if (log.isDebugEnabled()) {
@@ -812,6 +813,71 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
 
         return true;
 	}
+
+    private String createSafeUserid(String originalRemoteuser){
+        //possible to have multiple mappers defined, but
+        //only 1 will produce the desired outcome
+        Set possibleRemoteUsers = new HashSet();
+        Collection mappers = config.getRemoteUserMappings();
+        for (Iterator mapperIt = mappers.iterator(); mapperIt.hasNext();) {
+            GroupMapper mapper = (GroupMapper) mapperIt.next();
+
+            String[] results = (String[]) StringUtil.
+                toListOfNonEmptyStringsDelimitedByCommaOrSemicolon(
+                mapper.process(originalRemoteuser)).toArray(new String[0]);
+
+            if(results.length != 0)
+                possibleRemoteUsers.addAll(Arrays.asList(results));
+        }
+
+        if(possibleRemoteUsers.isEmpty()){
+            log.debug("Remote user is returned as is, mappers do not matched.");
+            return originalRemoteuser;
+        }
+
+        if(log.isDebugEnabled() && possibleRemoteUsers.size() > 1){
+            log.debug("Remote user has been transformed, but there are too many results, choosing one that seems suitable");
+        }
+
+        //just get a random one
+        String output = possibleRemoteUsers.iterator().next().toString();
+        return remoteUserCharsReplacement(output);
+    }
+
+    //if remoteuser.replace is specified, process it
+    //it has the format of pair-wise value, occurences of 1st entry regex is replaced
+    //with what specified on the second entry
+    //the list is comma or semi-colon separated (which means
+    //pretty obvious a comma or semi-colon can't be used in the content replacement)
+    private String remoteUserCharsReplacement(String remoteUser){
+        Iterator it = config.getRemoteUserReplacementChars();
+        while(it.hasNext()){
+            String replaceFromRegex = it.next().toString();
+
+            //someone didn't fill up pair-wise entry, ignore this regex
+            if(!it.hasNext()){
+                if(replaceFromRegex.length() != 0)
+                   log.debug("Character replacements specified for Remote User regex is incomplete, make sure the entries are pair-wise, skipping...");
+                break;
+            }
+
+            String replacement = it.next().toString();
+            
+            //we are not going to replace empty string, so skip it
+            if(replaceFromRegex.length()==0){
+                log.debug("Empty string is found in replaceFrom regex, skipping...");
+                continue;
+            }
+
+            try{
+                remoteUser = remoteUser.replaceAll(replaceFromRegex, replacement);
+            }catch(Exception e){
+                log.warn("Fail to replace certain character entries in \"Remote User\" matching regex=\""+replaceFromRegex+"\", ignoring...");
+                log.debug("Fail to replace certain character entries in Remote User",e);
+            }
+        }
+        return remoteUser;
+    }
 	
     /**
      * @see com.atlassian.seraph.auth.Authenticator#getUser(

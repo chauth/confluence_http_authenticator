@@ -32,11 +32,25 @@ package shibauth.confluence.authentication.shibboleth;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 public class ShibAuthConfiguration {
+
+    /**
+     * Collection of mappers capable of transforming remote-user into
+     * something meaningful for confluence.
+     */
+    private Collection remoteUserMappings = new ArrayList();
+
+    /** Contains lists of character replacements that need to be
+     * applied to remote user. The list is processed pair-wise.
+     * Null (empty) is permitted in the list, which means
+     * the matched character will be removed from remote user
+     */
+    private List remoteUserReplacementChars = new ArrayList();
 
     /**
      * Set of header names to be watchful for dynamic roles. Content has
@@ -169,6 +183,30 @@ public class ShibAuthConfiguration {
 
     public Collection getPurgeMappings() {
         return purgeMappings;
+    }
+
+    public Collection getRemoteUserMappings(){
+        return remoteUserMappings;
+    }
+    public void setRemoteUserMappings(Collection mappings){
+        remoteUserMappings.clear();
+        remoteUserMappings.addAll(mappings);
+    }
+
+    public void setRemoteUserReplacementChars(List replacements){
+        remoteUserReplacementChars.clear();
+        remoteUserReplacementChars.addAll(replacements);
+    }
+
+    /** Iterator HAS to be processed pair-wise (e.g. entry 1 & 2)
+     * where entry 1 is the chars to be replaced (regex) and
+     * entry 2 is the replacement for it <bold>non-regex</bold>
+     * (null means total deletion).
+     *
+     * @return pair-wise iterator of replacement regex
+     */
+    public Iterator getRemoteUserReplacementChars(){
+        return remoteUserReplacementChars.iterator();
     }
 
     public void setOutputToLowerCase(boolean toLower){

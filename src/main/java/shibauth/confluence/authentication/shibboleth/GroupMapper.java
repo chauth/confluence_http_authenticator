@@ -36,7 +36,7 @@ import org.apache.commons.logging.LogFactory;
 
 /**
  *
- * GroupMapper is capable to process an incoming values and
+ * GroupMapper is capable to process an incoming value(s) and
  * producing the output desired as specified by the mapping regex.
  * The properties that can be specified in this class:
  * <ul>

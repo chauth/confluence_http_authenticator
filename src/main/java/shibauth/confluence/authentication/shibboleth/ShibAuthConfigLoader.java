@@ -207,6 +207,7 @@ public class ShibAuthConfigLoader {
 
             loadGroupMapping(config, configProps);
             loadPurgeGroupMapping(config, configProps);
+            loadRemoteUserMapping(config,configProps);
 
             // Set the name of the config file for automatic reloading
             if (config.isReloadConfig()) {
@@ -270,6 +271,45 @@ public class ShibAuthConfigLoader {
         config.setPurgeMappings(purgeRolesGroups);
     }
 
+    private static void loadRemoteUserMapping(ShibAuthConfiguration config,
+        Properties configProps) {
+        //remoteuser=remoteusermap
+        //remoteuser.replace=\\#,A,\\%,c,-,,
+        //remoteuser.remoteusermap.match=some-regex
+        List remoteuserlabels = StringUtil.
+                toListOfNonEmptyStringsDelimitedByCommaOrSemicolon(
+                configProps.getProperty(
+                ShibAuthConstants.REMOTEUSER_PREFIX));
+
+        if (remoteuserlabels.isEmpty()) {
+            //clear the headers, future processing wil bypass when empty
+            config.setRemoteUserMappings(Collections.EMPTY_LIST);
+            return;
+        }
+
+        List replacements = StringUtil.
+            toListOfStringsDelimitedByCommaOrSemicolon(
+            configProps.getProperty(ShibAuthConstants.REMOTEUSER_REPLACEMENT)
+            );
+
+        config.setRemoteUserReplacementChars(replacements);
+
+        List mappers = new ArrayList();
+
+        mappers.addAll(loadMappers(ShibAuthConstants.REMOTEUSER_MAP_PREFIX, configProps, remoteuserlabels));
+
+        if (mappers.isEmpty()) {
+            log.debug(
+                "No mapper handler defined in \"" +
+                ShibAuthConstants.REMOTEUSER_PREFIX +
+                "\", remoteuser will be left untouched.");
+            config.setRemoteUserMappings(Collections.EMPTY_LIST);
+            return;
+        }
+        log.debug("RemoteUser mapping is defined in config, transformation of remote user will happen during logins");
+        config.setRemoteUserMappings(mappers);
+    }
+
     private static void loadGroupMapping(ShibAuthConfiguration config,
         Properties configProps) {
 
@@ -324,7 +364,7 @@ public class ShibAuthConfigLoader {
                 }
             }
 
-            mappers.addAll(loadMappers(configProps, definedMapperStrings));
+            mappers.addAll(loadMappers(ShibAuthConstants.ROLES_ATTRIB_PREFIX,configProps, definedMapperStrings));
 
             if (mappers.isEmpty()) {
                 log.debug(
@@ -333,8 +373,8 @@ public class ShibAuthConfigLoader {
                     "\", ignoring this header.");
                 continue;
             }
-            if (log.isDebugEnabled()) {
-                StringBuffer sb = new StringBuffer();
+            //cache the mappers and print them
+            StringBuffer sb = new StringBuffer();
                 for (Iterator it = mappers.iterator(); it.hasNext();) {
                     GroupMapper mapper = (GroupMapper) it.next();
                     String label = mapper.toString();
@@ -351,13 +391,12 @@ public class ShibAuthConfigLoader {
                 }
                 log.debug("Successfully loading mapper for header=" + header +
                     ", handlers=" + sb.toString());
-            }
             groupMappings.put(header, mappers);
         }
         config.setGroupMappings(groupMappings);
     }
 
-    private static Collection loadMappers(Properties configProps,
+    private static Collection loadMappers(String mapperPrefix, Properties configProps,
         List mapperStrings) {
         if (mapperStrings == null || mapperStrings.isEmpty()) {
             return Collections.EMPTY_LIST;
@@ -365,7 +404,7 @@ public class ShibAuthConfigLoader {
         Collection mappers = new ArrayList();
         for (int i = 0; i < mapperStrings.size(); i++) {
             String name = (String) mapperStrings.get(i);
-            String mapperStr = ShibAuthConstants.ROLES_ATTRIB_PREFIX + name;
+            String mapperStr = mapperPrefix + name;
             String match = configProps.getProperty(
                 mapperStr + ShibAuthConstants.PART_MATCH);
             String transform = configProps.getProperty(

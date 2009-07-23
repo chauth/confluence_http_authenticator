@@ -75,6 +75,31 @@ public class ShibAuthConstants {
         "header.fullname";
 
     /**
+     * Prefix to be used for remote-user label
+     *
+     * See #REMOTEUSER_PREFIX
+     */
+    public final static String REMOTEUSER_PREFIX =
+        "remoteuser";
+
+    /**
+     * Prefix to be used for remote-user replacement list
+     *
+     * See #REMOTEUSER_REPLACEMENT
+     */
+    public final static String REMOTEUSER_REPLACEMENT =
+        "remoteuser.replace";
+
+    /**
+     * Prefix to be used for remote-user mapping i.e.
+     * remoteuser.map.LABEL1.match=regex
+     *
+     * See #REMOTEUSER_MAP_PREFIX
+     */
+    public final static String REMOTEUSER_MAP_PREFIX =
+        "remoteuser.map.";
+
+    /**
      * Prefix to be used for mapping of different roles. i.e.
      * dynamicroles.header.SHIB-EP-ENTITLEMENT=label1, label2
      *
