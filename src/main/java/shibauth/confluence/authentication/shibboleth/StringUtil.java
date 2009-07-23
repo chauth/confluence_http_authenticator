@@ -65,10 +65,10 @@ public class StringUtil {
         return results;
     }
     /**
-     * This version returns the complete list WITH null, if such entry is empty
+     * This version returns the complete list, including empty string, if such entry is empty
      * @param s input string delimited by comma or semicolon
      * @return list of strings where deliminators are stripped off. if no content
-     * is found between 2 delimitors then null is returned in its place
+     * is found between 2 delimitors then empty string is returned in its place
      */
     public static List toListOfStringsDelimitedByCommaOrSemicolon(String s) {
         if(s == null) return Collections.EMPTY_LIST;
@@ -79,9 +79,7 @@ public class StringUtil {
 
         for (int i = 0; i < terms.length; i++) {
             String term = terms[i].trim();
-            if (term.length() > 0) {
-                results.add(term);
-            }else results.add(null);
+                results.add(term);  //this has empty string if nothing is found
         }
         return results;
     }
