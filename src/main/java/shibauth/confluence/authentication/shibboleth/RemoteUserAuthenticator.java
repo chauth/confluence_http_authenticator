@@ -613,14 +613,21 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
             return;
         }
 
-        //purely for debugging purpose: this spits content of headers
-        //for (Enumeration en =request.getHeaderNames(); en.hasMoreElements(); ) {
-        //    String headerName = en.nextElement().toString();
-        //    if (log.isDebugEnabled()) {
-        //        log.debug("Header \"" + headerName
-        //                  + " = " + request.getHeader(headerName)+"\"");
-        //    }
-        //}
+        // log headers (this is helpful to users for debugging what is sent in)
+        if (log.isDebugEnabled()) {        	
+            StringBuffer sb = new StringBuffer("HTTP Headers: ");
+            boolean concat = false;
+            for (Enumeration en = request.getHeaderNames(); en.hasMoreElements(); ) {
+                if (concat) {
+                    sb.append(", ");
+                }
+                String headerName = en.nextElement().toString();
+                sb.append("'" + headerName
+                          + "' = '" + request.getHeader(headerName) + "'");
+                concat = true;
+            }
+            log.debug(sb.toString());
+        }
 
         //process the headers by looking up only those list of registered headers
         for (Iterator headerIt = attribHeaders.iterator(); headerIt.hasNext();) {

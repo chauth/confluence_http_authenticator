@@ -158,7 +158,8 @@ public class GroupMapper {
 
         Matcher m = p.matcher(value);
         if(!m.matches()){
-            //log.debug("Fail to match '"+regex+"' to value="+value);
+            // this has been helpful for users that are debugging their regexp
+            log.debug("Regexp '"+regex+"' did not match value='" + value + "'");
             return null;
         }
 
