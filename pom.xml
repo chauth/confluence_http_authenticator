@@ -127,6 +127,8 @@
 * Per some recent commits, there seems to now be a dependency on a newer version of seraph than may be included in earlier versions of confluence. In fact, upping the confluence version (tried several versions) didn't seem to include these. I looked at Atlassian's pom for confluence and it appears that only an earlier version of seraph (not atlassian-seraph) was referenced in earlier builds, and later builds don't include the version they may/may not use. We may end up needing to make changes to the code to make it work with older versions of Confluence, or we may need to change the dependencies (and maybe change versions?) to have a scope that would include these jars in the plugin rather than expect that Confluence provide them, in which case compatibility could be an ongoing issue
 * Implementing patch submitted by Erkki Aalto written by Juha Ojaluoma for SHBL-14. Note that USER-254 possible bug related to this feature. This feature implements a new config option called update.last.login.date (true/false) in config that sets properties for the user in os_propertyentry even if not using osuser schema otherwise according to Erkki. Also updated License text.
                                   v1.5.1 - SHBL-23 No mapper capable of processing role message should be logged DEBUG not WARN
+                                  v1.6 - SHBL-26 - integrating patch from Michael Gettes not to try to update read-only users. Also had to enable debug of HTTP Headers and regexp match so that USC could debug their headers/regexp. Cleaned up logging a bit around those so that all HTTP headers logged at once (which might be more helpful in higher traffic).
+
                 </role>
             </roles>
             <timezone>-4</timezone>
@@ -149,6 +151,7 @@
 		  ** purging roles with regex
 		  ** multiple regex/mappers can be specified per header
 
+                                  v1.6 - Solution to SHBL-25. An option is provided to allow remote user to be transformed/mapped based on regex to be used by Confluence userid. Read config properties file for example and detail.
                 </role>
             </roles>
         </developer>
