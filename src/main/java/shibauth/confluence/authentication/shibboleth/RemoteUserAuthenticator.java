@@ -389,6 +389,14 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
             User userToUpdate = (User) user;
             boolean updated = false;
 
+            // SHBL-26: patch from Michael Gettes to skip read-only users (for example: user from LDAP, etc.)
+            if (userAccessor.isReadOnly(userToUpdate)) {
+                if (log.isDebugEnabled()) {
+                    log.debug("not updating user, because user is read-only");
+                }
+                return;
+            }
+
             if ((fullName != null) && !fullName.equals(
                 userToUpdate.getFullName())) {
                 if (log.isDebugEnabled()) {
