@@ -53,6 +53,19 @@ public class ShibAuthConfiguration {
     private List remoteUserReplacementChars = new ArrayList();
 
     /**
+     * Collection of mappers capable of transforming full name into
+     * something meaningful for confluence.
+     */
+    private Collection fullNameMappings = new ArrayList();
+
+    /** Contains lists of character replacements that need to be
+     * applied to full name. The list is processed pair-wise.
+     * Null (empty) is permitted in the list, which means
+     * the matched character will be removed from full name
+     */
+    private List fullNameReplacementChars = new ArrayList();
+
+    /**
      * Set of header names to be watchful for dynamic roles. Content has
      * format of Map<attribHeader, Collection<GroupMapper>>
      * where attribHeader is a string, e.g. SHIB-EP-ENTITLEMENT
@@ -126,7 +139,7 @@ public class ShibAuthConfiguration {
     /**
      * Whether to convert the group output to lowercase
      */
-    private boolean tolowercase;
+    private boolean outputToLowerCase;
 
     /**
      * Whether to update last and previous login OS user properties (these are also used if using atlassian-user schema).
@@ -137,6 +150,11 @@ public class ShibAuthConfiguration {
      * Whether or not to automatically create groups.
      */
     private boolean autoCreateGroup;
+
+    /**
+     * Whether or not web.xml has been configured to use ShibLoginFilter or not.
+     */
+    private boolean usingShibLoginFilter;
 
     /**
      * Should this pluggin try to create new groups as indicated
@@ -209,12 +227,36 @@ public class ShibAuthConfiguration {
         return remoteUserReplacementChars.iterator();
     }
 
-    public void setOutputToLowerCase(boolean toLower){
-        tolowercase = toLower;
+    public Collection getFullNameMappings(){
+        return fullNameMappings;
+    }
+    public void setFullNameMappings(Collection mappings){
+        fullNameMappings.clear();
+        fullNameMappings.addAll(mappings);
+    }
+
+    public void setFullNameReplacementChars(List replacements){
+        fullNameReplacementChars.clear();
+        fullNameReplacementChars.addAll(replacements);
+    }
+
+    /** Iterator HAS to be processed pair-wise (e.g. entry 1 & 2)
+     * where entry 1 is the chars to be replaced (regex) and
+     * entry 2 is the replacement for it <bold>non-regex</bold>
+     * (null means total deletion).
+     *
+     * @return pair-wise iterator of replacement regex
+     */
+    public Iterator getFullNameReplacementChars(){
+        return fullNameReplacementChars.iterator();
+    }
+
+    public void setOutputToLowerCase(boolean outputToLowerCase){
+        this.outputToLowerCase = outputToLowerCase;
     }
 
     public boolean isOutputToLowerCase(){
-        return tolowercase;
+        return outputToLowerCase;
     }
 
     public boolean isCreateUsers() {
@@ -319,6 +361,14 @@ public class ShibAuthConfiguration {
 
     public void setUpdateLastLogin(boolean updateLastLogin) {
         this.updateLastLogin = updateLastLogin;
+    }
+
+    public boolean isUsingShibLoginFilter() {
+        return usingShibLoginFilter;
+    }
+
+    public void setUsingShibLoginFilter(boolean usingShibLoginFilter) {
+        this.usingShibLoginFilter = usingShibLoginFilter;
     }
 
     /**

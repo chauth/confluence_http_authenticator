@@ -205,9 +205,20 @@ public class ShibAuthConfigLoader {
                     getEmailHeaderName());
             }
 
+            // Load property using.shib.login.filter
+            config.setUsingShibLoginFilter(Boolean.valueOf(
+                configProps.getProperty(ShibAuthConstants.USING_SHIB_LOGIN_FILTER)).
+                booleanValue());
+
+            if (log.isDebugEnabled()) {
+                log.debug("Setting usingShibLoginFilter to " +
+                    config.isUsingShibLoginFilter() + " (change to this must accompany manual changes to web.xml)");
+            }
+
             loadGroupMapping(config, configProps);
             loadPurgeGroupMapping(config, configProps);
             loadRemoteUserMapping(config,configProps);
+            loadFullNameMapping(config,configProps);
 
             // Set the name of the config file for automatic reloading
             if (config.isReloadConfig()) {
@@ -300,7 +311,7 @@ public class ShibAuthConfigLoader {
 
         if (mappers.isEmpty()) {
             log.debug(
-                "No mapper handler defined in \"" +
+                "No RemoteUser mapper handler defined in \"" +
                 ShibAuthConstants.REMOTEUSER_PREFIX +
                 "\", remoteuser will be left untouched.");
             config.setRemoteUserMappings(Collections.EMPTY_LIST);
@@ -308,6 +319,45 @@ public class ShibAuthConfigLoader {
         }
         log.debug("RemoteUser mapping is defined in config, transformation of remote user will happen during logins");
         config.setRemoteUserMappings(mappers);
+    }
+
+    private static void loadFullNameMapping(ShibAuthConfiguration config,
+        Properties configProps) {
+        //fullname=fullnamemap
+        //fullname.replace=\\#,A,\\%,c,-,,
+        //fullname.fullnamemap.match=some-regex
+        List fullnamelabels = StringUtil.
+                toListOfNonEmptyStringsDelimitedByCommaOrSemicolon(
+                configProps.getProperty(
+                ShibAuthConstants.FULL_NAME_PREFIX));
+
+        if (fullnamelabels.isEmpty()) {
+            //clear the headers, future processing wil bypass when empty
+            config.setFullNameMappings(Collections.EMPTY_LIST);
+            return;
+        }
+
+        List replacements = StringUtil.
+            toListOfStringsDelimitedByCommaOrSemicolon(
+            configProps.getProperty(ShibAuthConstants.FULL_NAME_REPLACEMENT)
+            );
+
+        config.setFullNameReplacementChars(replacements);
+
+        List mappers = new ArrayList();
+
+        mappers.addAll(loadMappers(ShibAuthConstants.FULL_NAME_MAP_PREFIX, configProps, fullnamelabels));
+
+        if (mappers.isEmpty()) {
+            log.debug(
+                "No FullName mapper handler defined in \"" +
+                ShibAuthConstants.FULL_NAME_PREFIX +
+                "\", full name will be left untouched.");
+            config.setFullNameMappings(Collections.EMPTY_LIST);
+            return;
+        }
+        log.debug("FullName mapping is defined in config, transformation of full name will happen during logins");
+        config.setFullNameMappings(mappers);
     }
 
     private static void loadGroupMapping(ShibAuthConfiguration config,

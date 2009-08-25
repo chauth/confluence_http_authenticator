@@ -41,7 +41,7 @@
     <packaging>jar</packaging>
 
     <name>Shibboleth Authenticator for Confluence Plugin</name>
-    <version>1.6-SNAPSHOT</version>
+    <version>1.7-SNAPSHOT</version>
     <url>http://confluence.atlassian.com/display/CONFEXT/Shibboleth+Authenticator+for+Confluence</url>
     <description>A seraph authenticator for Confluence for Shibboleth
     </description>
@@ -128,7 +128,9 @@
 * Implementing patch submitted by Erkki Aalto written by Juha Ojaluoma for SHBL-14. Note that USER-254 possible bug related to this feature. This feature implements a new config option called update.last.login.date (true/false) in config that sets properties for the user in os_propertyentry even if not using osuser schema otherwise according to Erkki. Also updated License text.
                                   v1.5.1 - SHBL-23 No mapper capable of processing role message should be logged DEBUG not WARN
                                   v1.6 - SHBL-26 - integrating patch from Michael Gettes not to try to update read-only users. Also had to enable debug of HTTP Headers and regexp match so that USC could debug their headers/regexp. Cleaned up logging a bit around those so that all HTTP headers logged at once (which might be more helpful in higher traffic).
-
+                                  v1.7 -
+* SHBL-24 - integrating patch from Freie Universität Berlin to fix issue Finland had with ShibLoginFilter (Authentication with local accounts not supported with ShibAuthLogin filter)
+* SHBL-28 - adding feature to get full name from regex replace and matching just like REMOTE_USER mapping functionality contributed by Bruc Liong
                 </role>
             </roles>
             <timezone>-4</timezone>

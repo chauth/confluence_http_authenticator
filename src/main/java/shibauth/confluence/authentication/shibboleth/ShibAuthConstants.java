@@ -148,4 +148,31 @@ public class ShibAuthConstants {
 
     /** convert.to.utf8 init parameter name */
     public final static String CONVERT_TO_UTF8 = "convert.to.utf8";
+
+    public final static String USING_SHIB_LOGIN_FILTER = "using.shib.login.filter";
+
+    /**
+     * Prefix to be used for remote-user label
+     *
+     * See #FULL_NAME_PREFIX
+     */
+    public final static String FULL_NAME_PREFIX =
+        "fullname";
+
+    /**
+     * Prefix to be used for remote-user replacement list
+     *
+     * See #FULL_NAME_REPLACEMENT
+     */
+    public final static String FULL_NAME_REPLACEMENT =
+        "fullname.replace";
+
+    /**
+     * Prefix to be used for remote-user mapping i.e.
+     * fullname.map.LABEL1.match=regex
+     *
+     * See #FULL_NAME_MAP_PREFIX
+     */
+    public final static String FULL_NAME_MAP_PREFIX =
+        "fullname.map.";
 }
