@@ -1,1 +1,1 @@
-svn copy --username gswduke https://svn.atlassian.com/svn/public/contrib/confluence/shibboleth-authenticator/trunk https://svn.atlassian.com/svn/public/contrib/confluence/shibboleth-authenticator/tags/(new version) -m "Tagging (new version)"
+svn copy --username youratlassianusername https://svn.atlassian.com/svn/public/contrib/confluence/shibboleth-authenticator/trunk https://svn.atlassian.com/svn/public/contrib/confluence/shibboleth-authenticator/tags/(new version) -m "Tagging (new version)"
