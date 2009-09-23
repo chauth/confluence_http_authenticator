@@ -38,7 +38,7 @@ svn commit
 5) Change the wiki page to list the new version and change the information on current version at top:
 http://confluence.atlassian.com/display/CONFEXT/Shibboleth+Authenticator+for+Confluence
 
-6) Add release to http://plugins.atlassian.com
+6) Add release to https://plugins.atlassian.com/manage/plugin/4863
 
 7) Add a new version in Jira and update tickets
 http://developer.atlassian.com/jira/browse/SHBL
