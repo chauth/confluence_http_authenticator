@@ -28,6 +28,7 @@
  */
 
 /*
+ * Modified 2009-09-29 call super.login() if REMOTE_USER wasn't set to enable local Confluence login (SHBL-24) [Juhani Gurney]
  * Modified 2009-01-22 to make use of ShibLoginFilter (SHBL-16), make updateLastLogin as optional [Bruc Liong]
  * Modified 2009-01-05 to revamp the mapping processing mechanism to handle regex, purging roles, etc (SHBL-6) [Bruc Liong]
  * Modified 2008-12-03 to encorporate patch from Vladimir Mencl for SHBL-8 related to CONF-12158 (DefaultUserAccessor checks permissions before adding membership in 2.7 and later)
@@ -768,10 +769,17 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
         if ((userid == null) || (userid.length() <= 0)) {
             if (log.isDebugEnabled()) {
                 log.debug(
-                    "Remote user was null or empty, can not perform authentication");
+                    "Remote user was null or empty, calling super.login() to perform local login");
             }
-			getEventManager().publishEvent(new LoginFailedEvent(this, "NoShibUsername", httpSession.getId(), remoteHost, remoteIP));
-            return false;
+
+            // Calling super.login to try local login if username and password are set
+            // However, this won't work if ShibLoginFilter is used
+            if (username != null && password != null) {
+                if (log.isDebugEnabled())
+                    log.debug("Trying local login for user "+username);
+                
+                return super.login(request, response, username, password, cookie);
+            }
         }
 
         // Now that we know we will be trying to log the user in,
