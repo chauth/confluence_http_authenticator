@@ -45,7 +45,9 @@ http://confluence.atlassian.com/display/CONFEXT/Shibboleth+Authenticator+for+Con
 
 7) Add release to https://plugins.atlassian.com/manage/plugin/4863
 
-8) For the Jira project do the following:
+8) Update version number in pom.xml in trunk to the next snapshot version (just increment the build version, so 1.7-SNAPSHOT becomes 1.7.1-SNAPSHOT or if is already has a third number (build version) then increment it so that 1.7.9-SNAPSHOT becomes 1.7.10-SNAPSHOT)
+
+9) For the Jira project do the following:
 * Go to http://developer.atlassian.com/jira/browse/SHBL
 * Administer Project
 * Manage Versions
