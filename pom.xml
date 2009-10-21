@@ -131,6 +131,10 @@
                                   v1.7 -
 * SHBL-24 - integrating patch from Hans-Ulrich Pieper of Freie Universität Berlin to assist in doing local authN and to make ShibLoginFilter unused by default and only optional since they determined that authentication with local accounts was not supported with ShibAuthLogin filter. Note that Juhani Gurney ended up fixing this in the Finland environment with addition of a super.login call if needed, which he integrated in v1.7.
 * SHBL-28 - adding feature to get full name from regex replace and matching just like REMOTE_USER mapping functionality contributed by Bruc Liong
+
+                                  v1.8 -
+                                  
+* SHBL-29 - re-incorporating UTF-8 code from Juha Ojaluoma/Helsinki (see SHBL-5).
                 </role>
             </roles>
             <timezone>-4</timezone>
