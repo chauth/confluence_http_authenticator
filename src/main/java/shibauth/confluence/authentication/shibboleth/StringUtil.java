@@ -84,23 +84,31 @@ public class StringUtil {
         return results;
     }
 
+    // PLEASE DO NOT CHANGE THIS METHOD WITHOUT GETTING AGREEMENT FROM JUHA OJALUOMA AND
+    // ERKKI AALTO. THIS METHOD WAS CONTRIBUTED BY HELSINKI IN BOTH SHBL-5 AND AGAIN IN
+    // SHBL-29.
     public static String convertToUTF8(String s) {
         String converted = null;
         if (s != null) {
+            byte[] bytes = new byte[s.length()];
+            for (int i = 0; i < s.length(); i++) {
+                bytes[i] = (byte) s.charAt(i);
+            }
+            
             try {
-                converted = new String(s.getBytes("UTF-8"),"UTF-8");
+                converted = new String(bytes, "UTF-8");
                 if (log.isDebugEnabled()) {
-                    log.debug("Fixed fullname '" + s + "' to UTF-8 '" + converted + "'.");
+                    log.debug("Converted '" + s + "' to UTF-8 '" + converted + "'.");
                 }
-
-            } catch (UnsupportedEncodingException ue) {
-                log.error("Unable to set UTF-8 character encoding for user '" + s + "'!", ue);
+            }
+            catch (UnsupportedEncodingException ue) {
+                log.error("Unable to set UTF-8 character encoding for string '" + s + "'!", ue);
             }
         }
-
+        
         return converted;
     }
-
+    
     /**
      * Check if the collection has toCheck str in it, ignoring case sensitivity
      * @param strings collection of strings
