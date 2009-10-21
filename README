@@ -29,7 +29,7 @@ edit pom.xml
 svn commit
 (commit message should be something like "updating version")
 
-5) While you're in here, do an svn log and try to determine what changed since the last release that is important enough to include in the release notes. Save this somewhere for reference in later steps.
+While you're in here, do an svn log and try to determine what changed since the last release that is important enough to include in the release notes. Save this somewhere for reference in later steps.
 
 5) Build and add to releases
 (in tags/(new version))
