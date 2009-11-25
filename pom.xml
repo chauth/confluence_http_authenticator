@@ -209,12 +209,13 @@
         <dependency>
             <groupId>com.atlassian.confluence</groupId>
             <artifactId>confluence</artifactId>
-            <version>2.3</version>
+            <version>3.1-beta3</version>
             <scope>provided</scope>
         </dependency>        
 
         <!-- WARNING: use of these may mean that older versions of confluence will not be supported -->
-	<dependency>
+        <!--
+        <dependency>
             <groupId>com.atlassian.seraph</groupId>
             <artifactId>atlassian-seraph</artifactId>
             <version>0.38</version>
@@ -227,6 +228,7 @@
             <version>1.3</version>
             <scope>provided</scope>
         </dependency>
+      -->
         <!-- END -->
 
         <dependency>
@@ -294,7 +296,7 @@
             </snapshots>
             <id>atlassian-m2-repository</id>
             <name>Atlassian Maven 2 Repository</name>
-            <url>http://repository.atlassian.com/maven2</url>
+            <url>https://m2proxy.atlassian.com/repository/public</url>
         </repository>
 
         <repository>
