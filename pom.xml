@@ -282,15 +282,6 @@
 
     <repositories>
         <repository>
-            <id>atlassian-m2-contrib</id>
-            <name>Atlassian Maven 2 Contributor Repository</name>
-            <url>http://svn.atlassian.com/svn/public/contrib/repository/maven2</url>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-        </repository>
-
-        <repository>
             <snapshots>
                 <enabled>true</enabled>
             </snapshots>
