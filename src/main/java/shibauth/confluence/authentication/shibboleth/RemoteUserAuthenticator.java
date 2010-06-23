@@ -939,6 +939,19 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
                 //  updateLastLogin(user);
             }
         }
+        
+        // TODO: All of this needs serious refactoring!
+        // If config.isCreateUsers() == false, it would NPE later, so we
+        // return null indicating that the login failed. Thanks to 
+        // Adam Cohen for noticing this and to Bruce Liong for helping
+        // to contribute a quick fix, modified by Gary Weaver. (SHBL-34)
+        if (user == null) {
+            if (log.isDebugEnabled()) {
+                log.debug("Login attempt by '" + userid + "' failed.");
+            }
+            
+            return null;
+        }
 
         if (config.isUpdateRoles() || newUser) {
             Set roles = new HashSet();
@@ -1138,7 +1151,9 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
 		//perhaps admin forgot to change web.xml to use ShibLoginFilter ?
 		try{
 			boolean authenticated = login(request,response,null,null,false);
-			if(!authenticated) return null;
+			if (!authenticated) {
+			    return null;
+		    }
 		}catch(Throwable t){
 			log.error("Failed to authenticate user", t);
 			return null;
