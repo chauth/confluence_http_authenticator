@@ -2,52 +2,82 @@
 README for Shibboleth Authenticator for Confluence
 
 Documentation and main page at:
-http://confluence.atlassian.com/display/CONFEXT/Shibboleth+Authenticator+for+Confluence
+https://studio.plugins.atlassian.com/wiki/display/SHBL/Confluence+Shibboleth+Authenticator
 
 Requires Maven 2 to build.
 
-To build, type:
-mvn clean install
+To get a developer account to contribute to the project, submit a bug in our Jira http://developer.atlassian.com/jira/browse/SHBL and then say you'd like to become a contributor, and also comment on the project's wiki page. If you don't get a response within a month, consider that it is ok to start development.
 
-When committing, please try to include a Jira ticket number when possible in the beginning on the comment. This is most important for reviewing svn log to come up with release notes later (but it can also allow you to see commits associated with a ticket within Jira). Take a look at the wiki page above to see what release notes look like (they are a bit messy, but hopefully you see some ticket numbers and references to what was fixed).
+If you want to get a svn account with Atlassian email developer-relations@atlassian.com and refer them to the ticket or email providing the "ok" for your work, indicating that the "Confluence Shibboleth Authenticator Team" wanted you to have committer rights to the Confluence Shibboleth Authenticator project ( https://studio.plugins.atlassian.com/svn/SHBL ) if you don't already have access.
+
+For larger changes, you'd want to email the group to get an ok, in which case let use know and we can provide you with some email addresses of the group. The group may be composed of more guys than currently listed on the wiki page, because the list was lost during Atlassian's transition to plugins.atlassian.com. But can be seen via svn log, pom.xml, and release notes in the wiki. Mostly all of us are just contributors and only a few of us have spent much time with it after Chad LaJoie let us continue its development.
+
+Releases are kept here, mostly because we don't use Atlassian's automated plugin installation process:
+https://studio.plugins.atlassian.com/svn/SHBL/releases
+
+Tags are here:
+https://studio.plugins.atlassian.com/svn/SHBL/tags
+
+Development is done in trunk, here:
+https://studio.plugins.atlassian.com/svn/SHBL/trunk
+
+================
+
+To build, type:
+
+    mvn clean install
+
+When committing, please try to include a Jira ticket number when possible in the beginning on the comment (e.g. svn commit -m "SHBL-12345 - Added developer to pom.xml"). This is most important for reviewing svn log to come up with release notes later (but it can also allow you to see commits associated with a ticket within Jira). Take a look at the wiki page above to see what release notes look like (they are a bit messy, but hopefully you see some ticket numbers and references to what was fixed).
 
 To release a new version:
-1) Be sure to add yourself to the list of developers in the pom.xml and to add whomever contributed a patch.
-2) Build and test (or have someone test)
-3) Tag trunk:
-svn copy --username (yourusername) https://svn.atlassian.com/svn/public/contrib/confluence/shibboleth-authenticator/trunk https://svn.atlassian.com/svn/public/contrib/confluence/shibboleth-authenticator/tags/(new version) -m "Tagging (new version)"
 
-example for tagging 1.3.1:
-svn copy --username your-atlassian-svn-username-goes-here https://svn.atlassian.com/svn/public/contrib/confluence/shibboleth-authenticator/trunk https://svn.atlassian.com/svn/public/contrib/confluence/shibboleth-authenticator/tags/1.3.1 -m "Tagging 1.3.1"
+1) Be sure to add yourself to the list of developers in the pom.xml and to add whomever contributed a patch.
+
+2) Build and test (or have someone test)
+
+3) Tag trunk:
+
+    svn copy --username (yourusername) https://svn.atlassian.com/svn/public/contrib/confluence/shibboleth-authenticator/trunk https://svn.atlassian.com/svn/public/contrib/confluence/shibboleth-authenticator/tags/(new version) -m "Tagging (new version)"
+
+example for tagging 1.7.1:
+svn copy --username your-atlassian-svn-username-goes-here https://svn.atlassian.com/svn/public/contrib/confluence/shibboleth-authenticator/trunk https://svn.atlassian.com/svn/public/contrib/confluence/shibboleth-authenticator/tags/1.7.1 -m "Tagging 1.7.1"
 
 4) Checkout or update tags dir and go there and edit pom.xml to change version to remove "-SNAPSHOT" from project version:
-cd ../tags
-svn up
-cd (new version)
-edit pom.xml
+
+    cd ../tags
+    svn up
+    cd (new version)
+    edit pom.xml
+
 (remove -SNAPSHOT from project version)
-svn commit
+
+    svn commit
+
 (commit message should be something like "updating version")
 
 While you're in here, do an svn log and try to determine what changed since the last release that is important enough to include in the release notes. Save this somewhere for reference in later steps.
 
 5) Build and add to releases
+
 (in tags/(new version))
-mvn clean install
-cp target/(name of jar) ../../releases
-cd ../../releases
-svn add (name of jar)
-svn commit
+
+    mvn clean install
+    cp target/(name of jar) ../../releases
+    cd ../../releases
+    svn add (name of jar)
+    svn commit
+
 (commit message should be something like "releasing (version number)")
 
 6) Change the wiki page to list the new version, release info and change the information on current version at top:
-http://confluence.atlassian.com/display/CONFEXT/Shibboleth+Authenticator+for+Confluence
+https://studio.plugins.atlassian.com/wiki/display/SHBL/Confluence+Shibboleth+Authenticator
 
 7) Add release to https://plugins.atlassian.com/manage/plugin/4863
 
 8) Update version number in pom.xml in trunk to the next snapshot version (just increment the build version, so 1.7-SNAPSHOT becomes 1.7.1-SNAPSHOT or if is already has a third number (build version) then increment it so that 1.7.9-SNAPSHOT becomes 1.7.10-SNAPSHOT)
 
 9) For the Jira project do the following:
+
 * Go to http://developer.atlassian.com/jira/browse/SHBL
 * Administer Project
 * Manage Versions
@@ -56,3 +86,4 @@ http://confluence.atlassian.com/display/CONFEXT/Shibboleth+Authenticator+for+Con
 * Browse Project
 * Resolve all bugs related to that version setting the target version to the version you released.
 
+10) Have fun!
