@@ -37,10 +37,10 @@ To release a new version:
 
 3) Tag trunk:
 
-    svn copy --username (yourusername) https://svn.atlassian.com/svn/public/contrib/confluence/shibboleth-authenticator/trunk https://svn.atlassian.com/svn/public/contrib/confluence/shibboleth-authenticator/tags/(new version) -m "Tagging (new version)"
+    svn copy --username (yourusername) https://studio.plugins.atlassian.com/svn/SHBL/trunk/ https://studio.plugins.atlassian.com/svn/SHBL/tags/(new version) -m "Tagging (new version)"
 
 example for tagging 1.7.1:
-svn copy --username your-atlassian-svn-username-goes-here https://svn.atlassian.com/svn/public/contrib/confluence/shibboleth-authenticator/trunk https://svn.atlassian.com/svn/public/contrib/confluence/shibboleth-authenticator/tags/1.7.1 -m "Tagging 1.7.1"
+svn copy --username your-atlassian-svn-username-goes-here https://studio.plugins.atlassian.com/svn/SHBL/trunk/ https://studio.plugins.atlassian.com/svn/SHBL/tags/1.7.1 -m "Tagging 1.7.1"
 
 4) Checkout or update tags dir and go there and edit pom.xml to change version to remove "-SNAPSHOT" from project version:
 
