@@ -197,6 +197,16 @@
             </roles>
         </developer>
 
+        <developer>
+            <name>Elliot Kendall</name>
+            <roles>
+                <role>Developer - v1.7.2 - Submitted fix to prevent
+                NullPointerException when using LDAP as a user repository
+                and logging in as a user that can't be found in LDAP, per
+                SHBL-37</role>
+            </roles>
+        </developer>
+
     </developers>
 
     <organization>

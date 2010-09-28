@@ -925,10 +925,18 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
             if (user != null) {
                 newUser = true;
                 updateUser(user, fullName, emailAddress);
+            } else {
+                // If user is still null, probably we're using an
+                // external user database like LDAP. Either REMOTE_USER
+                // isn't present there or is being filtered out, e.g.
+                // by userSearchFilter
+                if (log.isDebugEnabled()) {
+                    log.debug(
+                        "User does not exist and cannot create");
+                }
+                getEventManager().publishEvent(new LoginFailedEvent(this, "CannotCreateUser", httpSession.getId(), remoteHost, remoteIP));
 
-                //username will only be null if called from getUser()
-                //if (username == null && config.isUpdateLastLogin())
-                //  updateLastLogin(user);
+                return null;
             }
         } else {
             if (config.isUpdateInfo()) {
