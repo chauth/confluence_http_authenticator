@@ -73,6 +73,10 @@ public class ShibAuthConfigLoader {
                 propsIn =
                     RemoteUserAuthenticator.class.getResourceAsStream(
                     ShibAuthConstants.PROPERTIES_FILE);
+                // getResourceAsStream silently returns null if there's
+                // a problem
+                if (propsIn == null)
+                    throw new IOException();
             } else {
                 propsIn = new FileInputStream(oldConfig.getConfigFile());
             }
