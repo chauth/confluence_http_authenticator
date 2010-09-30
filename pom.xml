@@ -199,6 +199,9 @@
 
         <developer>
             <name>Elliot Kendall</name>
+            <email>elliot.kendall@emory.edu</email>
+            <organization>Emory University</organization>
+            <organizationUrl>http://it.emory.edu/</organizationUrl>
             <roles>
                 <role>Developer - v1.7.2 - Submitted fix to prevent
                 NullPointerException when using LDAP as a user repository
