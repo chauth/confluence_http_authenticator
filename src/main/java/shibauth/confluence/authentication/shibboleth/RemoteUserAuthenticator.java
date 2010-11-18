@@ -99,6 +99,8 @@ import java.util.Date;
  * will carry the full name of the user</li>
  * <li><strong>header.email</strong> - The name of the HTTP header that will
  * carry the email address for the user</li>
+ * <li><strong>header.remote_user</strong> - The name of the HTTP header that will
+ * carry the username</li>
  *
  * <li><strong>update.roles</strong> - Indicates whether the existing accounts
  * should have their roles updated based on the header information. note: old
