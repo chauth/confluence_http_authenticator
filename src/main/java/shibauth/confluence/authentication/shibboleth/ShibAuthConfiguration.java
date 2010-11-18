@@ -112,6 +112,11 @@ public class ShibAuthConfiguration {
     private long configFileLastChecked;
 
     /**
+     * HTTP Header name that contains a user's username
+     */
+    private String remoteUserHeaderName;
+
+    /**
      * HTTP Header name that contains a user's email address
      */
     private String emailHeaderName;
@@ -313,6 +318,14 @@ public class ShibAuthConfiguration {
 
     public void setConfigFileLastChecked(long configFileLastChecked) {
         this.configFileLastChecked = configFileLastChecked;
+    }
+
+    public String getRemoteUserHeaderName() {
+        return remoteUserHeaderName;
+    }
+
+    public void setRemoteUserHeaderName(String remoteUserHeaderName) {
+        this.remoteUserHeaderName = remoteUserHeaderName;
     }
 
     public String getEmailHeaderName() {

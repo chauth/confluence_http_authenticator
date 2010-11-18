@@ -511,6 +511,48 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
 
 
     //~--- get methods --------------------------------------------------------
+    private String getLoggedInUser(HttpServletRequest request) {
+        String remoteUser = null;
+
+        if (config.getRemoteUserHeaderName()!=null) {
+
+            // assumes it is first value in list, if header is defined multiple times. Otherwise would need to call getHeaders()
+            String headerValue = request.getHeader(config.getRemoteUserHeaderName());
+
+            // the Shibboleth SP sends multiple values as single value, separated by comma or semicolon
+            List values = StringUtil.
+                toListOfNonEmptyStringsDelimitedByCommaOrSemicolon(headerValue);
+
+            if (values != null && values.size() > 0) {
+
+                // use the first in the list
+                remoteUser = (String) values.get(0);
+
+                if (log.isDebugEnabled()) {
+                    log.debug("Got remoteUser '" + remoteUser + "' for header '" + config.
+                        getRemoteUserHeaderName() + "'");
+                }
+
+                if (config.isConvertToUTF8()) {
+                    String tmp = StringUtil.convertToUTF8(remoteUser);
+                    if (tmp != null) {
+                        remoteUser = tmp;
+                        if (log.isDebugEnabled()) {
+                            log.debug("remoteUser converted to UTF-8 '" + remoteUser + "' for header '" + config.
+                                getRemoteUserHeaderName() + "'");
+                        }
+                    }
+                }
+            }
+
+        }
+        else {
+            remoteUser = request.getRemoteUser();
+        }
+
+        return remoteUser;
+    }
+
     private String getEmailAddress(HttpServletRequest request) {
         String emailAddress = null;
 
@@ -764,7 +806,7 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
 
         // Since they aren't logged in, get the user name from
         // the REMOTE_USER header
-        String userid = createSafeUserid(request.getRemoteUser());
+        String userid = createSafeUserid(getLoggedInUser(request));
 
         if ((userid == null) || (userid.length() <= 0)) {
             if (log.isDebugEnabled()) {
@@ -889,7 +931,7 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
 
         // Since they aren't logged in, get the user name from
         // the REMOTE_USER header
-        String userid = createSafeUserid(request.getRemoteUser());
+        String userid = createSafeUserid(getLoggedInUser(request));
 
         if ((userid == null) || (userid.length() <= 0)) {
             if (log.isDebugEnabled()) {

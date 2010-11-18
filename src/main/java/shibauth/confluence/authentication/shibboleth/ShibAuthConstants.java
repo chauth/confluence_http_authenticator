@@ -64,6 +64,11 @@ public class ShibAuthConstants {
     public final static String RELOAD_CONFIG_CHECK_INTERVAL = "reload.config.check.interval";
 
     /**
+     * Name of username header property
+     */
+    public final static String REMOTE_USER_HEADER_NAME_PROPERTY = "header.remote_user";
+
+    /**
      * Name of email address header property
      */
     public final static String EMAIL_HEADER_NAME_PROPERTY = "header.email";
