@@ -102,6 +102,9 @@ import java.util.Date;
  * <li><strong>header.remote_user</strong> - The name of the HTTP header that will
  * carry the username</li>
  *
+ * <li><strong>username.convertcase</strong> - Indicates whether usernames
+ * should be converted to lowercase before use</li>
+ *
  * <li><strong>update.roles</strong> - Indicates whether the existing accounts
  * should have their roles updated based on the header information. note: old
  * roles are not removed if the header doesn't contain it. (Acceptable values:
@@ -831,7 +834,8 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
         checkReloadConfig();
 
         // Convert username to all lowercase
-        userid = convertUsername(userid);
+        if (config.isUsernameConvertCase())
+            userid = convertUsername(userid);
 
         // Pull name and address from headers
         String fullName = getFullName(request, userid);
@@ -950,7 +954,8 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
         checkReloadConfig();
 
         // Convert username to all lowercase
-        userid = convertUsername(userid);
+        if (config.isUsernameConvertCase())
+            userid = convertUsername(userid);
 
         // Pull name and address from headers
         String fullName = getFullName(request, userid);

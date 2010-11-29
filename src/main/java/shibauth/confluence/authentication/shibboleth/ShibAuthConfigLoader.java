@@ -218,6 +218,15 @@ public class ShibAuthConfigLoader {
                     getEmailHeaderName());
             }
 
+            config.setUsernameConvertCase(Boolean.valueOf(
+                configProps.getProperty(ShibAuthConstants.USERNAME_CASE_CONVERT_PROPERTY, "true")).
+                booleanValue());
+
+            if (log.isDebugEnabled()) {
+                log.debug("Setting usernameConvertCase to " +
+                    config.isUsernameConvertCase());
+            }
+
             // Load property using.shib.login.filter
             config.setUsingShibLoginFilter(Boolean.valueOf(
                 configProps.getProperty(ShibAuthConstants.USING_SHIB_LOGIN_FILTER)).

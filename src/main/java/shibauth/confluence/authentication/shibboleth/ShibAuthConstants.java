@@ -80,6 +80,12 @@ public class ShibAuthConstants {
         "header.fullname";
 
     /**
+     * Name of username case conversion property
+     */
+    public final static String USERNAME_CASE_CONVERT_PROPERTY =
+        "username.convertcase";
+
+    /**
      * Prefix to be used for remote-user label
      *
      * See #REMOTEUSER_PREFIX

@@ -207,6 +207,12 @@
                 NullPointerException when using LDAP as a user repository
                 and logging in as a user that can't be found in LDAP, per
                 SHBL-37</role>
+                <role>Developer - v1.7.3
+                SHBL-36: Check for null return from getResourceAsStream and
+                raise an exception
+                SHBL-38: Support reading username from a configurable header
+                SHBL-41: Support not forcing username to lowercase
+                </role>
             </roles>
         </developer>
 

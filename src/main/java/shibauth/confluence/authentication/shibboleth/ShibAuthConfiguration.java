@@ -157,6 +157,11 @@ public class ShibAuthConfiguration {
     private boolean autoCreateGroup;
 
     /**
+     * Whether or not to convert username to lowercase before use
+     */
+    private boolean usernameConvertCase;
+
+    /**
      * Whether or not web.xml has been configured to use ShibLoginFilter or not.
      */
     private boolean usingShibLoginFilter;
@@ -374,6 +379,14 @@ public class ShibAuthConfiguration {
 
     public void setUpdateLastLogin(boolean updateLastLogin) {
         this.updateLastLogin = updateLastLogin;
+    }
+
+    public boolean isUsernameConvertCase() {
+        return usernameConvertCase;
+    }
+
+    public void setUsernameConvertCase(boolean usernameConvertCase) {
+        this.usernameConvertCase = usernameConvertCase;
     }
 
     public boolean isUsingShibLoginFilter() {
