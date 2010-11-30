@@ -41,6 +41,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.ServletRequestWrapper;
 import com.atlassian.seraph.auth.AuthenticatorException;
 import com.atlassian.seraph.filter.BaseLoginFilter;
 import com.atlassian.seraph.interceptor.LoginInterceptor;
@@ -58,7 +59,7 @@ public class ShibLoginFilter extends BaseLoginFilter
 
 	public String login(HttpServletRequest request, HttpServletResponse response){
         String status = LOGIN_NOATTEMPT;
-        String userid = request.getRemoteUser();
+        String userid = ((HttpServletRequest) ((ServletRequestWrapper) request).getRequest()).getRemoteUser();
         
         
         //make sure remote user is set, otherwise fail

@@ -62,6 +62,7 @@ import com.atlassian.seraph.auth.AuthenticatorException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.servlet.ServletRequestWrapper;
 import java.security.Principal;
 import java.io.File;
 import java.util.Arrays;
@@ -552,7 +553,7 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
 
         }
         else {
-            remoteUser = request.getRemoteUser();
+            remoteUser = ((HttpServletRequest) ((ServletRequestWrapper) request).getRequest()).getRemoteUser();
         }
 
         return remoteUser;

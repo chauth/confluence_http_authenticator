@@ -180,6 +180,7 @@
             <name>Jesse Lahtinen</name>
             <roles>
                 <role>Developer - v1.4 - Erkki Aalto submitted Jesse's patch for SHBL-14 such that the authenticator will now update confluence.user.previous.login.date and confluence.user.last.login.date in os_propertyentry</role>
+                <role>Developer - v1.7.3 - SHBL-40: Suggestion on how to explicitly obtain a non-SecurityHttpRequestWrapper request object to use to determine remote user, for Confluence 3.4 compatibility</role>
             </roles>
         </developer>
 
@@ -212,6 +213,9 @@
                 raise an exception
                 SHBL-38: Support reading username from a configurable header
                 SHBL-41: Support not forcing username to lowercase
+                SHBL-40: Explicitly obtain a non-SecurityHttpRequestWrapper
+                request object to use to determine remote user, for Confluence
+                3.4 compatibility (per a suggestion by Jesse Lahtinen) 
                 </role>
             </roles>
         </developer>
