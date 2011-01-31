@@ -565,7 +565,7 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
 
         return request;
     }
-}
+
 
     private String getEmailAddress(HttpServletRequest request) {
         String emailAddress = null;
