@@ -41,7 +41,7 @@
     <packaging>jar</packaging>
 
     <name>Shibboleth Authenticator for Confluence Plugin</name>
-    <version>1.7.4-SNAPSHOT</version>
+    <version>1.7.5-SNAPSHOT</version>
     <url>http://confluence.atlassian.com/display/CONFEXT/Shibboleth+Authenticator+for+Confluence</url>
     <description>A seraph authenticator for Confluence for Shibboleth
     </description>
@@ -131,6 +131,7 @@
                                   v1.7 -
 * SHBL-24 - integrating patch from Hans-Ulrich Pieper of Freie Universität Berlin to assist in doing local authN and to make ShibLoginFilter unused by default and only optional since they determined that authentication with local accounts was not supported with ShibAuthLogin filter. Note that Juhani Gurney ended up fixing this in the Finland environment with addition of a super.login call if needed, which he integrated in v1.7.
 * SHBL-28 - adding feature to get full name from regex replace and matching just like REMOTE_USER mapping functionality contributed by Bruc Liong
+* SHBL-46 - implementing fix suggested by Chad LaJoie since Confluence 3.4.6 no longer wraps request
 
                                   v1.8 -
                                   
@@ -216,6 +217,9 @@
                 SHBL-40: Explicitly obtain a non-SecurityHttpRequestWrapper
                 request object to use to determine remote user, for Confluence
                 3.4 compatibility (per a suggestion by Jesse Lahtinen) 
+                </role>
+                <role>Developer - v1.7.4
+                SHBL-27: Attempt to update last login time
                 </role>
             </roles>
         </developer>
