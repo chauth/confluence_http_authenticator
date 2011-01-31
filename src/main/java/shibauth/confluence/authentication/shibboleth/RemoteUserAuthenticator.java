@@ -1000,9 +1000,8 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
             if (config.isUpdateInfo()) {
                 updateUser(user, fullName, emailAddress);
 
-                //username will only be null if called from getUser()
-                //if (username == null && config.isUpdateLastLogin())
-                //  updateLastLogin(user);
+                if (config.isUpdateLastLogin())
+                  updateLastLogin(user);
             }
         }
         
