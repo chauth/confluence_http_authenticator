@@ -1,5 +1,5 @@
 /*
- Copyright (c) 2008, Shibboleth Authenticator for Confluence Team
+ Copyright (c) 2008-2011, Shibboleth Authenticator for Confluence Team
  All rights reserved.
 
  Redistribution and use in source and binary forms, with or without
@@ -43,7 +43,6 @@ package shibauth.confluence.authentication.shibboleth;
 //~--- JDK imports ------------------------------------------------------------
 import com.atlassian.confluence.user.ConfluenceAuthenticator;
 import com.atlassian.confluence.user.UserAccessor;
-import com.atlassian.seraph.config.SecurityConfig;
 import com.atlassian.user.Group;
 import com.atlassian.user.User;
 import org.apache.commons.logging.Log;
@@ -71,7 +70,6 @@ import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.Date;
 
@@ -553,11 +551,21 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
 
         }
         else {
-            remoteUser = ((HttpServletRequest) ((ServletRequestWrapper) request).getRequest()).getRemoteUser();
+            remoteUser = unwrapRequestIfNeeded(request).getRemoteUser();
         }
 
         return remoteUser;
     }
+
+    // For SHBL-46 (Confluence 3.4.6 no longer wraps request- Thanks to Chad LaJoie for this fix!)
+    private HttpServletRequest unwrapRequestIfNeeded(HttpServletRequest request) {
+        if (request instanceof ServletRequestWrapper) {
+            return (HttpServletRequest) ((ServletRequestWrapper) request).getRequest();
+        }
+
+        return request;
+    }
+}
 
     private String getEmailAddress(HttpServletRequest request) {
         String emailAddress = null;
