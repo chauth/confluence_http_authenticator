@@ -4,7 +4,7 @@ README for Shibboleth Authenticator for Confluence
 Documentation and main page at:
 https://studio.plugins.atlassian.com/wiki/display/SHBL/Confluence+Shibboleth+Authenticator
 
-Requires Maven 2 to build.
+Build assumes Java 6, Maven 3, and Atlassian SDK is installed.
 
 To get a developer account to contribute to the project, submit a bug in our Jira http://developer.atlassian.com/jira/browse/SHBL and then say you'd like to become a contributor, and also comment on the project's wiki page. If you don't get a response within a month, consider that it is ok to start development.
 
@@ -25,7 +25,7 @@ https://studio.plugins.atlassian.com/svn/SHBL/trunk
 
 To build, type:
 
-    mvn clean install
+    atlas-mvn clean install
 
 When committing, please try to include a Jira ticket number when possible in the beginning on the comment (e.g. svn commit -m "SHBL-12345 - Added developer to pom.xml"). This is most important for reviewing svn log to come up with release notes later (but it can also allow you to see commits associated with a ticket within Jira). Take a look at the wiki page above to see what release notes look like (they are a bit messy, but hopefully you see some ticket numbers and references to what was fixed).
 
@@ -61,7 +61,7 @@ While you're in here, do an svn log and try to determine what changed since the 
 
 (in tags/(new version))
 
-    mvn clean install
+    atlas-mvn clean install
     cp target/(name of jar) ../../releases
     cd ../../releases
     svn add (name of jar)

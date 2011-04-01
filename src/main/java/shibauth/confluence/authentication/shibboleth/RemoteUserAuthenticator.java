@@ -43,6 +43,8 @@ package shibauth.confluence.authentication.shibboleth;
 //~--- JDK imports ------------------------------------------------------------
 import com.atlassian.confluence.user.ConfluenceAuthenticator;
 import com.atlassian.confluence.user.UserAccessor;
+import com.atlassian.crowd.embedded.api.CrowdService;
+import com.atlassian.crowd.embedded.impl.ImmutableUser;
 import com.atlassian.user.Group;
 import com.atlassian.user.User;
 import org.apache.commons.logging.Log;
@@ -72,6 +74,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.Date;
+
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * An authenticator that uses the REMOTE_USER header as proof of authentication.
@@ -153,8 +157,9 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
     private final static Log log =
         LogFactory.getLog(RemoteUserAuthenticator.class);
     private static ShibAuthConfiguration config;
+    protected CrowdService crowdService;
     /** See SHBL-8, CONF-12158, and http://confluence.atlassian.com/download/attachments/192312/ConfluenceGroupJoiningAuthenticator.java?version=1 */
-    private GroupManager groupManager = null;
+    private GroupManager groupManager;
 
     //~--- static initializers ------------------------------------------------
     /**
@@ -167,6 +172,21 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
         //TODO: use Spring to configure config loader, etc.
 
         config = ShibAuthConfigLoader.getShibAuthConfiguration(null);
+    }
+
+
+
+    @Autowired
+    public RemoteUserAuthenticator(CrowdService crowdService, GroupManager groupManager) {
+        this.crowdService = crowdService;
+        this.groupManager = groupManager;
+
+        if (crowdService==null) {
+			throw new RuntimeException("crowdService was not autowired in RemoteUserAuthenticator");
+        }
+        else if (groupManager==null) {
+			throw new RuntimeException("groupManager was not autowired in RemoteUserAuthenticator");
+        }
     }
 
     /**
@@ -402,13 +422,23 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
                 return;
             }
 
+            com.atlassian.crowd.embedded.api.User crowdUser = crowdService.getUser(user.getName());
+
+            ImmutableUser.Builder userBuilder = new ImmutableUser.Builder();
+            // clone the user before making mods
+            userBuilder.active(crowdUser.isActive());
+            userBuilder.directoryId(crowdUser.getDirectoryId());
+            userBuilder.displayName(crowdUser.getDisplayName());
+            userBuilder.emailAddress(crowdUser.getEmailAddress());
+            userBuilder.name(crowdUser.getName());
+
             if ((fullName != null) && !fullName.equals(
                 userToUpdate.getFullName())) {
                 if (log.isDebugEnabled()) {
                     log.debug("updating user fullName to '" + fullName + "'");
                 }
 
-                userToUpdate.setFullName(fullName);
+                userBuilder.displayName(fullName);
                 updated = true;
             } else {
                 if (log.isDebugEnabled()) {
@@ -424,7 +454,7 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
                         "updating user emailAddress to '" + emailAddress + "'");
                 }
 
-                userToUpdate.setEmail(emailAddress);
+                userBuilder.emailAddress(emailAddress);
                 updated = true;
             } else {
                 if (log.isDebugEnabled()) {
@@ -435,7 +465,7 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
 
             if (updated) {
                 try {
-                    userAccessor.saveUser(userToUpdate);
+                    crowdService.updateUser(userBuilder.toUser());
                 } catch (Throwable t) {
                     log.error("Couldn't update user " + userToUpdate.getName(),
                         t);
@@ -565,6 +595,8 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
 
         return request;
     }
+
+
 
 
     private String getEmailAddress(HttpServletRequest request) {
@@ -902,7 +934,7 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
         httpSession.setAttribute(
             ConfluenceAuthenticator.LOGGED_OUT_KEY, null);
         
-        getEventManager().publishEvent(new LoginEvent(this, user.getName(), httpSession.getId(), remoteHost, remoteIP));
+        getEventPublisher().publish(new LoginEvent(this, user.getName(), httpSession.getId(), remoteHost, remoteIP));
 
         return true;
 	}
@@ -953,7 +985,7 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
                 log.debug(
                         "Remote user was null or empty, can not perform authentication");
             }
-            getEventManager().publishEvent(new LoginFailedEvent(this, "NoShibUsername", httpSession.getId(), remoteHost, remoteIP));
+            getEventPublisher().publish(new LoginFailedEvent(this, "NoShibUsername", httpSession.getId(), remoteHost, remoteIP));
 
             return null;
         }
@@ -992,7 +1024,7 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
                     log.debug(
                         "User does not exist and cannot create");
                 }
-                getEventManager().publishEvent(new LoginFailedEvent(this, "CannotCreateUser", httpSession.getId(), remoteHost, remoteIP));
+                getEventPublisher().publish(new LoginFailedEvent(this, "CannotCreateUser", httpSession.getId(), remoteHost, remoteIP));
 
                 return null;
             }
@@ -1042,7 +1074,7 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
         httpSession.setAttribute(
                 ConfluenceAuthenticator.LOGGED_OUT_KEY, null);
 
-        getEventManager().publishEvent(new LoginEvent(this, user.getName(), httpSession.getId(), remoteHost, remoteIP));
+        getEventPublisher().publish(new LoginEvent(this, user.getName(), httpSession.getId(), remoteHost, remoteIP));
 
         //return true;
         return user;
