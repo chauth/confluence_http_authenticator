@@ -50,7 +50,6 @@ import com.atlassian.user.User;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.atlassian.spring.container.ContainerManager;
 import com.atlassian.user.EntityException;
 import com.atlassian.user.GroupManager;
 import com.atlassian.confluence.user.UserPreferencesKeys;
@@ -245,11 +244,11 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
                 }
 
                 try {
-                    group = getGroupManager().getGroup(role);
+                    group = groupManager.getGroup(role);
                     if (group == null) {
                         if (config.isAutoCreateGroup()) {
-                            if (getGroupManager().isCreative()) {
-                                group = getGroupManager().createGroup(role);
+                            if (groupManager.isCreative()) {
+                                group = groupManager.createGroup(role);
                             } else {
                                 log.warn(
                                     "Cannot create role '" + role + "' due to permission issue.");
@@ -262,11 +261,11 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
                         }
                     }
                     
-                    if (getGroupManager().hasMembership(group, user)) {
+                    if (groupManager.hasMembership(group, user)) {
                         log.debug("Skipping " + user.getName() + " to role " + role + " - already a member");
                     }
                     else {
-                        getGroupManager().addMembership(group, user);
+                        groupManager.addMembership(group, user);
                     }
                 } catch (Exception e) {
                     log.error(
@@ -300,7 +299,7 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
             }
             try {
                 //get intersection of rolesInConfluence and rolesToKeep
-                p = getGroupManager().getGroups(user);
+                p = groupManager.getGroups(user);
                 if (p.isEmpty()) {
                     log.debug("No roles available to be purged for this user.");
                     return;
@@ -328,7 +327,7 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
                             try {
                                 log.debug(
                                     "Removing user " + user.getName() + " from role " + role);
-                                getGroupManager().removeMembership(group, user);
+                                groupManager.removeMembership(group, user);
                                 break;  //dont bother to continue with other purge mappers
                             } catch (Throwable e) {
                                 log.error(
@@ -1256,26 +1255,5 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
 			return null;
 		}
 		return getUser(request,response);
-    }
-
-
-    /**
-     * This is the Atlassian-suggested way of handling the issue noticed by Vladimir Mencl in Confluence 2.9.2 (but not in 2.9) where
-     * addMembership(...) was failing, and apparently it failed because it was expecting that GroupManager was not returning an instance.
-     * I don't think we have a spring config (bean defined in spring config) for this authenticator yet, so wouldn't be set by that or autowiring I guess.
-     * The solution provided by Vladimir Mencl and referred to by Matt Ryall in CONF-12158 is similar to that of the older ConfluenceGroupJoiningAuthenticator.java
-     * provided with Confluence that Matt attached here: http://confluence.atlassian.com/download/attachments/192312/ConfluenceGroupJoiningAuthenticator.java?version=1
-     * See also SHBL-8. Thanks much to Vladimir Mencl for this patch.
-     */
-    public GroupManager getGroupManager() {
-        if (groupManager == null) {
-            groupManager = (GroupManager) ContainerManager.getComponent(
-                "groupManager");
-        }
-        return groupManager;
-    }
-
-    public void setGroupManager(GroupManager groupManager) {
-        this.groupManager = groupManager;
     }
 }

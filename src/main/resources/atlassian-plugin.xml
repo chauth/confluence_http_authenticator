@@ -1,0 +1,12 @@
+<atlassian-plugin key="${project.groupId}.${project.artifactId}" name="${project.name}" plugins-version="2">
+    <plugin-info>
+        <description>${project.description}</description>
+        <version>${project.version}</version>
+        <vendor name="${project.organization.name}" url="${project.organization.url}" />
+    </plugin-info>
+
+    <component key="remoteUserAuth" class="shibauth.confluence.authentication.shibboleth.RemoteUserAuthenticator">
+        <description>Shibboleth authenticator.</description>
+        <interface>shibauth.confluence.authentication.shibboleth.RemoteUserAuthenticator</interface>
+    </component>
+</atlassian-plugin>
