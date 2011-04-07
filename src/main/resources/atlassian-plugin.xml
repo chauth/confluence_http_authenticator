@@ -1,4 +1,5 @@
-<atlassian-plugin key="${project.groupId}.${project.artifactId}" name="${project.name}" plugins-version="2">
+<!-- note: removed plugins-version="2" per http://jira.atlassian.com/browse/CONF-22266 -->
+<atlassian-plugin key="${project.groupId}.${project.artifactId}" name="${project.name}">
     <plugin-info>
         <description>${project.description}</description>
         <version>${project.version}</version>
