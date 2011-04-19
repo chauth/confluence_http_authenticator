@@ -74,7 +74,6 @@
 
             <developer>
                 <name>Gary S. Weaver</name>
-                <email>gary.weaver@duke.edu</email>
                 <organization>Duke University</organization>
                 <organizationUrl>http://www.oit.duke.edu/</organizationUrl>
                 <roles>
@@ -162,7 +161,6 @@
 
             <developer>
                 <name>Elliot Kendall</name>
-                <email>elliot.kendall@emory.edu</email>
                 <organization>Emory University</organization>
                 <organizationUrl>http://it.emory.edu/</organizationUrl>
                 <roles>
