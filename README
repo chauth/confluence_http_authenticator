@@ -87,3 +87,12 @@ https://studio.plugins.atlassian.com/wiki/display/SHBL/Confluence+Shibboleth+Aut
 * Resolve all bugs related to that version setting the target version to the version you released.
 
 10) Have fun!
+
+Troubleshooting:
+
+If you aren't using Java 6, it will produce the error:
+[INFO] ------------------------------------------------------------------------
+[ERROR] BUILD ERROR
+[INFO] ------------------------------------------------------------------------
+[INFO] Internal error in the plugin manager executing goal 'com.atlassian.maven.plugins:maven-confluence-plugin:3.3:copy-bundled-dependencies': Unable to find the mojo 'copy-bundled-dependencies' (or one of its required components) in the plugin 'com.atlassian.maven.plugins:maven-confluence-plugin'
+Bad version number in .class file

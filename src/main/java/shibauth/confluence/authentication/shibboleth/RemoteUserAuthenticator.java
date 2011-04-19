@@ -41,6 +41,7 @@
 package shibauth.confluence.authentication.shibboleth;
 
 //~--- JDK imports ------------------------------------------------------------
+import com.atlassian.spring.container.ContainerManager;
 import com.atlassian.confluence.user.ConfluenceAuthenticator;
 import com.atlassian.confluence.user.UserAccessor;
 import com.atlassian.crowd.embedded.api.CrowdService;
@@ -173,18 +174,33 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
         config = ShibAuthConfigLoader.getShibAuthConfiguration(null);
     }
 
+    // SHBL-47: will work with Confluence 3.5.0-3.5.2 with patch from http://jira.atlassian.com/browse/CONF-22157
+    // or Confluence 3.5.3-? if loading via classpath, but per Atlassian in CONF-22157, loading of jar via
+    // classpath is recommended, and that means is not autowiring because not installed as plugin, unless
+    // we setup a Spring config for the authenticator.
+    public RemoteUserAuthenticator() {
+        groupManager = (GroupManager) ContainerManager.getComponent("groupManager");        
+        crowdService = (CrowdService) ContainerManager.getComponent("crowdService");
+		if (crowdService==null) {
+			throw new RuntimeException("RemoteUserAuthenticator default constructor failed because ContainerManager.getComponent(\"crowdService\") returned null.");
+        }
+        else if (groupManager==null) {
+			throw new RuntimeException("RemoteUserAuthenticator default constructor failed because ContainerManager.getComponent(\"groupManager\") returned null.");
+        }
+	}
 
-
+    // this doesn't work automatically with jar classloading in Confluence 3.5.x with CONF-22157 patch, unless
+    // we were to add Spring configuration for the plugin.
     @Autowired
     public RemoteUserAuthenticator(CrowdService crowdService, GroupManager groupManager) {
         this.crowdService = crowdService;
         this.groupManager = groupManager;
 
         if (crowdService==null) {
-			throw new RuntimeException("crowdService was not autowired in RemoteUserAuthenticator");
+			throw new RuntimeException("crowdService was not autowired in RemoteUserAuthenticator via constructor autowire");
         }
         else if (groupManager==null) {
-			throw new RuntimeException("groupManager was not autowired in RemoteUserAuthenticator");
+			throw new RuntimeException("groupManager was not autowired in RemoteUserAuthenticator via constructor autowire");
         }
     }
 
