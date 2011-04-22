@@ -41,7 +41,6 @@
 package shibauth.confluence.authentication.shibboleth;
 
 //~--- JDK imports ------------------------------------------------------------
-import com.atlassian.spring.container.ContainerManager;
 import com.atlassian.confluence.user.ConfluenceAuthenticator;
 import com.atlassian.confluence.user.UserAccessor;
 import com.atlassian.crowd.embedded.api.CrowdService;
@@ -174,19 +173,8 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
         config = ShibAuthConfigLoader.getShibAuthConfiguration(null);
     }
 
-    // SHBL-47: will work with Confluence 3.5.0-3.5.2 with patch from http://jira.atlassian.com/browse/CONF-22157
-    // or Confluence 3.5.3-? if loading via classpath, but per Atlassian in CONF-22157, loading of jar via
-    // classpath is recommended, and that means is not autowiring because not installed as plugin, unless
-    // we setup a Spring config for the authenticator.
     public RemoteUserAuthenticator() {
-        groupManager = (GroupManager) ContainerManager.getComponent("groupManager");        
-        crowdService = (CrowdService) ContainerManager.getComponent("crowdService");
-		if (crowdService==null) {
-			throw new RuntimeException("RemoteUserAuthenticator default constructor failed because ContainerManager.getComponent(\"crowdService\") returned null.");
-        }
-        else if (groupManager==null) {
-			throw new RuntimeException("RemoteUserAuthenticator default constructor failed because ContainerManager.getComponent(\"groupManager\") returned null.");
-        }
+        // SHBL-48/CONF-22266: expecting setter injection is going to happen.
 	}
 
     // this doesn't work automatically with jar classloading in Confluence 3.5.x with CONF-22157 patch, unless
@@ -1272,4 +1260,12 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
 		}
 		return getUser(request,response);
     }
+
+    public void setCrowdService(CrowdService crowdService) {
+	    this.crowdService = crowdService;
+	}
+	
+	public void setGroupManager(GroupManager groupManager) {
+	    this.groupManager = groupManager;
+	}
 }

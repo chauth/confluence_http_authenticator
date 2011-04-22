@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                           http://www.springframework.org/schema/beans/spring-beans.xsd">
+    <!-- autowire via setter injection. we're using this to allow loading of jar via classpath
+         vs. atlassian plugins v1 or v2, since loading by classpath in Confluence 3.5.x is still
+         recommended by Atlassian. -->
+         
+    <bean id="remoteUserAuthenticator"
+          class="shibauth.confluence.authentication.shibboleth.RemoteUserAuthenticator" 
+          autowire="byName" />
+</beans>

@@ -1,4 +1,9 @@
-<!-- note: authenticators cannot be v2 plugin, and should be loaded via classpath per CONF-22266 -->
+<!-- note: Authenticators cannot be v2 plugins and should be loaded via classpath per CONF-22266.
+     We should probably remove this file, although if people are careful, maybe it would work.
+     Have setter injection supported in RemoteUserAuthenticator, and you could load via Plugins
+     in admin area of Confluence. But, it would have to be tested and isn't suggested. It was
+     asked for in a few reviews of the plugin, even though you'd still have to make manual
+     seraph config changes and restart Confluence, so it doesn't make things any easier. -->
 <atlassian-plugin key="${project.groupId}.${project.artifactId}" name="${project.name}">
     <plugin-info>
         <description>${project.description}</description>
