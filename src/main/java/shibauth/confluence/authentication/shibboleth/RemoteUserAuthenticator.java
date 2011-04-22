@@ -174,7 +174,7 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
     }
 
     public RemoteUserAuthenticator() {
-        // SHBL-48/CONF-22266: expecting setter injection is going to happen.
+        // SHBL-48/CONF-22266: expecting setter injection is going to happen, and we have checks for that.
 	}
 
     // this doesn't work automatically with jar classloading in Confluence 3.5.x with CONF-22157 patch, unless
@@ -235,6 +235,10 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
 
             String role;
             Group group;
+
+			if (groupManager==null) {
+				throw new RuntimeException("groupManager was not wired in RemoteUserAuthenticator");
+	        }
 
             for (Iterator it = roles.iterator(); it.hasNext();) {
                 role = it.next().toString().trim();
@@ -301,6 +305,11 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
             if (log.isDebugEnabled()) {
                 log.debug("Purging roles from user " + user.getName());
             }
+
+            if (groupManager==null) {
+				throw new RuntimeException("groupManager was not wired in RemoteUserAuthenticator");
+	        }
+
             try {
                 //get intersection of rolesInConfluence and rolesToKeep
                 p = groupManager.getGroups(user);
@@ -425,6 +434,11 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
                 return;
             }
 
+            
+            if (crowdService==null) {
+				throw new RuntimeException("crowdService was not wired in RemoteUserAuthenticator");
+	        }
+	        
             com.atlassian.crowd.embedded.api.User crowdUser = crowdService.getUser(user.getName());
 
             ImmutableUser.Builder userBuilder = new ImmutableUser.Builder();
