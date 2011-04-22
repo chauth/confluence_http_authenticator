@@ -43,7 +43,7 @@ package shibauth.confluence.authentication.shibboleth;
 //~--- JDK imports ------------------------------------------------------------
 import com.atlassian.confluence.user.ConfluenceAuthenticator;
 import com.atlassian.confluence.user.UserAccessor;
-import com.atlassian.crowd.embedded.api.CrowdService;
+import com.atlassian.crowd.embedded.core.CrowdServiceImpl;
 import com.atlassian.crowd.embedded.impl.ImmutableUser;
 import com.atlassian.user.Group;
 import com.atlassian.user.User;
@@ -156,7 +156,18 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
     private final static Log log =
         LogFactory.getLog(RemoteUserAuthenticator.class);
     private static ShibAuthConfiguration config;
-    protected CrowdService crowdService;
+
+    /* SHBL-48: CrowdServiceImpl because of reported:
+
+		2011-04-22 14:05:20,686 ERROR [pool-7-thread-1] [atlassian.plugin.manager.DefaultPluginManager] enableConfiguredPluginModule There was an error loading the descriptor 'null' of plugin 'shibauth.remoteUserAuth'. Disabling.
+		 -- referer: https://wiki-staging.example.edu/plugins/servlet/upm | url: /rest/plugins/1.0/ | userName: admin_user
+		org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'remoteUserAuth': Initialization of bean failed; nested exception is org.springframework.beans.TypeMismatchException: Failed to convert property value of type [com.atlassian.crowd.embedded.core.CrowdServiceImpl] to required type [com.atlassian.crowd.embedded.api.CrowdService] for property 'crowdService'; nested exception is java.lang.IllegalArgumentException: Cannot convert value of type [com.atlassian.crowd.embedded.core.CrowdServiceImpl] to required type [com.atlassian.crowd.embedded.api.CrowdService] for property 'crowdService': no matching editors or conversion strategy found
+		Caused by: org.springframework.beans.TypeMismatchException: Failed to convert property value of type [com.atlassian.crowd.embedded.core.CrowdServiceImpl] to required type [com.atlassian.crowd.embedded.api.CrowdService] for property 'crowdService'; nested exception is java.lang.IllegalArgumentException: Cannot convert value of type [com.atlassian.crowd.embedded.core.CrowdServiceImpl] to required type [com.atlassian.crowd.embedded.api.CrowdService] for property 'crowdService': no matching editors or conversion strategy found
+		Caused by: java.lang.IllegalArgumentException: Cannot convert value of type [com.atlassian.crowd.embedded.core.CrowdServiceImpl] to required type [com.atlassian.crowd.embedded.api.CrowdService] for property 'crowdService': no matching editors or conversion strategy found
+		        at org.springframework.beans.TypeConverterDelegate.convertIfNecessary(TypeConverterDelegate.java:231)
+		*/
+
+    private CrowdServiceImpl crowdService;
     /** See SHBL-8, CONF-12158, and http://confluence.atlassian.com/download/attachments/192312/ConfluenceGroupJoiningAuthenticator.java?version=1 */
     private GroupManager groupManager;
 
@@ -178,9 +189,10 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
 	}
 
     // this doesn't work automatically with jar classloading in Confluence 3.5.x with CONF-22157 patch, unless
-    // we were to add Spring configuration for the plugin.
+    // we were to add Spring configuration for the plugin. Note: may need to be CrowdService vs CrowdServiceImpl,
+    // but changed for purpose of setter injection issue with v1. see member definition comment.
     @Autowired
-    public RemoteUserAuthenticator(CrowdService crowdService, GroupManager groupManager) {
+    public RemoteUserAuthenticator(CrowdServiceImpl crowdService, GroupManager groupManager) {
         this.crowdService = crowdService;
         this.groupManager = groupManager;
 
@@ -1275,7 +1287,7 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
 		return getUser(request,response);
     }
 
-    public void setCrowdService(CrowdService crowdService) {
+    public void setCrowdService(CrowdServiceImpl crowdService) {
 	    this.crowdService = crowdService;
 	}
 	
