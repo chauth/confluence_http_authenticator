@@ -40,10 +40,13 @@
 
 package shibauth.confluence.authentication.shibboleth;
 
+import com.atlassian.spring.container.ContainerManager;
+import com.atlassian.crowd.embedded.core.CrowdServiceImpl;
+
 //~--- JDK imports ------------------------------------------------------------
 import com.atlassian.confluence.user.ConfluenceAuthenticator;
 import com.atlassian.confluence.user.UserAccessor;
-import com.atlassian.crowd.embedded.core.CrowdServiceImpl;
+import com.atlassian.crowd.embedded.api.CrowdService;
 import com.atlassian.crowd.embedded.impl.ImmutableUser;
 import com.atlassian.user.Group;
 import com.atlassian.user.User;
@@ -157,20 +160,6 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
         LogFactory.getLog(RemoteUserAuthenticator.class);
     private static ShibAuthConfiguration config;
 
-    /* SHBL-48: CrowdServiceImpl because of reported:
-
-		2011-04-22 14:05:20,686 ERROR [pool-7-thread-1] [atlassian.plugin.manager.DefaultPluginManager] enableConfiguredPluginModule There was an error loading the descriptor 'null' of plugin 'shibauth.remoteUserAuth'. Disabling.
-		 -- referer: https://wiki-staging.example.edu/plugins/servlet/upm | url: /rest/plugins/1.0/ | userName: admin_user
-		org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'remoteUserAuth': Initialization of bean failed; nested exception is org.springframework.beans.TypeMismatchException: Failed to convert property value of type [com.atlassian.crowd.embedded.core.CrowdServiceImpl] to required type [com.atlassian.crowd.embedded.api.CrowdService] for property 'crowdService'; nested exception is java.lang.IllegalArgumentException: Cannot convert value of type [com.atlassian.crowd.embedded.core.CrowdServiceImpl] to required type [com.atlassian.crowd.embedded.api.CrowdService] for property 'crowdService': no matching editors or conversion strategy found
-		Caused by: org.springframework.beans.TypeMismatchException: Failed to convert property value of type [com.atlassian.crowd.embedded.core.CrowdServiceImpl] to required type [com.atlassian.crowd.embedded.api.CrowdService] for property 'crowdService'; nested exception is java.lang.IllegalArgumentException: Cannot convert value of type [com.atlassian.crowd.embedded.core.CrowdServiceImpl] to required type [com.atlassian.crowd.embedded.api.CrowdService] for property 'crowdService': no matching editors or conversion strategy found
-		Caused by: java.lang.IllegalArgumentException: Cannot convert value of type [com.atlassian.crowd.embedded.core.CrowdServiceImpl] to required type [com.atlassian.crowd.embedded.api.CrowdService] for property 'crowdService': no matching editors or conversion strategy found
-		        at org.springframework.beans.TypeConverterDelegate.convertIfNecessary(TypeConverterDelegate.java:231)
-		*/
-
-    private CrowdServiceImpl crowdService;
-    /** See SHBL-8, CONF-12158, and http://confluence.atlassian.com/download/attachments/192312/ConfluenceGroupJoiningAuthenticator.java?version=1 */
-    private GroupManager groupManager;
-
     //~--- static initializers ------------------------------------------------
     /**
      * Initialize properties from property file
@@ -185,24 +174,12 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
     }
 
     public RemoteUserAuthenticator() {
-        // SHBL-48/CONF-22266: expecting setter injection is going to happen, and we have checks for that.
+        // SHBL-48/CONF-22266 - Authenticators in Confluence 3.5:
+        // * Cannot have Atlassian beans injected via Spring (see comment late in CONF-22266)
+        // * Authenticators must be classloaded and cannot be Atlassian plugins v1 or v2 (see comment late in CONF-22266), so
+        //   neither setter nor constructor injection of GroupManager and CrowdService would work.
+        // * Can only get bean instances using ContainerManager after the beans have been constructed, so cannot be done here in constructor.
 	}
-
-    // this doesn't work automatically with jar classloading in Confluence 3.5.x with CONF-22157 patch, unless
-    // we were to add Spring configuration for the plugin. Note: may need to be CrowdService vs CrowdServiceImpl,
-    // but changed for purpose of setter injection issue with v1. see member definition comment.
-    @Autowired
-    public RemoteUserAuthenticator(CrowdServiceImpl crowdService, GroupManager groupManager) {
-        this.crowdService = crowdService;
-        this.groupManager = groupManager;
-
-        if (crowdService==null) {
-			throw new RuntimeException("crowdService was not autowired in RemoteUserAuthenticator via constructor autowire");
-        }
-        else if (groupManager==null) {
-			throw new RuntimeException("groupManager was not autowired in RemoteUserAuthenticator via constructor autowire");
-        }
-    }
 
     /**
      * Check if the configuration file should be reloaded and reload the configuration.
@@ -247,7 +224,8 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
 
             String role;
             Group group;
-
+            
+            GroupManager groupManager = getGroupManager();
 			if (groupManager==null) {
 				throw new RuntimeException("groupManager was not wired in RemoteUserAuthenticator");
 	        }
@@ -317,7 +295,8 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
             if (log.isDebugEnabled()) {
                 log.debug("Purging roles from user " + user.getName());
             }
-
+            
+			GroupManager groupManager = getGroupManager();
             if (groupManager==null) {
 				throw new RuntimeException("groupManager was not wired in RemoteUserAuthenticator");
 	        }
@@ -446,7 +425,7 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
                 return;
             }
 
-            
+            CrowdService crowdService = getCrowdService();
             if (crowdService==null) {
 				throw new RuntimeException("crowdService was not wired in RemoteUserAuthenticator");
 	        }
@@ -1287,11 +1266,11 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
 		return getUser(request,response);
     }
 
-    public void setCrowdService(CrowdServiceImpl crowdService) {
-	    this.crowdService = crowdService;
+    public CrowdService getCrowdService() {
+	    return (CrowdService)ContainerManager.getComponent("crowdService");
 	}
 	
-	public void setGroupManager(GroupManager groupManager) {
-	    this.groupManager = groupManager;
+	public GroupManager getGroupManager() {
+	    return (GroupManager)ContainerManager.getComponent("groupManager");
 	}
 }
