@@ -91,11 +91,11 @@
                                       v1.7 -
     * SHBL-24 - integrating patch from Hans-Ulrich Pieper of Freie Universität Berlin to assist in doing local authN and to make ShibLoginFilter unused by default and only optional since they determined that authentication with local accounts was not supported with ShibAuthLogin filter. Note that Juhani Gurney ended up fixing this in the Finland environment with addition of a super.login call if needed, which he integrated in v1.7.
     * SHBL-28 - adding feature to get full name from regex replace and matching just like REMOTE_USER mapping functionality contributed by Bruc Liong
-    * SHBL-46 - implementing fix suggested by Chad LaJoie since Confluence 3.4.6 no longer wraps request
-
-                                      v1.8 -
-
-    * SHBL-29 - re-incorporating UTF-8 code from Juha Ojaluoma/Helsinki (see SHBL-5).
+    * SHBL-46 - implementing fix suggested by Chad LaJoie since Confluence 3.4.6 no longer wraps request,
+                                      v1.7.4 -
+    * SHBL-46: Unwrap HttpServletRequest only if necessary,
+                                      v2.0.1 -
+    * SHBL-47 and SHBL-48: Confluence 3.5.x compatibility.
                     </role>
                 </roles>
                 <timezone>-4</timezone>
