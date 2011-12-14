@@ -7,14 +7,14 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>shibauth</groupId>
     <artifactId>remoteUserAuth</artifactId>
-    <version>2.0.2-SNAPSHOT</version>
+    <version>2.1.0-SNAPSHOT</version>
     
     <properties>
-        <confluence.version>3.5</confluence.version>
-        <confluence.data.version>3.5</confluence.data.version>
+        <confluence.version>4.1</confluence.version>
+        <confluence.data.version>4.1</confluence.data.version>
         <!-- find this in pom.xml in version dir: https://maven.atlassian.com/content/repositories/atlassian-public/com/atlassian/confluence/confluence-project/ -->
-        <crowd.version>2.2.1</crowd.version>
-        <crowd.embedded.version>1.1</crowd.embedded.version>
+        <crowd.version>2.3.2</crowd.version>
+        <crowd.embedded.version>1.3.3</crowd.embedded.version>
     </properties>
 
         <issueManagement>
@@ -96,6 +96,8 @@
     * SHBL-46: Unwrap HttpServletRequest only if necessary,
                                       v2.0.1 -
     * SHBL-47 and SHBL-48: Confluence 3.5.x compatibility.
+                                      v2.1.0 -
+    * SHBL-53: Confluence 4.1.x compatibility.
                     </role>
                 </roles>
                 <timezone>-4</timezone>
@@ -192,7 +194,85 @@
 
     <name>Confluence Shibboleth Authenticator</name>
     <description>An Atlassian Confluence seraph authenticator that works with Shibboleth</description>
-    <packaging>atlassian-plugin</packaging>
+    <packaging>jar</packaging>
+
+    <repositories>
+        <repository>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <id>Atlassian Public</id>
+            <url>https://maven.atlassian.com/content/repositories/atlassian-public/</url>
+        </repository>
+    
+        <repository>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+            <id>Atlassian Public Snaphots</id>
+            <url>https://maven.atlassian.com/content/repositories/atlassian-public-snapshot/</url>
+        </repository>
+        
+        <repository>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <id>Atlassian 3rd-party Repository</id>
+            <url>https://maven.atlassian.com/content/repositories/atlassian-3rdparty/</url>
+        </repository>
+       
+        <repository>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+            <id>central-m2-repository</id>
+            <name>Central Maven 2 Repository</name>
+            <url>http://repo1.maven.org/maven2</url>
+        </repository>
+
+        <repository>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+            <id>Codehaus Snapshots</id>
+            <url>http://snapshots.repository.codehaus.org</url>
+        </repository>
+
+        <repository>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <id>TWData</id>
+            <url>https://twdata-m2-repository.googlecode.com/svn/</url>
+        </repository>
+        
+        <repository>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <id>Nuxeo</id>
+            <url>https://maven.nuxeo.org/nexus/content/repositories/public/</url>
+        </repository>
+        
+    </repositories>
 
     <dependencies>
         <dependency>
@@ -270,25 +350,4 @@
         </dependency>
     </dependencies>
 
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>com.atlassian.maven.plugins</groupId>
-                <artifactId>maven-confluence-plugin</artifactId>
-                <version>3.3</version>
-                <extensions>true</extensions>
-                <configuration>
-                    <productVersion>${confluence.version}</productVersion>
-                    <productDataVersion>${confluence.data.version}</productDataVersion>
-                </configuration>
-            </plugin>
-            <plugin>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <source>1.6</source>
-                    <target>1.6</target>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
 </project>
