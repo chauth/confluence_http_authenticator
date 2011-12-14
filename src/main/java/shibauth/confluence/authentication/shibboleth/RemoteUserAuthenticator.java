@@ -489,65 +489,74 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
      */
     private void updateLastLogin(Principal principal) {
 
-        //Set last login date
+        if (principal instanceof User) {
+            //Set last login date
 
-        // synchronize on the user name -- it's quite alright to update the property sets of two different users
-        // in seperate concurrent transactions, but two concurrent transactions updateing the same user's property
-        // set dies.
-        //synchronized (userid.intern()) {
-        // note: made a few slight changes to code- Gary.
-        UserAccessor userAccessor = getUserAccessor();
-        User user = (User) principal;
-        String userId = user.getName();
-        // TODO: Shouldn't synchronize, because that wouldn't help in a Confluence cluster (diff JVMs) for Confluence Enterprise/Confluence Massive. This should be added as a Confluence bug.
-        synchronized (userId) {
-            try {
-                Date previousLoginDate = userAccessor.getPropertySet(user).
-                    getDate(UserPreferencesKeys.PROPERTY_USER_LAST_LOGIN_DATE);
-                if (previousLoginDate != null) {
-                    try {
-                        userAccessor.getPropertySet(user).remove(
-                            UserPreferencesKeys.PROPERTY_USER_LAST_LOGIN_DATE);
-                        userAccessor.getPropertySet(user).setDate(
-                            UserPreferencesKeys.PROPERTY_USER_LAST_LOGIN_DATE,
-                            new Date());
-                        userAccessor.getPropertySet(user).remove(
-                            UserPreferencesKeys.PROPERTY_USER_PREVIOUS_LOGIN_DATE);
-                        userAccessor.getPropertySet(user).setDate(
-                            UserPreferencesKeys.PROPERTY_USER_PREVIOUS_LOGIN_DATE,
-                            previousLoginDate);
-                    } catch (PropertyException ee) {
-                        log.error(
-                            "Problem updating last login date/previous login date for user '" + userId + "'",
-                            ee);
+            // synchronize on the user name -- it's quite alright to update the property sets of two different users
+            // in seperate concurrent transactions, but two concurrent transactions updateing the same user's property
+            // set dies.
+            //synchronized (userid.intern()) {
+            // note: made a few slight changes to code- Gary.
+            UserAccessor userAccessor = getUserAccessor();
+            User user = (User) principal;
+            String userId = user.getName();
+            // TODO: Shouldn't synchronize, because that wouldn't help in a Confluence cluster (diff JVMs) for Confluence Enterprise/Confluence Massive. This should be added as a Confluence bug.
+            synchronized (userId) {
+                try {
+                    Date previousLoginDate = userAccessor.getPropertySet(user).
+                        getDate(UserPreferencesKeys.PROPERTY_USER_LAST_LOGIN_DATE);
+                    if (previousLoginDate != null) {
+                        try {
+                            userAccessor.getPropertySet(user).remove(
+                                UserPreferencesKeys.PROPERTY_USER_LAST_LOGIN_DATE);
+                            userAccessor.getPropertySet(user).setDate(
+                                UserPreferencesKeys.PROPERTY_USER_LAST_LOGIN_DATE,
+                                new Date());
+                            userAccessor.getPropertySet(user).remove(
+                                UserPreferencesKeys.PROPERTY_USER_PREVIOUS_LOGIN_DATE);
+                            userAccessor.getPropertySet(user).setDate(
+                                UserPreferencesKeys.PROPERTY_USER_PREVIOUS_LOGIN_DATE,
+                                previousLoginDate);
+                        } catch (PropertyException ee) {
+                            log.error(
+                                "Problem updating last login date/previous login date for user '" + userId + "'",
+                                ee);
+                        }
+                    } else {
+                        try {
+                            userAccessor.getPropertySet(user).remove(
+                                UserPreferencesKeys.PROPERTY_USER_LAST_LOGIN_DATE);
+                            userAccessor.getPropertySet(user).setDate(
+                                UserPreferencesKeys.PROPERTY_USER_LAST_LOGIN_DATE,
+                                new Date());
+                            userAccessor.getPropertySet(user).remove(
+                                UserPreferencesKeys.PROPERTY_USER_PREVIOUS_LOGIN_DATE);
+                            userAccessor.getPropertySet(user).setDate(
+                                UserPreferencesKeys.PROPERTY_USER_PREVIOUS_LOGIN_DATE,
+                                new Date());
+                        } catch (PropertyException ee) {
+                            log.error(
+                                "There was a problem updating last login date/previous login date for user '" + userId + "'",
+                                ee);
+                        }
                     }
-                } else {
-                    try {
-                        userAccessor.getPropertySet(user).remove(
-                            UserPreferencesKeys.PROPERTY_USER_LAST_LOGIN_DATE);
-                        userAccessor.getPropertySet(user).setDate(
-                            UserPreferencesKeys.PROPERTY_USER_LAST_LOGIN_DATE,
-                            new Date());
-                        userAccessor.getPropertySet(user).remove(
-                            UserPreferencesKeys.PROPERTY_USER_PREVIOUS_LOGIN_DATE);
-                        userAccessor.getPropertySet(user).setDate(
-                            UserPreferencesKeys.PROPERTY_USER_PREVIOUS_LOGIN_DATE,
-                            new Date());
-                    } catch (PropertyException ee) {
-                        log.error(
-                            "There was a problem updating last login date/previous login date for user '" + userId + "'",
-                            ee);
-                    }
+                } catch (Exception e) {
+                    log.error(
+                        "Can not retrieve the user ('" + userId + "') to set its Last-Login-Date!",
+                        e);
+                } catch (Throwable t) {
+                    log.error(
+                        "Error while setting the user ('" + userId + "') Last-Login-Date!",
+                        t);
                 }
-            } catch (Exception e) {
-                log.error(
-                    "Can not retrieve the user ('" + userId + "') to set its Last-Login-Date!",
-                    e);
-            } catch (Throwable t) {
-                log.error(
-                    "Error while setting the user ('" + userId + "') Last-Login-Date!",
-                    t);
             }
+        }
+        else if (principal != null) {
+            // SHBL-53 - fails in Confluence 4.1+, so for now just don't log until we have a fix
+            log.debug("Could not update last login date of user, because principal class not supported (SHBL-53): " + principal.getClass().getCanonicalName());
+        }
+        else {
+            log.debug("Could not update last login date of user with null principal.");
         }
     }
 

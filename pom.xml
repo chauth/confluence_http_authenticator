@@ -1,38 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>shibauth</groupId>
     <artifactId>remoteUserAuth</artifactId>
     <version>2.1.0-SNAPSHOT</version>
-    
     <properties>
         <confluence.version>4.1</confluence.version>
         <confluence.data.version>4.1</confluence.data.version>
-        <!-- find this in pom.xml in version dir: https://maven.atlassian.com/content/repositories/atlassian-public/com/atlassian/confluence/confluence-project/ -->
+        <!-- Look at pom.xml in confluence version in https://maven.atlassian.com/content/repositories/atlassian-public/com/atlassian/confluence/confluence-project/ -->
+        <user.version>3.0</user.version>
         <crowd.version>2.3.2</crowd.version>
         <crowd.embedded.version>1.3.3</crowd.embedded.version>
+        <event.version>2.1.1</event.version>
+        <seraph.version>2.5.1</seraph.version>
     </properties>
-
-        <issueManagement>
-            <system>Atlassian Developer JIRA</system>
-            <url>http://developer.atlassian.com/jira/browse/SHBL</url>
-        </issueManagement>
-
-        <scm>
-            <connection>scm:svn:http://studio.plugins.atlassian.com/svn/SHBL/trunk</connection>
-            <developerConnection>scm:svn:https://studio.plugins.atlassian.com/svn/SHBL/trunk</developerConnection>
-            <url>https://studio.plugins.atlassian.com/source/browse/SHBL/trunk</url>
-        </scm>
-        
-        <licenses>
-            <license>
-                <name>BSD-Style License</name>
-                <distribution>manual</distribution>
-                <comments>
+    <issueManagement>
+        <system>Atlassian Developer JIRA</system>
+        <url>http://developer.atlassian.com/jira/browse/SHBL</url>
+    </issueManagement>
+    <scm>
+        <connection>scm:svn:http://studio.plugins.atlassian.com/svn/SHBL/trunk</connection>
+        <developerConnection>scm:svn:https://studio.plugins.atlassian.com/svn/SHBL/trunk</developerConnection>
+        <url>https://studio.plugins.atlassian.com/source/browse/SHBL/trunk</url>
+    </scm>
+    <licenses>
+        <license>
+            <name>BSD-Style License</name>
+            <distribution>manual</distribution>
+            <comments>
      Copyright (c) 2008-2011, Shibboleth Authenticator for Confluence Team
      All rights reserved.
 
@@ -60,24 +55,21 @@
      ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
      POSSIBILITY OF SUCH DAMAGE.
                 </comments>
-            </license>
-        </licenses>
-
-        <developers>
-
-            <developer>
-                <name>Chad LaJoie</name>
-                <roles>
-                    <role>Developer - v1.0. Create user and optionally updates user's information (full name, email) when user logs in, using data passed in as header via Shibboleth. Configurable via properties file.</role>
-                </roles>
-            </developer>
-
-            <developer>
-                <name>Gary S. Weaver</name>
-                <organization>Duke University</organization>
-                <organizationUrl>http://www.oit.duke.edu/</organizationUrl>
-                <roles>
-                    <role>Developer - v1.1 - additional checks/logging and some small refactoring. Version 1.1 should work with Confluence 2.3-2.6.x and possibly later versions.,
+        </license>
+    </licenses>
+    <developers>
+        <developer>
+            <name>Chad LaJoie</name>
+            <roles>
+                <role>Developer - v1.0. Create user and optionally updates user's information (full name, email) when user logs in, using data passed in as header via Shibboleth. Configurable via properties file.</role>
+            </roles>
+        </developer>
+        <developer>
+            <name>Gary S. Weaver</name>
+            <organization>Duke University</organization>
+            <organizationUrl>http://www.oit.duke.edu/</organizationUrl>
+            <roles>
+                <role>Developer - v1.1 - additional checks/logging and some small refactoring. Version 1.1 should work with Confluence 2.3-2.6.x and possibly later versions.,
                                       v1.2 - refactor config loading, constants, utility method, and added configuration VO.,
                                       v1.3/1.3.1 - change of package name to shibauth, since no longer maintained by Georgetown, and Duke, Melcoe, Helsinki making changes now. Migrated to Maven 2. Integrated patch and made contributed UTF-8 fixes optional.
                                       v1.5 -
@@ -99,14 +91,13 @@
                                       v2.1.0 -
     * SHBL-53: Confluence 4.1.x compatibility.
                     </role>
-                </roles>
-                <timezone>-4</timezone>
-            </developer>
-
-            <developer>
-                <name>Bruc Liong</name>
-                <roles>
-                    <role>Developer - v1.2 - allow optional mapping of the values of 0-to-many HTTP Headers (fed by shib attributes) to Confluence group names (see properties file for how to do this)
+            </roles>
+            <timezone>-4</timezone>
+        </developer>
+        <developer>
+            <name>Bruc Liong</name>
+            <roles>
+                <role>Developer - v1.2 - allow optional mapping of the values of 0-to-many HTTP Headers (fed by shib attributes) to Confluence group names (see properties file for how to do this)
                                       v1.5 - the following: (see also SHBL-18)
 
     		  * resolved SHBL-16, hopefully improve response time slightly for SHBL-15. Also this has made updateLastLogin option to be optional, we're letting confluence to take care of that now.
@@ -122,55 +113,49 @@
 
                                       v1.6 - Solution to SHBL-25. An option is provided to allow remote user to be transformed/mapped based on regex to be used by Confluence userid. Read config properties file for example and detail.
                     </role>
-                </roles>
-            </developer>
-
-            <developer>
-                <name>Juha Ojaluoma</name>
-                <roles>
-                    <role>Developer - v1.3 - UTF-8 patch for SHBL-5. when there is something not using utf-8 involved, 16-bit characters get bytes 83 c2 inserted between. Submitted patch to convert fullname to UTF-8 to fix. (Note: this patch was changed so that it converts all header values to UTF-8.</role>
-                </roles>
-            </developer>
-
-            <developer>
-                <name>Vladimir Mencl</name>
-                <roles>
-                    <role>Developer - v1.3/1.3.1 - GroupManager injector patch for SHBL-8 and subsequent SHBL-9 bug fixes. Submitted patch to add member, setter/getter for GroupManager and setter implementation uses ContainerManager.getComponent("groupManager") similar to Atlassian implementation of ConfluenceGroupJoiningAuthenticator.java (which appears to have been around since Confluence 2.3+ and should work in 2.2 according to http://confluence.atlassian.com/display/DOC/Automatically+Adding+LDAP+users+to+the+confluence-users+Group . See also: http://jira.atlassian.com/browse/CONF-12158 </role>
-                </roles>
-            </developer>
-
-            <developer>
-                <name>Jesse Lahtinen</name>
-                <roles>
-                    <role>Developer - v1.4 - Erkki Aalto submitted Jesse's patch for SHBL-14 such that the authenticator will now update confluence.user.previous.login.date and confluence.user.last.login.date in os_propertyentry</role>
-                    <role>Developer - v1.7.3 - SHBL-40: Suggestion on how to explicitly obtain a non-SecurityHttpRequestWrapper request object to use to determine remote user, for Confluence 3.4 compatibility</role>
-                </roles>
-            </developer>
-
-            <developer>
-                <name>Michael Gettes</name>
-                <roles>
-                    <role>Developer - v1.5 - Submitted patch to check for existing group membership before adding as fix for SHBL-21</role>
-                </roles>
-            </developer>
-
-            <developer>
-                <name>Juhani Gurney</name>
-                <roles>
-                    <role>Developer - v1.7 - Submitted fix to allow local authN per SHBL-24</role>
-                </roles>
-            </developer>
-
-            <developer>
-                <name>Elliot Kendall</name>
-                <organization>Emory University</organization>
-                <organizationUrl>http://it.emory.edu/</organizationUrl>
-                <roles>
-                    <role>Developer - v1.7.2 - Submitted fix to prevent
+            </roles>
+        </developer>
+        <developer>
+            <name>Juha Ojaluoma</name>
+            <roles>
+                <role>Developer - v1.3 - UTF-8 patch for SHBL-5. when there is something not using utf-8 involved, 16-bit characters get bytes 83 c2 inserted between. Submitted patch to convert fullname to UTF-8 to fix. (Note: this patch was changed so that it converts all header values to UTF-8.</role>
+            </roles>
+        </developer>
+        <developer>
+            <name>Vladimir Mencl</name>
+            <roles>
+                <role>Developer - v1.3/1.3.1 - GroupManager injector patch for SHBL-8 and subsequent SHBL-9 bug fixes. Submitted patch to add member, setter/getter for GroupManager and setter implementation uses ContainerManager.getComponent("groupManager") similar to Atlassian implementation of ConfluenceGroupJoiningAuthenticator.java (which appears to have been around since Confluence 2.3+ and should work in 2.2 according to http://confluence.atlassian.com/display/DOC/Automatically+Adding+LDAP+users+to+the+confluence-users+Group . See also: http://jira.atlassian.com/browse/CONF-12158 </role>
+            </roles>
+        </developer>
+        <developer>
+            <name>Jesse Lahtinen</name>
+            <roles>
+                <role>Developer - v1.4 - Erkki Aalto submitted Jesse's patch for SHBL-14 such that the authenticator will now update confluence.user.previous.login.date and confluence.user.last.login.date in os_propertyentry</role>
+                <role>Developer - v1.7.3 - SHBL-40: Suggestion on how to explicitly obtain a non-SecurityHttpRequestWrapper request object to use to determine remote user, for Confluence 3.4 compatibility</role>
+            </roles>
+        </developer>
+        <developer>
+            <name>Michael Gettes</name>
+            <roles>
+                <role>Developer - v1.5 - Submitted patch to check for existing group membership before adding as fix for SHBL-21</role>
+            </roles>
+        </developer>
+        <developer>
+            <name>Juhani Gurney</name>
+            <roles>
+                <role>Developer - v1.7 - Submitted fix to allow local authN per SHBL-24</role>
+            </roles>
+        </developer>
+        <developer>
+            <name>Elliot Kendall</name>
+            <organization>Emory University</organization>
+            <organizationUrl>http://it.emory.edu/</organizationUrl>
+            <roles>
+                <role>Developer - v1.7.2 - Submitted fix to prevent
                     NullPointerException when using LDAP as a user repository
                     and logging in as a user that can't be found in LDAP, per
                     SHBL-37</role>
-                    <role>Developer - v1.7.3
+                <role>Developer - v1.7.3
                     SHBL-36: Check for null return from getResourceAsStream and
                     raise an exception
                     SHBL-38: Support reading username from a configurable header
@@ -179,23 +164,19 @@
                     request object to use to determine remote user, for Confluence
                     3.4 compatibility (per a suggestion by Jesse Lahtinen) 
                     </role>
-                    <role>Developer - v1.7.4
+                <role>Developer - v1.7.4
                     SHBL-27: Attempt to update last login time
                     </role>
-                </roles>
-            </developer>
-
-        </developers>
-
-        <organization>
-            <name>Shibboleth Authenticator for Confluence Team</name>
-            <url>https://studio.plugins.atlassian.com/wiki/display/SHBL/Confluence+Shibboleth+Authenticator</url>
-        </organization>
-
+            </roles>
+        </developer>
+    </developers>
+    <organization>
+        <name>Shibboleth Authenticator for Confluence Team</name>
+        <url>https://studio.plugins.atlassian.com/wiki/display/SHBL/Confluence+Shibboleth+Authenticator</url>
+    </organization>
     <name>Confluence Shibboleth Authenticator</name>
     <description>An Atlassian Confluence seraph authenticator that works with Shibboleth</description>
     <packaging>jar</packaging>
-
     <repositories>
         <repository>
             <snapshots>
@@ -207,7 +188,6 @@
             <id>Atlassian Public</id>
             <url>https://maven.atlassian.com/content/repositories/atlassian-public/</url>
         </repository>
-    
         <repository>
             <snapshots>
                 <enabled>true</enabled>
@@ -218,7 +198,6 @@
             <id>Atlassian Public Snaphots</id>
             <url>https://maven.atlassian.com/content/repositories/atlassian-public-snapshot/</url>
         </repository>
-        
         <repository>
             <snapshots>
                 <enabled>false</enabled>
@@ -229,7 +208,6 @@
             <id>Atlassian 3rd-party Repository</id>
             <url>https://maven.atlassian.com/content/repositories/atlassian-3rdparty/</url>
         </repository>
-       
         <repository>
             <snapshots>
                 <enabled>true</enabled>
@@ -238,7 +216,6 @@
             <name>Central Maven 2 Repository</name>
             <url>http://repo1.maven.org/maven2</url>
         </repository>
-
         <repository>
             <snapshots>
                 <enabled>true</enabled>
@@ -249,7 +226,6 @@
             <id>Codehaus Snapshots</id>
             <url>http://snapshots.repository.codehaus.org</url>
         </repository>
-
         <repository>
             <snapshots>
                 <enabled>true</enabled>
@@ -260,7 +236,6 @@
             <id>TWData</id>
             <url>https://twdata-m2-repository.googlecode.com/svn/</url>
         </repository>
-        
         <repository>
             <snapshots>
                 <enabled>true</enabled>
@@ -271,9 +246,7 @@
             <id>Nuxeo</id>
             <url>https://maven.nuxeo.org/nexus/content/repositories/public/</url>
         </repository>
-        
     </repositories>
-
     <dependencies>
         <dependency>
             <groupId>javax.servlet</groupId>
@@ -297,7 +270,38 @@
             <groupId>com.atlassian.crowd</groupId>
             <artifactId>embedded-crowd-api</artifactId>
             <version>${crowd.version}</version>
+            <scope>provided</scope>
         </dependency>
+        <!--
+        <dependency>
+            <groupId>com.atlassian.user</groupId>
+            <artifactId>atlassian-user</artifactId>
+            <version>${user.version}</version>
+            <scope>provided</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>osuser</groupId>
+                    <artifactId>osuser</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.springframework</groupId>
+                    <artifactId>spring-dao</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>com.atlassian.event</groupId>
+            <artifactId>atlassian-event</artifactId>
+            <version>${event.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.atlassian.seraph</groupId>
+            <artifactId>atlassian-seraph</artifactId>
+            <version>${seraph.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        -->
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring</artifactId>
@@ -349,5 +353,4 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
-
 </project>
