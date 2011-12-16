@@ -41,26 +41,35 @@
 package shibauth.confluence.authentication.shibboleth;
 
 import com.atlassian.spring.container.ContainerManager;
-import com.atlassian.crowd.embedded.core.CrowdServiceImpl;
 
 //~--- JDK imports ------------------------------------------------------------
 import com.atlassian.confluence.user.ConfluenceAuthenticator;
-import com.atlassian.confluence.user.UserAccessor;
-import com.atlassian.crowd.embedded.api.CrowdService;
 import com.atlassian.crowd.embedded.impl.ImmutableUser;
-import com.atlassian.user.Group;
-import com.atlassian.user.User;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.atlassian.user.EntityException;
 import com.atlassian.user.GroupManager;
-import com.atlassian.confluence.user.UserPreferencesKeys;
-import com.opensymphony.module.propertyset.PropertyException;
-import com.atlassian.user.search.page.Pager;
 import com.atlassian.confluence.event.events.security.LoginEvent;
 import com.atlassian.confluence.event.events.security.LoginFailedEvent;
+import com.atlassian.confluence.user.UserAccessor;
+import com.atlassian.confluence.user.UserPreferencesKeys;
+import com.atlassian.confluence.user.crowd.EmbeddedCrowdBootstrap;
+import com.atlassian.crowd.dao.application.ApplicationDAO;
+import com.atlassian.crowd.embedded.api.CrowdDirectoryService;
+import com.atlassian.crowd.embedded.api.CrowdService;
+import com.atlassian.crowd.embedded.api.Directory;
+import com.atlassian.crowd.embedded.api.DirectoryType;
+import com.atlassian.crowd.embedded.api.Group;
+import com.atlassian.crowd.embedded.api.User;
+import com.atlassian.crowd.event.user.UserAuthenticatedEvent;
+import com.atlassian.crowd.exception.ApplicationNotFoundException;
+import com.atlassian.crowd.manager.application.ApplicationService;
+import com.atlassian.crowd.model.application.Application;
+import com.atlassian.event.api.EventPublisher;
 import com.atlassian.seraph.auth.AuthenticatorException;
+import com.atlassian.user.search.page.Pager;
+import com.opensymphony.module.propertyset.PropertyException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -212,7 +221,7 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
      *
      * @param user the user to assign to the roles.
      */
-    private void assignUserToRoles(User user, Collection roles) {
+    private void assignUserToRoles(Principal user, Collection roles) {
         if (roles.size() == 0) {
             if (log.isDebugEnabled()) {
                 log.debug("No roles specified, not adding any roles...");
@@ -225,9 +234,9 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
             String role;
             Group group;
             
-            GroupManager groupManager = getGroupManager();
-			if (groupManager==null) {
-				throw new RuntimeException("groupManager was not wired in RemoteUserAuthenticator");
+            CrowdService crowdService = getCrowdService();
+			if (crowdService==null) {
+				throw new RuntimeException("crowdService was not wired in RemoteUserAuthenticator");
 	        }
 
             for (Iterator it = roles.iterator(); it.hasNext();) {
@@ -241,34 +250,37 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
                     log.debug("Assigning " + user.getName() + " to role " + role);
                 }
 
-                try {
-                    group = groupManager.getGroup(role);
-                    if (group == null) {
-                        if (config.isAutoCreateGroup()) {
-                            if (groupManager.isCreative()) {
-                                group = groupManager.createGroup(role);
-                            } else {
-                                log.warn(
-                                    "Cannot create role '" + role + "' due to permission issue.");
-                                continue;
-                            }
-                        } else {
-                            log.debug(
-                                "Skipping autocreation of role '" + role + "'.");
-                            continue; //no point of attempting to allocate user
+                group = crowdService.getGroup(role);
+                if (group == null) {
+                    if (config.isAutoCreateGroup()) {
+                        try {
+                            group = crowdService.addGroup(group);
                         }
+                        catch (Throwable t) {
+                            log.error("Cannot create role '" + role + "'.", t);
+                            continue;
+                        }
+                    } else {
+                        log.debug(
+                            "Skipping autocreation of role '" + role + "'.");
+                        continue; //no point of attempting to allocate user
                     }
-                    
-                    if (groupManager.hasMembership(group, user)) {
-                        log.debug("Skipping " + user.getName() + " to role " + role + " - already a member");
+                }
+
+                User crowdUser = crowdService.getUser(user.getName());
+                if (crowdUser == null) {
+                    log.warn("Could not find user '" + user.getName() + "' to add them to role '" + role + "'.");
+                }
+                else if (crowdService.isUserMemberOfGroup(crowdUser, group)) {
+                    log.debug("Skipping " + user.getName() + " to role " + role + " - already a member");
+                }
+                else {
+                    try {
+                        crowdService.addUserToGroup(crowdUser, group);
                     }
-                    else {
-                        groupManager.addMembership(group, user);
+                    catch (Throwable t) {
+                        log.error("Failed to add user " + user + " to role " + role + ".", t);
                     }
-                } catch (Exception e) {
-                    log.error(
-                        "Attempted to add user " + user + " to role " + role + " but the role does not exist.",
-                        e);
                 }
             }
         }
@@ -284,7 +296,7 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
      * @param rolesToKeep keep these roles, otherwise everything else
      * mentioned in the purgeMappings can go.
      */
-    private void purgeUserRoles(User user, Collection rolesToKeep) {
+    private void purgeUserRoles(Principal user, Collection rolesToKeep) {
         if ((config.getPurgeMappings().size() == 0)) {
             if (log.isDebugEnabled()) {
                 log.debug(
@@ -296,29 +308,19 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
                 log.debug("Purging roles from user " + user.getName());
             }
             
-			GroupManager groupManager = getGroupManager();
-            if (groupManager==null) {
-				throw new RuntimeException("groupManager was not wired in RemoteUserAuthenticator");
+			CrowdService crowdService = getCrowdService();
+            if (crowdService==null) {
+				throw new RuntimeException("crowdService was not wired in RemoteUserAuthenticator");
 	        }
 
-            try {
-                //get intersection of rolesInConfluence and rolesToKeep
-                p = groupManager.getGroups(user);
-                if (p.isEmpty()) {
-                    log.debug("No roles available to be purged for this user.");
-                    return;
-                }
-            } catch (EntityException ex) {
-                log.error("Fail to fetch user's group list, no roles purged.",
-                    ex);
-            }
+            User crowdUser = crowdService.getUser(user.getName());
+
 
             Collection purgeMappers = config.getPurgeMappings();
 
             for (Iterator it = p.iterator(); it.hasNext();) {
                 Group group = (Group) it.next();
                 String role = group.getName();
-                //log.debug("Checking group "+role+" for purging.");
 
                 if (!StringUtil.containsStringIgnoreCase(rolesToKeep,role)) {
                     //run through the purgeMappers for this role
@@ -329,15 +331,16 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
                         String output = mapper.process(role);
                         if (output != null) {
                             try {
-                                log.debug(
-                                    "Removing user " + user.getName() + " from role " + role);
-                                groupManager.removeMembership(group, user);
-                                break;  //dont bother to continue with other purge mappers
-                            } catch (Throwable e) {
+                                if (crowdService.isUserMemberOfGroup(crowdUser, group)) {
+                                    log.debug("Removing user " + user.getName() + " from role " + role);
+                                    crowdService.removeUserFromGroup(crowdUser, group);
+                                    break;
+                                }
+                            } catch (Throwable t) {
                                 log.error(
                                     "Error encountered in removing user " + user.
                                     getName() +
-                                    " from role " + role, e);
+                                    " from role " + role, t);
                             }
                         }
                     }
@@ -410,28 +413,17 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
 
     private void updateUser(Principal user, String fullName,
         String emailAddress) {
-        UserAccessor userAccessor = getUserAccessor();
 
         // If we have new values for name or email, update the user object
         if ((user != null) && (user instanceof User)) {
             User userToUpdate = (User) user;
             boolean updated = false;
 
-            // SHBL-26: patch from Michael Gettes to skip read-only users (for example: user from LDAP, etc.)
-            if (userAccessor.isReadOnly(userToUpdate)) {
-                if (log.isDebugEnabled()) {
-                    log.debug("not updating user, because user is read-only");
-                }
-                return;
-            }
-
             CrowdService crowdService = getCrowdService();
             if (crowdService==null) {
 				throw new RuntimeException("crowdService was not wired in RemoteUserAuthenticator");
 	        }
-	        
-            com.atlassian.crowd.embedded.api.User crowdUser = crowdService.getUser(user.getName());
-
+            User crowdUser = crowdService.getUser(user.getName());
             ImmutableUser.Builder userBuilder = new ImmutableUser.Builder();
             // clone the user before making mods
             userBuilder.active(crowdUser.isActive());
@@ -441,7 +433,7 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
             userBuilder.name(crowdUser.getName());
 
             if ((fullName != null) && !fullName.equals(
-                userToUpdate.getFullName())) {
+                crowdUser.getDisplayName())) {
                 if (log.isDebugEnabled()) {
                     log.debug("updating user fullName to '" + fullName + "'");
                 }
@@ -455,8 +447,7 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
                 }
             }
 
-            if ((emailAddress != null) && !emailAddress.equals(userToUpdate.
-                getEmail())) {
+            if ((emailAddress != null) && !emailAddress.equals(crowdUser.getEmailAddress())) {
                 if (log.isDebugEnabled()) {
                     log.debug(
                         "updating user emailAddress to '" + emailAddress + "'");
@@ -481,85 +472,6 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
             }
         }
     }
-    
-    /**
-     * Updates last login and previous login dates. Originally contributed by Erkki Aalto and written by Jesse Lahtinen of (Finland) Technical University (http://www.tkk.fi) in SHBL-14.
-     * Note bug in USER-254.
-     * Further, this is optional if you are using ShibLoginFilter
-     */
-    private void updateLastLogin(Principal principal) {
-
-        if (principal instanceof User) {
-            //Set last login date
-
-            // synchronize on the user name -- it's quite alright to update the property sets of two different users
-            // in seperate concurrent transactions, but two concurrent transactions updateing the same user's property
-            // set dies.
-            //synchronized (userid.intern()) {
-            // note: made a few slight changes to code- Gary.
-            UserAccessor userAccessor = getUserAccessor();
-            User user = (User) principal;
-            String userId = user.getName();
-            // TODO: Shouldn't synchronize, because that wouldn't help in a Confluence cluster (diff JVMs) for Confluence Enterprise/Confluence Massive. This should be added as a Confluence bug.
-            synchronized (userId) {
-                try {
-                    Date previousLoginDate = userAccessor.getPropertySet(user).
-                        getDate(UserPreferencesKeys.PROPERTY_USER_LAST_LOGIN_DATE);
-                    if (previousLoginDate != null) {
-                        try {
-                            userAccessor.getPropertySet(user).remove(
-                                UserPreferencesKeys.PROPERTY_USER_LAST_LOGIN_DATE);
-                            userAccessor.getPropertySet(user).setDate(
-                                UserPreferencesKeys.PROPERTY_USER_LAST_LOGIN_DATE,
-                                new Date());
-                            userAccessor.getPropertySet(user).remove(
-                                UserPreferencesKeys.PROPERTY_USER_PREVIOUS_LOGIN_DATE);
-                            userAccessor.getPropertySet(user).setDate(
-                                UserPreferencesKeys.PROPERTY_USER_PREVIOUS_LOGIN_DATE,
-                                previousLoginDate);
-                        } catch (PropertyException ee) {
-                            log.error(
-                                "Problem updating last login date/previous login date for user '" + userId + "'",
-                                ee);
-                        }
-                    } else {
-                        try {
-                            userAccessor.getPropertySet(user).remove(
-                                UserPreferencesKeys.PROPERTY_USER_LAST_LOGIN_DATE);
-                            userAccessor.getPropertySet(user).setDate(
-                                UserPreferencesKeys.PROPERTY_USER_LAST_LOGIN_DATE,
-                                new Date());
-                            userAccessor.getPropertySet(user).remove(
-                                UserPreferencesKeys.PROPERTY_USER_PREVIOUS_LOGIN_DATE);
-                            userAccessor.getPropertySet(user).setDate(
-                                UserPreferencesKeys.PROPERTY_USER_PREVIOUS_LOGIN_DATE,
-                                new Date());
-                        } catch (PropertyException ee) {
-                            log.error(
-                                "There was a problem updating last login date/previous login date for user '" + userId + "'",
-                                ee);
-                        }
-                    }
-                } catch (Exception e) {
-                    log.error(
-                        "Can not retrieve the user ('" + userId + "') to set its Last-Login-Date!",
-                        e);
-                } catch (Throwable t) {
-                    log.error(
-                        "Error while setting the user ('" + userId + "') Last-Login-Date!",
-                        t);
-                }
-            }
-        }
-        else if (principal != null) {
-            // SHBL-53 - fails in Confluence 4.1+, so for now just don't log until we have a fix
-            log.debug("Could not update last login date of user, because principal class not supported (SHBL-53): " + principal.getClass().getCanonicalName());
-        }
-        else {
-            log.debug("Could not update last login date of user with null principal.");
-        }
-    }
-
 
     //~--- get methods --------------------------------------------------------
     private String getLoggedInUser(HttpServletRequest request) {
@@ -885,6 +797,10 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
                 
                 return super.login(request, response, username, password, cookie);
             }
+            else {
+	            //SHBL-50 - login info table not being updated in Crowd
+	            postLoginEvent();
+            }
         }
 
         // Now that we know we will be trying to log the user in,
@@ -912,18 +828,8 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
             if (user != null) {
                 newUser = true;
                 updateUser(user, fullName, emailAddress);
-                
-                //username will only be null if called from getUser()
-                if (username == null && config.isUpdateLastLogin())
-                    updateLastLogin(user);
-            }
-        } else {
-            if (config.isUpdateInfo()) {
+            } else if (config.isUpdateInfo()) {
                 updateUser(user, fullName, emailAddress);
-                
-                //username will only be null if called from getUser()
-                if (username == null && config.isUpdateLastLogin())
-                    updateLastLogin(user);
             }
         }
 
@@ -954,6 +860,40 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
         getEventPublisher().publish(new LoginEvent(this, user.getName(), httpSession.getId(), remoteHost, remoteIP));
 
         return true;
+	}
+	
+	// from Joseph Clark of Atlassian in https://answers.atlassian.com/questions/24227/invoke-embedded-crowd-login
+	public void postLoginEvent() {
+		// Fire the UserAuthenticatedEvent so that post-login processing is triggered ("copy-user-on-login", default group membership, group membership sync)
+		final CrowdService crowdService = (CrowdService) ContainerManager.getComponent("crowdService");
+		final CrowdDirectoryService directoryService = (CrowdDirectoryService) ContainerManager.getComponent("crowdDirectoryService");
+
+		// Find the directory that the user belongs to.
+		com.atlassian.crowd.embedded.api.User crowdUser = crowdService.getUser("TODO: get the username information from the incoming request");
+		Directory directory = directoryService.findDirectoryById(crowdUser.getDirectoryId());
+		if (!directory.getType().equals(DirectoryType.DELEGATING))
+		{
+		    // post-login processing only needs to be triggered on directories configured to use delegated LDAP Auth.
+		    return;
+		}
+
+		// Obtain a reference to the ApplicationService and Application bean - needed in order to correctly construct the event.
+		final ApplicationService applicationService = (ApplicationService) ContainerManager.getComponent("crowdApplicationService");
+		final ApplicationDAO dao = (ApplicationDAO) ContainerManager.getComponent("embeddedCrowdApplicationDao");
+		final Application application;
+		try
+		{
+		    application = dao.findByName(EmbeddedCrowdBootstrap.APPLICATION_NAME);
+		}
+		catch (ApplicationNotFoundException e)
+		{
+		    // Do some error handling here; something is srsly wrong, for srs.
+		    return;
+		}
+
+		// Fire the event.
+		final EventPublisher eventPublisher = (EventPublisher) ContainerManager.getComponent("eventPublisher");
+		eventPublisher.publish(new UserAuthenticatedEvent(applicationService, directory, application, (com.atlassian.crowd.model.user.User) crowdUser));
 	}
 
     public Principal getUser(HttpServletRequest request, HttpServletResponse response) {
@@ -1048,9 +988,6 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
         } else {
             if (config.isUpdateInfo()) {
                 updateUser(user, fullName, emailAddress);
-
-                if (config.isUpdateLastLogin())
-                  updateLastLogin(user);
             }
         }
         
