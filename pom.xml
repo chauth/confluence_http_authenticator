@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>shibauth</groupId>
     <artifactId>remoteUserAuth</artifactId>
-    <version>2.1.1-SNAPSHOT</version>
+    <version>2.1.1</version>
     <properties>
         <confluence.version>4.1</confluence.version>
         <confluence.data.version>4.1</confluence.data.version>
