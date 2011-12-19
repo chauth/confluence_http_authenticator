@@ -154,8 +154,7 @@ public class ShibAuthConfigLoader {
             }
 
             config.setDefaultRoles(defaultRoles);
-            config.setRemoteUserHeaderName(configProps.getProperty(
-                    ShibAuthConstants.REMOTE_USER_HEADER_NAME_PROPERTY));
+            config.setRemoteUserHeaderName(configProps.getProperty(ShibAuthConstants.REMOTE_USER_HEADER_NAME_PROPERTY));
 
             if (log.isDebugEnabled()) {
                 log.debug("HTTP Header that may contain user's username set to: " + config.getRemoteUserHeaderName());
@@ -228,7 +227,10 @@ public class ShibAuthConfigLoader {
         List purgeRolesRegex = StringUtil.toListOfNonEmptyStringsDelimitedByCommaOrSemicolon(
                 configProps.getProperty(ShibAuthConstants.PURGE_ROLES));
         if (purgeRolesRegex.isEmpty()) {
-            log.debug("No roles regex specified, no roles will be purged.");
+            if (log.isDebugEnabled()) {
+                log.debug("No roles regex specified, no roles will be purged.");
+            }
+
             return;
         }
 
@@ -244,7 +246,9 @@ public class ShibAuthConfigLoader {
 
             purgeRolesGroups.add(new GroupMapper("purge-" + i, regex, null, false));
 
-            log.debug("Roles matching (" + regex + ") are to be purged.");
+            if (log.isDebugEnabled()) {
+                log.debug("Roles matching (" + regex + ") are to be purged.");
+            }
         }
 
         config.setPurgeMappings(purgeRolesGroups);
@@ -275,12 +279,21 @@ public class ShibAuthConfigLoader {
         mappers.addAll(loadMappers(ShibAuthConstants.REMOTEUSER_MAP_PREFIX, configProps, remoteuserlabels));
 
         if (mappers.isEmpty()) {
-            log.debug("No RemoteUser mapper handler defined in \"" + ShibAuthConstants.REMOTEUSER_PREFIX +
-                    "\", remoteuser will be left untouched.");
+            if (log.isDebugEnabled()) {
+                log.debug("No RemoteUser mapper handler defined in \"" + ShibAuthConstants.REMOTEUSER_PREFIX +
+                        "\", remoteuser will be left untouched.");
+            }
+
             config.setRemoteUserMappings(Collections.EMPTY_LIST);
+
             return;
         }
-        log.debug("RemoteUser mapping is defined in config, transformation of remote user will happen during login.");
+
+        if (log.isDebugEnabled()) {
+            log.debug(
+                    "RemoteUser mapping is defined in config, transformation of remote user will happen during login.");
+        }
+
         config.setRemoteUserMappings(mappers);
     }
 
@@ -308,13 +321,19 @@ public class ShibAuthConfigLoader {
         mappers.addAll(loadMappers(ShibAuthConstants.FULL_NAME_MAP_PREFIX, configProps, fullnamelabels));
 
         if (mappers.isEmpty()) {
-            log.debug("No FullName mapper handler defined in \"" + ShibAuthConstants.FULL_NAME_PREFIX +
-                    "\", full name will be left untouched.");
+            if (log.isDebugEnabled()) {
+                log.debug("No FullName mapper handler defined in \"" + ShibAuthConstants.FULL_NAME_PREFIX +
+                        "\", full name will be left untouched.");
+            }
+
             config.setFullNameMappings(Collections.EMPTY_LIST);
+
             return;
         }
 
-        log.debug("FullName mapping is defined in config, transformation of full name will happen during logins");
+        if (log.isDebugEnabled()) {
+            log.debug("FullName mapping is defined in config, transformation of full name will happen during login.");
+        }
 
         config.setFullNameMappings(mappers);
     }
@@ -324,7 +343,10 @@ public class ShibAuthConfigLoader {
 
         config.setAutoCreateGroup(Boolean.valueOf(configProps.getProperty(ShibAuthConstants.AUTO_CREATE_GROUP)).
                 booleanValue());
-        log.debug("Setting automatic creation of new group to " + config.isAutoCreateGroup());
+
+        if (log.isDebugEnabled()) {
+            log.debug("Setting automatic creation of new group to " + config.isAutoCreateGroup());
+        }
 
         // Load dynamic roles property
         // #header.dynamicroles.SHIB-EP-ENTITLEMENT=mapper1, mapper2
@@ -366,8 +388,11 @@ public class ShibAuthConfigLoader {
             mappers.addAll(loadMappers(ShibAuthConstants.ROLES_ATTRIB_PREFIX, configProps, definedMapperStrings));
 
             if (mappers.isEmpty()) {
-                log.debug("No group mapper handler defined in \"" + ShibAuthConstants.ROLES_HEADER_PREFIX + header +
-                        "\", ignoring this header.");
+                if (log.isDebugEnabled()) {
+                    log.debug("No group mapper handler defined in \"" + ShibAuthConstants.ROLES_HEADER_PREFIX + header +
+                            "\", ignoring this header.");
+                }
+
                 continue;
             }
 
@@ -387,7 +412,9 @@ public class ShibAuthConfigLoader {
                 }
             }
 
-            log.debug("Successfully loading mapper for header=" + header + ", handlers=" + sb.toString());
+            if (log.isDebugEnabled()) {
+                log.debug("Successfully loading mapper for header=" + header + ", handlers=" + sb.toString());
+            }
 
             groupMappings.put(header, mappers);
         }

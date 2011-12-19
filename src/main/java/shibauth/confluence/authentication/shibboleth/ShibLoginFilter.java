@@ -67,7 +67,10 @@ public class ShibLoginFilter extends BaseLoginFilter {
         }
 
         List interceptors = getSecurityConfig().getInterceptors(LoginInterceptor.class);
-        log.debug("ShibLoginFilter processing login request for " + userid);
+
+        if (log.isDebugEnabled()) {
+            log.debug("ShibLoginFilter processing login request for " + userid);
+        }
 
         //TODO: not sure if mapping of remote-user logic needs to worry about the userid being
         // Passed to logininterceptor.beforeLogin and the getAuthenticator().login below.

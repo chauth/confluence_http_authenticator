@@ -168,7 +168,9 @@ public class GroupMapper {
         Matcher m = p.matcher(value);
         if (!m.matches()) {
             // this has been helpful for users that are debugging their regexp
-            log.debug("Regexp '" + regex + "' did not match value='" + value + "'");
+            if (log.isDebugEnabled()) {
+                log.debug("Regexp '" + regex + "' did not match value='" + value + "'");
+            }
             return null;
         }
 
@@ -180,14 +182,19 @@ public class GroupMapper {
         }
 
         for (int i = m.groupCount(); i > 0; i--) {
-            log.debug("The group identified $" + i + "=" + m.group(i));
+            if (log.isDebugEnabled()) {
+                log.debug("The group identified $" + i + "=" + m.group(i));
+            }
+
             t = t.replaceAll("\\$" + i, m.group(i));
         }
 
         //in case someone uses $0
         t = t.replaceAll("\\$0", m.group(0));
 
-        log.debug("Converted: value=" + value + " to group=" + t);
+        if (log.isDebugEnabled()) {
+            log.debug("Converted: value=" + value + " to group=" + t);
+        }
 
         return t;
     }

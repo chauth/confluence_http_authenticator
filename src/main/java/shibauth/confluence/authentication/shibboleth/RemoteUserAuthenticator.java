@@ -171,10 +171,16 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
             long configFileLastModified = new File(config.getConfigFile()).lastModified();
 
             if (configFileLastModified != config.getConfigFileLastModified()) {
-                log.debug("Config file has been changed, reloading");
+                if (log.isDebugEnabled()) {
+                    log.debug("Config file has been changed, reloading");
+                }
+
                 config = ShibAuthConfigLoader.getShibAuthConfiguration(config);
             } else {
-                log.debug("Config file has not been changed, not reloading");
+                if (log.isDebugEnabled()) {
+                    log.debug("Config file has not been changed, not reloading");
+                }
+
                 config.setConfigFileLastChecked(System.currentTimeMillis());
             }
         }
@@ -224,7 +230,10 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
                             continue;
                         }
                     } else {
-                        log.debug("Skipping autocreation of role '" + role + "'.");
+                        if (log.isDebugEnabled()) {
+                            log.debug("Skipping autocreation of role '" + role + "'.");
+                        }
+
                         continue; //no point of attempting to allocate user
                     }
                 }
@@ -233,7 +242,10 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
                 if (crowdUser == null) {
                     log.warn("Could not find user '" + user.getName() + "' to add them to role '" + role + "'.");
                 } else if (crowdService.isUserMemberOfGroup(crowdUser, group)) {
-                    log.debug("Skipping " + user.getName() + " to role " + role + " - already a member");
+                    if (log.isDebugEnabled()) {
+                        log.debug("Skipping " + user.getName() + " to role " + role + " - already a member");
+                    }
+
                 } else {
                     try {
                         crowdService.addUserToGroup(crowdUser, group);
@@ -287,7 +299,10 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
                         if (output != null) {
                             try {
                                 if (crowdService.isUserMemberOfGroup(crowdUser, group)) {
-                                    log.debug("Removing user " + user.getName() + " from role " + role);
+                                    if (log.isDebugEnabled()) {
+                                        log.debug("Removing user " + user.getName() + " from role " + role);
+                                    }
+
                                     crowdService.removeUserFromGroup(crowdUser, group);
                                     // Only remove one group per login. Assuming this is to avoid massive delays in
                                     // login for a user removed from a lot of groups.
@@ -300,7 +315,9 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
                         }
                     }
                 } else {
-                    log.debug("Keeping role " + role + " for user " + user.getName());
+                    if (log.isDebugEnabled()) {
+                        log.debug("Keeping role " + role + " for user " + user.getName());
+                    }
                 }
             }
         }
@@ -384,27 +401,27 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
 
             if ((fullName != null) && !fullName.equals(crowdUser.getDisplayName())) {
                 if (log.isDebugEnabled()) {
-                    log.debug("updating user fullName to '" + fullName + "'");
+                    log.debug("Updating user fullName to '" + fullName + "'");
                 }
 
                 userBuilder.displayName(fullName);
                 updated = true;
             } else {
                 if (log.isDebugEnabled()) {
-                    log.debug("new user fullName is same as old one: '" + fullName + "'");
+                    log.debug("New user fullName is same as old one: '" + fullName + "'");
                 }
             }
 
             if ((emailAddress != null) && !emailAddress.equals(crowdUser.getEmailAddress())) {
                 if (log.isDebugEnabled()) {
-                    log.debug("updating user emailAddress to '" + emailAddress + "'");
+                    log.debug("Updating user emailAddress to '" + emailAddress + "'");
                 }
 
                 userBuilder.emailAddress(emailAddress);
                 updated = true;
             } else {
                 if (log.isDebugEnabled()) {
-                    log.debug("new user emailAddress is same as old one: '" + emailAddress + "'");
+                    log.debug("New user emailAddress is same as old one: '" + emailAddress + "'");
                 }
             }
 
@@ -412,8 +429,7 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
                 try {
                     crowdService.updateUser(userBuilder.toUser());
                 } catch (Throwable t) {
-                    log.error("Couldn't update user " + user.getName(),
-                            t);
+                    log.error("Couldn't update user " + user.getName(), t);
                 }
             }
         }
@@ -517,8 +533,8 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
 
             if (values != null && values.size() > 0) {
                 if (log.isDebugEnabled()) {
-                    log.debug("Original value of full name header '" + config.
-                            getFullNameHeaderName() + "' was '" + headerValue + "'");
+                    log.debug("Original value of full name header '" + config.getFullNameHeaderName() + "' was '" +
+                            headerValue + "'");
                 }
 
                 // use the first full name in the list
@@ -532,7 +548,7 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
                 }
 
                 if (log.isDebugEnabled()) {
-                    log.debug("Got fullName '" + fullName + "' for header '" + config.getFullNameHeaderName() + "'");
+                    log.debug("Got fullName '" + fullName + "' for header '" + config.getFullNameHeaderName() + "'.");
                 }
 
                 if (config.isConvertToUTF8()) {
@@ -541,20 +557,20 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
                         fullName = tmp;
                         if (log.isDebugEnabled()) {
                             log.debug("fullName converted to UTF-8 '" + fullName + "' for header '" +
-                                    config.getFullNameHeaderName() + "'");
+                                    config.getFullNameHeaderName() + "'.");
                         }
                     }
                 }
             } else {
                 if (log.isDebugEnabled()) {
-                    log.debug("user full name header name in config was null/not specified");
+                    log.debug("User full name header name in config was null/not specified.");
                 }
             }
         }
 
         if ((fullName == null) || (fullName.length() == 0)) {
             if (log.isDebugEnabled()) {
-                log.debug("User full name was null or empty. Defaulting full name to user id");
+                log.debug("User full name was null or empty. Defaulting full name to user id.");
             }
 
             fullName = userid;
@@ -606,7 +622,10 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
                             headerValue = tmp;
                         }
                     }
-                    log.debug("Processing dynamicroles header=" + headerName + ", value=" + headerValue);
+
+                    if (log.isDebugEnabled()) {
+                        log.debug("Processing dynamicroles header=" + headerName + ", value=" + headerValue);
+                    }
 
                     Collection mappers = config.getGroupMappings(headerName);
                     boolean found = false;
@@ -629,16 +648,17 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
 
                                     accumulatedRoles.add(result);
 
-                                    log.debug("Found role mapping from '" + headerValue + "' to '" + result + "'");
+                                    if (log.isDebugEnabled()) {
+                                        log.debug("Found role mapping from '" + headerValue + "' to '" + result + "'");
+                                    }
                                 }
                                 found = true;
                             }
                         }
                     }
 
-                    if (!found) {
-                        log.debug(
-                                "No mapper capable of processing role value=" + headerValue);
+                    if (log.isDebugEnabled() && !found) {
+                        log.debug("No mapper capable of processing role value=" + headerValue);
                     }
                 }
             }
@@ -668,7 +688,7 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
         // that is off by default.
 
         if (log.isDebugEnabled()) {
-            log.debug("Request made to " + request.getRequestURL() + " triggered this AuthN check");
+            log.debug("Request made to " + request.getRequestURL() + " triggered this AuthN check.");
         }
 
         HttpSession httpSession = request.getSession();
@@ -683,7 +703,7 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
             user = (Principal) httpSession.getAttribute(ConfluenceAuthenticator.LOGGED_IN_KEY);
 
             if (log.isDebugEnabled()) {
-                log.debug(user.getName() + " already logged in, returning.");
+                log.debug("" + user.getName() + " already logged in, returning.");
             }
 
             return true;
@@ -694,15 +714,15 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
 
         if ((userid == null) || (userid.length() <= 0)) {
             if (log.isDebugEnabled()) {
-                log.debug(
-                        "Remote user was null or empty, calling super.login() to perform local login");
+                log.debug("Remote user was null or empty, calling super.login() to perform local login.");
             }
 
             // Calling super.login to try local login if username and password are set. Local login won't work if
             // ShibLoginFilter is used
             if (username != null && password != null) {
-                if (log.isDebugEnabled())
+                if (log.isDebugEnabled()) {
                     log.debug("Trying local login for user " + username);
+                }
 
                 return super.login(request, response, username, password, cookie);
             } else {
@@ -815,7 +835,7 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
      */
     public Principal getUserForAtlassianLoginFilter(HttpServletRequest request, HttpServletResponse response) {
         if (log.isDebugEnabled()) {
-            log.debug("Request made to " + request.getRequestURL() + " triggered this AuthN check");
+            log.debug("Request made to " + request.getRequestURL() + " triggered this AuthN check.");
         }
 
         HttpSession httpSession = request.getSession();
@@ -830,7 +850,7 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
             user = (Principal) httpSession.getAttribute(ConfluenceAuthenticator.LOGGED_IN_KEY);
 
             if (log.isDebugEnabled()) {
-                log.debug(user.getName() + " already logged in, returning.");
+                log.debug("" + user.getName() + " already logged in, returning.");
             }
 
             return user;
@@ -842,8 +862,7 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
 
         if ((userid == null) || (userid.length() <= 0)) {
             if (log.isDebugEnabled()) {
-                log.debug(
-                        "Remote user was null or empty, can not perform authentication");
+                log.debug("Remote user was null or empty, can not perform authentication.");
             }
 
             getEventPublisher().publish(new LoginFailedEvent(this, "NoShibUsername", httpSession.getId(), remoteHost, remoteIP));
@@ -943,7 +962,10 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
         }
 
         if (possibleRemoteUsers.isEmpty()) {
-            log.debug("Remote user is returned as is, mappers do not matched.");
+            if (log.isDebugEnabled()) {
+                log.debug("Remote user is returned as is, mappers do not matched.");
+            }
+
             return originalRemoteuser;
         }
 
@@ -966,26 +988,35 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
         while (it.hasNext()) {
             String replaceFromRegex = it.next().toString();
 
-            //someone didn't fill up pair-wise entry, ignore this regex
+            // Someone didn't fill up pair-wise entry, ignore this regex.
             if (!it.hasNext()) {
-                if (replaceFromRegex.length() != 0)
-                    log.debug("Character replacements specified for Remote User regex is incomplete, make sure the entries are pair-wise, skipping...");
+                if (replaceFromRegex.length() != 0) {
+                    if (log.isDebugEnabled()) {
+                        log.debug("Character replacements specified for Remote User regex is incomplete, make sure the entries are pair-wise, skipping...");
+                    }
+                }
                 break;
             }
 
             String replacement = it.next().toString();
 
-            //we are not going to replace empty string, so skip it
+            // We are not going to replace empty string, so skip it.
             if (replaceFromRegex.length() == 0) {
-                log.debug("Empty string is found in Remote User replaceFrom regex, skipping...");
+                if (log.isDebugEnabled()) {
+                    log.debug("Empty string is found in Remote User replaceFrom regex, skipping...");
+                }
+
                 continue;
             }
 
             try {
                 remoteUser = remoteUser.replaceAll(replaceFromRegex, replacement);
-            } catch (Exception e) {
-                log.warn("Fail to replace certain character entries in \"Remote User\" matching regex=\"" + replaceFromRegex + "\", ignoring...");
-                log.debug("Fail to replace certain character entries in Remote User", e);
+            } catch (Throwable t) {
+                log.warn("Failed to replace certain character entries in \"Remote User\" matching regex=\"" + replaceFromRegex + "\", ignoring...");
+
+                if (log.isDebugEnabled()) {
+                    log.debug("Failed to replace certain character entries in Remote User", t);
+                }
             }
         }
         return remoteUser;
@@ -1008,7 +1039,10 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
         }
 
         if (possibleFullNames.isEmpty()) {
-            log.debug("Full Name header value returned. Mappers do not match, so will use first value in list.");
+            if (log.isDebugEnabled()) {
+                log.debug("Full Name header value returned. Mappers do not match, so will use first value in list.");
+            }
+
             return (String) values.get(0);
         }
 
@@ -1033,8 +1067,11 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
             // Someone didn't fill up pair-wise entry, ignore this regex.
             if (!it.hasNext()) {
                 if (replaceFromRegex.length() != 0) {
-                    log.debug("Character replacements specified for Full Name regex is incomplete, make sure the entries are pair-wise, skipping...");
+                    if (log.isDebugEnabled()) {
+                        log.debug("Character replacements specified for Full Name regex is incomplete, make sure the entries are pair-wise, skipping...");
+                    }
                 }
+
                 break;
             }
 
@@ -1042,7 +1079,10 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
 
             // We are not going to replace empty string, so skip it.
             if (replaceFromRegex.length() == 0) {
-                log.debug("Empty string is found in Full Name replaceFrom regex, skipping...");
+                if (log.isDebugEnabled()) {
+                    log.debug("Empty string is found in Full Name replaceFrom regex, skipping...");
+                }
+
                 continue;
             }
 
@@ -1071,7 +1111,7 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
     public Principal getUserForShibLoginFilter(HttpServletRequest request, HttpServletResponse response) {
         // If using ShibLoginFilter, see SHBL-24 - Authentication with local accounts should be supported
         if (log.isDebugEnabled()) {
-            log.debug("Request made to " + request.getRequestURL() + " triggered this AuthN2 check");
+            log.debug("Request made to " + request.getRequestURL() + " triggered this AuthN check (2).");
         }
 
         HttpSession httpSession = request.getSession(false);
@@ -1082,7 +1122,7 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
             user = (Principal) httpSession.getAttribute(ConfluenceAuthenticator.LOGGED_IN_KEY);
 
             if (log.isDebugEnabled()) {
-                log.debug(user.getName() + " already logged in, returning.");
+                log.debug("" + user.getName() + " already logged in, returning.");
             }
 
             return user;
