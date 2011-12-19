@@ -29,13 +29,7 @@
 
 package shibauth.confluence.authentication.shibboleth;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class ShibAuthConfiguration {
 
@@ -45,7 +39,8 @@ public class ShibAuthConfiguration {
      */
     private Collection remoteUserMappings = new ArrayList();
 
-    /** Contains lists of character replacements that need to be
+    /**
+     * Contains lists of character replacements that need to be
      * applied to remote user. The list is processed pair-wise.
      * Null (empty) is permitted in the list, which means
      * the matched character will be removed from remote user
@@ -58,7 +53,8 @@ public class ShibAuthConfiguration {
      */
     private Collection fullNameMappings = new ArrayList();
 
-    /** Contains lists of character replacements that need to be
+    /**
+     * Contains lists of character replacements that need to be
      * applied to full name. The list is processed pair-wise.
      * Null (empty) is permitted in the list, which means
      * the matched character will be removed from full name
@@ -72,7 +68,9 @@ public class ShibAuthConfiguration {
      */
     private Map groupMappings = new HashMap();
 
-    /** list of all mappers that should be doing the purging */
+    /**
+     * list of all mappers that should be doing the purging
+     */
     private List purgeMappings = new ArrayList();
 
     /**
@@ -169,8 +167,9 @@ public class ShibAuthConfiguration {
     /**
      * Should this pluggin try to create new groups as indicated
      * by IdP (when the group value is non-existent in confluence)
+     *
      * @param autoCreateGroup if true then new groups will be automatically
-     * created in confluence, otherwise they will be ignored
+     *                        created in confluence, otherwise they will be ignored
      */
     public void setAutoCreateGroup(boolean autoCreateGroup) {
         this.autoCreateGroup = autoCreateGroup;
@@ -184,6 +183,7 @@ public class ShibAuthConfiguration {
      * Given the key (header, e.g. SHIB-EP-ENTITLEMENT),
      * return back the active group mappings that
      * can handle the key
+     *
      * @param key string to represent header
      * @return group mappers registered to handle the key
      */
@@ -213,59 +213,63 @@ public class ShibAuthConfiguration {
         return purgeMappings;
     }
 
-    public Collection getRemoteUserMappings(){
+    public Collection getRemoteUserMappings() {
         return remoteUserMappings;
     }
-    public void setRemoteUserMappings(Collection mappings){
+
+    public void setRemoteUserMappings(Collection mappings) {
         remoteUserMappings.clear();
         remoteUserMappings.addAll(mappings);
     }
 
-    public void setRemoteUserReplacementChars(List replacements){
+    public void setRemoteUserReplacementChars(List replacements) {
         remoteUserReplacementChars.clear();
         remoteUserReplacementChars.addAll(replacements);
     }
 
-    /** Iterator HAS to be processed pair-wise (e.g. entry 1 & 2)
+    /**
+     * Iterator HAS to be processed pair-wise (e.g. entry 1 & 2)
      * where entry 1 is the chars to be replaced (regex) and
      * entry 2 is the replacement for it <bold>non-regex</bold>
      * (null means total deletion).
      *
      * @return pair-wise iterator of replacement regex
      */
-    public Iterator getRemoteUserReplacementChars(){
+    public Iterator getRemoteUserReplacementChars() {
         return remoteUserReplacementChars.iterator();
     }
 
-    public Collection getFullNameMappings(){
+    public Collection getFullNameMappings() {
         return fullNameMappings;
     }
-    public void setFullNameMappings(Collection mappings){
+
+    public void setFullNameMappings(Collection mappings) {
         fullNameMappings.clear();
         fullNameMappings.addAll(mappings);
     }
 
-    public void setFullNameReplacementChars(List replacements){
+    public void setFullNameReplacementChars(List replacements) {
         fullNameReplacementChars.clear();
         fullNameReplacementChars.addAll(replacements);
     }
 
-    /** Iterator HAS to be processed pair-wise (e.g. entry 1 & 2)
+    /**
+     * Iterator HAS to be processed pair-wise (e.g. entry 1 & 2)
      * where entry 1 is the chars to be replaced (regex) and
      * entry 2 is the replacement for it <bold>non-regex</bold>
      * (null means total deletion).
      *
      * @return pair-wise iterator of replacement regex
      */
-    public Iterator getFullNameReplacementChars(){
+    public Iterator getFullNameReplacementChars() {
         return fullNameReplacementChars.iterator();
     }
 
-    public void setOutputToLowerCase(boolean outputToLowerCase){
+    public void setOutputToLowerCase(boolean outputToLowerCase) {
         this.outputToLowerCase = outputToLowerCase;
     }
 
-    public boolean isOutputToLowerCase(){
+    public boolean isOutputToLowerCase() {
         return outputToLowerCase;
     }
 
@@ -402,11 +406,12 @@ public class ShibAuthConfiguration {
      * with 'prefix'.
      *
      * @param strings complete lists of all strings
-     * @param prefix the prefix that we're looking for in a string
+     * @param prefix  the prefix that we're looking for in a string
      * @return subset of strings that started with the given prefix
      */
     public List listPostfixes(String[] strings, String prefix) {
         List list = new ArrayList();
+
         for (int i = 0; i < strings.length; i++) {
             if (strings[i].startsWith(prefix)) {
                 String header = strings[i].substring(prefix.length());

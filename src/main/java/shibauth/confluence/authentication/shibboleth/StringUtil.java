@@ -33,11 +33,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 
 public class StringUtil {
@@ -50,8 +46,8 @@ public class StringUtil {
     private final static String SEPARATOR = "[,;]";
 
     public static List toListOfNonEmptyStringsDelimitedByCommaOrSemicolon(String s) {
-        if(s == null) return Collections.EMPTY_LIST;
-        
+        if (s == null) return Collections.EMPTY_LIST;
+
         List results = new ArrayList();
 
         String[] terms = s.split(SEPARATOR);
@@ -62,66 +58,78 @@ public class StringUtil {
                 results.add(term);
             }
         }
+
         return results;
     }
+
     /**
      * This version returns the complete list, including empty string, if such entry is empty
+     *
      * @param s input string delimited by comma or semicolon
      * @return list of strings where deliminators are stripped off. if no content
-     * is found between 2 delimitors then empty string is returned in its place
+     *         is found between 2 delimitors then empty string is returned in its place
      */
     public static List toListOfStringsDelimitedByCommaOrSemicolon(String s) {
-        if(s == null) return Collections.EMPTY_LIST;
+        if (s == null) {
+            return Collections.EMPTY_LIST;
+        }
 
         List results = new ArrayList();
-
         String[] terms = s.split(SEPARATOR);
 
         for (int i = 0; i < terms.length; i++) {
+            //this has empty string if nothing is found
             String term = terms[i].trim();
-                results.add(term);  //this has empty string if nothing is found
+            results.add(term);
         }
+
         return results;
     }
 
-    // PLEASE DO NOT CHANGE THIS METHOD WITHOUT GETTING AGREEMENT FROM JUHA OJALUOMA AND
-    // ERKKI AALTO. THIS METHOD WAS CONTRIBUTED BY HELSINKI IN BOTH SHBL-5 AND AGAIN IN
-    // SHBL-29.
+    // PLEASE DO NOT CHANGE THIS METHOD WITHOUT GETTING AGREEMENT FROM JUHA OJALUOMA AND ERKKI AALTO. THIS METHOD WAS
+    // CONTRIBUTED BY HELSINKI IN BOTH SHBL-5 AND AGAIN IN SHBL-29.
     public static String convertToUTF8(String s) {
         String converted = null;
+
         if (s != null) {
             byte[] bytes = new byte[s.length()];
+
             for (int i = 0; i < s.length(); i++) {
                 bytes[i] = (byte) s.charAt(i);
             }
-            
+
             try {
                 converted = new String(bytes, "UTF-8");
                 if (log.isDebugEnabled()) {
                     log.debug("Converted '" + s + "' to UTF-8 '" + converted + "'.");
                 }
-            }
-            catch (UnsupportedEncodingException ue) {
+            } catch (UnsupportedEncodingException ue) {
                 log.error("Unable to set UTF-8 character encoding for string '" + s + "'!", ue);
             }
         }
-        
+
         return converted;
     }
-    
+
     /**
      * Check if the collection has toCheck str in it, ignoring case sensitivity
+     *
      * @param strings collection of strings
      * @param toCheck the one to be checked
      * @return
      */
-    public static boolean containsStringIgnoreCase(Collection strings,String toCheck){
-        if(toCheck == null) return false;
-
-        //TODO: any better way of doing this comparison?
-        for(Iterator it = strings.iterator(); it.hasNext();){
-            if(toCheck.equalsIgnoreCase((String)it.next())) return true;
+    public static boolean containsStringIgnoreCase(Collection strings, String toCheck) {
+        if (toCheck == null) {
+            return false;
         }
+
+        //TODO: Find better way of doing this comparison.
+        for (Iterator it = strings.iterator(); it.hasNext(); ) {
+            if (toCheck.equalsIgnoreCase((String) it.next())) {
+                return true;
+            }
+        }
+
         return false;
     }
 }

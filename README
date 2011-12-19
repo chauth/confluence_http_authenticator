@@ -4,7 +4,8 @@ README for Shibboleth Authenticator for Confluence
 Documentation and main page at:
 https://studio.plugins.atlassian.com/wiki/display/SHBL/Confluence+Shibboleth+Authenticator
 
-Build assumes Java 6, Maven 3, and Atlassian SDK is installed.
+Build assumes Java 6, Maven 3. Atlassian SDK does not need to be installed, as it is an authenticator jar loaded on
+classpath, not a plugin, nor can it or should it be, even in Confluence 4.x.
 
 To get a developer account to contribute to the project, submit a bug in our Jira http://developer.atlassian.com/jira/browse/SHBL and then say you'd like to become a contributor, and also comment on the project's wiki page. If you don't get a response within a month, consider that it is ok to start development.
 
@@ -12,7 +13,7 @@ If you want to get a svn account with Atlassian email developer-relations@atlass
 
 For larger changes, you'd want to email the group to get an ok, in which case let use know and we can provide you with some email addresses of the group. The group may be composed of more guys than currently listed on the wiki page, because the list was lost during Atlassian's transition to plugins.atlassian.com. But can be seen via svn log, pom.xml, and release notes in the wiki. Mostly all of us are just contributors and only a few of us have spent much time with it after Chad LaJoie let us continue its development.
 
-Releases are kept here, mostly because we don't use Atlassian's automated plugin installation process:
+Releases are kept here, mostly because we cannot use Atlassian's automated plugin installation process:
 https://studio.plugins.atlassian.com/svn/SHBL/releases
 
 Tags are here:
@@ -25,9 +26,14 @@ https://studio.plugins.atlassian.com/svn/SHBL/trunk
 
 To build, type:
 
-    atlas-mvn clean install
+    mvn clean install
 
-When committing, please try to include a Jira ticket number when possible in the beginning on the comment (e.g. svn commit -m "SHBL-12345 - Added developer to pom.xml"). This is most important for reviewing svn log to come up with release notes later (but it can also allow you to see commits associated with a ticket within Jira). Take a look at the wiki page above to see what release notes look like (they are a bit messy, but hopefully you see some ticket numbers and references to what was fixed).
+When committing, please try to include a Jira ticket number when possible in the beginning on the comment, e.g.:
+
+    svn commit -m "SHBL-12345 - Added developer to pom.xml"
+
+That is very important for reviewing svn log to come up with release notes later, so please don't commit without a
+ticket number.
 
 To release a new version:
 
@@ -39,8 +45,9 @@ To release a new version:
 
     svn copy --username (yourusername) https://studio.plugins.atlassian.com/svn/SHBL/trunk/ https://studio.plugins.atlassian.com/svn/SHBL/tags/(new version) -m "Tagging (new version)"
 
-example for tagging 1.7.1:
-svn copy --username your-atlassian-svn-username-goes-here https://studio.plugins.atlassian.com/svn/SHBL/trunk/ https://studio.plugins.atlassian.com/svn/SHBL/tags/1.7.1 -m "Tagging 1.7.1"
+Example for tagging 1.7.1:
+
+    svn copy --username your-atlassian-svn-username-goes-here https://studio.plugins.atlassian.com/svn/SHBL/trunk/ https://studio.plugins.atlassian.com/svn/SHBL/tags/1.7.1 -m "Tagging 1.7.1"
 
 4) Checkout or update tags dir and go there and edit pom.xml to change version to remove "-SNAPSHOT" from project version:
 
@@ -51,9 +58,11 @@ svn copy --username your-atlassian-svn-username-goes-here https://studio.plugins
 
 (remove -SNAPSHOT from project version)
 
-    svn commit
+    svn commit -m "updated version to (version number)"
 
-(commit message should be something like "updating version")
+For example, in 1.7.1 we would do:
+
+    svn commit -m "updated version to 1.7.1"
 
 While you're in here, do an svn log and try to determine what changed since the last release that is important enough to include in the release notes. Save this somewhere for reference in later steps.
 
@@ -69,16 +78,27 @@ While you're in here, do an svn log and try to determine what changed since the 
 
 (commit message should be something like "releasing (version number)")
 
-6) Change the wiki page to list the new version, release info and change the information on current version at top:
-https://studio.plugins.atlassian.com/wiki/display/SHBL/Confluence+Shibboleth+Authenticator
+For example, in 1.7.1 we would do:
 
-7) Add release to https://plugins.atlassian.com/manage/plugin/4863
+    svn commit -m "releasing 1.7.1"
 
-8) Update version number in pom.xml in trunk to the next snapshot version (just increment the build version, so 1.7-SNAPSHOT becomes 1.7.1-SNAPSHOT or if is already has a third number (build version) then increment it so that 1.7.9-SNAPSHOT becomes 1.7.10-SNAPSHOT)
+6) Change the wiki page to list the new version, release info, and change the information on current version at top:
+
+    https://studio.plugins.atlassian.com/wiki/display/SHBL/Confluence+Shibboleth+Authenticator
+
+7) Add release to:
+
+    https://plugins.atlassian.com/manage/plugin/4863
+
+8) Update version number in pom.xml in trunk to the next snapshot version. Just increment the build version, so
+   1.7-SNAPSHOT becomes 1.7.1-SNAPSHOT or if is already has a third number (build version) then increment it so that
+   1.7.9-SNAPSHOT becomes 1.7.10-SNAPSHOT. Bug fixes are using a build version (third number) increment, API changes
+   are usually a minor version change, and major changes in how the plugin works that are likely incompatible with
+   previous versions are major version change.
 
 9) For the Jira project do the following:
 
-* Go to http://developer.atlassian.com/jira/browse/SHBL
+* Go to https://studio.plugins.atlassian.com/browse/SHBL
 * Administer Project
 * Manage Versions
 * Copy/paste text from release info on page into description and set release date to release date
@@ -90,9 +110,4 @@ https://studio.plugins.atlassian.com/wiki/display/SHBL/Confluence+Shibboleth+Aut
 
 Troubleshooting:
 
-If you aren't using Java 6, it will produce the error:
-[INFO] ------------------------------------------------------------------------
-[ERROR] BUILD ERROR
-[INFO] ------------------------------------------------------------------------
-[INFO] Internal error in the plugin manager executing goal 'com.atlassian.maven.plugins:maven-confluence-plugin:3.3:copy-bundled-dependencies': Unable to find the mojo 'copy-bundled-dependencies' (or one of its required components) in the plugin 'com.atlassian.maven.plugins:maven-confluence-plugin'
-Bad version number in .class file
+Be sure to build with Java 6.

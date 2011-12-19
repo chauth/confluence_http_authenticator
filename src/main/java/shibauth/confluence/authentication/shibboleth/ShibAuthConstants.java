@@ -35,8 +35,7 @@ public class ShibAuthConstants {
     /**
      * Location of configuration file on classpath
      */
-    public final static String PROPERTIES_FILE =
-        "/remoteUserAuthenticator.properties";
+    public final static String PROPERTIES_FILE = "/remoteUserAuthenticator.properties";
 
     /**
      * create.user init parameter name
@@ -76,56 +75,49 @@ public class ShibAuthConstants {
     /**
      * Name of full name header property
      */
-    public final static String FULLNAME_HEADER_NAME_PROPERTY =
-        "header.fullname";
+    public final static String FULLNAME_HEADER_NAME_PROPERTY = "header.fullname";
 
     /**
      * Name of username case conversion property
      */
-    public final static String USERNAME_CASE_CONVERT_PROPERTY =
-        "username.convertcase";
+    public final static String USERNAME_CASE_CONVERT_PROPERTY = "username.convertcase";
 
     /**
      * Prefix to be used for remote-user label
-     *
+     * <p/>
      * See #REMOTEUSER_PREFIX
      */
-    public final static String REMOTEUSER_PREFIX =
-        "remoteuser";
+    public final static String REMOTEUSER_PREFIX = "remoteuser";
 
     /**
      * Prefix to be used for remote-user replacement list
-     *
+     * <p/>
      * See #REMOTEUSER_REPLACEMENT
      */
-    public final static String REMOTEUSER_REPLACEMENT =
-        "remoteuser.replace";
+    public final static String REMOTEUSER_REPLACEMENT = "remoteuser.replace";
 
     /**
      * Prefix to be used for remote-user mapping i.e.
      * remoteuser.map.LABEL1.match=regex
-     *
+     * <p/>
      * See #REMOTEUSER_MAP_PREFIX
      */
-    public final static String REMOTEUSER_MAP_PREFIX =
-        "remoteuser.map.";
+    public final static String REMOTEUSER_MAP_PREFIX = "remoteuser.map.";
 
     /**
      * Prefix to be used for mapping of different roles. i.e.
      * dynamicroles.header.SHIB-EP-ENTITLEMENT=label1, label2
-     *
+     * <p/>
      * See #ROLES_ATTRIB_PREFIX
      */
-    public final static String ROLES_HEADER_PREFIX =
-        "dynamicroles.header.";
+    public final static String ROLES_HEADER_PREFIX = "dynamicroles.header.";
 
     /**
      * Convert all groups output into lowercase before creating them in
      * confluence. This is useful to handle confluence's bug of not allowing
      * group names to be in uppercase
      */
-    public final static String ROLES_OUTPUT_TOLOWER =
-        "dynamicroles.output.tolowercase";
+    public final static String ROLES_OUTPUT_TOLOWER = "dynamicroles.output.tolowercase";
 
     /**
      * Prefix to be used for mapping of different roles. i.e.
@@ -154,36 +146,37 @@ public class ShibAuthConstants {
      */
     public final static String UPDATE_LAST_LOGIN_DATE = "update.last.login.date";
 
-    /** update.roles init parameter name */
+    /**
+     * update.roles init parameter name
+     */
     public final static String UPDATE_ROLES = "update.roles";
 
-    /** convert.to.utf8 init parameter name */
+    /**
+     * convert.to.utf8 init parameter name
+     */
     public final static String CONVERT_TO_UTF8 = "convert.to.utf8";
 
     public final static String USING_SHIB_LOGIN_FILTER = "using.shib.login.filter";
 
     /**
      * Prefix to be used for remote-user label
-     *
+     * <p/>
      * See #FULL_NAME_PREFIX
      */
-    public final static String FULL_NAME_PREFIX =
-        "fullname";
+    public final static String FULL_NAME_PREFIX = "fullname";
 
     /**
      * Prefix to be used for remote-user replacement list
-     *
+     * <p/>
      * See #FULL_NAME_REPLACEMENT
      */
-    public final static String FULL_NAME_REPLACEMENT =
-        "fullname.replace";
+    public final static String FULL_NAME_REPLACEMENT = "fullname.replace";
 
     /**
      * Prefix to be used for remote-user mapping i.e.
      * fullname.map.LABEL1.match=regex
-     *
+     * <p/>
      * See #FULL_NAME_MAP_PREFIX
      */
-    public final static String FULL_NAME_MAP_PREFIX =
-        "fullname.map.";
+    public final static String FULL_NAME_MAP_PREFIX = "fullname.map.";
 }

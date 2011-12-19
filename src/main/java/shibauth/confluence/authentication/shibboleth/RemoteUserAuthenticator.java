@@ -28,6 +28,7 @@
  */
 
 /*
+ * See source control logs and revision history for further detail of changes.
  * Modified 2009-09-29 call super.login() if REMOTE_USER wasn't set to enable local Confluence login (SHBL-24) [Juhani Gurney]
  * Modified 2009-01-22 to make use of ShibLoginFilter (SHBL-16), make updateLastLogin as optional [Bruc Liong]
  * Modified 2009-01-05 to revamp the mapping processing mechanism to handle regex, purging roles, etc (SHBL-6) [Bruc Liong]
@@ -35,58 +36,39 @@
  * Modified 2008-07-29 to fix UTF-8 encoding [Helsinki University], made UTF-8 fix optional [Duke University]
  * Modified 2008-01-07 to add role mapping from shibboleth attribute (role) to confluence group membership. [Macquarie University - MELCOE - MAMS], refactor config loading, constants, utility method, and added configuration VO [Duke University]
  * Modified 2007-05-21 additional checks/logging and some small refactoring. Changed to use UserAccessor so should work with Confluence 2.3+ [Duke University]
- * Original version by Georgetown University. Original version (v1.0) can be found here: https://svn.middleware.georgetown.edu/confluence/remoteAuthn
+ * Original version by Georgetown University. Original version (v1.0) from: https://svn.middleware.georgetown.edu/confluence/remoteAuthn
  */
 
 package shibauth.confluence.authentication.shibboleth;
 
-import com.atlassian.spring.container.ContainerManager;
-
-//~--- JDK imports ------------------------------------------------------------
-import com.atlassian.confluence.user.ConfluenceAuthenticator;
-import com.atlassian.crowd.embedded.impl.ImmutableUser;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
-import com.atlassian.user.EntityException;
-import com.atlassian.user.GroupManager;
 import com.atlassian.confluence.event.events.security.LoginEvent;
 import com.atlassian.confluence.event.events.security.LoginFailedEvent;
+import com.atlassian.confluence.user.ConfluenceAuthenticator;
 import com.atlassian.confluence.user.UserAccessor;
-import com.atlassian.confluence.user.UserPreferencesKeys;
 import com.atlassian.confluence.user.crowd.EmbeddedCrowdBootstrap;
 import com.atlassian.crowd.dao.application.ApplicationDAO;
-import com.atlassian.crowd.embedded.api.CrowdDirectoryService;
-import com.atlassian.crowd.embedded.api.CrowdService;
-import com.atlassian.crowd.embedded.api.Directory;
-import com.atlassian.crowd.embedded.api.DirectoryType;
-import com.atlassian.crowd.embedded.api.Group;
-import com.atlassian.crowd.embedded.api.User;
+import com.atlassian.crowd.embedded.api.*;
+import com.atlassian.crowd.embedded.impl.ImmutableUser;
 import com.atlassian.crowd.event.user.UserAuthenticatedEvent;
 import com.atlassian.crowd.exception.ApplicationNotFoundException;
 import com.atlassian.crowd.manager.application.ApplicationService;
 import com.atlassian.crowd.model.application.Application;
 import com.atlassian.event.api.EventPublisher;
 import com.atlassian.seraph.auth.AuthenticatorException;
+import com.atlassian.spring.container.ContainerManager;
 import com.atlassian.user.search.page.Pager;
-import com.opensymphony.module.propertyset.PropertyException;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
+import javax.servlet.ServletRequestWrapper;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import javax.servlet.ServletRequestWrapper;
-import java.security.Principal;
 import java.io.File;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Enumeration;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
-import java.util.Date;
+import java.security.Principal;
+import java.util.*;
 
-import org.springframework.beans.factory.annotation.Autowired;
+//~--- JDK imports ------------------------------------------------------------
 
 /**
  * An authenticator that uses the REMOTE_USER header as proof of authentication.
@@ -115,18 +97,18 @@ import org.springframework.beans.factory.annotation.Autowired;
  * carry the email address for the user</li>
  * <li><strong>header.remote_user</strong> - The name of the HTTP header that will
  * carry the username</li>
- *
+ * <p/>
  * <li><strong>username.convertcase</strong> - Indicates whether usernames
  * should be converted to lowercase before use</li>
- *
+ * <p/>
  * <li><strong>update.roles</strong> - Indicates whether the existing accounts
  * should have their roles updated based on the header information. note: old
  * roles are not removed if the header doesn't contain it. (Acceptable values:
  * true/false. Default to false)</li>
- *
+ * <p/>
  * <li><strong>dynamicroles.auto_create_role</strong> - should new roles be
  * automatically created in confluence (and users assigned to it). Default to false
- *
+ * <p/>
  * <li><strong>dynamicroles.header.XXX</strong> - XXX is the name of the
  * HTTP header that will carry user's role information. Lists the mapper
  * names that are supposed to handle these roles. Mapper labels separated by
@@ -157,38 +139,23 @@ import org.springframework.beans.factory.annotation.Autowired;
  */
 public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
 
-    //~--- static fields ------------------------------------------------------
-    /**
-     * Serial version UID
-     */
     private static final long serialVersionUID = -5608187140008286795L;
-    /**
-     * Logger
-     */
-    private final static Log log =
-        LogFactory.getLog(RemoteUserAuthenticator.class);
+    private final static Log log = LogFactory.getLog(RemoteUserAuthenticator.class);
     private static ShibAuthConfiguration config;
 
-    //~--- static initializers ------------------------------------------------
-    /**
-     * Initialize properties from property file
-     */
-
-
+    // Initialize properties from property file
     static {
-        //TODO: use UI to configure if possible
-        //TODO: use Spring to configure config loader, etc.
-
         config = ShibAuthConfigLoader.getShibAuthConfiguration(null);
     }
 
     public RemoteUserAuthenticator() {
         // SHBL-48/CONF-22266 - Authenticators in Confluence 3.5:
         // * Cannot have Atlassian beans injected via Spring (see comment late in CONF-22266)
-        // * Authenticators must be classloaded and cannot be Atlassian plugins v1 or v2 (see comment late in CONF-22266), so
-        //   neither setter nor constructor injection of GroupManager and CrowdService would work.
-        // * Can only get bean instances using ContainerManager after the beans have been constructed, so cannot be done here in constructor.
-	}
+        // * Authenticators must be classloaded and cannot be Atlassian plugins v1 or v2 (see comment late in
+        // CONF-22266), so neither setter nor constructor injection of CrowdService instance would work.
+        // * Can only get bean instances using ContainerManager after the beans have been constructed, so cannot be done
+        // here in constructor.
+    }
 
     /**
      * Check if the configuration file should be reloaded and reload the configuration.
@@ -196,13 +163,12 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
     private void checkReloadConfig() {
 
         if (config.isReloadConfig() && (config.getConfigFile() != null)) {
-            if (System.currentTimeMillis() < config.getConfigFileLastChecked() + config.
-                getReloadConfigCheckInterval()) {
+            if (System.currentTimeMillis() < config.getConfigFileLastChecked() +
+                    config.getReloadConfigCheckInterval()) {
                 return;
             }
 
-            long configFileLastModified = new File(config.getConfigFile()).
-                lastModified();
+            long configFileLastModified = new File(config.getConfigFile()).lastModified();
 
             if (configFileLastModified != config.getConfigFileLastModified()) {
                 log.debug("Config file has been changed, reloading");
@@ -214,8 +180,6 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
         }
     }
 
-
-    //~--- methods ------------------------------------------------------------
     /**
      * Assigns a user to the roles.
      *
@@ -233,13 +197,13 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
 
             String role;
             Group group;
-            
-            CrowdService crowdService = getCrowdService();
-			if (crowdService==null) {
-				throw new RuntimeException("crowdService was not wired in RemoteUserAuthenticator");
-	        }
 
-            for (Iterator it = roles.iterator(); it.hasNext();) {
+            CrowdService crowdService = getCrowdService();
+            if (crowdService == null) {
+                throw new RuntimeException("crowdService was not wired in RemoteUserAuthenticator");
+            }
+
+            for (Iterator it = roles.iterator(); it.hasNext(); ) {
                 role = it.next().toString().trim();
 
                 if (role.length() == 0) {
@@ -255,14 +219,12 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
                     if (config.isAutoCreateGroup()) {
                         try {
                             group = crowdService.addGroup(group);
-                        }
-                        catch (Throwable t) {
+                        } catch (Throwable t) {
                             log.error("Cannot create role '" + role + "'.", t);
                             continue;
                         }
                     } else {
-                        log.debug(
-                            "Skipping autocreation of role '" + role + "'.");
+                        log.debug("Skipping autocreation of role '" + role + "'.");
                         continue; //no point of attempting to allocate user
                     }
                 }
@@ -270,15 +232,12 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
                 User crowdUser = crowdService.getUser(user.getName());
                 if (crowdUser == null) {
                     log.warn("Could not find user '" + user.getName() + "' to add them to role '" + role + "'.");
-                }
-                else if (crowdService.isUserMemberOfGroup(crowdUser, group)) {
+                } else if (crowdService.isUserMemberOfGroup(crowdUser, group)) {
                     log.debug("Skipping " + user.getName() + " to role " + role + " - already a member");
-                }
-                else {
+                } else {
                     try {
                         crowdService.addUserToGroup(crowdUser, group);
-                    }
-                    catch (Throwable t) {
+                    } catch (Throwable t) {
                         log.error("Failed to add user " + user + " to role " + role + ".", t);
                     }
                 }
@@ -287,66 +246,61 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
     }
 
     /**
-     * Purge user from roles it no longer should have (based on current Shibboleth attributes).  
+     * Purge user from roles it no longer should have (based on current Shibboleth attributes).
      * Remove the user from all roles listed in purgeRoles that are not
      * included in the current list of roles the user would get assigned to
      * based on the Shibboleth attributes received.
      *
-     * @param user the user to assign to the roles.
+     * @param user        the user to assign to the roles.
      * @param rolesToKeep keep these roles, otherwise everything else
-     * mentioned in the purgeMappings can go.
+     *                    mentioned in the purgeMappings can go.
      */
     private void purgeUserRoles(Principal user, Collection rolesToKeep) {
         if ((config.getPurgeMappings().size() == 0)) {
             if (log.isDebugEnabled()) {
-                log.debug(
-                    "No roles to purge specified, not purging any roles...");
+                log.debug("No roles to purge specified, not purging any roles...");
             }
         } else {
             Pager p = null;
             if (log.isDebugEnabled()) {
                 log.debug("Purging roles from user " + user.getName());
             }
-            
-			CrowdService crowdService = getCrowdService();
-            if (crowdService==null) {
-				throw new RuntimeException("crowdService was not wired in RemoteUserAuthenticator");
-	        }
+
+            CrowdService crowdService = getCrowdService();
+            if (crowdService == null) {
+                throw new RuntimeException("crowdService was not wired in RemoteUserAuthenticator");
+            }
 
             User crowdUser = crowdService.getUser(user.getName());
-
-
             Collection purgeMappers = config.getPurgeMappings();
 
-            for (Iterator it = p.iterator(); it.hasNext();) {
+            for (Iterator it = p.iterator(); it.hasNext(); ) {
                 Group group = (Group) it.next();
                 String role = group.getName();
 
-                if (!StringUtil.containsStringIgnoreCase(rolesToKeep,role)) {
+                if (!StringUtil.containsStringIgnoreCase(rolesToKeep, role)) {
                     //run through the purgeMappers for this role
-                    for (Iterator it2 = purgeMappers.iterator(); it2.hasNext();) {
+                    for (Iterator it2 = purgeMappers.iterator(); it2.hasNext(); ) {
                         GroupMapper mapper = (GroupMapper) it2.next();
 
-                        //max only 1 group output
                         String output = mapper.process(role);
                         if (output != null) {
                             try {
                                 if (crowdService.isUserMemberOfGroup(crowdUser, group)) {
                                     log.debug("Removing user " + user.getName() + " from role " + role);
                                     crowdService.removeUserFromGroup(crowdUser, group);
+                                    // Only remove one group per login. Assuming this is to avoid massive delays in
+                                    // login for a user removed from a lot of groups.
                                     break;
                                 }
                             } catch (Throwable t) {
-                                log.error(
-                                    "Error encountered in removing user " + user.
-                                    getName() +
-                                    " from role " + role, t);
+                                log.error("Error encountered in removing user " + user.getName() + " from role " + role,
+                                        t);
                             }
                         }
                     }
                 } else {
-                    log.debug("Keeping role " + role + " for user " + user.
-                        getName());
+                    log.debug("Keeping role " + role + " for user " + user.getName());
                 }
             }
         }
@@ -388,51 +342,47 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
                 // Note: just catching EntityException like we used to do didn't
                 // seem to cover Confluence massive with Oracle
                 if (log.isDebugEnabled()) {
-                    log.debug(
-                        "Error creating user " + userid + ". Will ignore and try to get the user (maybe it was already created)",
-                        t);
+                    log.debug("Error creating user " + userid +
+                            ". Will ignore and try to get the user (maybe it was already created)", t);
                 }
 
                 user = getUser(userid);
 
                 if (user == null) {
-                    log.error(
-                        "Error creating user " + userid + ". Got null user after attempted to create user (so it probably was not a duplicate).",
-                        t);
+                    log.error("Error creating user " + userid +
+                            ". Got null user after attempted to create user (so it probably was not a duplicate).",
+                            t);
                 }
             }
         } else {
             if (log.isDebugEnabled()) {
-                log.debug(
-                    "Configuration does NOT allow for creation of new user accounts, authentication will fail for " + userid);
+                log.debug("Configuration does NOT allow creation of new user accounts, authentication will fail for " +
+                        userid);
             }
         }
 
         return user;
     }
 
-    private void updateUser(Principal user, String fullName,
-        String emailAddress) {
-
+    private void updateUser(Principal user, String fullName, String emailAddress) {
         // If we have new values for name or email, update the user object
         if (user != null) {
             boolean updated = false;
 
             CrowdService crowdService = getCrowdService();
-            if (crowdService==null) {
-				throw new RuntimeException("crowdService was not wired in RemoteUserAuthenticator");
-	        }
+            if (crowdService == null) {
+                throw new RuntimeException("crowdService was not wired in RemoteUserAuthenticator");
+            }
             User crowdUser = crowdService.getUser(user.getName());
             ImmutableUser.Builder userBuilder = new ImmutableUser.Builder();
-            // clone the user before making mods
+            // Have to clone the user before making mods.
             userBuilder.active(crowdUser.isActive());
             userBuilder.directoryId(crowdUser.getDirectoryId());
             userBuilder.displayName(crowdUser.getDisplayName());
             userBuilder.emailAddress(crowdUser.getEmailAddress());
             userBuilder.name(crowdUser.getName());
 
-            if ((fullName != null) && !fullName.equals(
-                crowdUser.getDisplayName())) {
+            if ((fullName != null) && !fullName.equals(crowdUser.getDisplayName())) {
                 if (log.isDebugEnabled()) {
                     log.debug("updating user fullName to '" + fullName + "'");
                 }
@@ -441,23 +391,20 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
                 updated = true;
             } else {
                 if (log.isDebugEnabled()) {
-                    log.debug(
-                        "new user fullName is same as old one: '" + fullName + "'");
+                    log.debug("new user fullName is same as old one: '" + fullName + "'");
                 }
             }
 
             if ((emailAddress != null) && !emailAddress.equals(crowdUser.getEmailAddress())) {
                 if (log.isDebugEnabled()) {
-                    log.debug(
-                        "updating user emailAddress to '" + emailAddress + "'");
+                    log.debug("updating user emailAddress to '" + emailAddress + "'");
                 }
 
                 userBuilder.emailAddress(emailAddress);
                 updated = true;
             } else {
                 if (log.isDebugEnabled()) {
-                    log.debug(
-                        "new user emailAddress is same as old one: '" + emailAddress + "'");
+                    log.debug("new user emailAddress is same as old one: '" + emailAddress + "'");
                 }
             }
 
@@ -466,33 +413,27 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
                     crowdService.updateUser(userBuilder.toUser());
                 } catch (Throwable t) {
                     log.error("Couldn't update user " + user.getName(),
-                        t);
+                            t);
                 }
             }
         }
     }
 
-    //~--- get methods --------------------------------------------------------
     private String getLoggedInUser(HttpServletRequest request) {
         String remoteUser = null;
 
-        if (config.getRemoteUserHeaderName()!=null) {
-
-            // assumes it is first value in list, if header is defined multiple times. Otherwise would need to call getHeaders()
+        if (config.getRemoteUserHeaderName() != null) {
             String headerValue = request.getHeader(config.getRemoteUserHeaderName());
-
             // the Shibboleth SP sends multiple values as single value, separated by comma or semicolon
-            List values = StringUtil.
-                toListOfNonEmptyStringsDelimitedByCommaOrSemicolon(headerValue);
+            List values = StringUtil.toListOfNonEmptyStringsDelimitedByCommaOrSemicolon(headerValue);
 
             if (values != null && values.size() > 0) {
-
-                // use the first in the list
+                // use the first in the list, if header is defined multiple times. Otherwise should call getHeaders().
                 remoteUser = (String) values.get(0);
 
                 if (log.isDebugEnabled()) {
-                    log.debug("Got remoteUser '" + remoteUser + "' for header '" + config.
-                        getRemoteUserHeaderName() + "'");
+                    log.debug("Got remoteUser '" + remoteUser + "' for header '" + config.getRemoteUserHeaderName() +
+                            "'");
                 }
 
                 if (config.isConvertToUTF8()) {
@@ -501,14 +442,13 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
                         remoteUser = tmp;
                         if (log.isDebugEnabled()) {
                             log.debug("remoteUser converted to UTF-8 '" + remoteUser + "' for header '" + config.
-                                getRemoteUserHeaderName() + "'");
+                                    getRemoteUserHeaderName() + "'");
                         }
                     }
                 }
             }
 
-        }
-        else {
+        } else {
             remoteUser = unwrapRequestIfNeeded(request).getRemoteUser();
         }
 
@@ -524,29 +464,22 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
         return request;
     }
 
-
-
-
     private String getEmailAddress(HttpServletRequest request) {
         String emailAddress = null;
 
-        if (config.getEmailHeaderName()!=null) {
-
-            // assumes it is first value in list, if header is defined multiple times. Otherwise would need to call getHeaders()
+        if (config.getEmailHeaderName() != null) {
             String headerValue = request.getHeader(config.getEmailHeaderName());
-
-            // the Shibboleth SP sends multiple values as single value, separated by comma or semicolon
+            // The Shibboleth SP sends multiple values as single value, separated by comma or semicolon.
             List values = StringUtil.
-                toListOfNonEmptyStringsDelimitedByCommaOrSemicolon(headerValue);
+                    toListOfNonEmptyStringsDelimitedByCommaOrSemicolon(headerValue);
 
             if (values != null && values.size() > 0) {
-
-                // use the first email in the list
+                // Use the first email in the list.
                 emailAddress = (String) values.get(0);
 
                 if (log.isDebugEnabled()) {
-                    log.debug("Got emailAddress '" + emailAddress + "' for header '" + config.
-                        getEmailHeaderName() + "'");
+                    log.debug("Got emailAddress '" + emailAddress + "' for header '" + config.getEmailHeaderName() +
+                            "'");
                 }
 
                 if (config.isConvertToUTF8()) {
@@ -554,8 +487,8 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
                     if (tmp != null) {
                         emailAddress = tmp;
                         if (log.isDebugEnabled()) {
-                            log.debug("emailAddress converted to UTF-8 '" + emailAddress + "' for header '" + config.
-                                getEmailHeaderName() + "'");
+                            log.debug("emailAddress converted to UTF-8 '" + emailAddress + "' for header '" +
+                                    config.getEmailHeaderName() + "'");
                         }
                     }
                 }
@@ -564,10 +497,9 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
             if ((emailAddress != null) && (emailAddress.length() > 0)) {
                 emailAddress = emailAddress.toLowerCase();
             }
-        }
-        else {
+        } else {
             if (log.isDebugEnabled()) {
-                log.debug("user email address header name in config was null/not specified");
+                log.debug("User email address header name in config was null/not specified.");
             }
         }
 
@@ -577,36 +509,30 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
     private String getFullName(HttpServletRequest request, String userid) {
         String fullName = null;
 
-        if (config.getFullNameHeaderName()!=null) {
-
+        if (config.getFullNameHeaderName() != null) {
             // assumes it is first value in list, if header is defined multiple times. Otherwise would need to call getHeaders()
             String headerValue = request.getHeader(config.getFullNameHeaderName());
-
             // the Shibboleth SP sends multiple values as single value, separated by comma or semicolon
-            List values = StringUtil.
-                toListOfNonEmptyStringsDelimitedByCommaOrSemicolon(headerValue);
+            List values = StringUtil.toListOfNonEmptyStringsDelimitedByCommaOrSemicolon(headerValue);
 
             if (values != null && values.size() > 0) {
-
                 if (log.isDebugEnabled()) {
                     log.debug("Original value of full name header '" + config.
-                        getFullNameHeaderName() + "' was '" + headerValue + "'");
+                            getFullNameHeaderName() + "' was '" + headerValue + "'");
                 }
 
                 // use the first full name in the list
                 //fullName = (String) values.get(1) + " " + (String) values.get(0);
 
                 if (config.getFullNameMappings() == null || config.getFullNameMappings().size() == 0) {
-                    // default if no fullname mappings is to just use the first header value
+                    // Default is to just use the first header value, if no fullname mappings.
                     fullName = (String) values.get(0);
-                }
-                else {
+                } else {
                     fullName = createFullNameUsingMapping(headerValue, values);
                 }
 
                 if (log.isDebugEnabled()) {
-                    log.debug("Got fullName '" + fullName + "' for header '" + config.
-                        getFullNameHeaderName() + "'");
+                    log.debug("Got fullName '" + fullName + "' for header '" + config.getFullNameHeaderName() + "'");
                 }
 
                 if (config.isConvertToUTF8()) {
@@ -614,13 +540,12 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
                     if (tmp != null) {
                         fullName = tmp;
                         if (log.isDebugEnabled()) {
-                            log.debug("fullName converted to UTF-8 '" + fullName + "' for header '" + config.
-                                getFullNameHeaderName() + "'");
+                            log.debug("fullName converted to UTF-8 '" + fullName + "' for header '" +
+                                    config.getFullNameHeaderName() + "'");
                         }
                     }
                 }
-            }
-            else {
+            } else {
                 if (log.isDebugEnabled()) {
                     log.debug("user full name header name in config was null/not specified");
                 }
@@ -640,10 +565,9 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
 
     /**
      * This will populate accumulated (containing all roles discovered).
-     *
      */
     private void getRolesFromHeader(HttpServletRequest request,
-        Set accumulatedRoles) {
+                                    Set accumulatedRoles) {
         Set attribHeaders = config.getGroupMappingKeys();
 
         // check if we're interested in some headers
@@ -652,7 +576,7 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
         }
 
         // log headers (this is helpful to users for debugging what is sent in)
-        if (log.isDebugEnabled()) {        	
+        if (log.isDebugEnabled()) {
             StringBuffer sb = new StringBuffer("HTTP Headers: ");
             boolean concat = false;
             for (Enumeration en = request.getHeaderNames(); en.hasMoreElements(); ) {
@@ -660,24 +584,20 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
                     sb.append(", ");
                 }
                 String headerName = en.nextElement().toString();
-                sb.append("'" + headerName
-                          + "' = '" + request.getHeader(headerName) + "'");
+                sb.append("'" + headerName + "' = '" + request.getHeader(headerName) + "'");
                 concat = true;
             }
             log.debug(sb.toString());
         }
 
         //process the headers by looking up only those list of registered headers
-        for (Iterator headerIt = attribHeaders.iterator(); headerIt.hasNext();) {
+        for (Iterator headerIt = attribHeaders.iterator(); headerIt.hasNext(); ) {
             String headerName = headerIt.next().toString();
-            for (Enumeration en = request.getHeaders(headerName); en.
-                hasMoreElements();) {
+            for (Enumeration en = request.getHeaders(headerName); en.hasMoreElements(); ) {
                 String headerValue = en.nextElement().toString();
 
                 //shib sends values in semicolon separated, so split it up too
-                List headerValues = StringUtil.
-                    toListOfNonEmptyStringsDelimitedByCommaOrSemicolon(
-                    headerValue);
+                List headerValues = StringUtil.toListOfNonEmptyStringsDelimitedByCommaOrSemicolon(headerValue);
                 for (int j = 0; j < headerValues.size(); j++) {
                     headerValue = (String) headerValues.get(j);
                     if (config.isConvertToUTF8()) {
@@ -686,33 +606,30 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
                             headerValue = tmp;
                         }
                     }
-                    log.debug("Processing dynamicroles header=" + headerName +
-                        ", value=" + headerValue);
+                    log.debug("Processing dynamicroles header=" + headerName + ", value=" + headerValue);
 
                     Collection mappers = config.getGroupMappings(headerName);
                     boolean found = false;
 
-                    for (Iterator mapperIt = mappers.iterator(); mapperIt.
-                        hasNext();) {
+                    for (Iterator mapperIt = mappers.iterator(); mapperIt.hasNext(); ) {
                         GroupMapper mapper = (GroupMapper) mapperIt.next();
 
-                        //we may get multiple groups returned by a single matched
-                        //e.g. matching "XXX" --> "A, B, C"
-                        String[] results = (String[]) StringUtil.
-                            toListOfNonEmptyStringsDelimitedByCommaOrSemicolon(
-                            mapper.process(headerValue)).toArray(new String[0]);
+                        // We may get multiple groups returned by a single matched, e.g. matching "XXX" --> "A, B, C".
+                        String[] results = (String[]) StringUtil.toListOfNonEmptyStringsDelimitedByCommaOrSemicolon(
+                                mapper.process(headerValue)).toArray(new String[0]);
 
                         for (int i = 0; i < results.length; i++) {
                             String result = results[i];
-                            if (result.length() != 0) {
 
+                            if (result.length() != 0) {
                                 if (!accumulatedRoles.contains(result)) {
-                                    if(config.isOutputToLowerCase())
+                                    if (config.isOutputToLowerCase()) {
                                         result = result.toLowerCase();
+                                    }
+
                                     accumulatedRoles.add(result);
 
-                                    log.debug("Found role mapping from '" +
-                                        headerValue + "' to '" + result + "'");
+                                    log.debug("Found role mapping from '" + headerValue + "' to '" + result + "'");
                                 }
                                 found = true;
                             }
@@ -721,43 +638,39 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
 
                     if (!found) {
                         log.debug(
-                            "No mapper capable of processing role value=" + headerValue);
+                                "No mapper capable of processing role value=" + headerValue);
                     }
                 }
             }
         }
     }
 
-
-	// converting reliance on getUser(request,response) to use login() instead.
-	// the logic flow:
-	// 1) Seraph Login filter, which is based on username/password kicks in (declared at web.xml)
-	// 2) it bails out altogether and identified user as invalid (without calling any of login(request,response) declared here
-	// 3) Seraph Security filter kicks in (declared at web.xml)
-	// 4) it calls getUser(request,response) and assign roles to known user
-	// hence, getUser(request,response) will only be called from Seraph SecurityFilter
-	
-	// this pluggin uses ShibLoginFilter to make sure login is performed, however in the case ShibLoginFilter is
-	// not configured, it will still work ;)
-	
-
-    /** 
+    /**
      * @see com.atlassian.confluence.user.ConfluenceAuthenticator#login(
-     *      javax.servlet.http.HttpServletRequest,
+     *javax.servlet.http.HttpServletRequest,
      *      javax.servlet.http.HttpServletResponse,
      *      java.lang.String username,
      *      java.lang.String password,
      *      boolean cookie)
-     *
-     * Check if user has been authenticated by Shib. Username, password, and cookie are totally ignored.
+     *      <p/>
+     *      Check if user has been authenticated by Shib. Username, password, and cookie are totally ignored.
      */
-    public boolean login(HttpServletRequest request, HttpServletResponse response, String username, String password, boolean cookie) throws AuthenticatorException{
- 		
+    public boolean login(HttpServletRequest request, HttpServletResponse response, String username, String password, boolean cookie) throws AuthenticatorException {
+
+        // Converting reliance on getUser(request,response) to use login() instead. The logic flow is:
+        // 1) Seraph Login filter, which is based on username/password kicks in (declared at web.xml)
+        // 2) It bails out altogether and identified user as invalid (without calling any of login(request,response)
+        //    declared here.
+        // 3) Seraph Security filter kicks in (declared at web.xml)
+        // 4) It calls getUser(request,response) and assign roles to known user.
+        // Hence, getUser(request,response) will only be called from Seraph SecurityFilter. This authenticator can use
+        // ShibLoginFilter to make sure login is performed in some versions of Confluence, but it works without it, so
+        // that is off by default.
+
         if (log.isDebugEnabled()) {
-            log.debug(
-                "Request made to " + request.getRequestURL() + " triggered this AuthN check");
+            log.debug("Request made to " + request.getRequestURL() + " triggered this AuthN check");
         }
-       
+
         HttpSession httpSession = request.getSession();
         Principal user = null;
 
@@ -765,40 +678,38 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
         String remoteIP = request.getRemoteAddr();
         String remoteHost = request.getRemoteHost();
 
-
         // Check if the user is already logged in
         if (httpSession.getAttribute(ConfluenceAuthenticator.LOGGED_IN_KEY) != null) {
-			user = (Principal) httpSession.getAttribute(
-				ConfluenceAuthenticator.LOGGED_IN_KEY);
+            user = (Principal) httpSession.getAttribute(ConfluenceAuthenticator.LOGGED_IN_KEY);
 
             if (log.isDebugEnabled()) {
                 log.debug(user.getName() + " already logged in, returning.");
             }
- 
+
             return true;
         }
 
-        // Since they aren't logged in, get the user name from
-        // the REMOTE_USER header
+        // Since they aren't logged in, get the user name from the configured header (e.g. REMOTE_USER).
         String userid = createSafeUserid(getLoggedInUser(request));
 
         if ((userid == null) || (userid.length() <= 0)) {
             if (log.isDebugEnabled()) {
                 log.debug(
-                    "Remote user was null or empty, calling super.login() to perform local login");
+                        "Remote user was null or empty, calling super.login() to perform local login");
             }
 
-            // Calling super.login to try local login if username and password are set
-            // However, this won't work if ShibLoginFilter is used
+            // Calling super.login to try local login if username and password are set. Local login won't work if
+            // ShibLoginFilter is used
             if (username != null && password != null) {
                 if (log.isDebugEnabled())
-                    log.debug("Trying local login for user "+username);
-                
+                    log.debug("Trying local login for user " + username);
+
                 return super.login(request, response, username, password, cookie);
-            }
-            else {
-	            //SHBL-50 - login info table not being updated in Crowd
-	            postLoginEvent();
+            } else {
+                // SHBL-50 - Call postLoginEvent method so that methods that would otherwise only get called on login()
+                // are called. This method could easily break and we await the addition of this as a new method in
+                // ConfluenceAuthenticator that we can call instead.
+                postLoginEvent();
             }
         }
 
@@ -806,9 +717,10 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
         // let's see if we should reload the config file first
         checkReloadConfig();
 
-        // Convert username to all lowercase
-        if (config.isUsernameConvertCase())
+        // Convert username to all lowercase because of issues with case, at least in earlier versions of Confluence.
+        if (config.isUsernameConvertCase()) {
             userid = convertUsername(userid);
+        }
 
         // Pull name and address from headers
         String fullName = getFullName(request, userid);
@@ -816,11 +728,10 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
 
         // Try to get the user's account based on the user name
         user = getUser(userid);
-
         boolean newUser = false;
 
-        // User didn't exist or was problem getting it. we'll try to create it
-        // if we can, otherwise will try to get it again.
+        // User didn't exist or was problem getting it. we'll try to create it/ if we can, otherwise will try to get it
+        // again.
         if (user == null) {
             user = createUser(userid);
 
@@ -833,17 +744,7 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
         }
 
         if (config.isUpdateRoles() || newUser) {
-            Set roles = new HashSet();
-
-            //fill up the roles
-            getRolesFromHeader(request, roles);
-
-            assignUserToRoles(user, config.getDefaultRoles());
-            assignUserToRoles(user, roles);
-
-            //make sure we don't purge default roles either
-            roles.addAll(config.getDefaultRoles());
-            purgeUserRoles(user, roles);
+            updateGroupMemberships(request, user);
         }
 
         // Now that we have the user's account, add it to the session and return
@@ -851,49 +752,55 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
             log.debug("Logging in user " + user.getName());
         }
 
-        httpSession.setAttribute(
-            ConfluenceAuthenticator.LOGGED_IN_KEY, user);
-        httpSession.setAttribute(
-            ConfluenceAuthenticator.LOGGED_OUT_KEY, null);
-        
+        httpSession.setAttribute(ConfluenceAuthenticator.LOGGED_IN_KEY, user);
+        httpSession.setAttribute(ConfluenceAuthenticator.LOGGED_OUT_KEY, null);
         getEventPublisher().publish(new LoginEvent(this, user.getName(), httpSession.getId(), remoteHost, remoteIP));
 
         return true;
-	}
-	
-	// from Joseph Clark of Atlassian in https://answers.atlassian.com/questions/24227/invoke-embedded-crowd-login
-	public void postLoginEvent() {
-		// Fire the UserAuthenticatedEvent so that post-login processing is triggered ("copy-user-on-login", default group membership, group membership sync)
-		final CrowdService crowdService = (CrowdService) ContainerManager.getComponent("crowdService");
-		final CrowdDirectoryService directoryService = (CrowdDirectoryService) ContainerManager.getComponent("crowdDirectoryService");
+    }
 
-		// Find the directory that the user belongs to.
-		com.atlassian.crowd.embedded.api.User crowdUser = crowdService.getUser("TODO: get the username information from the incoming request");
-		Directory directory = directoryService.findDirectoryById(crowdUser.getDirectoryId());
-		if (!directory.getType().equals(DirectoryType.DELEGATING))
-		{
-		    // post-login processing only needs to be triggered on directories configured to use delegated LDAP Auth.
-		    return;
-		}
+    private void updateGroupMemberships(HttpServletRequest request, Principal user) {
+        Set roles = new HashSet();
 
-		// Obtain a reference to the ApplicationService and Application bean - needed in order to correctly construct the event.
-		final ApplicationService applicationService = (ApplicationService) ContainerManager.getComponent("crowdApplicationService");
-		final ApplicationDAO dao = (ApplicationDAO) ContainerManager.getComponent("embeddedCrowdApplicationDao");
-		final Application application;
-		try
-		{
-		    application = dao.findByName(EmbeddedCrowdBootstrap.APPLICATION_NAME);
-		}
-		catch (ApplicationNotFoundException e)
-		{
-		    // Do some error handling here; something is srsly wrong, for srs.
-		    return;
-		}
+        // Add user to groups.
+        getRolesFromHeader(request, roles);
+        assignUserToRoles(user, config.getDefaultRoles());
+        assignUserToRoles(user, roles);
 
-		// Fire the event.
-		final EventPublisher eventPublisher = (EventPublisher) ContainerManager.getComponent("eventPublisher");
-		eventPublisher.publish(new UserAuthenticatedEvent(applicationService, directory, application, (com.atlassian.crowd.model.user.User) crowdUser));
-	}
+        // Make sure we don't purge default roles either
+        roles.addAll(config.getDefaultRoles());
+        purgeUserRoles(user, roles);
+    }
+
+    // from Joseph Clark of Atlassian in https://answers.atlassian.com/questions/24227/invoke-embedded-crowd-login
+    public void postLoginEvent() {
+        // Fire the UserAuthenticatedEvent so that post-login processing is triggered ("copy-user-on-login", default group membership, group membership sync)
+        final CrowdService crowdService = (CrowdService) ContainerManager.getComponent("crowdService");
+        final CrowdDirectoryService directoryService = (CrowdDirectoryService) ContainerManager.getComponent("crowdDirectoryService");
+
+        // Find the directory that the user belongs to.
+        com.atlassian.crowd.embedded.api.User crowdUser = crowdService.getUser("TODO: get the username information from the incoming request");
+        Directory directory = directoryService.findDirectoryById(crowdUser.getDirectoryId());
+        if (!directory.getType().equals(DirectoryType.DELEGATING)) {
+            // post-login processing only needs to be triggered on directories configured to use delegated LDAP Auth.
+            return;
+        }
+
+        // Obtain a reference to the ApplicationService and Application bean - needed in order to correctly construct the event.
+        final ApplicationService applicationService = (ApplicationService) ContainerManager.getComponent("crowdApplicationService");
+        final ApplicationDAO dao = (ApplicationDAO) ContainerManager.getComponent("embeddedCrowdApplicationDao");
+        final Application application;
+        try {
+            application = dao.findByName(EmbeddedCrowdBootstrap.APPLICATION_NAME);
+        } catch (ApplicationNotFoundException e) {
+            // Do some error handling here; something is srsly wrong, for srs.
+            return;
+        }
+
+        // Fire the event.
+        final EventPublisher eventPublisher = (EventPublisher) ContainerManager.getComponent("eventPublisher");
+        eventPublisher.publish(new UserAuthenticatedEvent(applicationService, directory, application, (com.atlassian.crowd.model.user.User) crowdUser));
+    }
 
     public Principal getUser(HttpServletRequest request, HttpServletResponse response) {
         if (config.isUsingShibLoginFilter()) {
@@ -904,13 +811,11 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
     }
 
     /**
-     * Changes provided by colleague of Hans-Ulrich Pieper of Freie Universität Berlin *
+     * Changes provided by colleague of Hans-Ulrich Pieper of Freie Universität Berlin.
      */
     public Principal getUserForAtlassianLoginFilter(HttpServletRequest request, HttpServletResponse response) {
-
         if (log.isDebugEnabled()) {
-            log.debug(
-                    "Request made to " + request.getRequestURL() + " triggered this AuthN check");
+            log.debug("Request made to " + request.getRequestURL() + " triggered this AuthN check");
         }
 
         HttpSession httpSession = request.getSession();
@@ -922,8 +827,7 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
 
         // Check if the user is already logged in
         if (httpSession.getAttribute(ConfluenceAuthenticator.LOGGED_IN_KEY) != null) {
-            user = (Principal) httpSession.getAttribute(
-                    ConfluenceAuthenticator.LOGGED_IN_KEY);
+            user = (Principal) httpSession.getAttribute(ConfluenceAuthenticator.LOGGED_IN_KEY);
 
             if (log.isDebugEnabled()) {
                 log.debug(user.getName() + " already logged in, returning.");
@@ -941,6 +845,7 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
                 log.debug(
                         "Remote user was null or empty, can not perform authentication");
             }
+
             getEventPublisher().publish(new LoginFailedEvent(this, "NoShibUsername", httpSession.getId(), remoteHost, remoteIP));
 
             return null;
@@ -951,8 +856,9 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
         checkReloadConfig();
 
         // Convert username to all lowercase
-        if (config.isUsernameConvertCase())
+        if (config.isUsernameConvertCase()) {
             userid = convertUsername(userid);
+        }
 
         // Pull name and address from headers
         String fullName = getFullName(request, userid);
@@ -977,10 +883,10 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
                 // isn't present there or is being filtered out, e.g.
                 // by userSearchFilter
                 if (log.isDebugEnabled()) {
-                    log.debug(
-                        "User does not exist and cannot create");
+                    log.debug("User does not exist and cannot create it.");
                 }
-                getEventPublisher().publish(new LoginFailedEvent(this, "CannotCreateUser", httpSession.getId(), remoteHost, remoteIP));
+                getEventPublisher().publish(new LoginFailedEvent(this, "CannotCreateUser", httpSession.getId(),
+                        remoteHost, remoteIP));
 
                 return null;
             }
@@ -989,32 +895,21 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
                 updateUser(user, fullName, emailAddress);
             }
         }
-        
+
         // TODO: All of this needs serious refactoring!
-        // If config.isCreateUsers() == false, it would NPE later, so we
-        // return null indicating that the login failed. Thanks to 
-        // Adam Cohen for noticing this and to Bruce Liong for helping
-        // to contribute a quick fix, modified by Gary Weaver. (SHBL-34)
+        // If config.isCreateUsers() == false, it would NPE later, so we return null indicating that the login failed.
+        // Thanks to Adam Cohen for noticing this and to Bruce Liong for helping to contribute a quick fix, modified by
+        // Gary Weaver. (SHBL-34)
         if (user == null) {
             if (log.isDebugEnabled()) {
                 log.debug("Login attempt by '" + userid + "' failed.");
             }
-            
+
             return null;
         }
 
         if (config.isUpdateRoles() || newUser) {
-            Set roles = new HashSet();
-
-            //fill up the roles
-            getRolesFromHeader(request, roles);
-
-            assignUserToRoles(user, config.getDefaultRoles());
-            assignUserToRoles(user, roles);
-
-            //make sure we don't purge default roles either
-            roles.addAll(config.getDefaultRoles());
-            purgeUserRoles(user, roles);
+            updateGroupMemberships(request, user);
         }
 
         // Now that we have the user's account, add it to the session and return
@@ -1022,106 +917,103 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
             log.debug("Logging in user " + user.getName());
         }
 
-        httpSession.setAttribute(
-                ConfluenceAuthenticator.LOGGED_IN_KEY, user);
-        httpSession.setAttribute(
-                ConfluenceAuthenticator.LOGGED_OUT_KEY, null);
+        httpSession.setAttribute(ConfluenceAuthenticator.LOGGED_IN_KEY, user);
+        httpSession.setAttribute(ConfluenceAuthenticator.LOGGED_OUT_KEY, null);
 
         getEventPublisher().publish(new LoginEvent(this, user.getName(), httpSession.getId(), remoteHost, remoteIP));
 
-        //return true;
         return user;
     }
 
 
-    private String createSafeUserid(String originalRemoteuser){
-        //possible to have multiple mappers defined, but
-        //only 1 will produce the desired outcome
+    private String createSafeUserid(String originalRemoteuser) {
+        // Possible to have multiple mappers defined, but only 1 will produce the desired outcome.
         Set possibleRemoteUsers = new HashSet();
         Collection mappers = config.getRemoteUserMappings();
-        for (Iterator mapperIt = mappers.iterator(); mapperIt.hasNext();) {
+
+        for (Iterator mapperIt = mappers.iterator(); mapperIt.hasNext(); ) {
             GroupMapper mapper = (GroupMapper) mapperIt.next();
 
-            String[] results = (String[]) StringUtil.
-                toListOfNonEmptyStringsDelimitedByCommaOrSemicolon(
-                mapper.process(originalRemoteuser)).toArray(new String[0]);
+            String[] results = (String[]) StringUtil.toListOfNonEmptyStringsDelimitedByCommaOrSemicolon(
+                    mapper.process(originalRemoteuser)).toArray(new String[0]);
 
-            if(results.length != 0)
+            if (results.length != 0) {
                 possibleRemoteUsers.addAll(Arrays.asList(results));
+            }
         }
 
-        if(possibleRemoteUsers.isEmpty()){
+        if (possibleRemoteUsers.isEmpty()) {
             log.debug("Remote user is returned as is, mappers do not matched.");
             return originalRemoteuser;
         }
 
-        if(log.isDebugEnabled() && possibleRemoteUsers.size() > 1){
+        if (log.isDebugEnabled() && possibleRemoteUsers.size() > 1) {
             log.debug("Remote user has been transformed, but there are too many results, choosing one that seems suitable");
         }
 
-        //just get a random one
+        // Try the next one.
+        // TODO: Is this adequate?
         String output = possibleRemoteUsers.iterator().next().toString();
         return remoteUserCharsReplacement(output);
     }
 
-    //if remoteuser.replace is specified, process it
-    //it has the format of pair-wise value, occurences of 1st entry regex is replaced
-    //with what specified on the second entry
-    //the list is comma or semi-colon separated (which means
-    //pretty obvious a comma or semi-colon can't be used in the content replacement)
-    private String remoteUserCharsReplacement(String remoteUser){
+    private String remoteUserCharsReplacement(String remoteUser) {
+        // If remoteuser.replace is specified, process it. It has the format of pair-wise value, occurences of 1st entry
+        // regex is replaced with what specified on the second entry. The list is comma or semi-colon separated (which
+        // means it is pretty obvious a comma or semi-colon can't be used in the content replacement.
         Iterator it = config.getRemoteUserReplacementChars();
-        while(it.hasNext()){
+
+        while (it.hasNext()) {
             String replaceFromRegex = it.next().toString();
 
             //someone didn't fill up pair-wise entry, ignore this regex
-            if(!it.hasNext()){
-                if(replaceFromRegex.length() != 0)
-                   log.debug("Character replacements specified for Remote User regex is incomplete, make sure the entries are pair-wise, skipping...");
+            if (!it.hasNext()) {
+                if (replaceFromRegex.length() != 0)
+                    log.debug("Character replacements specified for Remote User regex is incomplete, make sure the entries are pair-wise, skipping...");
                 break;
             }
 
             String replacement = it.next().toString();
-            
+
             //we are not going to replace empty string, so skip it
-            if(replaceFromRegex.length()==0){
+            if (replaceFromRegex.length() == 0) {
                 log.debug("Empty string is found in Remote User replaceFrom regex, skipping...");
                 continue;
             }
 
-            try{
+            try {
                 remoteUser = remoteUser.replaceAll(replaceFromRegex, replacement);
-            }catch(Exception e){
-                log.warn("Fail to replace certain character entries in \"Remote User\" matching regex=\""+replaceFromRegex+"\", ignoring...");
-                log.debug("Fail to replace certain character entries in Remote User",e);
+            } catch (Exception e) {
+                log.warn("Fail to replace certain character entries in \"Remote User\" matching regex=\"" + replaceFromRegex + "\", ignoring...");
+                log.debug("Fail to replace certain character entries in Remote User", e);
             }
         }
         return remoteUser;
     }
 
-    private String createFullNameUsingMapping(String originalFullNameHeaderValue, List values){
-        //possible to have multiple mappers defined, but
-        //only 1 will produce the desired outcome
+    private String createFullNameUsingMapping(String originalFullNameHeaderValue, List values) {
+        // It is possible to have multiple mappers defined, but only 1 will produce the desired outcome.
         Set possibleFullNames = new HashSet();
         Collection mappers = config.getFullNameMappings();
-        for (Iterator mapperIt = mappers.iterator(); mapperIt.hasNext();) {
+
+        for (Iterator mapperIt = mappers.iterator(); mapperIt.hasNext(); ) {
             GroupMapper mapper = (GroupMapper) mapperIt.next();
-
             String[] results = (String[]) StringUtil.
-                toListOfNonEmptyStringsDelimitedByCommaOrSemicolon(
-                mapper.process(originalFullNameHeaderValue)).toArray(new String[0]);
+                    toListOfNonEmptyStringsDelimitedByCommaOrSemicolon(
+                            mapper.process(originalFullNameHeaderValue)).toArray(new String[0]);
 
-            if(results.length != 0)
+            if (results.length != 0) {
                 possibleFullNames.addAll(Arrays.asList(results));
+            }
         }
 
-        if(possibleFullNames.isEmpty()){
-            log.debug("Full Name header value is returned as is, mappers do not match, so will use first value in list.");
+        if (possibleFullNames.isEmpty()) {
+            log.debug("Full Name header value returned. Mappers do not match, so will use first value in list.");
             return (String) values.get(0);
         }
 
-        if(log.isDebugEnabled() && possibleFullNames.size() > 1){
-            log.debug("Full name has been transformed, but there are too many results, choosing one that seems suitable");
+        if (log.isDebugEnabled() && possibleFullNames.size() > 1) {
+            log.debug("Full name has been transformed, but more than one result, so choosing one that seems suitable.");
         }
 
         //just get a random one
@@ -1129,66 +1021,65 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
         return fullNameCharsReplacement(output);
     }
 
-    //if fullname.replace is specified, process it
-    //it has the format of pair-wise value, occurences of 1st entry regex is replaced
-    //with what specified on the second entry
-    //the list is comma or semi-colon separated (which means
-    //pretty obvious a comma or semi-colon can't be used in the content replacement)
-    private String fullNameCharsReplacement(String fullName){
+    private String fullNameCharsReplacement(String fullName) {
+        // If fullname.replace is specified, process it. It has the format of pair-wise value, occurences of 1st entry
+        // regex is replaced with what specified on the second entry. The list is comma or semi-colon separated (which
+        // means it is pretty obvious a comma or semi-colon can't be used in the content replacement.
         Iterator it = config.getFullNameReplacementChars();
-        while(it.hasNext()){
+
+        while (it.hasNext()) {
             String replaceFromRegex = it.next().toString();
 
-            //someone didn't fill up pair-wise entry, ignore this regex
-            if(!it.hasNext()){
-                if(replaceFromRegex.length() != 0)
-                   log.debug("Character replacements specified for Full Name regex is incomplete, make sure the entries are pair-wise, skipping...");
+            // Someone didn't fill up pair-wise entry, ignore this regex.
+            if (!it.hasNext()) {
+                if (replaceFromRegex.length() != 0) {
+                    log.debug("Character replacements specified for Full Name regex is incomplete, make sure the entries are pair-wise, skipping...");
+                }
                 break;
             }
 
             String replacement = it.next().toString();
 
-            //we are not going to replace empty string, so skip it
-            if(replaceFromRegex.length()==0){
+            // We are not going to replace empty string, so skip it.
+            if (replaceFromRegex.length() == 0) {
                 log.debug("Empty string is found in Full Name replaceFrom regex, skipping...");
                 continue;
             }
 
-            try{
+            try {
                 fullName = fullName.replaceAll(replaceFromRegex, replacement);
-            }catch(Exception e){
-                log.warn("Fail to replace certain character entries in \"Remote User\" matching regex=\""+replaceFromRegex+"\", ignoring...");
-                log.debug("Fail to replace certain character entries in Remote User",e);
+            } catch (Exception e) {
+                log.warn("Fail to replace certain character entries in username matching regex=\"" + replaceFromRegex +
+                        "\".");
+                if (log.isDebugEnabled()) {
+                    log.debug("Failed to replace certain character entries in Remote User", e);
+                }
             }
         }
+
         return fullName;
     }
-	
+
     /**
-     * @see com.atlassian.seraph.auth.Authenticator#getUser(
-     *      javax.servlet.http.HttpServletRequest,
-     *      javax.servlet.http.HttpServletResponse)
-     *
      * @param request
      * @param response
-     *
      * @return
+     * @see com.atlassian.seraph.auth.Authenticator#getUser(
+     *javax.servlet.http.HttpServletRequest,
+     *      javax.servlet.http.HttpServletResponse)
      */
     public Principal getUserForShibLoginFilter(HttpServletRequest request, HttpServletResponse response) {
         // If using ShibLoginFilter, see SHBL-24 - Authentication with local accounts should be supported
         if (log.isDebugEnabled()) {
-            log.debug(
-                "Request made to " + request.getRequestURL() + " triggered this AuthN2 check");
+            log.debug("Request made to " + request.getRequestURL() + " triggered this AuthN2 check");
         }
 
         HttpSession httpSession = request.getSession(false);
         Principal user;
 
-        // Check if the user is already logged in
-        if ((httpSession != null) && (httpSession.getAttribute(
-            ConfluenceAuthenticator.LOGGED_IN_KEY) != null)) {
-            user = (Principal) httpSession.getAttribute(
-                ConfluenceAuthenticator.LOGGED_IN_KEY);
+        // Check if the user is already logged in.
+        if ((httpSession != null) && (httpSession.getAttribute(ConfluenceAuthenticator.LOGGED_IN_KEY) != null)) {
+            user = (Principal) httpSession.getAttribute(ConfluenceAuthenticator.LOGGED_IN_KEY);
 
             if (log.isDebugEnabled()) {
                 log.debug(user.getName() + " already logged in, returning.");
@@ -1197,25 +1088,22 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
             return user;
         }
 
-		//worst case scenario, this is executed when user has not logged in previously
-		//perhaps admin forgot to change web.xml to use ShibLoginFilter ?
-		try{
-			boolean authenticated = login(request,response,null,null,false);
-			if (!authenticated) {
-			    return null;
-		    }
-		}catch(Throwable t){
-			log.error("Failed to authenticate user", t);
-			return null;
-		}
-		return getUser(request,response);
+        // Worst case scenario, this is executed when user has not logged in previously. Perhaps the admin forgot to
+        // change web.xml to use ShibLoginFilter (in older version(s) of Confluence).
+        try {
+            boolean authenticated = login(request, response, null, null, false);
+            if (!authenticated) {
+                return null;
+            }
+        } catch (Throwable t) {
+            log.error("Failed to authenticate user", t);
+            return null;
+        }
+
+        return getUser(request, response);
     }
 
     public CrowdService getCrowdService() {
-	    return (CrowdService)ContainerManager.getComponent("crowdService");
-	}
-	
-	public GroupManager getGroupManager() {
-	    return (GroupManager)ContainerManager.getComponent("groupManager");
-	}
+        return (CrowdService) ContainerManager.getComponent("crowdService");
+    }
 }

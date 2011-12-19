@@ -33,62 +33,62 @@
 
 package shibauth.confluence.authentication.shibboleth;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
-import java.util.Iterator;
-import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.ServletRequestWrapper;
 import com.atlassian.seraph.auth.AuthenticatorException;
 import com.atlassian.seraph.filter.BaseLoginFilter;
 import com.atlassian.seraph.interceptor.LoginInterceptor;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import javax.servlet.ServletRequestWrapper;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * A filter that is based on Seraph's login filter. As the parent class uses username/password,
  * this filter will populate the username from remote user, and provide dummy password.
  * This filter is necessary so that Authenticator.login() is properly executed.
  */
-public class ShibLoginFilter extends BaseLoginFilter
-{
+public class ShibLoginFilter extends BaseLoginFilter {
+
     private final static Log log = LogFactory.getLog(ShibLoginFilter.class);
 
-    public ShibLoginFilter(){}
+    public ShibLoginFilter() {
+    }
 
-	public String login(HttpServletRequest request, HttpServletResponse response){
+    public String login(HttpServletRequest request, HttpServletResponse response) {
         String status = LOGIN_NOATTEMPT;
         String userid = ((HttpServletRequest) ((ServletRequestWrapper) request).getRequest()).getRemoteUser();
-        
-        
+
         //make sure remote user is set, otherwise fail
-        if(userid == null) return status;
-        
+        if (userid == null) {
+            return status;
+        }
+
         List interceptors = getSecurityConfig().getInterceptors(LoginInterceptor.class);
-        log.debug("ShibLoginFilter processing login request for "+ userid);
+        log.debug("ShibLoginFilter processing login request for " + userid);
 
         //TODO: not sure if mapping of remote-user logic needs to worry about the userid being
-        //passed to logininterceptor.beforeLogin and the getAuthenticator().login below
-        try{
+        // Passed to logininterceptor.beforeLogin and the getAuthenticator().login below.
+        try {
             LoginInterceptor loginInterceptor;
-            for(Iterator iterator = interceptors.iterator(); iterator.hasNext(); loginInterceptor.beforeLogin(request, response, userid, "", false))
-                loginInterceptor = (LoginInterceptor)iterator.next();
+
+            for (Iterator iterator = interceptors.iterator(); iterator.hasNext(); loginInterceptor.beforeLogin(request, response, userid, "", false)) {
+                loginInterceptor = (LoginInterceptor) iterator.next();
+            }
 
             boolean loggedIn = getAuthenticator().login(request, response, userid, "", false);
             status = loggedIn ? LOGIN_SUCCESS : LOGIN_FAILED;
-        }
-        catch(AuthenticatorException e)
-        {
+        } catch (AuthenticatorException e) {
             status = LOGIN_FAILED;
-        }
-        finally
-        {
+        } finally {
             LoginInterceptor loginInterceptor;
-            for(Iterator iterator = interceptors.iterator(); iterator.hasNext(); loginInterceptor.afterLogin(request, response, userid, "", false, status))
-                loginInterceptor = (LoginInterceptor)iterator.next();
-
+            for (Iterator iterator = interceptors.iterator(); iterator.hasNext(); loginInterceptor.afterLogin(request, response, userid, "", false, status)) {
+                loginInterceptor = (LoginInterceptor) iterator.next();
+            }
         }
+
         return status;
     }
 }
