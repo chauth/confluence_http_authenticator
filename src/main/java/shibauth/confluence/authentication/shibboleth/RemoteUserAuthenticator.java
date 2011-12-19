@@ -415,8 +415,7 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
         String emailAddress) {
 
         // If we have new values for name or email, update the user object
-        if ((user != null) && (user instanceof User)) {
-            User userToUpdate = (User) user;
+        if (user != null) {
             boolean updated = false;
 
             CrowdService crowdService = getCrowdService();
@@ -466,7 +465,7 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
                 try {
                     crowdService.updateUser(userBuilder.toUser());
                 } catch (Throwable t) {
-                    log.error("Couldn't update user " + userToUpdate.getName(),
+                    log.error("Couldn't update user " + user.getName(),
                         t);
                 }
             }
@@ -839,12 +838,12 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
             //fill up the roles
             getRolesFromHeader(request, roles);
 
-            assignUserToRoles((User) user, config.getDefaultRoles());
-            assignUserToRoles((User) user, roles);
+            assignUserToRoles(user, config.getDefaultRoles());
+            assignUserToRoles(user, roles);
 
             //make sure we don't purge default roles either
             roles.addAll(config.getDefaultRoles());
-            purgeUserRoles((User) user, roles);
+            purgeUserRoles(user, roles);
         }
 
         // Now that we have the user's account, add it to the session and return
@@ -1010,12 +1009,12 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
             //fill up the roles
             getRolesFromHeader(request, roles);
 
-            assignUserToRoles((User) user, config.getDefaultRoles());
-            assignUserToRoles((User) user, roles);
+            assignUserToRoles(user, config.getDefaultRoles());
+            assignUserToRoles(user, roles);
 
             //make sure we don't purge default roles either
             roles.addAll(config.getDefaultRoles());
-            purgeUserRoles((User) user, roles);
+            purgeUserRoles(user, roles);
         }
 
         // Now that we have the user's account, add it to the session and return
