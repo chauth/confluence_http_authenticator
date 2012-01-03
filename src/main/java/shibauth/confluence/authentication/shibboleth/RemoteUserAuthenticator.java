@@ -45,20 +45,22 @@ import com.atlassian.confluence.event.events.security.LoginEvent;
 import com.atlassian.confluence.event.events.security.LoginFailedEvent;
 import com.atlassian.confluence.user.ConfluenceAuthenticator;
 import com.atlassian.confluence.user.UserAccessor;
-import com.atlassian.confluence.user.crowd.EmbeddedCrowdBootstrap;
-import com.atlassian.crowd.dao.application.ApplicationDAO;
-import com.atlassian.crowd.embedded.api.*;
+import com.atlassian.crowd.embedded.api.CrowdService;
+import com.atlassian.crowd.embedded.api.Group;
+import com.atlassian.crowd.embedded.api.User;
 import com.atlassian.crowd.embedded.impl.ImmutableUser;
-import com.atlassian.crowd.event.user.UserAuthenticatedEvent;
-import com.atlassian.crowd.exception.ApplicationNotFoundException;
-import com.atlassian.crowd.manager.application.ApplicationService;
-import com.atlassian.crowd.model.application.Application;
-import com.atlassian.event.api.EventPublisher;
 import com.atlassian.seraph.auth.AuthenticatorException;
+import com.atlassian.seraph.auth.LoginReason;
 import com.atlassian.spring.container.ContainerManager;
 import com.atlassian.user.search.page.Pager;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.TransactionDefinition;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.interceptor.DefaultTransactionAttribute;
+import org.springframework.transaction.support.TransactionCallback;
+import org.springframework.transaction.support.TransactionTemplate;
 
 import javax.servlet.ServletRequestWrapper;
 import javax.servlet.http.HttpServletRequest;
@@ -201,16 +203,13 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
             //    log.debug("Assigning roles to user " + user.getName());
             //}
 
-            String role;
-            Group group;
-
             CrowdService crowdService = getCrowdService();
             if (crowdService == null) {
                 throw new RuntimeException("crowdService was not wired in RemoteUserAuthenticator");
             }
 
             for (Iterator it = roles.iterator(); it.hasNext(); ) {
-                role = it.next().toString().trim();
+                String role = it.next().toString().trim();
 
                 if (role.length() == 0) {
                     continue;
@@ -220,11 +219,11 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
                     log.debug("Assigning " + user.getName() + " to role " + role);
                 }
 
-                group = crowdService.getGroup(role);
+                Group group = crowdService.getGroup(role);
                 if (group == null) {
                     if (config.isAutoCreateGroup()) {
                         try {
-                            group = crowdService.addGroup(group);
+                            addGroup(crowdService, group);
                         } catch (Throwable t) {
                             log.error("Cannot create role '" + role + "'.", t);
                             continue;
@@ -248,7 +247,7 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
 
                 } else {
                     try {
-                        crowdService.addUserToGroup(crowdUser, group);
+                        addUserToGroup(crowdService, crowdUser, group);
                     } catch (Throwable t) {
                         log.error("Failed to add user " + user + " to role " + role + ".", t);
                     }
@@ -303,7 +302,8 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
                                         log.debug("Removing user " + user.getName() + " from role " + role);
                                     }
 
-                                    crowdService.removeUserFromGroup(crowdUser, group);
+                                    removeUserFromGroup(crowdService, crowdUser, group);
+
                                     // Only remove one group per login. Assuming this is to avoid massive delays in
                                     // login for a user removed from a lot of groups.
                                     break;
@@ -340,45 +340,32 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
     /**
      * Creates a new user if the configuration allows it.
      *
-     * @param userid user name for the new user
+     * @param username user name for the new user
      * @return the new user
      */
-    private Principal createUser(String userid) {
-        UserAccessor userAccessor = getUserAccessor();
-        Principal user = null;
-
+    private void createUser(String username) {
         if (config.isCreateUsers()) {
             if (log.isInfoEnabled()) {
-                log.info("Creating user account for " + userid);
+                log.info("Creating user account for " + username);
             }
 
             try {
-                user = userAccessor.createUser(userid);
+                createUser(getUserAccessor(), username);
             } catch (Throwable t) {
 
                 // Note: just catching EntityException like we used to do didn't
                 // seem to cover Confluence massive with Oracle
                 if (log.isDebugEnabled()) {
-                    log.debug("Error creating user " + userid +
+                    log.debug("Error creating user " + username +
                             ". Will ignore and try to get the user (maybe it was already created)", t);
-                }
-
-                user = getUser(userid);
-
-                if (user == null) {
-                    log.error("Error creating user " + userid +
-                            ". Got null user after attempted to create user (so it probably was not a duplicate).",
-                            t);
                 }
             }
         } else {
             if (log.isDebugEnabled()) {
                 log.debug("Configuration does NOT allow creation of new user accounts, authentication will fail for " +
-                        userid);
+                        username);
             }
         }
-
-        return user;
     }
 
     private void updateUser(Principal user, String fullName, String emailAddress) {
@@ -427,7 +414,7 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
 
             if (updated) {
                 try {
-                    crowdService.updateUser(userBuilder.toUser());
+                    updateUser(crowdService, userBuilder.toUser());
                 } catch (Throwable t) {
                     log.error("Couldn't update user " + user.getName(), t);
                 }
@@ -687,16 +674,20 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
         // ShibLoginFilter to make sure login is performed in some versions of Confluence, but it works without it, so
         // that is off by default.
 
+        // for those interested on the events
+        String remoteIP = request.getRemoteAddr();
+        String remoteHost = request.getRemoteHost();
+
         if (log.isDebugEnabled()) {
-            log.debug("Request made to " + request.getRequestURL() + " triggered this AuthN check.");
+            log.debug("Request made to " + request.getRequestURL() + " triggered this AuthN check. (username=" + username + ", remoteIP=" + remoteIP + ", remoteHost=" + remoteHost + ")");
         }
 
         HttpSession httpSession = request.getSession();
         Principal user = null;
 
-        // for those interested on the events
-        String remoteIP = request.getRemoteAddr();
-        String remoteHost = request.getRemoteHost();
+        if (log.isDebugEnabled()) {
+            log.debug("remoteIP=" + remoteIP + " remoteHost=" + remoteHost);
+        }
 
         // Check if the user is already logged in
         if (httpSession.getAttribute(ConfluenceAuthenticator.LOGGED_IN_KEY) != null) {
@@ -725,11 +716,6 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
                 }
 
                 return super.login(request, response, username, password, cookie);
-            } else {
-                // SHBL-50 - Call postLoginEvent method so that methods that would otherwise only get called on login()
-                // are called. This method could easily break and we await the addition of this as a new method in
-                // ConfluenceAuthenticator that we can call instead.
-                postLoginEvent();
             }
         }
 
@@ -750,17 +736,17 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
         user = getUser(userid);
         boolean newUser = false;
 
-        // User didn't exist or was problem getting it. we'll try to create it/ if we can, otherwise will try to get it
+        // User didn't exist or was problem getting it. we'll try to create it if we can, otherwise will try to get it
         // again.
         if (user == null) {
-            user = createUser(userid);
-
-            if (user != null) {
-                newUser = true;
-                updateUser(user, fullName, emailAddress);
-            } else if (config.isUpdateInfo()) {
+            createUser(userid);
+            user = getUser(userid);
+            if (user!= null) {
                 updateUser(user, fullName, emailAddress);
             }
+        }
+        else if (config.isUpdateInfo()) {
+            updateUser(user, fullName, emailAddress);
         }
 
         if (config.isUpdateRoles() || newUser) {
@@ -774,11 +760,16 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
 
         httpSession.setAttribute(ConfluenceAuthenticator.LOGGED_IN_KEY, user);
         httpSession.setAttribute(ConfluenceAuthenticator.LOGGED_OUT_KEY, null);
-        getEventPublisher().publish(new LoginEvent(this, user.getName(), httpSession.getId(), remoteHost, remoteIP));
+
+        // SHBL-50 - code provided by Joseph Clark to do postlogin updates. This will break eventually with new Confluence/Crowd version,
+        //           so Atlassian needs to provide methods that we can call to do these things.
+        putPrincipalInSessionContext(request, user);
+        getEventPublisher().publish(new LoginEvent(this, username, request.getSession().getId(), remoteHost, remoteIP));
+        LoginReason.OK.stampRequestResponse(request, response);
 
         return true;
     }
-
+    
     private void updateGroupMemberships(HttpServletRequest request, Principal user) {
         Set roles = new HashSet();
 
@@ -791,37 +782,7 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
         roles.addAll(config.getDefaultRoles());
         purgeUserRoles(user, roles);
     }
-
-    // from Joseph Clark of Atlassian in https://answers.atlassian.com/questions/24227/invoke-embedded-crowd-login
-    public void postLoginEvent() {
-        // Fire the UserAuthenticatedEvent so that post-login processing is triggered ("copy-user-on-login", default group membership, group membership sync)
-        final CrowdService crowdService = (CrowdService) ContainerManager.getComponent("crowdService");
-        final CrowdDirectoryService directoryService = (CrowdDirectoryService) ContainerManager.getComponent("crowdDirectoryService");
-
-        // Find the directory that the user belongs to.
-        com.atlassian.crowd.embedded.api.User crowdUser = crowdService.getUser("TODO: get the username information from the incoming request");
-        Directory directory = directoryService.findDirectoryById(crowdUser.getDirectoryId());
-        if (!directory.getType().equals(DirectoryType.DELEGATING)) {
-            // post-login processing only needs to be triggered on directories configured to use delegated LDAP Auth.
-            return;
-        }
-
-        // Obtain a reference to the ApplicationService and Application bean - needed in order to correctly construct the event.
-        final ApplicationService applicationService = (ApplicationService) ContainerManager.getComponent("crowdApplicationService");
-        final ApplicationDAO dao = (ApplicationDAO) ContainerManager.getComponent("embeddedCrowdApplicationDao");
-        final Application application;
-        try {
-            application = dao.findByName(EmbeddedCrowdBootstrap.APPLICATION_NAME);
-        } catch (ApplicationNotFoundException e) {
-            // Do some error handling here; something is srsly wrong, for srs.
-            return;
-        }
-
-        // Fire the event.
-        final EventPublisher eventPublisher = (EventPublisher) ContainerManager.getComponent("eventPublisher");
-        eventPublisher.publish(new UserAuthenticatedEvent(applicationService, directory, application, (com.atlassian.crowd.model.user.User) crowdUser));
-    }
-
+    
     public Principal getUser(HttpServletRequest request, HttpServletResponse response) {
         if (config.isUsingShibLoginFilter()) {
             return getUserForShibLoginFilter(request, response);
@@ -891,12 +852,15 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
         // User didn't exist or was problem getting it. we'll try to create it
         // if we can, otherwise will try to get it again.
         if (user == null) {
-            user = createUser(userid);
+            createUser(userid);
+            user = getUser(userid);
 
-            if (user != null) {
-                newUser = true;
+            createUser(userid);
+            user = getUser(userid);
+            if (user!= null) {
                 updateUser(user, fullName, emailAddress);
-            } else {
+            }
+            else {
                 // If user is still null, probably we're using an
                 // external user database like LDAP. Either REMOTE_USER
                 // isn't present there or is being filtered out, e.g.
@@ -1143,7 +1107,137 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
         return getUser(request, response);
     }
 
+	// avoid "Write operations are not allowed in read-only mode" per Joseph Clark of Atlassian in
+    // https://answers.atlassian.com/questions/25160/crowdservice-updateuser-causes-write-operations-are-not-allowed-in-read-only-mode
+	// https://developer.atlassian.com/display/CONFDEV/Hibernate+Sessions+and+Transaction+Management+Guidelines
+    private void addGroup(final CrowdService crowdService, final Group group) {
+        if (group!= null) {
+            new TransactionTemplate(getTransactionManager(), new DefaultTransactionAttribute(TransactionDefinition.PROPAGATION_REQUIRED)).execute(new TransactionCallback()
+            {
+                public Object doInTransaction(TransactionStatus status)
+                {
+                    try {
+                        crowdService.addGroup(group);
+                    }
+                    catch (Throwable t) {
+                        log.error("Failed to add group '" + group.getName() + "'!", t);
+                    }
+                    return null;
+                }
+            });
+        }
+        else {
+            log.warn("Cannot add null group!");
+        }
+	}
+	
+	// avoid "Write operations are not allowed in read-only mode" per Joseph Clark of Atlassian in
+    // https://answers.atlassian.com/questions/25160/crowdservice-updateuser-causes-write-operations-are-not-allowed-in-read-only-mode
+	// https://developer.atlassian.com/display/CONFDEV/Hibernate+Sessions+and+Transaction+Management+Guidelines
+    private void addUserToGroup(final CrowdService crowdService, final User crowdUser, final Group group) {
+        if (crowdUser == null) {
+            log.warn("Cannot add null user to group!");
+        }
+        else if (group == null) {
+            log.warn("Cannot add user to null group!");
+        }
+        else {
+            new TransactionTemplate(getTransactionManager(), new DefaultTransactionAttribute(TransactionDefinition.PROPAGATION_REQUIRED)).execute(new TransactionCallback()
+            {
+                public Object doInTransaction(TransactionStatus status)
+                {
+                    try {
+                        crowdService.addGroup(group);
+                    }
+                    catch (Throwable t) {
+                        log.error("Failed to add user " + crowdUser.getName() + " to group '" + group.getName() + "'!", t);
+                    }
+                    return null;
+                }
+            });
+        }
+	}
+	
+	// avoid "Write operations are not allowed in read-only mode" per Joseph Clark of Atlassian in
+    // https://answers.atlassian.com/questions/25160/crowdservice-updateuser-causes-write-operations-are-not-allowed-in-read-only-mode
+	// https://developer.atlassian.com/display/CONFDEV/Hibernate+Sessions+and+Transaction+Management+Guidelines
+    private void removeUserFromGroup(final CrowdService crowdService, final User crowdUser, final Group group) {
+        if (crowdUser == null) {
+            log.warn("Cannot remove null user from group!");
+        }
+        else if (group == null) {
+            log.warn("Cannot remove user from null group!");
+        }
+        else {
+            new TransactionTemplate(getTransactionManager(), new DefaultTransactionAttribute(TransactionDefinition.PROPAGATION_REQUIRED)).execute(new TransactionCallback()
+            {
+                public Object doInTransaction(TransactionStatus status)
+                {
+                    try {
+                        crowdService.addGroup(group);
+                    }
+                    catch (Throwable t) {
+                        log.error("Failed to remove user " + crowdUser.getName() + " from group '" + group.getName() + "'!", t);
+                    }
+                    return null;
+                }
+            });
+        }
+	}
+
+    // avoid "Write operations are not allowed in read-only mode" per Joseph Clark of Atlassian in
+    // https://answers.atlassian.com/questions/25160/crowdservice-updateuser-causes-write-operations-are-not-allowed-in-read-only-mode
+    // https://developer.atlassian.com/display/CONFDEV/Hibernate+Sessions+and+Transaction+Management+Guidelines
+    private void createUser(final UserAccessor userAccessor, final String username) {
+        if (username!= null) {
+            new TransactionTemplate(getTransactionManager(), new DefaultTransactionAttribute(TransactionDefinition.PROPAGATION_REQUIRED)).execute(new TransactionCallback()
+            {
+                public Object doInTransaction(TransactionStatus status)
+                {
+                    try {
+                        userAccessor.createUser(username);
+                    }
+                    catch (Throwable t) {
+                        log.error("Failed to create user '" + username + "'!", t);
+                    }
+                    return null;
+                }
+            });
+        }
+        else {
+            log.warn("Cannot add user with null username!");
+        }
+    }
+    
+	// avoid "Write operations are not allowed in read-only mode" per Joseph Clark of Atlassian in
+    // https://answers.atlassian.com/questions/25160/crowdservice-updateuser-causes-write-operations-are-not-allowed-in-read-only-mode
+	// https://developer.atlassian.com/display/CONFDEV/Hibernate+Sessions+and+Transaction+Management+Guidelines
+    private void updateUser(final CrowdService crowdService, final User crowdUser) {
+        if (crowdUser!= null) {
+            new TransactionTemplate(getTransactionManager(), new DefaultTransactionAttribute(TransactionDefinition.PROPAGATION_REQUIRED)).execute(new TransactionCallback()
+            {
+                public Object doInTransaction(TransactionStatus status)
+                {
+                    try {
+                        crowdService.updateUser(crowdUser);
+                    }
+                    catch (Throwable t) {
+                        log.error("Failed to update user '" + crowdUser.getName() + "'!", t);
+                    }
+                    return null;
+                }
+            });
+        }
+        else {
+            log.warn("Cannot update null user!");
+        }
+	}
+
     public CrowdService getCrowdService() {
         return (CrowdService) ContainerManager.getComponent("crowdService");
+    }
+
+    public PlatformTransactionManager getTransactionManager() {
+	    return (PlatformTransactionManager) ContainerManager.getComponent("transactionManager");
     }
 }
