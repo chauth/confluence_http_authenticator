@@ -43,6 +43,7 @@ package shibauth.confluence.authentication.shibboleth;
 
 import com.atlassian.confluence.event.events.security.LoginEvent;
 import com.atlassian.confluence.event.events.security.LoginFailedEvent;
+import com.atlassian.confluence.security.login.LoginManager;
 import com.atlassian.confluence.user.ConfluenceAuthenticator;
 import com.atlassian.confluence.user.UserAccessor;
 import com.atlassian.crowd.embedded.api.CrowdService;
@@ -664,7 +665,7 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
      */
     public boolean login(HttpServletRequest request, HttpServletResponse response, String username, String password, boolean cookie) throws AuthenticatorException {
 
-        // Converting reliance on getUser(request,response) to use login() instead. The logic flow is:
+        // Converting reliance on getUser(request,response) to use login(...) instead. The logic flow is:
         // 1) Seraph Login filter, which is based on username/password kicks in (declared at web.xml)
         // 2) It bails out altogether and identified user as invalid (without calling any of login(request,response)
         //    declared here.
@@ -760,6 +761,10 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
 
         httpSession.setAttribute(ConfluenceAuthenticator.LOGGED_IN_KEY, user);
         httpSession.setAttribute(ConfluenceAuthenticator.LOGGED_OUT_KEY, null);
+
+        // SHBL-50 - method suggested by Erkki Aalto
+        // in https://answers.atlassian.com/questions/21460/how-to-update-logininfo-table-in-confluence-4-0-in-custom-confluence-authenticator
+        getLoginManager().onSuccessfulLoginAttempt(userid, request);
 
         // SHBL-50 - code provided by Joseph Clark to do postlogin updates. This will break eventually with new Confluence/Crowd version,
         //           so Atlassian needs to provide methods that we can call to do these things.
@@ -1235,6 +1240,10 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
 
     public CrowdService getCrowdService() {
         return (CrowdService) ContainerManager.getComponent("crowdService");
+    }
+
+    public LoginManager getLoginManager() {
+        return (LoginManager) ContainerManager.getComponent("loginManager");
     }
 
     public PlatformTransactionManager getTransactionManager() {
