@@ -70,7 +70,7 @@ While you're in here, do an svn log and try to determine what changed since the 
 
 (in tags/(new version))
 
-    atlas-mvn clean install
+    mvn clean install
     cp target/(name of jar) ../../releases
     cd ../../releases
     svn add (name of jar)
