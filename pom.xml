@@ -10,7 +10,7 @@
         <confluence.data.version>4.1</confluence.data.version>
         <!-- Look at pom.xml in confluence version in https://maven.atlassian.com/content/repositories/atlassian-public/com/atlassian/confluence/confluence-project/ -->
         <crowd.version>2.3.2</crowd.version>
-        <crowd.embedded.version>1.3.3</crowd.embedded.version>        
+        <crowd.embedded.version>1.3.3</crowd.embedded.version>
     </properties>
     <issueManagement>
         <system>Atlassian Developer JIRA</system>

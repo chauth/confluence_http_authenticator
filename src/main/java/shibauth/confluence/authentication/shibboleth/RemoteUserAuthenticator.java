@@ -691,14 +691,12 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
         }
 
         // Check if the user is already logged in
-		try
-        {
+        try {
             user = getUserFromSession(request);
-            if(user != null)
-            {
-				if (log.isDebugEnabled()) {
-	                log.debug("" + user.getName() + " already logged in (user in session), returning.");
-	            }                
+            if (user != null) {
+                if (log.isDebugEnabled()) {
+                    log.debug("" + user.getName() + " already logged in (user in session), returning.");
+                }
 
                 return true;
             }
@@ -706,26 +704,22 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
             if (log.isDebugEnabled()) {
                 log.debug("" + user.getName() + " didn't have a user in session.");
             }
-        }
-        catch(Throwable t)
-        {
+        } catch (Throwable t) {
             log.error("Got the following error attempting to get existing user from session.", t);
-        }
-        finally {
-            if(user == null)
-            {
-	           	if (httpSession.getAttribute(ConfluenceAuthenticator.LOGGED_IN_KEY) != null) {
-		            user = (Principal) httpSession.getAttribute(ConfluenceAuthenticator.LOGGED_IN_KEY);
+        } finally {
+            if (user == null) {
+                if (httpSession.getAttribute(ConfluenceAuthenticator.LOGGED_IN_KEY) != null) {
+                    user = (Principal) httpSession.getAttribute(ConfluenceAuthenticator.LOGGED_IN_KEY);
 
-		            if (log.isDebugEnabled()) {
-		                log.debug("" + user.getName() + " already logged in (key in session), returning.");
-		            }
+                    if (log.isDebugEnabled()) {
+                        log.debug("" + user.getName() + " already logged in (key in session), returning.");
+                    }
 
-		            return true;
-		        }
-	        }
-	
-	        if (log.isDebugEnabled()) {
+                    return true;
+                }
+            }
+
+            if (log.isDebugEnabled()) {
                 log.debug("" + user.getName() + " didn't have a logged in key in session.");
             }
         }
@@ -771,11 +765,10 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
         if (user == null) {
             createUser(userid);
             user = getUser(userid);
-            if (user!= null) {
+            if (user != null) {
                 updateUser(user, fullName, emailAddress);
             }
-        }
-        else if (config.isUpdateInfo()) {
+        } else if (config.isUpdateInfo()) {
             updateUser(user, fullName, emailAddress);
         }
 
@@ -803,7 +796,7 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
 
         return true;
     }
-    
+
     private void updateGroupMemberships(HttpServletRequest request, Principal user) {
         Set roles = new HashSet();
 
@@ -816,7 +809,7 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
         roles.addAll(config.getDefaultRoles());
         purgeUserRoles(user, roles);
     }
-    
+
     public Principal getUser(HttpServletRequest request, HttpServletResponse response) {
         if (config.isUsingShibLoginFilter()) {
             return getUserForShibLoginFilter(request, response);
@@ -891,10 +884,9 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
 
             createUser(userid);
             user = getUser(userid);
-            if (user!= null) {
+            if (user != null) {
                 updateUser(user, fullName, emailAddress);
-            }
-            else {
+            } else {
                 // If user is still null, probably we're using an
                 // external user database like LDAP. Either REMOTE_USER
                 // isn't present there or is being filtered out, e.g.
@@ -1141,131 +1133,109 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
         return getUser(request, response);
     }
 
-	// avoid "Write operations are not allowed in read-only mode" per Joseph Clark of Atlassian in
+    // avoid "Write operations are not allowed in read-only mode" per Joseph Clark of Atlassian in
     // https://answers.atlassian.com/questions/25160/crowdservice-updateuser-causes-write-operations-are-not-allowed-in-read-only-mode
-	// https://developer.atlassian.com/display/CONFDEV/Hibernate+Sessions+and+Transaction+Management+Guidelines
+    // https://developer.atlassian.com/display/CONFDEV/Hibernate+Sessions+and+Transaction+Management+Guidelines
     private void addGroup(final CrowdService crowdService, final Group group) {
-        if (group!= null) {
-            new TransactionTemplate(getTransactionManager(), new DefaultTransactionAttribute(TransactionDefinition.PROPAGATION_REQUIRED)).execute(new TransactionCallback()
-            {
-                public Object doInTransaction(TransactionStatus status)
-                {
+        if (group != null) {
+            new TransactionTemplate(getTransactionManager(), new DefaultTransactionAttribute(TransactionDefinition.PROPAGATION_REQUIRED)).execute(new TransactionCallback() {
+                public Object doInTransaction(TransactionStatus status) {
                     try {
                         crowdService.addGroup(group);
-                    }
-                    catch (Throwable t) {
+                    } catch (Throwable t) {
                         log.error("Failed to add group '" + group.getName() + "'!", t);
                     }
                     return null;
                 }
             });
-        }
-        else {
+        } else {
             log.warn("Cannot add null group!");
         }
-	}
-	
-	// avoid "Write operations are not allowed in read-only mode" per Joseph Clark of Atlassian in
+    }
+
+    // avoid "Write operations are not allowed in read-only mode" per Joseph Clark of Atlassian in
     // https://answers.atlassian.com/questions/25160/crowdservice-updateuser-causes-write-operations-are-not-allowed-in-read-only-mode
-	// https://developer.atlassian.com/display/CONFDEV/Hibernate+Sessions+and+Transaction+Management+Guidelines
+    // https://developer.atlassian.com/display/CONFDEV/Hibernate+Sessions+and+Transaction+Management+Guidelines
     private void addUserToGroup(final CrowdService crowdService, final User crowdUser, final Group group) {
         if (crowdUser == null) {
             log.warn("Cannot add null user to group!");
-        }
-        else if (group == null) {
+        } else if (group == null) {
             log.warn("Cannot add user to null group!");
-        }
-        else {
-            new TransactionTemplate(getTransactionManager(), new DefaultTransactionAttribute(TransactionDefinition.PROPAGATION_REQUIRED)).execute(new TransactionCallback()
-            {
-                public Object doInTransaction(TransactionStatus status)
-                {
+        } else {
+            new TransactionTemplate(getTransactionManager(), new DefaultTransactionAttribute(TransactionDefinition.PROPAGATION_REQUIRED)).execute(new TransactionCallback() {
+                public Object doInTransaction(TransactionStatus status) {
                     try {
                         crowdService.addGroup(group);
-                    }
-                    catch (Throwable t) {
+                    } catch (Throwable t) {
                         log.error("Failed to add user " + crowdUser.getName() + " to group '" + group.getName() + "'!", t);
                     }
                     return null;
                 }
             });
         }
-	}
-	
-	// avoid "Write operations are not allowed in read-only mode" per Joseph Clark of Atlassian in
+    }
+
+    // avoid "Write operations are not allowed in read-only mode" per Joseph Clark of Atlassian in
     // https://answers.atlassian.com/questions/25160/crowdservice-updateuser-causes-write-operations-are-not-allowed-in-read-only-mode
-	// https://developer.atlassian.com/display/CONFDEV/Hibernate+Sessions+and+Transaction+Management+Guidelines
+    // https://developer.atlassian.com/display/CONFDEV/Hibernate+Sessions+and+Transaction+Management+Guidelines
     private void removeUserFromGroup(final CrowdService crowdService, final User crowdUser, final Group group) {
         if (crowdUser == null) {
             log.warn("Cannot remove null user from group!");
-        }
-        else if (group == null) {
+        } else if (group == null) {
             log.warn("Cannot remove user from null group!");
-        }
-        else {
-            new TransactionTemplate(getTransactionManager(), new DefaultTransactionAttribute(TransactionDefinition.PROPAGATION_REQUIRED)).execute(new TransactionCallback()
-            {
-                public Object doInTransaction(TransactionStatus status)
-                {
+        } else {
+            new TransactionTemplate(getTransactionManager(), new DefaultTransactionAttribute(TransactionDefinition.PROPAGATION_REQUIRED)).execute(new TransactionCallback() {
+                public Object doInTransaction(TransactionStatus status) {
                     try {
                         crowdService.addGroup(group);
-                    }
-                    catch (Throwable t) {
+                    } catch (Throwable t) {
                         log.error("Failed to remove user " + crowdUser.getName() + " from group '" + group.getName() + "'!", t);
                     }
                     return null;
                 }
             });
         }
-	}
+    }
 
     // avoid "Write operations are not allowed in read-only mode" per Joseph Clark of Atlassian in
     // https://answers.atlassian.com/questions/25160/crowdservice-updateuser-causes-write-operations-are-not-allowed-in-read-only-mode
     // https://developer.atlassian.com/display/CONFDEV/Hibernate+Sessions+and+Transaction+Management+Guidelines
     private void createUser(final UserAccessor userAccessor, final String username) {
-        if (username!= null) {
-            new TransactionTemplate(getTransactionManager(), new DefaultTransactionAttribute(TransactionDefinition.PROPAGATION_REQUIRED)).execute(new TransactionCallback()
-            {
-                public Object doInTransaction(TransactionStatus status)
-                {
+        if (username != null) {
+            new TransactionTemplate(getTransactionManager(), new DefaultTransactionAttribute(TransactionDefinition.PROPAGATION_REQUIRED)).execute(new TransactionCallback() {
+                public Object doInTransaction(TransactionStatus status) {
                     try {
                         userAccessor.createUser(username);
-                    }
-                    catch (Throwable t) {
+                    } catch (Throwable t) {
                         log.error("Failed to create user '" + username + "'!", t);
                     }
                     return null;
                 }
             });
-        }
-        else {
+        } else {
             log.warn("Cannot add user with null username!");
         }
     }
-    
-	// avoid "Write operations are not allowed in read-only mode" per Joseph Clark of Atlassian in
+
+    // avoid "Write operations are not allowed in read-only mode" per Joseph Clark of Atlassian in
     // https://answers.atlassian.com/questions/25160/crowdservice-updateuser-causes-write-operations-are-not-allowed-in-read-only-mode
-	// https://developer.atlassian.com/display/CONFDEV/Hibernate+Sessions+and+Transaction+Management+Guidelines
+    // https://developer.atlassian.com/display/CONFDEV/Hibernate+Sessions+and+Transaction+Management+Guidelines
     private void updateUser(final CrowdService crowdService, final User crowdUser) {
-        if (crowdUser!= null) {
-            new TransactionTemplate(getTransactionManager(), new DefaultTransactionAttribute(TransactionDefinition.PROPAGATION_REQUIRED)).execute(new TransactionCallback()
-            {
-                public Object doInTransaction(TransactionStatus status)
-                {
+        if (crowdUser != null) {
+            new TransactionTemplate(getTransactionManager(), new DefaultTransactionAttribute(TransactionDefinition.PROPAGATION_REQUIRED)).execute(new TransactionCallback() {
+                public Object doInTransaction(TransactionStatus status) {
                     try {
                         crowdService.updateUser(crowdUser);
-                    }
-                    catch (Throwable t) {
+                    } catch (Throwable t) {
                         log.error("Failed to update user '" + crowdUser.getName() + "'!", t);
                     }
                     return null;
                 }
             });
-        }
-        else {
+        } else {
             log.warn("Cannot update null user!");
         }
-	}
+    }
 
     public CrowdService getCrowdService() {
         return (CrowdService) ContainerManager.getComponent("crowdService");
@@ -1276,6 +1246,6 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
     }
 
     public PlatformTransactionManager getTransactionManager() {
-	    return (PlatformTransactionManager) ContainerManager.getComponent("transactionManager");
+        return (PlatformTransactionManager) ContainerManager.getComponent("transactionManager");
     }
 }
