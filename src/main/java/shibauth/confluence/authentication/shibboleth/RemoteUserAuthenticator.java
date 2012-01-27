@@ -1,5 +1,5 @@
 /*
- Copyright (c) 2008-2011, Shibboleth Authenticator for Confluence Team
+ Copyright (c) 2008-2012, Shibboleth Authenticator for Confluence Team
  All rights reserved.
 
  Redistribution and use in source and binary forms, with or without
@@ -691,14 +691,43 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
         }
 
         // Check if the user is already logged in
-        if (httpSession.getAttribute(ConfluenceAuthenticator.LOGGED_IN_KEY) != null) {
-            user = (Principal) httpSession.getAttribute(ConfluenceAuthenticator.LOGGED_IN_KEY);
+		try
+        {
+            user = getUserFromSession(request);
+            if(user != null)
+            {
+				if (log.isDebugEnabled()) {
+	                log.debug("" + user.getName() + " already logged in (user in session), returning.");
+	            }                
 
-            if (log.isDebugEnabled()) {
-                log.debug("" + user.getName() + " already logged in, returning.");
+                return true;
             }
 
-            return true;
+            if (log.isDebugEnabled()) {
+                log.debug("" + user.getName() + " didn't have a user in session.");
+            }
+        }
+        catch(Throwable t)
+        {
+            log.error("Got the following error attempting to get existing user from session.", t);
+        }
+        finally {
+            if(user == null)
+            {
+	           	if (httpSession.getAttribute(ConfluenceAuthenticator.LOGGED_IN_KEY) != null) {
+		            user = (Principal) httpSession.getAttribute(ConfluenceAuthenticator.LOGGED_IN_KEY);
+
+		            if (log.isDebugEnabled()) {
+		                log.debug("" + user.getName() + " already logged in (key in session), returning.");
+		            }
+
+		            return true;
+		        }
+	        }
+	
+	        if (log.isDebugEnabled()) {
+                log.debug("" + user.getName() + " didn't have a logged in key in session.");
+            }
         }
 
         // Since they aren't logged in, get the user name from the configured header (e.g. REMOTE_USER).
