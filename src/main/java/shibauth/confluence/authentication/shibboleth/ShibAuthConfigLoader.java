@@ -72,14 +72,14 @@ public class ShibAuthConfigLoader {
 
             // Load create.users property.
             config.setCreateUsers(
-                    Boolean.valueOf(configProps.getProperty(ShibAuthConstants.CREATE_USERS)).booleanValue());
+                    Boolean.valueOf(configProps.getProperty(ShibAuthConstants.CREATE_USERS, "true")).booleanValue());
 
             if (log.isDebugEnabled()) {
                 log.debug("Setting create new users to " + config.isCreateUsers());
             }
 
             // Load update.info property.
-            config.setUpdateInfo(Boolean.valueOf(configProps.getProperty(ShibAuthConstants.UPDATE_INFO)).
+            config.setUpdateInfo(Boolean.valueOf(configProps.getProperty(ShibAuthConstants.UPDATE_INFO, "true")).
                     booleanValue());
 
             if (log.isDebugEnabled()) {
@@ -88,7 +88,7 @@ public class ShibAuthConfigLoader {
 
             // Load update.lastLoginDate property.
             config.setUpdateLastLogin(
-                    Boolean.valueOf(configProps.getProperty(ShibAuthConstants.UPDATE_LAST_LOGIN_DATE)).booleanValue()
+                    Boolean.valueOf(configProps.getProperty(ShibAuthConstants.UPDATE_LAST_LOGIN_DATE, "true")).booleanValue()
             );
 
             if (log.isDebugEnabled()) {
@@ -98,7 +98,7 @@ public class ShibAuthConfigLoader {
 
             // Load update.roles property.
             config.setUpdateRoles(
-                    Boolean.valueOf(configProps.getProperty(ShibAuthConstants.UPDATE_ROLES)).booleanValue());
+                    Boolean.valueOf(configProps.getProperty(ShibAuthConstants.UPDATE_ROLES, "true")).booleanValue());
 
             if (log.isDebugEnabled()) {
                 log.debug("Setting update user roles to " + config.isUpdateRoles());
@@ -106,14 +106,14 @@ public class ShibAuthConfigLoader {
 
             // Load reload.config property.
             config.setReloadConfig(
-                    Boolean.valueOf(configProps.getProperty(ShibAuthConstants.RELOAD_CONFIG)).booleanValue());
+                    Boolean.valueOf(configProps.getProperty(ShibAuthConstants.RELOAD_CONFIG, "false")).booleanValue());
 
             if (log.isDebugEnabled()) {
                 log.debug("Setting reload config to " + config.isReloadConfig());
             }
 
             // Load reload.config.check.interval property.
-            String reloadConfigCheckIntervalS = configProps.getProperty(ShibAuthConstants.RELOAD_CONFIG_CHECK_INTERVAL);
+            String reloadConfigCheckIntervalS = configProps.getProperty(ShibAuthConstants.RELOAD_CONFIG_CHECK_INTERVAL, "5000");
             if (reloadConfigCheckIntervalS != null) {
                 config.setReloadConfigCheckInterval(Long.valueOf(reloadConfigCheckIntervalS).longValue());
 
@@ -124,7 +124,7 @@ public class ShibAuthConfigLoader {
 
             // Load convert.to.utf8 property.
             config.setConvertToUTF8(
-                    Boolean.valueOf(configProps.getProperty(ShibAuthConstants.CONVERT_TO_UTF8)).booleanValue());
+                    Boolean.valueOf(configProps.getProperty(ShibAuthConstants.CONVERT_TO_UTF8, "false")).booleanValue());
 
             if (log.isDebugEnabled()) {
                 log.debug("Setting convert header values to UTF-8 to " + config.isConvertToUTF8());
@@ -154,19 +154,19 @@ public class ShibAuthConfigLoader {
             }
 
             config.setDefaultRoles(defaultRoles);
-            config.setRemoteUserHeaderName(configProps.getProperty(ShibAuthConstants.REMOTE_USER_HEADER_NAME_PROPERTY));
+            config.setRemoteUserHeaderName(configProps.getProperty(ShibAuthConstants.REMOTE_USER_HEADER_NAME_PROPERTY, "REMOTE_USER"));
 
             if (log.isDebugEnabled()) {
                 log.debug("HTTP Header that may contain user's username set to: " + config.getRemoteUserHeaderName());
             }
 
-            config.setFullNameHeaderName(configProps.getProperty(ShibAuthConstants.FULLNAME_HEADER_NAME_PROPERTY));
+            config.setFullNameHeaderName(configProps.getProperty(ShibAuthConstants.FULLNAME_HEADER_NAME_PROPERTY, "CONF_FULL_NAME"));
 
             if (log.isDebugEnabled()) {
                 log.debug("HTTP Header that may contain user's full name set to: " + config.getFullNameHeaderName());
             }
 
-            config.setEmailHeaderName(configProps.getProperty(ShibAuthConstants.EMAIL_HEADER_NAME_PROPERTY));
+            config.setEmailHeaderName(configProps.getProperty(ShibAuthConstants.EMAIL_HEADER_NAME_PROPERTY, "CONF_EMAIL"));
 
             if (log.isDebugEnabled()) {
                 log.debug("HTTP Header that may contain user's email address set to: " + config.getEmailHeaderName());
@@ -182,7 +182,7 @@ public class ShibAuthConfigLoader {
 
             // Load property using.shib.login.filter.
             config.setUsingShibLoginFilter(
-                    Boolean.valueOf(configProps.getProperty(ShibAuthConstants.USING_SHIB_LOGIN_FILTER)).booleanValue());
+                    Boolean.valueOf(configProps.getProperty(ShibAuthConstants.USING_SHIB_LOGIN_FILTER, "false")).booleanValue());
 
             if (log.isDebugEnabled()) {
                 log.debug("Setting usingShibLoginFilter to " +

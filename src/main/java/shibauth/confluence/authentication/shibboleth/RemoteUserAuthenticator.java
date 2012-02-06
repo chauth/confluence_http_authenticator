@@ -706,22 +706,6 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
             }
         } catch (Throwable t) {
             log.error("Got the following error attempting to get existing user from session.", t);
-        } finally {
-            if (user == null) {
-                if (httpSession.getAttribute(ConfluenceAuthenticator.LOGGED_IN_KEY) != null) {
-                    user = (Principal) httpSession.getAttribute(ConfluenceAuthenticator.LOGGED_IN_KEY);
-
-                    if (log.isDebugEnabled()) {
-                        log.debug("" + user.getName() + " already logged in (key in session), returning.");
-                    }
-
-                    return true;
-                }
-            }
-
-            if (log.isDebugEnabled()) {
-                log.debug("" + user.getName() + " didn't have a logged in key in session.");
-            }
         }
 
         // Since they aren't logged in, get the user name from the configured header (e.g. REMOTE_USER).
