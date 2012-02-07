@@ -41,15 +41,16 @@
 
 package shibauth.confluence.authentication.shibboleth;
 
+import com.atlassian.confluence.user.UserAccessor;
 import com.atlassian.confluence.event.events.security.LoginEvent;
 import com.atlassian.confluence.event.events.security.LoginFailedEvent;
 import com.atlassian.confluence.security.login.LoginManager;
 import com.atlassian.confluence.user.ConfluenceAuthenticator;
 import com.atlassian.confluence.user.UserAccessor;
-import com.atlassian.crowd.embedded.api.CrowdService;
-import com.atlassian.crowd.embedded.api.Group;
-import com.atlassian.crowd.embedded.api.User;
+import com.atlassian.crowd.embedded.api.*;
 import com.atlassian.crowd.embedded.impl.ImmutableUser;
+import com.atlassian.crowd.search.EntityDescriptor;
+import com.atlassian.crowd.search.query.membership.GroupMembershipQuery;
 import com.atlassian.seraph.auth.AuthenticatorException;
 import com.atlassian.seraph.auth.LoginReason;
 import com.atlassian.spring.container.ContainerManager;
@@ -200,10 +201,6 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
                 log.debug("No roles specified, not adding any roles...");
             }
         } else {
-            //if (log.isDebugEnabled()) {
-            //    log.debug("Assigning roles to user " + user.getName());
-            //}
-
             CrowdService crowdService = getCrowdService();
             if (crowdService == null) {
                 throw new RuntimeException("crowdService was not wired in RemoteUserAuthenticator");
@@ -273,9 +270,9 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
                 log.debug("No roles to purge specified, not purging any roles...");
             }
         } else {
-            Pager p = null;
-            if (log.isDebugEnabled()) {
-                log.debug("Purging roles from user " + user.getName());
+            UserAccessor userAccessor = getUserAccessor();
+            if (userAccessor == null) {
+                throw new RuntimeException("userAccessor was not wired in RemoteUserAuthenticator");
             }
 
             CrowdService crowdService = getCrowdService();
@@ -285,11 +282,11 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
 
             User crowdUser = crowdService.getUser(user.getName());
             Collection purgeMappers = config.getPurgeMappings();
+            
+            List<String> roles = userAccessor.getGroupNames(userAccessor.getUser(user.getName()));
 
-            for (Iterator it = p.iterator(); it.hasNext(); ) {
-                Group group = (Group) it.next();
-                String role = group.getName();
-
+            for (int i=0; i<roles.size(); i++) {
+                String role = roles.get(i);
                 if (!StringUtil.containsStringIgnoreCase(rolesToKeep, role)) {
                     //run through the purgeMappers for this role
                     for (Iterator it2 = purgeMappers.iterator(); it2.hasNext(); ) {
@@ -298,6 +295,7 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
                         String output = mapper.process(role);
                         if (output != null) {
                             try {
+                                Group group = crowdService.getGroup(role);
                                 if (crowdService.isUserMemberOfGroup(crowdUser, group)) {
                                     if (log.isDebugEnabled()) {
                                         log.debug("Removing user " + user.getName() + " from role " + role);
@@ -765,9 +763,6 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
             log.debug("Logging in user " + user.getName());
         }
 
-        httpSession.setAttribute(ConfluenceAuthenticator.LOGGED_IN_KEY, user);
-        httpSession.setAttribute(ConfluenceAuthenticator.LOGGED_OUT_KEY, null);
-
         // SHBL-50 - method suggested by Erkki Aalto
         // in https://answers.atlassian.com/questions/21460/how-to-update-logininfo-table-in-confluence-4-0-in-custom-confluence-authenticator
         getLoginManager().onSuccessfulLoginAttempt(userid, request);
@@ -795,32 +790,17 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
     }
 
     public Principal getUser(HttpServletRequest request, HttpServletResponse response) {
-        if (config.isUsingShibLoginFilter()) {
-            return getUserForShibLoginFilter(request, response);
-        }
-
-        return getUserForAtlassianLoginFilter(request, response);
-    }
-
-    /**
-     * Changes provided by colleague of Hans-Ulrich Pieper of Freie Universität Berlin.
-     */
-    public Principal getUserForAtlassianLoginFilter(HttpServletRequest request, HttpServletResponse response) {
         if (log.isDebugEnabled()) {
             log.debug("Request made to " + request.getRequestURL() + " triggered this AuthN check.");
         }
-
-        HttpSession httpSession = request.getSession();
-        Principal user = null;
 
         // for those interested on the events
         String remoteIP = request.getRemoteAddr();
         String remoteHost = request.getRemoteHost();
 
         // Check if the user is already logged in
-        if (httpSession.getAttribute(ConfluenceAuthenticator.LOGGED_IN_KEY) != null) {
-            user = (Principal) httpSession.getAttribute(ConfluenceAuthenticator.LOGGED_IN_KEY);
-
+        Principal user = getUserFromSession(request);
+        if (user != null) {
             if (log.isDebugEnabled()) {
                 log.debug("" + user.getName() + " already logged in, returning.");
             }
@@ -837,7 +817,7 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
                 log.debug("Remote user was null or empty, can not perform authentication.");
             }
 
-            getEventPublisher().publish(new LoginFailedEvent(this, "NoShibUsername", httpSession.getId(), remoteHost, remoteIP));
+            getEventPublisher().publish(new LoginFailedEvent(this, "NoShibUsername", request.getSession().getId(), remoteHost, remoteIP));
 
             return null;
         }
@@ -878,7 +858,7 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
                 if (log.isDebugEnabled()) {
                     log.debug("User does not exist and cannot create it.");
                 }
-                getEventPublisher().publish(new LoginFailedEvent(this, "CannotCreateUser", httpSession.getId(),
+                getEventPublisher().publish(new LoginFailedEvent(this, "CannotCreateUser", request.getSession().getId(),
                         remoteHost, remoteIP));
 
                 return null;
@@ -910,10 +890,7 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
             log.debug("Logging in user " + user.getName());
         }
 
-        httpSession.setAttribute(ConfluenceAuthenticator.LOGGED_IN_KEY, user);
-        httpSession.setAttribute(ConfluenceAuthenticator.LOGGED_OUT_KEY, null);
-
-        getEventPublisher().publish(new LoginEvent(this, user.getName(), httpSession.getId(), remoteHost, remoteIP));
+        getEventPublisher().publish(new LoginEvent(this, user.getName(), request.getSession().getId(), remoteHost, remoteIP));
 
         return user;
     }
@@ -997,7 +974,7 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
     }
 
     private String createFullNameUsingMapping(String originalFullNameHeaderValue, List values) {
-        // It is possible to have multiple mappers defined, but only 1 will produce the desired outcome.
+        // It is possible to have multiple mappers defined, but only one will produce the desired outcome.
         Set possibleFullNames = new HashSet();
         Collection mappers = config.getFullNameMappings();
 
@@ -1223,6 +1200,10 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
 
     public CrowdService getCrowdService() {
         return (CrowdService) ContainerManager.getComponent("crowdService");
+    }
+
+    public UserAccessor getUserAccessor() {
+        return (UserAccessor) ContainerManager.getComponent("userAccessor");
     }
 
     public LoginManager getLoginManager() {

@@ -180,13 +180,9 @@ public class ShibAuthConfigLoader {
                 log.debug("Setting usernameConvertCase to " + config.isUsernameConvertCase());
             }
 
-            // Load property using.shib.login.filter.
-            config.setUsingShibLoginFilter(
-                    Boolean.valueOf(configProps.getProperty(ShibAuthConstants.USING_SHIB_LOGIN_FILTER, "false")).booleanValue());
-
-            if (log.isDebugEnabled()) {
-                log.debug("Setting usingShibLoginFilter to " +
-                        config.isUsingShibLoginFilter() + " (change to this must accompany manual changes to web.xml)");
+            // warn about property no longer supported
+            if (Boolean.valueOf(configProps.getProperty(ShibAuthConstants.USING_SHIB_LOGIN_FILTER, "false")).booleanValue()) {
+                log.warn("Note: using.shib.login.filter=true is no longer supported by Confluence Shibboleth Authenticator. Please remove using.shib.login.filter from remoteUserAuthenticator.properties.");
             }
 
             loadGroupMapping(config, configProps);
@@ -341,8 +337,9 @@ public class ShibAuthConfigLoader {
     private static void loadGroupMapping(ShibAuthConfiguration config,
                                          Properties configProps) {
 
-        config.setAutoCreateGroup(Boolean.valueOf(configProps.getProperty(ShibAuthConstants.AUTO_CREATE_GROUP)).
-                booleanValue());
+		config.setAutoCreateGroup(Boolean.valueOf(
+		        configProps.getProperty(ShibAuthConstants.AUTO_CREATE_GROUP, "false")).
+		        booleanValue());
 
         if (log.isDebugEnabled()) {
             log.debug("Setting automatic creation of new group to " + config.isAutoCreateGroup());
