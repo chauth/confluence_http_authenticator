@@ -196,7 +196,11 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
      * @param user the user to assign to the roles.
      */
     private void assignUserToRoles(Principal user, Collection roles) {
-        if (roles.size() == 0) {
+        if (user == null) {
+	        if (log.isDebugEnabled()) {
+                log.debug("User was null, not adding any roles...");
+            }
+        } else if (roles.size() == 0) {
             if (log.isDebugEnabled()) {
                 log.debug("No roles specified, not adding any roles...");
             }
@@ -369,7 +373,11 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
 
     private void updateUser(Principal user, String fullName, String emailAddress) {
         // If we have new values for name or email, update the user object
-        if (user != null) {
+        if (user == null) {
+	        if (log.isDebugEnabled()) {
+                log.debug("User is null, so can't update it.");
+            }
+	    } else {
             boolean updated = false;
 
             CrowdService crowdService = getCrowdService();
@@ -697,10 +705,8 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
                 }
 
                 return true;
-            }
-
-            if (log.isDebugEnabled()) {
-                log.debug("" + user.getName() + " didn't have a user in session.");
+            } else if (log.isDebugEnabled()) {
+                log.debug("Didn't have a user in session.");
             }
         } catch (Throwable t) {
             log.error("Got the following error attempting to get existing user from session.", t);
