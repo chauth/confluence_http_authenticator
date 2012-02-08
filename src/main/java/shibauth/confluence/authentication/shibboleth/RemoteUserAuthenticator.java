@@ -1057,49 +1057,6 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
         return fullName;
     }
 
-    /**
-     * @param request
-     * @param response
-     * @return
-     * @see com.atlassian.seraph.auth.Authenticator#getUser(
-     *javax.servlet.http.HttpServletRequest,
-     *      javax.servlet.http.HttpServletResponse)
-     */
-    public Principal getUserForShibLoginFilter(HttpServletRequest request, HttpServletResponse response) {
-        // If using ShibLoginFilter, see SHBL-24 - Authentication with local accounts should be supported
-        if (log.isDebugEnabled()) {
-            log.debug("Request made to " + request.getRequestURL() + " triggered this AuthN check (2).");
-        }
-
-        HttpSession httpSession = request.getSession(false);
-        Principal user;
-
-        // Check if the user is already logged in.
-        if ((httpSession != null) && (httpSession.getAttribute(ConfluenceAuthenticator.LOGGED_IN_KEY) != null)) {
-            user = (Principal) httpSession.getAttribute(ConfluenceAuthenticator.LOGGED_IN_KEY);
-
-            if (log.isDebugEnabled()) {
-                log.debug("" + user.getName() + " already logged in, returning.");
-            }
-
-            return user;
-        }
-
-        // Worst case scenario, this is executed when user has not logged in previously. Perhaps the admin forgot to
-        // change web.xml to use ShibLoginFilter (in older version(s) of Confluence).
-        try {
-            boolean authenticated = login(request, response, null, null, false);
-            if (!authenticated) {
-                return null;
-            }
-        } catch (Throwable t) {
-            log.error("Failed to authenticate user", t);
-            return null;
-        }
-
-        return getUser(request, response);
-    }
-
     // avoid "Write operations are not allowed in read-only mode" per Joseph Clark of Atlassian in
     // https://answers.atlassian.com/questions/25160/crowdservice-updateuser-causes-write-operations-are-not-allowed-in-read-only-mode
     // https://developer.atlassian.com/display/CONFDEV/Hibernate+Sessions+and+Transaction+Management+Guidelines
@@ -1132,7 +1089,7 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
             new TransactionTemplate(getTransactionManager(), new DefaultTransactionAttribute(TransactionDefinition.PROPAGATION_REQUIRED)).execute(new TransactionCallback() {
                 public Object doInTransaction(TransactionStatus status) {
                     try {
-                        crowdService.addGroup(group);
+                        crowdService.addUserToGroup(crowdUser, group);
                     } catch (Throwable t) {
                         log.error("Failed to add user " + crowdUser.getName() + " to group '" + group.getName() + "'!", t);
                     }
@@ -1154,7 +1111,7 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
             new TransactionTemplate(getTransactionManager(), new DefaultTransactionAttribute(TransactionDefinition.PROPAGATION_REQUIRED)).execute(new TransactionCallback() {
                 public Object doInTransaction(TransactionStatus status) {
                     try {
-                        crowdService.addGroup(group);
+                        crowdService.removeUserFromGroup(crowdUser, group);
                     } catch (Throwable t) {
                         log.error("Failed to remove user " + crowdUser.getName() + " from group '" + group.getName() + "'!", t);
                     }
