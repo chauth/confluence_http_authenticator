@@ -242,6 +242,10 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
                 User crowdUser = crowdService.getUser(user.getName());
                 if (crowdUser == null) {
                     log.warn("Could not find user '" + user.getName() + "' to add them to role '" + role + "'.");
+                } else if (group == null) {
+                    if (log.isDebugEnabled()) {
+                        log.debug("Skipping " + user.getName() + " to role " + role + ", because crowdService.getGroup(\"" + role + "\") returned null.");
+                    }
                 } else if (crowdService.isUserMemberOfGroup(crowdUser, group)) {
                     if (log.isDebugEnabled()) {
                         log.debug("Skipping " + user.getName() + " to role " + role + " - already a member");
