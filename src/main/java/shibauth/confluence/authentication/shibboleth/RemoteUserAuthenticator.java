@@ -53,6 +53,7 @@ import com.atlassian.crowd.embedded.impl.ImmutableUser;
 import com.atlassian.seraph.auth.AuthenticatorException;
 import com.atlassian.seraph.auth.LoginReason;
 import com.atlassian.spring.container.ContainerManager;
+import com.atlassian.user.GroupManager;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.transaction.PlatformTransactionManager;
@@ -203,6 +204,11 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
                 log.debug("No roles specified, not adding any roles...");
             }
         } else {
+            GroupManager groupManager = getGroupManager();
+            if (groupManager == null) {
+                throw new RuntimeException("groupManager was not wired in RemoteUserAuthenticator");
+            }
+
             CrowdService crowdService = getCrowdService();
             if (crowdService == null) {
                 throw new RuntimeException("crowdService was not wired in RemoteUserAuthenticator");
@@ -223,7 +229,11 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
                 if (group == null) {
                     if (config.isAutoCreateGroup()) {
                         try {
-                            addGroup(crowdService, group);
+                            if (log.isDebugEnabled()) {
+                                log.debug("Creating missing role '" + role + "'.");
+                            }
+                            groupManager.createGroup(role);
+                            group = crowdService.getGroup(role);
                         } catch (Throwable t) {
                             log.error("Cannot create role '" + role + "'.", t);
                             continue;
@@ -1177,5 +1187,9 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
 
     public PlatformTransactionManager getTransactionManager() {
         return (PlatformTransactionManager) ContainerManager.getComponent("transactionManager");
+    }
+
+    public GroupManager getGroupManager() {
+        return (GroupManager) ContainerManager.getComponent("groupManager");
     }
 }
