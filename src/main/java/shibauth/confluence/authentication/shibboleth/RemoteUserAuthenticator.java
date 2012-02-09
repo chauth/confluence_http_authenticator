@@ -41,20 +41,18 @@
 
 package shibauth.confluence.authentication.shibboleth;
 
-import com.atlassian.confluence.user.UserAccessor;
 import com.atlassian.confluence.event.events.security.LoginEvent;
 import com.atlassian.confluence.event.events.security.LoginFailedEvent;
 import com.atlassian.confluence.security.login.LoginManager;
 import com.atlassian.confluence.user.ConfluenceAuthenticator;
 import com.atlassian.confluence.user.UserAccessor;
-import com.atlassian.crowd.embedded.api.*;
+import com.atlassian.crowd.embedded.api.CrowdService;
+import com.atlassian.crowd.embedded.api.Group;
+import com.atlassian.crowd.embedded.api.User;
 import com.atlassian.crowd.embedded.impl.ImmutableUser;
-import com.atlassian.crowd.search.EntityDescriptor;
-import com.atlassian.crowd.search.query.membership.GroupMembershipQuery;
 import com.atlassian.seraph.auth.AuthenticatorException;
 import com.atlassian.seraph.auth.LoginReason;
 import com.atlassian.spring.container.ContainerManager;
-import com.atlassian.user.search.page.Pager;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.transaction.PlatformTransactionManager;
@@ -197,7 +195,7 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
      */
     private void assignUserToRoles(Principal user, Collection roles) {
         if (user == null) {
-	        if (log.isDebugEnabled()) {
+            if (log.isDebugEnabled()) {
                 log.debug("User was null, not adding any roles...");
             }
         } else if (roles.size() == 0) {
@@ -290,10 +288,10 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
 
             User crowdUser = crowdService.getUser(user.getName());
             Collection purgeMappers = config.getPurgeMappings();
-            
+
             List<String> roles = userAccessor.getGroupNames(userAccessor.getUser(user.getName()));
 
-            for (int i=0; i<roles.size(); i++) {
+            for (int i = 0; i < roles.size(); i++) {
                 String role = roles.get(i);
                 if (!StringUtil.containsStringIgnoreCase(rolesToKeep, role)) {
                     //run through the purgeMappers for this role
@@ -378,10 +376,10 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
     private void updateUser(Principal user, String fullName, String emailAddress) {
         // If we have new values for name or email, update the user object
         if (user == null) {
-	        if (log.isDebugEnabled()) {
+            if (log.isDebugEnabled()) {
                 log.debug("User is null, so can't update it.");
             }
-	    } else {
+        } else {
             boolean updated = false;
 
             CrowdService crowdService = getCrowdService();

@@ -337,9 +337,9 @@ public class ShibAuthConfigLoader {
     private static void loadGroupMapping(ShibAuthConfiguration config,
                                          Properties configProps) {
 
-		config.setAutoCreateGroup(Boolean.valueOf(
-		        configProps.getProperty(ShibAuthConstants.AUTO_CREATE_GROUP, "false")).
-		        booleanValue());
+        config.setAutoCreateGroup(Boolean.valueOf(
+                configProps.getProperty(ShibAuthConstants.AUTO_CREATE_GROUP, "false")).
+                booleanValue());
 
         if (log.isDebugEnabled()) {
             log.debug("Setting automatic creation of new group to " + config.isAutoCreateGroup());
