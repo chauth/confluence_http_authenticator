@@ -7,7 +7,7 @@
     <artifactId>remoteUserAuth</artifactId>
     <version>2.1.12-SNAPSHOT</version>
     <properties>
-        <confluence.version>4.1</confluence.version>
+        <confluence.version>4.1.5</confluence.version>
         <confluence.data.version>4.1</confluence.data.version>
         <!-- Look at pom.xml in confluence version in https://maven.atlassian.com/content/repositories/atlassian-public/com/atlassian/confluence/confluence-project/ -->
         <crowd.version>2.3.2</crowd.version>
@@ -299,6 +299,16 @@
             </releases>
             <id>Nuxeo</id>
             <url>https://maven.nuxeo.org/nexus/content/repositories/public/</url>
+        </repository>
+        <repository>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <id>OpenCast Atlassian</id>
+            <url>http://repository.opencastproject.org/nexus/content/repositories/atlassian/</url>
         </repository>
     </repositories>
     <!-- TODO: cleanup. was missing so just added all and some urls may be wrong. hack hack hack!!! -->
