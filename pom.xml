@@ -7,7 +7,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>shibauth</groupId>
     <artifactId>remoteUserAuth</artifactId>
-    <version>2.0.1</version>
+    <version>2.0.2</version>
     
     <properties>
         <confluence.version>3.5</confluence.version>
@@ -33,7 +33,7 @@
                 <name>BSD-Style License</name>
                 <distribution>manual</distribution>
                 <comments>
-     Copyright (c) 2008-2011, Shibboleth Authenticator for Confluence Team
+     Copyright (c) 2008-2012, Shibboleth Authenticator for Confluence Team
      All rights reserved.
 
      Redistribution and use in source and binary forms, with or without
@@ -192,8 +192,148 @@
 
     <name>Confluence Shibboleth Authenticator</name>
     <description>An Atlassian Confluence seraph authenticator that works with Shibboleth</description>
-    <packaging>atlassian-plugin</packaging>
-
+    <packaging>jar</packaging>
+    
+    <repositories>
+        <repository>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <id>Atlassian Public</id>
+            <url>https://maven.atlassian.com/content/repositories/atlassian-public/</url>
+        </repository>
+        <repository>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+            <id>Atlassian Public Snaphots</id>
+            <url>https://maven.atlassian.com/content/repositories/atlassian-public-snapshot/</url>
+        </repository>
+        <repository>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <id>Atlassian 3rd-party Repository</id>
+            <url>https://maven.atlassian.com/content/repositories/atlassian-3rdparty/</url>
+        </repository>
+        <repository>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+            <id>central-m2-repository</id>
+            <name>Central Maven 2 Repository</name>
+            <url>http://repo1.maven.org/maven2</url>
+        </repository>
+        <repository>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+            <id>Codehaus Snapshots</id>
+            <url>http://snapshots.repository.codehaus.org</url>
+        </repository>
+        <repository>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <id>TWData</id>
+            <url>https://twdata-m2-repository.googlecode.com/svn/</url>
+        </repository>
+        <repository>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <id>Nuxeo</id>
+            <url>https://maven.nuxeo.org/nexus/content/repositories/public/</url>
+        </repository>
+    </repositories>
+    <pluginRepositories>
+        <pluginRepository>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <id>Atlassian Public</id>
+            <url>https://maven.atlassian.com/content/repositories/atlassian-public/</url>
+        </pluginRepository>
+        <pluginRepository>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+            <id>Atlassian Public Snaphots</id>
+            <url>https://maven.atlassian.com/content/repositories/atlassian-public-snapshot/</url>
+        </pluginRepository>
+        <pluginRepository>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <id>Atlassian 3rd-party Repository</id>
+            <url>https://maven.atlassian.com/content/repositories/atlassian-3rdparty/</url>
+        </pluginRepository>
+        <pluginRepository>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+            <id>central-m2-repository</id>
+            <name>Central Maven 2 Repository</name>
+            <url>http://repo1.maven.org/maven2</url>
+        </pluginRepository>
+        <pluginRepository>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+            <id>Codehaus Snapshots</id>
+            <url>http://snapshots.repository.codehaus.org</url>
+        </pluginRepository>
+        <pluginRepository>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <id>TWData</id>
+            <url>https://twdata-m2-repository.googlecode.com/svn/</url>
+        </pluginRepository>
+        <pluginRepository>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <id>Nuxeo</id>
+            <url>https://maven.nuxeo.org/nexus/content/repositories/public/</url>
+        </pluginRepository>
+    </pluginRepositories>
     <dependencies>
         <dependency>
             <groupId>javax.servlet</groupId>
