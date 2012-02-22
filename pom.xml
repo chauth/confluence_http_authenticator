@@ -301,6 +301,77 @@
             <url>https://maven.nuxeo.org/nexus/content/repositories/public/</url>
         </repository>
     </repositories>
+    <!-- TODO: cleanup. was missing so just added all and some urls may be wrong. hack hack hack!!! -->
+    <pluginRepositories>
+        <pluginRepository>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <id>Atlassian Public</id>
+            <url>https://maven.atlassian.com/content/repositories/atlassian-public/</url>
+        </pluginRepository>
+        <pluginRepository>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+            <id>Atlassian Public Snaphots</id>
+            <url>https://maven.atlassian.com/content/repositories/atlassian-public-snapshot/</url>
+        </pluginRepository>
+        <pluginRepository>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <id>Atlassian 3rd-party Repository</id>
+            <url>https://maven.atlassian.com/content/repositories/atlassian-3rdparty/</url>
+        </pluginRepository>
+        <pluginRepository>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+            <id>central-m2-repository</id>
+            <name>Central Maven 2 Repository</name>
+            <url>http://repo1.maven.org/maven2</url>
+        </pluginRepository>
+        <pluginRepository>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+            <id>Codehaus Snapshots</id>
+            <url>http://snapshots.repository.codehaus.org</url>
+        </pluginRepository>
+        <pluginRepository>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <id>TWData</id>
+            <url>https://twdata-m2-repository.googlecode.com/svn/</url>
+        </pluginRepository>
+        <pluginRepository>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <id>Nuxeo</id>
+            <url>https://maven.nuxeo.org/nexus/content/repositories/public/</url>
+        </pluginRepository>
+    </pluginRepositories>
     <dependencies>
         <dependency>
             <groupId>javax.servlet</groupId>
