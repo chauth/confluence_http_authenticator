@@ -13,6 +13,13 @@ If you want to get a svn account with Atlassian email developer-relations@atlass
 
 For larger changes, you'd want to email the group to get an ok, in which case let use know and we can provide you with some email addresses of the group. The group may be composed of more guys than currently listed on the wiki page, because the list was lost during Atlassian's transition to plugins.atlassian.com. But can be seen via svn log, pom.xml, and release notes in the wiki. Mostly all of us are just contributors and only a few of us have spent much time with it after Chad LaJoie let us continue its development.
 
+Although there is a Google group that we have if needed to discuss development as a team:
+http://groups.google.com/group/confluence-shibauth-dev
+which has a mailing list for development discussion:
+confluence-shibauth-dev@googlegroups.com
+please keep conversation out of that group and mailing list if it can instead be discussed within a Jira ticket created for the plugin in the plugin's Jira instance:
+https://studio.plugins.atlassian.com/browse/SHBL
+
 Releases are kept here, mostly because we cannot use Atlassian's automated plugin installation process:
 https://studio.plugins.atlassian.com/svn/SHBL/releases
 
