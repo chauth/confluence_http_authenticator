@@ -194,7 +194,7 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
      *
      * @param user the user to assign to the roles.
      */
-    private void assignUserToRoles(Principal user, Collection roles) {
+    private void assignUserToRoles(Principal user, Collection roles, CrowdService crowdService, User crowdUser) {
         if (user == null) {
             if (log.isDebugEnabled()) {
                 log.debug("User was null, not adding any roles...");
@@ -207,11 +207,6 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
             GroupManager groupManager = getGroupManager();
             if (groupManager == null) {
                 throw new RuntimeException("groupManager was not wired in RemoteUserAuthenticator");
-            }
-
-            CrowdService crowdService = getCrowdService();
-            if (crowdService == null) {
-                throw new RuntimeException("crowdService was not wired in RemoteUserAuthenticator");
             }
 
             for (Iterator it = roles.iterator(); it.hasNext(); ) {
@@ -247,9 +242,10 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
                     }
                 }
 
-                User crowdUser = crowdService.getUser(user.getName());
                 if (crowdUser == null) {
                     log.warn("Could not find user '" + user.getName() + "' to add them to role '" + role + "'.");
+                } else if (!crowdUser.isActive()) {
+                    log.warn("User '" + user.getName() + "' was inactive, so did not add them to role '" + role + "'.");
                 } else if (group == null) {
                     if (log.isDebugEnabled()) {
                         log.debug("Skipping " + user.getName() + " to role " + role + ", because crowdService.getGroup(\"" + role + "\") returned null.");
@@ -752,6 +748,18 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
             userid = convertUsername(userid);
         }
 
+        CrowdService crowdService = getCrowdService();
+        if (crowdService == null) {
+            throw new RuntimeException("crowdService was not wired in RemoteUserAuthenticator");
+        }
+
+        // ensure user is active
+        User crowdUser = crowdService.getUser(user.getName());
+        if (crowdUser != null && !crowdUser.isActive()) {
+            log.info("Login failed for user '" + user.getName() + "', because user is set as inactive. remoteIP=" + remoteIP + " remoteHost=" + remoteHost);
+            return false;
+        }
+
         // Pull name and address from headers
         String fullName = getFullName(request, userid);
         String emailAddress = getEmailAddress(request);
@@ -768,12 +776,16 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
             if (user != null) {
                 updateUser(user, fullName, emailAddress);
             }
-        } else if (config.isUpdateInfo()) {
-            updateUser(user, fullName, emailAddress);
+        } else {
+
+
+            if (config.isUpdateInfo()) {
+                updateUser(user, fullName, emailAddress);
+            }
         }
 
         if (config.isUpdateRoles() || newUser) {
-            updateGroupMemberships(request, user);
+            updateGroupMemberships(request, user, crowdService, crowdUser);
         }
 
         // Now that we have the user's account, add it to the session and return
@@ -794,13 +806,13 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
         return true;
     }
 
-    private void updateGroupMemberships(HttpServletRequest request, Principal user) {
+    private void updateGroupMemberships(HttpServletRequest request, Principal user, CrowdService crowdService, User crowdUser) {
         Set roles = new HashSet();
 
         // Add user to groups.
         getRolesFromHeader(request, roles);
-        assignUserToRoles(user, config.getDefaultRoles());
-        assignUserToRoles(user, roles);
+        assignUserToRoles(user, config.getDefaultRoles(), crowdService, crowdUser);
+        assignUserToRoles(user, roles, crowdService, crowdUser);
 
         // Make sure we don't purge default roles either
         roles.addAll(config.getDefaultRoles());
@@ -899,8 +911,15 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
             return null;
         }
 
+        CrowdService crowdService = getCrowdService();
+        if (crowdService == null) {
+            throw new RuntimeException("crowdService was not wired in RemoteUserAuthenticator");
+        }
+        
+        User crowdUser = crowdService.getUser(user.getName());
+
         if (config.isUpdateRoles() || newUser) {
-            updateGroupMemberships(request, user);
+            updateGroupMemberships(request, user, crowdService, crowdUser);
         }
 
         // Now that we have the user's account, add it to the session and return
