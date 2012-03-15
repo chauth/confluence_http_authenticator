@@ -91,11 +91,11 @@ For example, in 1.7.1 we would do:
 
 6) Change the wiki page to list the new version, release info, and change the information on current version at top:
 
-    https://studio.plugins.atlassian.com/wiki/display/SHBL/Confluence+Shibboleth+Authenticator
+https://studio.plugins.atlassian.com/wiki/display/SHBL/Confluence+Shibboleth+Authenticator
 
 7) Add release to:
 
-    https://plugins.atlassian.com/manage/plugin/4863
+https://plugins.atlassian.com/plugins/shibauth.confluence.authentication.shibboleth
 
 8) Update version number in pom.xml in trunk to the next snapshot version. Just increment the build version, so
    1.7-SNAPSHOT becomes 1.7.1-SNAPSHOT or if is already has a third number (build version) then increment it so that
