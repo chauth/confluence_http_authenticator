@@ -1,1 +1,0 @@
-svn copy --username youratlassianusername https://studio.plugins.atlassian.com/svn/SHBL/trunk/ https://studio.plugins.atlassian.com/svn/SHBL/tags/(new version) -m "Tagging (new version)"
