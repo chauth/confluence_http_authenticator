@@ -689,13 +689,8 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
             log.debug("login(...) called. requestURL=" + request.getRequestURL() + ", username=" + username + ", remoteIP=" + remoteIP + ", remoteHost=" + remoteHost);
         }
 
-        Principal user = null;
-
-        if (log.isDebugEnabled()) {
-            log.debug("remoteIP=" + remoteIP + " remoteHost=" + remoteHost);
-        }
-
         // Check if the user is already logged in
+        Principal user = null;
         try {
             user = getUserFromSession(request);
             if (user != null) {
@@ -929,6 +924,7 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
 
 		CrowdService crowdService = getCrowdService();
         if (crowdService == null) {
+            loginFailed(request, userid, remoteHost, remoteIP, "AuthenticatorConfigFailure");
             if (log.isDebugEnabled()) {
                 log.debug("Authenticator is throwing RuntimeException from call to public boolean login(HttpServletRequest request, HttpServletResponse response, String username, String password, boolean cookie)");
             }
