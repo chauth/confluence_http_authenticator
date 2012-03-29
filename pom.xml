@@ -67,8 +67,6 @@
         </developer>
         <developer>
             <name>Gary S. Weaver</name>
-            <organization>Duke University</organization>
-            <organizationUrl>http://www.oit.duke.edu/</organizationUrl>
             <roles>
                 <role>Developer - v1.1 - additional checks/logging and some small refactoring. Version 1.1 should work
                     with Confluence 2.3-2.6.x and possibly later versions.,
