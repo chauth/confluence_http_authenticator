@@ -405,36 +405,6 @@
             <version>${crowd.version}</version>
             <scope>provided</scope>
         </dependency>
-        <!--
-        <dependency>
-            <groupId>com.atlassian.user</groupId>
-            <artifactId>atlassian-user</artifactId>
-            <version>${user.version}</version>
-            <scope>provided</scope>
-            <exclusions>
-                <exclusion>
-                    <groupId>osuser</groupId>
-                    <artifactId>osuser</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.springframework</groupId>
-                    <artifactId>spring-dao</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>com.atlassian.event</groupId>
-            <artifactId>atlassian-event</artifactId>
-            <version>${event.version}</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.atlassian.seraph</groupId>
-            <artifactId>atlassian-seraph</artifactId>
-            <version>${seraph.version}</version>
-            <scope>provided</scope>
-        </dependency>
-        -->
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring</artifactId>
