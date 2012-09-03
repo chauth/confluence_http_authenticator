@@ -117,6 +117,8 @@
                     * SHBL-47 and SHBL-48: Confluence 3.5.x compatibility.
                     v2.1.0 -
                     * SHBL-53: Confluence 4.1.x compatibility.
+                    ...
+                    * SHBL-63 - adding patched file from Georg Kallidis for local user auth.
                 </role>
             </roles>
             <timezone>-4</timezone>
