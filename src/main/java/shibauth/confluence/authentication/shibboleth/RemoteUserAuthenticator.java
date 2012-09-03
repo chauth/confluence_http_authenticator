@@ -769,16 +769,19 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
             throw new RuntimeException("crowdService was not wired in RemoteUserAuthenticator");
         }
 
+        User crowdUser = null;
         // ensure user is active
-        User crowdUser = crowdService.getUser(userid);
-        if (crowdUser != null && !crowdUser.isActive()) {
-            log.info("Login failed for user '" + userid + "', because user is set as inactive. remoteIP=" + remoteIP + " remoteHost=" + remoteHost);
-            loginFailed(request, username, remoteHost, remoteIP, "UserInactive");
-
-            if (log.isDebugEnabled()) {
-                log.debug("Authenticator is returning false from call to public boolean login(HttpServletRequest request, HttpServletResponse response, String username, String password, boolean cookie)");
-            }
-            return false;
+        if (userid != null) {
+	        crowdUser = crowdService.getUser(userid);
+	        if (crowdUser != null && !crowdUser.isActive()) {
+	            log.info("Login failed for user '" + userid + "', because user is set as inactive. remoteIP=" + remoteIP + " remoteHost=" + remoteHost);
+	            loginFailed(request, username, remoteHost, remoteIP, "UserInactive");
+	
+	            if (log.isDebugEnabled()) {
+	                log.debug("Authenticator is returning false from call to public boolean login(HttpServletRequest request, HttpServletResponse response, String username, String password, boolean cookie)");
+	            }
+	            return false;
+	        }
         }
 
         // Pull name and address from headers
@@ -794,6 +797,7 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
         if (user == null) {
             if (config.isCreateUsers()) {
                 createUser(userid);
+    	        newUser = true;
             } else {
                 if (log.isDebugEnabled()) {
                     log.debug("Configuration does NOT allow creation of new user accounts, authentication will fail for " +
@@ -812,8 +816,18 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
             if (user != null) {
                 // update the first time even if update not set, because we need to set full name and email
                 updateUser(user, fullName, emailAddress);
-            }
-            else {
+                
+                crowdUser = crowdService.getUser(userid);
+    	        if (crowdUser != null && !crowdUser.isActive()) {
+    	            log.info("Login failed for user '" + userid + "', because user is set as inactive. remoteIP=" + remoteIP + " remoteHost=" + remoteHost);
+    	            loginFailed(request, username, remoteHost, remoteIP, "UserInactive");
+    	
+    	            if (log.isDebugEnabled()) {
+    	                log.debug("Authenticator is returning false from call to public boolean login(HttpServletRequest request, HttpServletResponse response, String username, String password, boolean cookie)");
+    	            }
+    	            return false;
+    	        }
+            } else {
                 // this could be a warning rather than debug, but in certain environments it might happen more often.
                 if (log.isDebugEnabled()) {
                     log.debug("Got null user after creating user " + username + " so could not update it to set its fullname or email.");
@@ -830,7 +844,7 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
         }
 
         // kick off login related methods
-        loginSuccessful(request, response, user.getName(), user, remoteHost, remoteIP);
+        loginSuccessful(request, response, userid, user, remoteHost, remoteIP);
 
         if (log.isDebugEnabled()) {
             log.debug("Authenticator is returning true from call to public boolean login(HttpServletRequest request, HttpServletResponse response, String username, String password, boolean cookie)");
@@ -839,20 +853,35 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
         return true;
     }
     
-    private void loginSuccessful(HttpServletRequest request, HttpServletResponse response, String username, Principal user, String remoteHost, String remoteIP) {
-        if (log.isDebugEnabled()) {
-            log.debug("Logging in user " + user.getName() + ". request=" + request + ", response=" + response + ", username=" + username + ", user=" + user + ", user.getName=" + user.getName() + ", remoteHost=" + remoteHost + ", remoteIP="+ remoteIP);
-        }
+	private void loginSuccessful(HttpServletRequest request,
+			HttpServletResponse response, String username, Principal user,
+			String remoteHost, String remoteIP) {
+		if (log.isDebugEnabled()) {
+			log.debug("Logging in user "
+					+ ((user != null) ? user.getName() : username)
+					+ ". request=" + request + ", response=" + response
+					+ ", username=" + username + ", user=" + user
+					+ ((user != null) ? ", user.getName=" + user.getName():"" ) + ", remoteHost="
+					+ remoteHost + ", remoteIP=" + remoteIP);
+		}
 
-        // SHBL-50 - code provided by Joseph Clark and Erkki Aalto to do postlogin updates.
-        //           Some of this will break eventually with new Confluence/Crowd versions.
-        putPrincipalInSessionContext(request, user);
-        // TODO: Joe Clark uses getElevatedSecurityGuard() vs. getLoginManager(). Which should we use?
-        // see: https://bitbucket.org/jaysee00/example-confluence-sso-authenticator/src/381eb95ebc08/src/main/java/com/atlassian/confluence/seraph/example/ExampleSSOAuthenticator.java
-        getLoginManager().onSuccessfulLoginAttempt(username, request);
-        getEventPublisher().publish(new LoginEvent(this, username, request.getSession().getId(), remoteHost, remoteIP));
-        LoginReason.OK.stampRequestResponse(request, response);
-    }
+		if (user != null) {
+			// SHBL-50 - code provided by Joseph Clark and Erkki Aalto to do
+			// postlogin updates.
+			// Some of this will break eventually with new Confluence/Crowd
+			// versions.
+			putPrincipalInSessionContext(request, user);
+		}
+		// TODO: Joe Clark uses getElevatedSecurityGuard() vs.
+		// getLoginManager(). Which should we use?
+		// see:
+		// https://bitbucket.org/jaysee00/example-confluence-sso-authenticator/src/381eb95ebc08/src/main/java/com/atlassian/confluence/seraph/example/ExampleSSOAuthenticator.java
+		getLoginManager().onSuccessfulLoginAttempt(username, request);
+		getEventPublisher().publish(
+		new LoginEvent(this, username, request.getSession().getId(),
+						remoteHost, remoteIP));
+		LoginReason.OK.stampRequestResponse(request, response);
+	}
     
     private void loginFailed(HttpServletRequest request, String username, String remoteHost, String remoteIP, String reason) {
         if (log.isDebugEnabled()) {
@@ -865,16 +894,22 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
     }
 
     private void updateGroupMemberships(HttpServletRequest request, Principal user, CrowdService crowdService, User crowdUser) {
-        Set roles = new HashSet();
-
-        // Add user to groups.
-        getRolesFromHeader(request, roles);
-        assignUserToRoles(user, config.getDefaultRoles(), crowdService, crowdUser);
-        assignUserToRoles(user, roles, crowdService, crowdUser);
-
-        // Make sure we don't purge default roles either
-        roles.addAll(config.getDefaultRoles());
-        purgeUserRoles(user, roles);
+    	if (user == null) {
+            if (log.isDebugEnabled()) {
+                log.debug("User is null, so can't update group memberships.");
+            }
+        } else {
+	    	Set roles = new HashSet();
+	
+	        // Add user to groups.
+	        getRolesFromHeader(request, roles);
+	        assignUserToRoles(user, config.getDefaultRoles(), crowdService, crowdUser);
+	        assignUserToRoles(user, roles, crowdService, crowdUser);
+	
+	        // Make sure we don't purge default roles either
+	        roles.addAll(config.getDefaultRoles());
+	        purgeUserRoles(user, roles);
+        }
     }
 
     public Principal getUser(HttpServletRequest request, HttpServletResponse response) {
@@ -959,6 +994,7 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
         if (user == null) {
             if (config.isCreateUsers()) {
                 createUser(userid);
+                newUser = true;
             } else {
                 if (log.isDebugEnabled()) {
                     log.debug("Configuration does NOT allow creation of new user accounts, authentication will fail for " +
@@ -978,6 +1014,18 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
             if (user != null) {
                 // update the first time even if update not set, because we need to set full name and email
                 updateUser(user, fullName, emailAddress);
+                // ensure user is active
+                crowdUser = crowdService.getUser(userid);
+                if (crowdUser != null && !crowdUser.isActive()) {
+                    log.info("Login failed for user '" + userid + "', because user is set as inactive. remoteIP=" + remoteIP + " remoteHost=" + remoteHost);
+
+                    loginFailed(request, userid, remoteHost, remoteIP, "UserInactive");
+
+                    if (log.isDebugEnabled()) {
+                        log.debug("Authenticator is returning null from call to public Principal getUser(HttpServletRequest request, HttpServletResponse response)");
+                    }
+                    return null;
+                }
             } else {
                 // If user is still null, probably we're using an
                 // external user database like LDAP. Either REMOTE_USER
