@@ -1,0 +1,1850 @@
+
+
+
+
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<html>
+<head>
+    <title>[#SHBL-5] Multinational characters in fullname don&#39;t come right - Atlassian Plugins JIRA Studio </title>
+
+    <meta content="general" name="decorator" />
+    <link rel="index" href="/secure/IssueNavigator.jspa" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="-1" />
+    
+
+    
+<meta id="atlassian-token" name="atlassian-token" content="A5G2-B7UC-JLK8-Z7KY|fc9214c184a9cb547964e24aabb4cf4c86a62857|lout">
+
+
+    <link rel="shortcut icon" href="/s/en_US-31q2po/650/149/_/favicon.ico">
+    <link rel="icon" type="image/png" href="/s/en_US-31q2po/650/149/_/images/icons/favicon.png">
+
+    
+    <script type="text/javascript">var contextPath = '';</script>
+<link type="text/css" rel="stylesheet" href="/s/en_US-31q2po/650/149/1/_/download/superbatch/css/batch.css" media="all">
+<!--[if lt IE 9]>
+<link type="text/css" rel="stylesheet" href="/s/en_US-31q2po/650/149/1/_/download/superbatch/css/batch.css?conditionalComment=lt+IE+9" media="all">
+<![endif]-->
+<!--[if IE 9]>
+<link type="text/css" rel="stylesheet" href="/s/en_US-31q2po/650/149/1/_/download/superbatch/css/batch.css?conditionalComment=IE+9" media="all">
+<![endif]-->
+<!--[if lte IE 9]>
+<link type="text/css" rel="stylesheet" href="/s/en_US-31q2po/650/149/1/_/download/superbatch/css/batch.css?conditionalComment=lte+IE+9" media="all">
+<![endif]-->
+<link type="text/css" rel="stylesheet" href="/s/en_US-31q2po/650/149/1.0/_/download/batch/jira.webresources:jquery-fancybox/jira.webresources:jquery-fancybox.css" media="all">
+<link type="text/css" rel="stylesheet" href="/s/en_US-31q2po/650/149/1.0/_/download/batch/jira.webresources:autocomplete/jira.webresources:autocomplete.css" media="all">
+<link type="text/css" rel="stylesheet" href="/s/en_US-31q2po/650/149/1.0/_/download/batch/jira.webresources:global-static/jira.webresources:global-static.css" media="all">
+<link type="text/css" rel="stylesheet" href="/s/en_US-31q2po/650/149/1.0/_/download/batch/jira.webresources:global-static/jira.webresources:global-static.css?media=print" media="print">
+<link type="text/css" rel="stylesheet" href="/s/en_US-31q2po/650/149/5.7/_/download/batch/com.pyxis.greenhopper.jira:gh-ranking/com.pyxis.greenhopper.jira:gh-ranking.css" media="all">
+<link type="text/css" rel="stylesheet" href="/s/en_US-31q2po/650/149/1.0.6/_/download/batch/com.atlassian.plugin.atlassian-feedback-plugin:feedback/com.atlassian.plugin.atlassian-feedback-plugin:feedback.css" media="all">
+<link type="text/css" rel="stylesheet" href="/s/en_US-31q2po/650/149/0.15.4/_/download/batch/com.atlassian.jira.plugins.jira-bitbucket-connector-plugin:resources/com.atlassian.jira.plugins.jira-bitbucket-connector-plugin:resources.css" media="all">
+<link type="text/css" rel="stylesheet" href="/s/en_US-31q2po/650/149/4.4-studio-rc3/_/download/batch/com.atlassian.jira.jira-admin-quicknav-plugin:admin-quicksearch/com.atlassian.jira.jira-admin-quicknav-plugin:admin-quicksearch.css" media="all">
+<script type="text/javascript" src="/s/en_US-31q2po/650/149/1/_/download/superbatch/js/batch.js" ></script>
+<script type="text/javascript" src="/s/en_US-31q2po/650/149/1.0/_/download/batch/jira.webresources:jquery-fancybox/jira.webresources:jquery-fancybox.js" ></script>
+<script type="text/javascript" src="/s/en_US-31q2po/650/149/1.0/_/download/batch/jira.webresources:calendar/jira.webresources:calendar.js" ></script>
+<script type="text/javascript" src="/s/en_US-31q2po/650/149/1.0/_/download/batch/jira.webresources:viewissue/jira.webresources:viewissue.js" ></script>
+<script type="text/javascript" src="/s/en_US-31q2po/650/149/1.0/_/download/batch/jira.webresources:autocomplete/jira.webresources:autocomplete.js" ></script>
+<script type="text/javascript" src="/s/en_US-31q2po/650/149/1.0/_/download/batch/jira.webresources:jira-fields/jira.webresources:jira-fields.js" ></script>
+<script type="text/javascript" src="/s/en_US-31q2po/650/149/1.0/_/download/batch/jira.webresources:calendar-en/jira.webresources:calendar-en.js" ></script>
+<script type="text/javascript" src="/s/en_US-31q2po/650/149/5.7/_/download/batch/com.pyxis.greenhopper.jira:gh-ranking/com.pyxis.greenhopper.jira:gh-ranking.js" ></script>
+<script type="text/javascript" src="/s/en_US-31q2po/650/149/5.7/_/download/batch/com.pyxis.greenhopper.jira:gh-globalkeyboardshortcuts/com.pyxis.greenhopper.jira:gh-globalkeyboardshortcuts.js" ></script>
+<script type="text/javascript" src="/s/en_US-31q2po/650/149/1.0.6/_/download/batch/com.atlassian.plugin.atlassian-feedback-plugin:feedback/com.atlassian.plugin.atlassian-feedback-plugin:feedback.js" ></script>
+<script type="text/javascript" src="/s/en_US-31q2po/650/149/0.4/_/download/batch/com.atlassian.jira.plugins.jira-github-connector-plugin:resources/com.atlassian.jira.plugins.jira-github-connector-plugin:resources.js" ></script>
+<script type="text/javascript" src="/s/en_US-31q2po/650/149/0.15.4/_/download/batch/com.atlassian.jira.plugins.jira-bitbucket-connector-plugin:resources/com.atlassian.jira.plugins.jira-bitbucket-connector-plugin:resources.js" ></script>
+<script type="text/javascript" src="/s/en_US-31q2po/650/149/4.4-studio-rc3/_/download/batch/com.atlassian.jira.jira-soy-plugin:soy-deps/com.atlassian.jira.jira-soy-plugin:soy-deps.js" ></script>
+<script type="text/javascript" src="/s/en_US-31q2po/650/149/4.4-studio-rc3/_/download/batch/com.atlassian.jira.jira-admin-quicknav-plugin:admin-quicksearch/com.atlassian.jira.jira-admin-quicknav-plugin:admin-quicksearch.js" ></script>
+
+    
+        <script type="text/javascript" src="/rest/api/1.0/shortcuts/650/2c704f3b1c272597f28d679bb85da011/shortcuts.js?context=issueaction&amp;context=issuenavigation"></script>
+    
+    <link rel="search" type="application/opensearchdescription+xml" href="/osd.jsp" title="Atlassian Plugins JIRA Studio"/>
+</head>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<body id="jira" class="nl type-ab stalker sn">
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" type="text/css" href="/s/en_US-31q2po/650/149/107.6.4/_/download/resources/com.atlassian.studio.static:studio_resources/css/menu.css">
+<link rel="stylesheet" type="text/css" href="/s/en_US-31q2po/650/149/107.6.4/_/download/resources/com.atlassian.studio.static:studio_resources/css/navbar.css">
+<link rel="stylesheet" type="text/css" href="/s/en_US-31q2po/650/149/107.6.4/_/download/resources/com.atlassian.studio.static:studio_resources/css/dialog.css">
+<!--[if IE]>
+<link rel="stylesheet" type="text/css" href="/s/en_US-31q2po/650/149/107.6.4/_/download/resources/com.atlassian.studio.static:studio_resources/css/dialog-ie.css">
+<![endif]-->
+<!--[if lt IE 9]>
+<link rel="stylesheet" type="text/css" href="/s/en_US-31q2po/650/149/107.6.4/_/download/resources/com.atlassian.studio.static:studio_resources/css/navbar-ie.css">
+<![endif]-->
+<!--[if IE 9]>
+<link rel="stylesheet" type="text/css" href="/s/en_US-31q2po/650/149/107.6.4/_/download/resources/com.atlassian.studio.static:studio_resources/css/navbar-ie9.css">
+<![endif]-->
+<link rel="stylesheet" type="text/css" href="/s/en_US-31q2po/650/149/107.6.4/_/download/resources/com.atlassian.studio.static:studio_resources/css/userstatus.css">
+<link rel="stylesheet" type="text/css" href="/s/en_US-31q2po/650/149/107.6.4/_/download/resources/com.atlassian.studio.static:studio_admin_styles/css/studioadmin.css">
+<link rel="stylesheet" type="text/css" href="/plugins/servlet/studio/dynamiccss/studio-colors-css.css">
+<link rel="stylesheet" type="text/css" href="/s/en_US-31q2po/650/149/107.6.4/_/download/resources/com.atlassian.studio.theme.jira:studio_jira_resources/css/studio-jira-theme-override.css">
+
+<div id="header" style="display:none">
+</div>
+<div class="studio-header" id="studio-header">
+
+	<meta id="application-base-url" name="application-base-url" content="https://studio.plugins.atlassian.com"/>
+<meta id="studio-context-path" name="studio-context-path" content=""/>
+<meta id="jira-base-url" name="jira-base-url" content="https://studio.plugins.atlassian.com"/>
+<meta id="confluence-base-url" name="confluence-base-url" content="https://studio.plugins.atlassian.com/wiki"/>
+
+<div class="header-first-level">
+    <div class="first-level-overlay">
+        <div id="studio-logo">
+            <a href="https://studio.plugins.atlassian.com/secure/Dashboard.jspa" class="logolink"><img src="https://studio.plugins.atlassian.com/download/resources/com.atlassian.studio.static:studio_images/images/StudioLogo.png" border="0" alt="Atlassian Plugins JIRA Studio"></a>
+        </div>
+
+        <div class="top-level-container">
+
+            <div class="nav-dropdowns">
+                <div id="studio-project-menu" class="project-menu">
+	<ul class="ajs-menu-bar">
+    	<li class="normal ajs-menu-item">
+                        			<a class="user trigger ajs-menu-title" href="#"><span><span> Confluence Shibboleth Authenticator </span></span></a>
+
+			<div class="ajs-drop-down hidden">
+    			<ul class="first">
+
+					                		                                                                                                                <li><a href="/browse/CNET" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=10979&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">.NET Authenticator with Single Sign-O...</span></a></li>
+					                        <li><a href="/browse/ATTT" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=11825&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">@ Time Tracker</span></a></li>
+					                        <li><a href="/browse/CONFABAPPLUGIN" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=10982&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">ABAP Code-Formatter</span></a></li>
+					                        <li><a href="/browse/ABAP" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=11605&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">ABAP Syntax Highlighter</span></a></li>
+					                        <li><a href="/browse/APRV" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=10360&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">Ad hoc Workflows</span></a></li>
+					                        <li><a href="/browse/ADHOC" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=10931&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">Adhoc Builder - Deployment Tool</span></a></li>
+					                        <li><a href="/browse/AALOG" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=11604&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">Admin Activity Logger</span></a></li>
+					                        <li><a href="/browse/ATD" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=11521&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">After the Deadline</span></a></li>
+					                        <li><a href="/browse/BAACL" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=11551&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">Agent ACL</span></a></li>
+					                        <li><a href="/browse/AAS" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=10930&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">Agile Application Stack</span></a></li>
+					                        <li><a href="/browse/SPARTEZASCP" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=11123&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">Agile Scrum Cards Print</span></a></li>
+					                        <li><a href="/browse/CAGL" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=10951&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">Agile Toolkit Plugin</span></a></li>
+					                        <li><a href="/browse/JAVT" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=11031&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">Agile Velocity Tracking plugin</span></a></li>
+					                        <li><a href="/browse/ALFRES" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=10933&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">Alfresco Crowd Integration module</span></a></li>
+					                        <li><a href="/browse/ALFCON" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=11320&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">Alfresco to Confluence Connector</span></a></li>
+					                        <li><a href="/browse/ACCF" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=11371&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">All Comments Custom Field Type</span></a></li>
+					                        <li><a href="/browse/CAE" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=10950&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">Archive Extractor Plugin</span></a></li>
+					                        <li><a href="/browse/STRM" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=10570&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">Atlassian Activity Stream Plugin</span></a></li>
+					                        <li><a href="/browse/ACLI" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=10882&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">Atlassian Command Line Interface</span></a></li>
+					                        <li><a href="/browse/PLE" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=11107&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">Atlassian Connector for Eclipse</span></a></li>
+										                                            <li id="ds-more"><a href="https://studio.plugins.atlassian.com/secure/BrowseProjects.jspa?selectedCategory=all" class="more-projects"><span>View All Projects</span></a></li>
+					
+				</ul>
+    		</div>
+    	</li>
+    </ul>
+</div>	
+
+
+                
+	    <div id="studio-user-menu-container">
+        <a class="login-link" href="/login.jsp?os_destination=%2Fbrowse%2FSHBL-5">Log In</a>
+    </div>
+    
+            </div> <!-- /nav-dropdowns -->
+
+            <div class="navigation-tabs studio-menu">
+                
+<ul id="studio-tabs">
+			<li class="current"><a href="/browse/SHBL">Issues</a></li>
+			<li><a href="https://studio.plugins.atlassian.com/wiki/display/SHBL">Wiki</a></li>
+			<li><a href="https://studio.plugins.atlassian.com/source/browse/SHBL">Source</a></li>
+			<li><a href="https://studio.plugins.atlassian.com/source/cru/?filter=custom&project=CR-SHBL">Reviews</a></li>
+			<li><a href="https://studio.plugins.atlassian.com/builds/browse/SHBL">Builds</a></li>
+	</ul>
+
+            </div>
+
+        </div> <!-- /top-level-container -->
+    </div>  <!-- /first-level-overlay -->
+</div> <!-- /header-first-level -->
+
+
+    <div id="header-bottom">
+
+        <div class="second-level-nav studio-menu">
+
+                            
+                
+<ul id="main-nav" class="menu-bar standard-menu-bar">
+                        <li class="aui-dd-parent lazy  ">
+                    <a class="lnk"
+                href="/secure/Dashboard.jspa"
+                 id="home_link"                 accessKey="h"                 title="View your current Dashboard"                >Dashboards</a>
+
+                    <span class="drop-wrap">
+            <a class="drop aui-dd-link"
+                                    id="home_link_drop"
+                    rel="home_link"
+                    accessKey="d"
+                    title="Access more options (Alt+d)"
+                                href="#"><span>Access more options (Alt+d)</span></a></span>
+                </li>
+                        <li class="aui-dd-parent lazy  selected  ">
+                    <a class="lnk"
+                href="/secure/IssueNavigator.jspa"
+                 id="find_link"                 accessKey="f"                 title="View your current filter"                >Issues</a>
+
+                    <span class="drop-wrap">
+            <a class="drop aui-dd-link"
+                                    id="find_link_drop"
+                    rel="find_link"
+                    accessKey="i"
+                    title="Access more options (Alt+i)"
+                                href="#"><span>Access more options (Alt+i)</span></a></span>
+                </li>
+                        <li class="aui-dd-parent nonlazy  ">
+                    <a class="lnk"
+                href="/secure/GreenHopper.jspa"
+                 id="greenhopper_menu"                                 title="Manage your project with GreenHopper"                >Agile</a>
+
+                                                                                                            <span class="drop-wrap">
+                            <a class="drop aui-dd-link"
+                                                                    id="greenhopper_menu_drop"
+                                    accessKey="g"
+                                    rel="greenhopper_menu"
+                                    title="Access more options (Alt+g)"
+                                                                href="#"><span>Access more options</span></a></span>
+                            <div class="aui-list hidden">
+                                                
+                            <ul id="greenhopper_menu_dropdown" class="aui-list-section aui-first   aui-last  ">
+                                                                    <li class="aui-list-item"><a
+                                         id="planningboard-mlink"                                         class="aui-list-item-link   "
+                                                                                                                        href="/secure/VersionBoard.jspa">Planning Board</a></li>
+                                                                    <li class="aui-list-item"><a
+                                         id="taskboard-mlink"                                         class="aui-list-item-link   "
+                                                                                                                        href="/secure/TaskBoard.jspa">Task Board</a></li>
+                                                                    <li class="aui-list-item"><a
+                                         id="chartboard-mlink"                                         class="aui-list-item-link   "
+                                                                                                                        href="/secure/ChartBoard.jspa">Chart Board</a></li>
+                                                                    <li class="aui-list-item"><a
+                                         id="releasedboard-mlink"                                         class="aui-list-item-link   "
+                                                                                                                        href="/secure/ArchiveChartBoard.jspa">Released Board</a></li>
+                                                            </ul>
+                                                    </div>
+                            </li>
+    </ul>
+
+                
+            
+        </div> <!-- /second-level-nav -->
+
+        <div class="quick-action-search">
+
+            
+            <a id="keyshortscuthelp" class="item-link hidden" title="Get more information about JIRA's Keyboard Shortcuts"
+               href="/secure/ViewKeyboardShortcuts!default.jspa">Keyboard Shortcuts</a>
+                            <a id="browse_link" class="hidden" href="/browse/SHBL">Selected Project</a>
+            
+            <form id="quick-search" class="dont-default-focus userpref-form" method="get" action="https://studio.plugins.atlassian.com/secure/StudioSearch.jspa">
+    <fieldset>
+        <legend>Quick Search</legend>
+		<input type="hidden" name="suggest-tracking" value="search" />
+		<input type="hidden" name="quickSearch" value="true" />
+        <input id="studio-quick-search-query" type="text" accessKey="q" autocomplete="off" name="query" size="25"/>
+        <input id="quick-search-submit" type="submit" value="Search"/>
+    </fieldset>
+    <fieldset class="hidden parameters">
+        <input type="hidden" id="quickSearchPlaceholder" value="Search">
+    </fieldset>
+</form>
+
+        </div> <!-- /quick-action-search -->
+
+    </div> <!-- /header-second-level -->
+
+</div>
+
+
+
+
+
+
+
+
+
+
+<fieldset class="hidden parameters">
+    <input type="hidden" title="ajaxTimeout" value="The call to the JIRA server did not complete within the timeout period.  We are unsure of the result of this operation.">
+    <input type="hidden" title="ajaxUnauthorised" value="You are not authorised to perform this operation.  Please try to <a href='/login.jsp?os_destination=%2Fbrowse%2FSHBL-5'>log in</a> or <a href='/secure/Signup!default.jspa'>sign up</a> for an account.">
+    <input type="hidden" title="ajaxUnauthorisedAlert" value="You are not authorised to perform this operation.  Please log in.">
+    <input type="hidden" title="baseURL" value="https://studio.plugins.atlassian.com:443">
+    <input type="hidden" title="ajaxCommsError" value="The JIRA server could not be contacted.  This may be a temporary glitch or the server may be down.">
+    <input type="hidden" title="ajaxServerError" value="The JIRA server was contacted but has returned an error response. We are unsure of the result of this operation.">
+    <input type="hidden" title="ajaxErrorCloseDialog" value="Close this dialog and press refresh in your browser">
+    <input type="hidden" title="ajaxErrorDialogHeading" value="Communications Breakdown">
+
+    <input type="hidden" title="dirtyMessage" value="You have entered new data on this page. If you navigate away from this page without first saving your data, the changes will be lost.">
+    <input type="hidden" title="dirtyDialogMessage" value="You have entered new data in this dialog. If you navigate away from this dialog without first saving your data, the changes will be lost. Click cancel to return to the dialog.">
+    <input type="hidden" title="keyType" value="Type">
+    <input type="hidden" title="keyThen" value="then">
+    <input type="hidden" title="dblClickToExpand" value="Double click to expand">
+    <input type="hidden" title="actions" value="Actions">
+    <input type="hidden" title="removeItem" value="Remove">
+    <input type="hidden" title="workflow" value="Workflow">
+    <input type="hidden" title="labelNew" value="New Label">
+    <input type="hidden" title="enterIssueKey" value="Enter issue key">
+    <input type="hidden" title="issueActionsHint" value="Begin typing for available operations or press down to see all">
+    <input type="hidden" title="closelink" value="Close">
+    <input type="hidden" title="dotOperations" value="Operations">
+    <input type="hidden" title="dotLoading" value="Loading...">
+    <input type="hidden" title="frotherSuggestions" value="Suggestions">
+    <input type="hidden" title="frotherNomatches" value="No Matches">
+    <input type="hidden" title="multiselectVersionsError" value="{0} is not a valid version.">
+    <input type="hidden" title="multiselectComponentsError" value="{0} is not a valid component.">
+    <input type="hidden" title="multiselectGenericError" value="The value {0} is invalid.">
+</fieldset>
+
+
+
+
+<div class="alertHeader">
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-6032469-24");
+pageTracker._trackPageview();
+} catch(err) {}</script>
+
+<script type="text/javascript" charset="utf-8">
+  (function(){
+    t = document.createElement('script');t.async=true;t.type ='text/javascript';
+    t.src = ('https:' == document.location.protocol ? 'https://secure.' : 'http://api.') + 'tellthemwhen.com/api/v2/notices/9ffb4ac1f71.js';
+    var s=document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(t,s);
+  })();
+</script>
+
+<!-- <div id="TTWNotify" style="display:none"></div> -->
+
+<div style="text-align: center; border: #C00; background-color: #FF6600; line-height: 2em">studio.plugins.atlassian.com will be decommissioned in early 2013. If you are a project maintainer, please email <a href="mailto:developer-relations@atlassian.com">Atlassian Developer Relations</a> if you require assistance to migrate your project off this server.</div>
+</div>
+
+
+
+
+<fieldset class="hidden parameters">
+    <input type="hidden" id="viewMoreMsg" value="Click to view {0} more">
+    <input type="hidden" id="hideMsg" value="Hide" >
+    <input type="hidden" id="error-401" value="Cannot perform this operation. You are not logged in." >
+    <input type="hidden" id="issueOpTitleUnvote" value="Remove vote for this issue" >
+    <input type="hidden" id="issueOpTitleVote" value="Vote for this issue" >
+    <input type="hidden" id="issueOpTitleWatch" value="Start watching this issue" >
+    <input type="hidden" id="issueOpTitleUnwatch" value="Stop watching this issue" >
+    <input type="hidden" id="issueOpUnvote" value="Remove Vote" >
+    <input type="hidden" id="issueOpVote" value="Add Vote" >
+    <input type="hidden" id="issueOpWatch" value="Watch Issue" >
+    <input type="hidden" id="issueOpUnwatch" value="Stop Watching" >
+    <input type="hidden" id="i18nVote" value="Vote" >
+    <input type="hidden" id="i18nVoted" value="Voted" >
+    <input type="hidden" id="i18nWatch" value="Watch" >
+    <input type="hidden" id="i18nWatching" value="Watching" >
+</fieldset>
+
+<div id="stalker"  class="stalker">
+    <div class="item-header">
+    
+        
+
+
+
+
+
+
+
+
+
+
+
+
+<h1 class="item-name avatar" style="background-image:url(/secure/projectavatar?pid=10580&amp;avatarId=10011&amp;size=large)">
+        
+            <img id="project-avatar" alt="" class="project-avatar-48" height="48" src="/secure/projectavatar?pid=10580&amp;avatarId=10011&amp;size=large" width="48" />
+        
+        <span>Confluence Shibboleth Authenticator</span>
+</h1>
+
+
+<ul class="breadcrumbs">
+    <li><a id="project-name-val" href="/browse/SHBL">Confluence Shibboleth Authenticator</a></li>
+    
+    <li><a id="key-val" rel="15863" href="/browse/SHBL-5">SHBL-5</a></li>
+</ul>
+
+<h2 id="issue_header_summary" class="item-summary"><a href="/browse/SHBL-5">Multinational characters in fullname don&#39;t come right</a></h2>
+
+    
+    </div>
+    
+
+
+
+
+    <div class="command-bar">
+        <div class="ops-cont">
+            <div class="ops-menus">
+                
+                
+                    <ul id="opsbar-login" class="first ops">
+                        <li id="ops-login" class="last">
+                            <a id="ops-login-lnk" class="button first last" href="/login.jsp?os_destination=%2Fbrowse%2FSHBL-5">Log In</a>
+                        </li>
+                    </ul>
+                
+                
+                    
+                        
+                    
+                
+                    
+                        
+                    
+                
+                
+                    
+                        <ul class="ops" id="view-drop">
+                            <li>
+                                <div class="aui-dd-parent">
+                                    <a href="#" title="View this issue in another format" class="drop lnk aui-dd-link standard icon-views"><span>Views</span></a>
+                                        <div class="aui-list hidden">
+                                        <ul class="aui-first aui-last aui-list-section">
+                                            
+                                                <li class="aui-list-item">
+                                                    <a class="aui-list-item-link" rel="nofollow" href="/si/jira.issueviews:issue-xml/SHBL-5/SHBL-5.xml">XML</a>
+                                                </li>
+                                            
+                                                <li class="aui-list-item">
+                                                    <a class="aui-list-item-link" rel="nofollow" href="/si/jira.issueviews:issue-word/SHBL-5/SHBL-5.doc">Word</a>
+                                                </li>
+                                            
+                                                <li class="aui-list-item">
+                                                    <a class="aui-list-item-link" rel="nofollow" href="/si/jira.issueviews:issue-html/SHBL-5/SHBL-5.html">Printable</a>
+                                                </li>
+                                            
+                                        </ul>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    
+                
+            </div>
+        </div>
+    </div>          
+
+
+    <div class="btm"></div>
+</div>
+<div id="main-content">
+    <div class="active-area">
+        <div class="column" id="primary">
+            <div class="content">
+                
+                
+                
+                
+
+                    <div id="details-module" class="module toggle-wrap">
+                        <div class="mod-header">
+                            <h3 class="toggle-title">Details</h3>
+                        </div>
+                        <div class="mod-content">
+                            <ul id="issuedetails" class="property-list two-cols">
+    <li class="item">
+        <div class="wrap">
+            <strong class="name">Type:</strong>
+            <span id="type-val" class="value">
+                                                        <img alt="Bug" height="16" src="/images/icons/bug.gif" title="Bug - A problem which impairs or prevents the functions of the product." width="16" />
+             Bug
+            </span>
+        </div>
+    </li>
+    <li class="item item-right">
+        <div class="wrap">
+            <strong class="name">Status:</strong>
+            <span id="status-val" class="value">
+                                                        <img alt="Resolved" height="16" src="/images/icons/status_resolved.gif" title="Resolved - A resolution has been taken, and it is awaiting verification by reporter. From here issues are either reopened, or are closed." width="16" />
+             Resolved
+            </span>
+                    </div>
+    </li>
+            <li class="item">
+            <div class="wrap">
+                <strong class="name">Priority:</strong>
+                <span id="priority-val" class="value">
+                                                                <img alt="Major" height="16" src="/images/icons/priority_major.gif" title="Major - Major loss of function." width="16" />
+             Major
+                </span>
+            </div>
+        </li>
+                                <li class="item item-right">
+            <div class="wrap">
+                <strong class="name">Resolution:</strong>
+                <span id="resolution-val" class="value resolved" >
+                                         Fixed
+                                </span>
+            </div>
+        </li>
+                <li class="item">
+            <div class="wrap">
+                <strong class="name">Affects Version/s:</strong>
+                <span id="versions-val" class="value">
+                                            <span class="shorten" id="versions-field">
+                                                            <span title="1.2 Changes made by Bruc Liong of the Macquarie E-Learning Centre Of Excellence (MELCOE) to allow optional mapping of the values of 0-to-many HTTP Headers (fed by shib attributes) to Confluence group names (see properties file for how to do this). Changes made by Gary Weaver of Duke University to refactor config loading, constants, utility method, and added configuration VO.">1.2</span>                                                    </span>
+                                    </span>
+            </div>
+        </li>
+                <li class="item item-right">
+            <div class="wrap">
+                <strong class="name">Fix Version/s:</strong>
+                <span id="fixfor-val" class="value">
+                                            <span class="shorten" id="fixVersions-field">
+                                                            <a href="/browse/SHBL/fixforversion/12115" title="1.3 RELEASE RETRACTED. SHBL-8 fix had bug, subsequently fixed in SHBL-9 for 1.3.1. Changes made by Juha Ojaluoma for SHBL-5 to convert full name to UTF-8. Changes made by Gary Weaver and Bruc Liong to convert all header values to UTF-8. Changes made by Gary Weaver for SHBL-7 to add ability to handle multiple headers. Changes made Vladimir Mencl for SHBL-8 to fix issue with adding users to groups noticed in Confluence 2.9.2.Changes made by Gary Weaver to use BSD open-source license instead of Apache open-source license. Changes made by Gary Weaver to mavenize project and refactor. Should work in prior versions (Confluence 2.3+), but needs testing. Tested in Confluence 2.9.2. ">1.3</a>                                                    </span>
+                                    </span>
+            </div>
+        </li>
+                <li class="item">
+            <div class="wrap">
+                <strong class="name">Component/s:</strong>
+                <span id="components-val" class="value">
+                                            None
+                                    </span>
+            </div>
+        </li>
+                    <li class="item full-width">
+            <div class="wrap" id="wrap-labels">
+                <strong class="name">Labels:</strong>
+                    <div class="labels-wrap value">
+            <span class="labels" id="labels-15863-value">None</span>
+                </div>
+            </div>
+        </li>
+                <li class="item full-width">
+            <div class="wrap">
+                <strong class="name">Environment:</strong>
+                <div id="environment-val" class="value">
+                                  Centos 5 Linux, Postgresql, Confluence 5.8.1
+      
+                </div>
+            </div>
+        </li>
+    </ul>
+
+
+                            
+                                
+
+<div id="customfieldmodule">
+    
+
+    
+    
+    <ul id="tabCellPane1" class="property-list">
+        
+        
+            
+                
+                
+                    <li id="rowForcustomfield_10082" class="item">
+                        <div class="wrap">
+                            <strong title="Rank" class="name">Rank:</strong>
+                            <div id="customfield_10082-val" class="value type-greenhopper-ranking">
+                                
+<div id="RankField_customfield_10082view">	<span id="RankValue_customfield_10082view">Issue can not be ranked.</span>&nbsp;
+			<span id="RankPage_customfield_10082view" class="gh-rankpage gh-jira-rankpage"></span>
+</div>
+
+                            </div>
+                        </div>
+                    </li>
+                
+            
+        
+    </ul>
+    
+</div>
+
+                            
+                        </div>
+                    </div>
+
+                    
+
+
+
+
+<div id="descriptionmodule" class="module toggle-wrap">
+    <div class="mod-header">
+        <h3 class="toggle-title">Description</h3>
+    </div>
+    <div id="issue-description" class="mod-content">
+        <p>Multinational characters in the fullname of a user created by the shibboleth authenticator don't come right.<br/>
+E.g. Eero KesÃ¤lä The second ä has been corrected from Confluence administration to show the difference. <br/>
+In the database from a terminal using isolatin9 the fullname looks like Eero KesÃÂ€lÃ€.</p>
+    </div>
+</div>
+
+
+
+
+
+                    
+                        
+
+
+
+
+
+
+	<div id="attachmentmodule" class="module toggle-wrap">
+		<div class="mod-header">
+            <ul class="ops">
+            
+                <li class="drop" id="attachment-sorting-options">
+                    <div class="aui-dd-parent">
+                        <a href="#" id="attachment-sort-key-list" class="icon drop-menu aui-dropdown-trigger" title="More Options"><span>More Options</span></a>
+                        <div class="aui-dropdown-content aui-list aui-list-checked">
+                            <ul class="aui-list-section">
+                                <li class="aui-list-item  aui-checked">
+                                    <a id="attachment-sort-key-name" class="aui-list-item-link" rel="nofollow"
+                                       href="/browse/SHBL-5?attachmentSortBy=fileName#attachmentmodule"
+                                       title="Sort By Name">
+                                        Sort By Name
+                                    </a>
+                                </li>
+                                <li class="aui-list-item">
+                                    <a id="attachment-sort-key-date" class="aui-list-item-link" rel="nofollow"
+                                       href="/browse/SHBL-5?attachmentSortBy=dateTime#attachmentmodule"
+                                       title="Sort By Date">
+                                        Sort By Date
+                                    </a>
+                                </li>
+                            </ul>
+                            <ul class="aui-list-section " id="attachment-sort-direction-list">
+                                <li class="aui-list-item aui-checked">
+                                    <a id="attachment-sort-direction-asc" class="aui-list-item-link" rel="nofollow"
+                                       href="/browse/SHBL-5?attachmentOrder=asc#attachmentmodule"
+                                       title="Ascending">
+                                        Ascending
+                                    </a>
+                                </li>
+                                <li class="aui-list-item">
+                                    <a id="attachment-sort-direction-desc" class="aui-list-item-link" rel="nofollow"
+                                       href="/browse/SHBL-5?attachmentOrder=desc#attachmentmodule"
+                                       title="Descending">
+                                        Descending
+                                    </a>
+                                </li>
+                            </ul>
+                            
+                                <ul class="aui-list-section aui-last">
+                                    
+                                        <li class="aui-list-item">
+                                            <a id="aszip" href="/secure/attachmentzip/15863.zip"
+                                               class="aui-list-item-link" title="Download all attachments as a ZIP file">
+                                                Download All
+                                            </a>
+                                        </li>
+                                    
+                                    
+                                </ul>
+                            
+                        </div>
+                    </div>
+                </li>
+            </ul>
+            <h3 class="toggle-title">Attachments</h3>
+        </div>
+        <div class="mod-content">
+        
+            <ol id="file_attachments" class="item-attachments">
+            
+                
+                
+
+                <li class="attachment-content ">
+                    
+                        <div class="twixi-block collapsed">
+                            <div class="twixi-wrap verbose">
+                                <a href="#" class="twixi"><span class="icon twixi-opened"><span>$i18n.getText("admin.common.words.hide")</span></span></a>
+                                <div class="attachment-thumb">
+                                    <a href="/secure/attachment/12118/remoteUserAuth-1.3-SNAPSHOT.jar">
+                                        
+
+    
+        <img src="/images/icons/attach/java.gif" height="16" width="16"
+             border="0" alt="Java Archive File">        
+        
+    
+
+
+                                    </a>
+                                </div>
+                                <dl>
+                                    
+                    <dt class="attachment-title">
+                        <a href="/secure/attachment/12118/remoteUserAuth-1.3-SNAPSHOT.jar"
+                           title="Latest 30/Jul/08 10:49 AM - Gary S. Weaver">remoteUserAuth-1.3-SNAPSHOT.jar
+                        </a>
+                    </dt>
+                    <dd class="attachment-date">
+                        30/Jul/08 10:49 AM</dd>
+                    <dd class="attachment-size">
+                        17 kB</dd>
+                    <dd class="attachment-author">
+                        Gary S. Weaver
+                    </dd>
+                
+                                    <dd class="zip-contents">
+                                        
+                                        <ol>
+                                            
+                                                
+                                                    <li>
+                                                        <div class="attachment-thumb">
+                                                            <a href="/secure/attachmentzip/unzip/15863/12118%5B1%5D/META-INF/MANIFEST.MF">
+                                                                
+
+    
+    
+        <img src="/images/icons/attach/file.gif" height="16" width="16" border="0" alt="File">
+    
+
+
+                                                            </a>
+                                                        </div>
+                                                        <a href="/secure/attachmentzip/unzip/15863/12118%5B1%5D/META-INF/MANIFEST.MF" title="META-INF/MANIFEST.MF">
+                                                            META-INF/MANIFEST.MF
+                                                        </a>
+                                                        <span class="attachment-size">
+                                                            0.1 kB
+                                                        </span>
+                                                    </li>
+                                                
+                                            
+                                                
+                                                    <li>
+                                                        <div class="attachment-thumb">
+                                                            <a href="/secure/attachmentzip/unzip/15863/12118%5B6%5D/shibauth/confluence/authentication/shibboleth/RemoteUserAuthenticator.class">
+                                                                
+
+    
+    
+        <img src="/images/icons/attach/file.gif" height="16" width="16" border="0" alt="File">
+    
+
+
+                                                            </a>
+                                                        </div>
+                                                        <a href="/secure/attachmentzip/unzip/15863/12118%5B6%5D/shibauth/confluence/authentication/shibboleth/RemoteUserAuthenticator.class" title="shibauth/confluence/authentication/shibboleth/RemoteUserAuthenticator.class">
+                                                            shibauth/.../RemoteUserAuthenticator.class
+                                                        </a>
+                                                        <span class="attachment-size">
+                                                            11 kB
+                                                        </span>
+                                                    </li>
+                                                
+                                            
+                                                
+                                                    <li>
+                                                        <div class="attachment-thumb">
+                                                            <a href="/secure/attachmentzip/unzip/15863/12118%5B7%5D/shibauth/confluence/authentication/shibboleth/ShibAuthConfigLoader.class">
+                                                                
+
+    
+    
+        <img src="/images/icons/attach/file.gif" height="16" width="16" border="0" alt="File">
+    
+
+
+                                                            </a>
+                                                        </div>
+                                                        <a href="/secure/attachmentzip/unzip/15863/12118%5B7%5D/shibauth/confluence/authentication/shibboleth/ShibAuthConfigLoader.class" title="shibauth/confluence/authentication/shibboleth/ShibAuthConfigLoader.class">
+                                                            shibauth/.../ShibAuthConfigLoader.class
+                                                        </a>
+                                                        <span class="attachment-size">
+                                                            6 kB
+                                                        </span>
+                                                    </li>
+                                                
+                                            
+                                                
+                                                    <li>
+                                                        <div class="attachment-thumb">
+                                                            <a href="/secure/attachmentzip/unzip/15863/12118%5B8%5D/shibauth/confluence/authentication/shibboleth/ShibAuthConfiguration.class">
+                                                                
+
+    
+    
+        <img src="/images/icons/attach/file.gif" height="16" width="16" border="0" alt="File">
+    
+
+
+                                                            </a>
+                                                        </div>
+                                                        <a href="/secure/attachmentzip/unzip/15863/12118%5B8%5D/shibauth/confluence/authentication/shibboleth/ShibAuthConfiguration.class" title="shibauth/confluence/authentication/shibboleth/ShibAuthConfiguration.class">
+                                                            shibauth/.../ShibAuthConfiguration.class
+                                                        </a>
+                                                        <span class="attachment-size">
+                                                            2 kB
+                                                        </span>
+                                                    </li>
+                                                
+                                            
+                                                
+                                                    <li>
+                                                        <div class="attachment-thumb">
+                                                            <a href="/secure/attachmentzip/unzip/15863/12118%5B9%5D/shibauth/confluence/authentication/shibboleth/ShibAuthConstants.class">
+                                                                
+
+    
+    
+        <img src="/images/icons/attach/file.gif" height="16" width="16" border="0" alt="File">
+    
+
+
+                                                            </a>
+                                                        </div>
+                                                        <a href="/secure/attachmentzip/unzip/15863/12118%5B9%5D/shibauth/confluence/authentication/shibboleth/ShibAuthConstants.class" title="shibauth/confluence/authentication/shibboleth/ShibAuthConstants.class">
+                                                            shibauth/.../ShibAuthConstants.class
+                                                        </a>
+                                                        <span class="attachment-size">
+                                                            1.0 kB
+                                                        </span>
+                                                    </li>
+                                                
+                                            
+                                                
+                                                    <li>
+                                                        <div class="attachment-thumb">
+                                                            <a href="/secure/attachmentzip/unzip/15863/12118%5B10%5D/shibauth/confluence/authentication/shibboleth/StringUtil.class">
+                                                                
+
+    
+    
+        <img src="/images/icons/attach/file.gif" height="16" width="16" border="0" alt="File">
+    
+
+
+                                                            </a>
+                                                        </div>
+                                                        <a href="/secure/attachmentzip/unzip/15863/12118%5B10%5D/shibauth/confluence/authentication/shibboleth/StringUtil.class" title="shibauth/confluence/authentication/shibboleth/StringUtil.class">
+                                                            shibauth/confluence/.../StringUtil.class
+                                                        </a>
+                                                        <span class="attachment-size">
+                                                            3 kB
+                                                        </span>
+                                                    </li>
+                                                
+                                            
+                                                
+                                                    <li>
+                                                        <div class="attachment-thumb">
+                                                            <a href="/secure/attachmentzip/unzip/15863/12118%5B14%5D/META-INF/maven/shibauth/remoteUserAuth/pom.xml">
+                                                                
+
+    
+        <img src="/images/icons/attach/xml.gif" height="16" width="16"
+             border="0" alt="XML File">        
+        
+    
+
+
+                                                            </a>
+                                                        </div>
+                                                        <a href="/secure/attachmentzip/unzip/15863/12118%5B14%5D/META-INF/maven/shibauth/remoteUserAuth/pom.xml" title="META-INF/maven/shibauth/remoteUserAuth/pom.xml">
+                                                            META-INF/maven/.../remoteUserAuth/pom.xml
+                                                        </a>
+                                                        <span class="attachment-size">
+                                                            11 kB
+                                                        </span>
+                                                    </li>
+                                                
+                                            
+                                                
+                                                    <li>
+                                                        <div class="attachment-thumb">
+                                                            <a href="/secure/attachmentzip/unzip/15863/12118%5B15%5D/META-INF/maven/shibauth/remoteUserAuth/pom.properties">
+                                                                
+
+    
+    
+        <img src="/images/icons/attach/file.gif" height="16" width="16" border="0" alt="File">
+    
+
+
+                                                            </a>
+                                                        </div>
+                                                        <a href="/secure/attachmentzip/unzip/15863/12118%5B15%5D/META-INF/maven/shibauth/remoteUserAuth/pom.properties" title="META-INF/maven/shibauth/remoteUserAuth/pom.properties">
+                                                            META-INF/maven/.../pom.properties
+                                                        </a>
+                                                        <span class="attachment-size">
+                                                            0.1 kB
+                                                        </span>
+                                                    </li>
+                                                
+                                            
+                                        </ol>
+                                        <span class="zip-contents-trailer">
+                                            
+                                            <a href="/secure/attachment/12118/remoteUserAuth-1.3-SNAPSHOT.jar">Download Zip</a>
+                                        </span>                
+                                        
+                                    </dd>
+                                </dl>
+                            </div>
+                            <div class="twixi-wrap concise">
+                                <a href="#" class="twixi"><span class="icon twixi-closed"><span>$i18n.getText("admin.common.words.show")</span></span></a>
+
+                                <div class="attachment-thumb">
+                                    <a href="/secure/attachment/12118/remoteUserAuth-1.3-SNAPSHOT.jar">
+                                        
+
+    
+        <img src="/images/icons/attach/java.gif" height="16" width="16"
+             border="0" alt="Java Archive File">        
+        
+    
+
+
+                                    </a>
+                                </div>
+                                <dl>
+                                    
+                    <dt class="attachment-title">
+                        <a href="/secure/attachment/12118/remoteUserAuth-1.3-SNAPSHOT.jar"
+                           title="Latest 30/Jul/08 10:49 AM - Gary S. Weaver">remoteUserAuth-1.3-SNAPSHOT.jar
+                        </a>
+                    </dt>
+                    <dd class="attachment-date">
+                        30/Jul/08 10:49 AM</dd>
+                    <dd class="attachment-size">
+                        17 kB</dd>
+                    <dd class="attachment-author">
+                        Gary S. Weaver
+                    </dd>
+                
+                                </dl>
+                            </div>
+                        </div>
+
+                    
+                    
+                </li>
+            
+                
+                
+
+                <li class="attachment-content ">
+                    
+                    
+                        <div class="attachment-thumb">
+                            <a href="/secure/attachment/12117/RemoteUserAuthenticator.java">
+                                
+
+    
+        <img src="/images/icons/attach/java.gif" height="16" width="16"
+             border="0" alt="Java Source File">        
+        
+    
+
+
+                            </a>
+                        </div>
+                        <dl>
+                            
+                    <dt class="attachment-title">
+                        <a href="/secure/attachment/12117/RemoteUserAuthenticator.java"
+                           title="Latest 30/Jul/08 12:54 AM - Erkki Aalto">RemoteUserAuthenticator.java
+                        </a>
+                    </dt>
+                    <dd class="attachment-date">
+                        30/Jul/08 12:54 AM</dd>
+                    <dd class="attachment-size">
+                        18 kB</dd>
+                    <dd class="attachment-author">
+                        Erkki Aalto
+                    </dd>
+                
+                        </dl>
+                    
+                </li>
+            
+                
+                
+
+                <li class="attachment-content ">
+                    
+                    
+                        <div class="attachment-thumb">
+                            <a href="/secure/attachment/12119/remoteUserAuthenticator.properties">
+                                
+
+    
+    
+        <img src="/images/icons/attach/file.gif" height="16" width="16" border="0" alt="File">
+    
+
+
+                            </a>
+                        </div>
+                        <dl>
+                            
+                    <dt class="attachment-title">
+                        <a href="/secure/attachment/12119/remoteUserAuthenticator.properties"
+                           title="Latest 30/Jul/08 10:49 AM - Gary S. Weaver">remoteUserAuthenticator.properties
+                        </a>
+                    </dt>
+                    <dd class="attachment-date">
+                        30/Jul/08 10:49 AM</dd>
+                    <dd class="attachment-size">
+                        2 kB</dd>
+                    <dd class="attachment-author">
+                        Gary S. Weaver
+                    </dd>
+                
+                        </dl>
+                    
+                </li>
+            
+            </ol>
+    
+        
+
+        
+        </div>
+    </div>
+
+    
+
+
+                    
+                
+                
+                    <div class='module toggle-wrap' id='linkingmodule'><div id='linkingmodule_heading' class='mod-header'><h3 class='toggle-title'>Issue Links</h3></div><div class='mod-content'>                    <table class="aui issue-links links-inward aui-table-rowhover">
+        <thead>
+            <tr>
+                <td colspan="5">
+                    This issue <strong>is related to</strong>:
+                </td>
+            </tr>
+        </thead>
+        <tbody>
+                <tr>
+            <td class="issuekey">
+                <a href="/browse/SHBL-29" title="UTF-8 multinationals get corrupted in fullname in released 1.7"  class="resolution" >SHBL-29</a>
+            </td>
+            <td class="summary"> UTF-8 multinationals get corrupted in fullname in released 1.7 </td>
+            <td class="priority">
+                                                <img src="/images/icons/priority_major.gif" height="16" width="16" border="0" align="absmiddle" alt="Major" title="Major - Major loss of function.">
+                                </td>
+            <td class="status">
+                            <img src="/images/icons/status_resolved.gif" height="16" width="16" border="0" align="absmiddle" alt="Resolved" title="Resolved - A resolution has been taken, and it is awaiting verification by reporter. From here issues are either reopened, or are closed.">
+                </td>
+            <td class="actions">
+                            </td>
+        </tr>
+                </tbody>
+    </table>
+    </div></div><div class='module toggle-wrap' id='activitymodule'><div id='activitymodule_heading' class='mod-header'><h3 class='toggle-title'>Activity</h3></div><div class='mod-content'>    <div class="tabwrap tabs2">
+                    <div class="sortwrap">
+                                    <a class="icon icon-sort-down" rel="nofollow" href="/browse/SHBL-5?actionOrder=desc#issue-tabs" title="Ascending order - Click to sort in descending order"><span>Ascending order - Click to sort in descending order</span></a>
+                            </div>
+                <ul id="issue-tabs" class="tabs horizontal">
+                                    <li><a id="all-tabpanel" href="/browse/SHBL-5?page=com.atlassian.jira.plugin.system.issuetabpanels:all-tabpanel#issue-tabs"><strong>All</strong></a></li>
+                                                <li id="comment-tabpanel" class="active"><strong>Comments</strong></li>
+                                                <li><a id="worklog-tabpanel" href="/browse/SHBL-5?page=com.atlassian.jira.plugin.system.issuetabpanels:worklog-tabpanel#issue-tabs"><strong>Work Log</strong></a></li>
+                                                <li><a id="changehistory-tabpanel" href="/browse/SHBL-5?page=com.atlassian.jira.plugin.system.issuetabpanels:changehistory-tabpanel#issue-tabs"><strong>History</strong></a></li>
+                                                <li><a id="activity-stream-issue-tab" href="/browse/SHBL-5?page=com.atlassian.streams.streams-jira-plugin:activity-stream-issue-tab#issue-tabs"><strong>Activity</strong></a></li>
+                            </ul>
+    </div>
+    <div class="issuePanelContainer" id="issue_actions_container">
+                        <div id="comment-18897" class="issue-data-block activity-comment twixi-block expanded">
+    <div class="twixi-wrap verbose actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-opened"><span>Hide</span></span></a>
+        <div class="action-links">
+            <a href="/browse/SHBL-5?focusedCommentId=18897&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-18897" title="A permanent link to this comment." class="icon icon-perma"><span>Permalink</span></a>
+                                </div>
+        <div class="action-details">
+    
+    
+                                            
+    
+                
+
+    <a class="user-hover user-avatar" rel="gswduke" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_18897_verbose" href="/secure/ViewProfile.jspa?name=gswduke">Gary S. Weaver</a>
+ added a comment  - <span class='commentdate_18897_verbose subText'><span class='date user-tz' title='22/Jul/08 7:55 AM'><time datetime='2008-07-22T07:55-0700'>22/Jul/08 7:55 AM</time></span></span>   - <span class="redText subText" title="Gary S. Weaver - 22/Jul/08 8:01 AM">edited</span> </div>
+        <div class="action-body flooded"><p>Although the plugin does apply the java.lang.String.toLowerCase() on the username, it doesn't do anything itself with the full name other than get it from the HTTP Header and add it to Confluence via the Confluence User API. Here are a few possible causes of the problem you are having:</p>
+
+<p>1) The database in the database server you are using (PostgreSQL) may need to be configured to use the proper character encoding. (This is most likely the case, I would check on this first.)<br/>
+2) There may be some issue in Shibboleth that is causing strings to be encoded/decoded improperly, or Shibboleth requires some different configuration to properly encode/decode the value strings. (Not likely, but may be the case.)<br/>
+3) There may be some issue in the source of record or in getting the Full Name from whatever the source of record is (LDAP, etc.) to Shibboleth. (Could be the case.)<br/>
+4) Confluence's UserAccessor may have some issue with adding user full names where it isn't properly keeping these characters in the process of storage to the database. (This is least likely, IMO.)</p>
+
+<p>Here is what you can do to narrow the possible issues down a bit:</p>
+<ul>
+	<li>In your .../confluence/WEB-INF/classes/log4j.properties file, add the following line and restart Confluence to enable debug logging of the Shibboleth Authenticator:
+<div class="code panel" style="border-width: 1px;"><div class="codeContent panelContent">
+<pre class="code-java">log4j.logger.shibauth.confluence.authentication.shibboleth=DEBUG, confluencelog</pre>
+</div></div>
+<p>Then look through the generated log after trying to login as that user for the text "updating user fullName to". The value that it contains after that for the user you mentioned is what is important. If this value is the "good" full name, then the issue is either in the Confluence UserAccessor API or more likely in the database configuration (so is probably issue 1 or 4). If the value is the "bad" full name, then the issue is somewhere in the source of record or Shibboleth side (so is probably issue 2 or 3).</p></li>
+</ul>
+
+
+<p>Please let me know whether or not you get it fixed and what you see in the log.</p> </div>
+    </div>
+    <div class="twixi-wrap concise actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-closed"><span>Show</span></span></a>
+        <div class="action-details flooded">
+            
+    
+    
+                                            
+    
+                
+
+    <a class="user-hover user-avatar" rel="gswduke" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_18897_concise" href="/secure/ViewProfile.jspa?name=gswduke">Gary S. Weaver</a>
+ added a comment  - <span class='commentdate_18897_concise subText'><span class='date user-tz' title='22/Jul/08 7:55 AM'><time datetime='2008-07-22T07:55-0700'>22/Jul/08 7:55 AM</time></span></span>   - <span class="redText subText" title="Gary S. Weaver - 22/Jul/08 8:01 AM">edited</span>              Although the plugin does apply the java.lang.String.toLowerCase() on the username, it doesn't do anything itself with the full name other than get it from the HTTP Header and add it to Confluence via the Confluence User API. Here are a few possible causes of the problem you are having:
+
+1) The database in the database server you are using (PostgreSQL) may need to be configured to use the proper character encoding. (This is most likely the case, I would check on this first.)
+2) There may be some issue in Shibboleth that is causing strings to be encoded/decoded improperly, or Shibboleth requires some different configuration to properly encode/decode the value strings. (Not likely, but may be the case.)
+3) There may be some issue in the source of record or in getting the Full Name from whatever the source of record is (LDAP, etc.) to Shibboleth. (Could be the case.)
+4) Confluence's UserAccessor may have some issue with adding user full names where it isn't properly keeping these characters in the process of storage to the database. (This is least likely, IMO.)
+
+Here is what you can do to narrow the possible issues down a bit:
+<ul>
+	<li>In your .../confluence/WEB-INF/classes/log4j.properties file, add the following line and restart Confluence to enable debug logging of the Shibboleth Authenticator:
+<div class="code panel" style="border-width: 1px;"><div class="codeContent panelContent">
+<pre class="code-java">log4j.logger.shibauth.confluence.authentication.shibboleth=DEBUG, confluencelog</pre>
+</div></div>
+Then look through the generated log after trying to login as that user for the text "updating user fullName to". The value that it contains after that for the user you mentioned is what is important. If this value is the "good" full name, then the issue is either in the Confluence UserAccessor API or more likely in the database configuration (so is probably issue 1 or 4). If the value is the "bad" full name, then the issue is somewhere in the source of record or Shibboleth side (so is probably issue 2 or 3).</li>
+</ul>
+
+
+Please let me know whether or not you get it fixed and what you see in the log.         </div>
+    </div>
+</div>
+                     <div id="comment-18916" class="issue-data-block activity-comment twixi-block expanded">
+    <div class="twixi-wrap verbose actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-opened"><span>Hide</span></span></a>
+        <div class="action-links">
+            <a href="/browse/SHBL-5?focusedCommentId=18916&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-18916" title="A permanent link to this comment." class="icon icon-perma"><span>Permalink</span></a>
+                                </div>
+        <div class="action-details">
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="aalto" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_18916_verbose" href="/secure/ViewProfile.jspa?name=aalto">Erkki Aalto</a>
+ added a comment  - <span class='commentdate_18916_verbose subText'><span class='date user-tz' title='23/Jul/08 7:05 AM'><time datetime='2008-07-23T07:05-0700'>23/Jul/08 7:05 AM</time></span></span>  </div>
+        <div class="action-body flooded"><p>The character encoding was correct. Locale was, however, not. Reinitializing the database<br/>
+did fix a minor problem that was in our test system (the production system had the correct<br/>
+locale) but it did not help with the problem with fullnames. Multinational characters are OK<br/>
+in all other cases, so I do not think it is about the database. Finally, I changed the whole test server to use UTF-8 as default, but it made no difference.</p>
+
+<p>I added the line to log4j.properties, but I got no messages from it to the logs. Otherwise, changing the content of log4j.properties did have an effect, but I never got anything from shibauth.</p>
+ </div>
+    </div>
+    <div class="twixi-wrap concise actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-closed"><span>Show</span></span></a>
+        <div class="action-details flooded">
+            
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="aalto" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_18916_concise" href="/secure/ViewProfile.jspa?name=aalto">Erkki Aalto</a>
+ added a comment  - <span class='commentdate_18916_concise subText'><span class='date user-tz' title='23/Jul/08 7:05 AM'><time datetime='2008-07-23T07:05-0700'>23/Jul/08 7:05 AM</time></span></span>               The character encoding was correct. Locale was, however, not. Reinitializing the database
+did fix a minor problem that was in our test system (the production system had the correct
+locale) but it did not help with the problem with fullnames. Multinational characters are OK
+in all other cases, so I do not think it is about the database. Finally, I changed the whole test server to use UTF-8 as default, but it made no difference.
+
+I added the line to log4j.properties, but I got no messages from it to the logs. Otherwise, changing the content of log4j.properties did have an effect, but I never got anything from shibauth.
+         </div>
+    </div>
+</div>
+                     <div id="comment-18926" class="issue-data-block activity-comment twixi-block expanded">
+    <div class="twixi-wrap verbose actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-opened"><span>Hide</span></span></a>
+        <div class="action-links">
+            <a href="/browse/SHBL-5?focusedCommentId=18926&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-18926" title="A permanent link to this comment." class="icon icon-perma"><span>Permalink</span></a>
+                                </div>
+        <div class="action-details">
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="gswduke" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_18926_verbose" href="/secure/ViewProfile.jspa?name=gswduke">Gary S. Weaver</a>
+ added a comment  - <span class='commentdate_18926_verbose subText'><span class='date user-tz' title='23/Jul/08 10:22 AM'><time datetime='2008-07-23T10:22-0700'>23/Jul/08 10:22 AM</time></span></span>  </div>
+        <div class="action-body flooded"><p>Rats. I was looking at trunk to see the package and I changed the package between v1.2 and trunk it looks like (since it is no longer maintained by georgetown). I should have been looking at the v1.0, v1.1, and v1.2 tags.</p>
+
+<p>For v1.0, v1.1, and v1.2 the line to replace the one I gave you above should be:</p>
+<div class="code panel" style="border-width: 1px;"><div class="codeContent panelContent">
+<pre class="code-java">log4j.logger.edu.georgetown.middleware.confluence=DEBUG, confluencelog</pre>
+</div></div>
+<p>(that is assuming that you have "log4j.appender.confluencelog=org.apache.log4j.ConsoleAppender" defined above it in log4j, as I think is the default. A restart of the application after is probably required to get it to work.)</p>
+
+<p>Sorry about that. <img class="emoticon" src="/images/icons/emoticons/sad.gif" height="20" width="20" align="absmiddle" alt="" border="0"/> Let me know what logging is generated from that.</p> </div>
+    </div>
+    <div class="twixi-wrap concise actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-closed"><span>Show</span></span></a>
+        <div class="action-details flooded">
+            
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="gswduke" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_18926_concise" href="/secure/ViewProfile.jspa?name=gswduke">Gary S. Weaver</a>
+ added a comment  - <span class='commentdate_18926_concise subText'><span class='date user-tz' title='23/Jul/08 10:22 AM'><time datetime='2008-07-23T10:22-0700'>23/Jul/08 10:22 AM</time></span></span>               Rats. I was looking at trunk to see the package and I changed the package between v1.2 and trunk it looks like (since it is no longer maintained by georgetown). I should have been looking at the v1.0, v1.1, and v1.2 tags.
+
+For v1.0, v1.1, and v1.2 the line to replace the one I gave you above should be:
+<div class="code panel" style="border-width: 1px;"><div class="codeContent panelContent">
+<pre class="code-java">log4j.logger.edu.georgetown.middleware.confluence=DEBUG, confluencelog</pre>
+</div></div>
+(that is assuming that you have "log4j.appender.confluencelog=org.apache.log4j.ConsoleAppender" defined above it in log4j, as I think is the default. A restart of the application after is probably required to get it to work.)
+
+Sorry about that. <img class="emoticon" src="/images/icons/emoticons/sad.gif" height="20" width="20" align="absmiddle" alt="" border="0"/> Let me know what logging is generated from that.         </div>
+    </div>
+</div>
+                     <div id="comment-18940" class="issue-data-block activity-comment twixi-block expanded">
+    <div class="twixi-wrap verbose actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-opened"><span>Hide</span></span></a>
+        <div class="action-links">
+            <a href="/browse/SHBL-5?focusedCommentId=18940&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-18940" title="A permanent link to this comment." class="icon icon-perma"><span>Permalink</span></a>
+                                </div>
+        <div class="action-details">
+    
+    
+                                            
+    
+                
+
+    <a class="user-hover user-avatar" rel="aalto" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_18940_verbose" href="/secure/ViewProfile.jspa?name=aalto">Erkki Aalto</a>
+ added a comment  - <span class='commentdate_18940_verbose subText'><span class='date user-tz' title='24/Jul/08 12:43 AM'><time datetime='2008-07-24T00:43-0700'>24/Jul/08 12:43 AM</time></span></span>   - <span class="redText subText" title="Erkki Aalto - 24/Jul/08 12:47 AM">edited</span> </div>
+        <div class="action-body flooded"><p>Now the logging is working:</p>
+
+<p>2008-07-24 08:35:22,432 DEBUG <a href="https://studio.plugins.atlassian.com/wiki/display/SHBL/TP-Processor2">TP-Processor2</a> <a href="https://studio.plugins.atlassian.com/wiki/display/SHBL/georgetown.middleware.confluence.RemoteUserAuthenticator">georgetown.middleware.confluence.RemoteUserAuthenticator</a> getFullName Got fullName 'Eero KesÃÂ€lÃÂ€' for header 'SHIB_CN'<br/>
+2008-07-24 08:35:22,432 DEBUG <a href="https://studio.plugins.atlassian.com/wiki/display/SHBL/TP-Processor2">TP-Processor2</a> <a href="https://studio.plugins.atlassian.com/wiki/display/SHBL/georgetown.middleware.confluence.RemoteUserAuthenticator">georgetown.middleware.confluence.RemoteUserAuthenticator</a> getFullName Got fullName 'Eero KesÃÂ€lÃÂ€' for header 'SHIB_CN'<br/>
+2008-07-24 08:35:22,433 DEBUG <a href="https://studio.plugins.atlassian.com/wiki/display/SHBL/TP-Processor2">TP-Processor2</a> <a href="https://studio.plugins.atlassian.com/wiki/display/SHBL/georgetown.middleware.confluence.RemoteUserAuthenticator">georgetown.middleware.confluence.RemoteUserAuthenticator</a> getEmailAddress Got emailAddress 'Eero.Kesala@helsinki.fi' for header 'SHIB_MAIL'<br/>
+2008-07-24 08:35:22,433 DEBUG <a href="https://studio.plugins.atlassian.com/wiki/display/SHBL/TP-Processor2">TP-Processor2</a> <a href="https://studio.plugins.atlassian.com/wiki/display/SHBL/georgetown.middleware.confluence.RemoteUserAuthenticator">georgetown.middleware.confluence.RemoteUserAuthenticator</a> getEmailAddress Got emailAddress 'Eero.Kesala@helsinki.fi' for header 'SHIB_MAIL'<br/>
+2008-07-24 08:35:22,433 DEBUG <a href="https://studio.plugins.atlassian.com/wiki/display/SHBL/TP-Processor2">TP-Processor2</a> <a href="https://studio.plugins.atlassian.com/wiki/display/SHBL/georgetown.middleware.confluence.RemoteUserAuthenticator">georgetown.middleware.confluence.RemoteUserAuthenticator</a> getUser Getting user kesala@helsinki.fi<br/>
+2008-07-24 08:35:22,433 DEBUG <a href="https://studio.plugins.atlassian.com/wiki/display/SHBL/TP-Processor2">TP-Processor2</a> <a href="https://studio.plugins.atlassian.com/wiki/display/SHBL/georgetown.middleware.confluence.RemoteUserAuthenticator">georgetown.middleware.confluence.RemoteUserAuthenticator</a> getUser Getting user kesala@helsinki.fi<br/>
+2008-07-24 08:35:22,449 DEBUG <a href="https://studio.plugins.atlassian.com/wiki/display/SHBL/TP-Processor2">TP-Processor2</a> <a href="https://studio.plugins.atlassian.com/wiki/display/SHBL/georgetown.middleware.confluence.RemoteUserAuthenticator">georgetown.middleware.confluence.RemoteUserAuthenticator</a> updateUser new user fullName is same as old one: 'Eero KesÃÂ€lÃÂ€'<br/>
+2008-07-24 08:35:22,449 DEBUG <a href="https://studio.plugins.atlassian.com/wiki/display/SHBL/TP-Processor2">TP-Processor2</a> <a href="https://studio.plugins.atlassian.com/wiki/display/SHBL/georgetown.middleware.confluence.RemoteUserAuthenticator">georgetown.middleware.confluence.RemoteUserAuthenticator</a> updateUser new user fullName is same as old one: 'Eero KesÃÂ€lÃÂ€'</p>
+
+<p>Clearly it is not the database, the authenticator is getting the broken multinationals from shibboleth.</p>
+
+<p>In shibd.log the multinationals are OK:</p>
+
+<p>&lt;AttributeValue xsi:type="typens:AttributeValueType"&gt;Eero KesÃ€lÃ€&lt;/AttributeValue&gt;</p> </div>
+    </div>
+    <div class="twixi-wrap concise actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-closed"><span>Show</span></span></a>
+        <div class="action-details flooded">
+            
+    
+    
+                                            
+    
+                
+
+    <a class="user-hover user-avatar" rel="aalto" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_18940_concise" href="/secure/ViewProfile.jspa?name=aalto">Erkki Aalto</a>
+ added a comment  - <span class='commentdate_18940_concise subText'><span class='date user-tz' title='24/Jul/08 12:43 AM'><time datetime='2008-07-24T00:43-0700'>24/Jul/08 12:43 AM</time></span></span>   - <span class="redText subText" title="Erkki Aalto - 24/Jul/08 12:47 AM">edited</span>              Now the logging is working:
+
+2008-07-24 08:35:22,432 DEBUG <a href="https://studio.plugins.atlassian.com/wiki/display/SHBL/TP-Processor2">TP-Processor2</a> <a href="https://studio.plugins.atlassian.com/wiki/display/SHBL/georgetown.middleware.confluence.RemoteUserAuthenticator">georgetown.middleware.confluence.RemoteUserAuthenticator</a> getFullName Got fullName 'Eero KesÃÂ€lÃÂ€' for header 'SHIB_CN'
+2008-07-24 08:35:22,432 DEBUG <a href="https://studio.plugins.atlassian.com/wiki/display/SHBL/TP-Processor2">TP-Processor2</a> <a href="https://studio.plugins.atlassian.com/wiki/display/SHBL/georgetown.middleware.confluence.RemoteUserAuthenticator">georgetown.middleware.confluence.RemoteUserAuthenticator</a> getFullName Got fullName 'Eero KesÃÂ€lÃÂ€' for header 'SHIB_CN'
+2008-07-24 08:35:22,433 DEBUG <a href="https://studio.plugins.atlassian.com/wiki/display/SHBL/TP-Processor2">TP-Processor2</a> <a href="https://studio.plugins.atlassian.com/wiki/display/SHBL/georgetown.middleware.confluence.RemoteUserAuthenticator">georgetown.middleware.confluence.RemoteUserAuthenticator</a> getEmailAddress Got emailAddress 'Eero.Kesala@helsinki.fi' for header 'SHIB_MAIL'
+2008-07-24 08:35:22,433 DEBUG <a href="https://studio.plugins.atlassian.com/wiki/display/SHBL/TP-Processor2">TP-Processor2</a> <a href="https://studio.plugins.atlassian.com/wiki/display/SHBL/georgetown.middleware.confluence.RemoteUserAuthenticator">georgetown.middleware.confluence.RemoteUserAuthenticator</a> getEmailAddress Got emailAddress 'Eero.Kesala@helsinki.fi' for header 'SHIB_MAIL'
+2008-07-24 08:35:22,433 DEBUG <a href="https://studio.plugins.atlassian.com/wiki/display/SHBL/TP-Processor2">TP-Processor2</a> <a href="https://studio.plugins.atlassian.com/wiki/display/SHBL/georgetown.middleware.confluence.RemoteUserAuthenticator">georgetown.middleware.confluence.RemoteUserAuthenticator</a> getUser Getting user kesala@helsinki.fi
+2008-07-24 08:35:22,433 DEBUG <a href="https://studio.plugins.atlassian.com/wiki/display/SHBL/TP-Processor2">TP-Processor2</a> <a href="https://studio.plugins.atlassian.com/wiki/display/SHBL/georgetown.middleware.confluence.RemoteUserAuthenticator">georgetown.middleware.confluence.RemoteUserAuthenticator</a> getUser Getting user kesala@helsinki.fi
+2008-07-24 08:35:22,449 DEBUG <a href="https://studio.plugins.atlassian.com/wiki/display/SHBL/TP-Processor2">TP-Processor2</a> <a href="https://studio.plugins.atlassian.com/wiki/display/SHBL/georgetown.middleware.confluence.RemoteUserAuthenticator">georgetown.middleware.confluence.RemoteUserAuthenticator</a> updateUser new user fullName is same as old one: 'Eero KesÃÂ€lÃÂ€'
+2008-07-24 08:35:22,449 DEBUG <a href="https://studio.plugins.atlassian.com/wiki/display/SHBL/TP-Processor2">TP-Processor2</a> <a href="https://studio.plugins.atlassian.com/wiki/display/SHBL/georgetown.middleware.confluence.RemoteUserAuthenticator">georgetown.middleware.confluence.RemoteUserAuthenticator</a> updateUser new user fullName is same as old one: 'Eero KesÃÂ€lÃÂ€'
+
+Clearly it is not the database, the authenticator is getting the broken multinationals from shibboleth.
+
+In shibd.log the multinationals are OK:
+
+&lt;AttributeValue xsi:type="typens:AttributeValueType"&gt;Eero KesÃ€lÃ€&lt;/AttributeValue&gt;         </div>
+    </div>
+</div>
+                     <div id="comment-18946" class="issue-data-block activity-comment twixi-block expanded">
+    <div class="twixi-wrap verbose actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-opened"><span>Hide</span></span></a>
+        <div class="action-links">
+            <a href="/browse/SHBL-5?focusedCommentId=18946&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-18946" title="A permanent link to this comment." class="icon icon-perma"><span>Permalink</span></a>
+                                </div>
+        <div class="action-details">
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="gswduke" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_18946_verbose" href="/secure/ViewProfile.jspa?name=gswduke">Gary S. Weaver</a>
+ added a comment  - <span class='commentdate_18946_verbose subText'><span class='date user-tz' title='24/Jul/08 8:02 AM'><time datetime='2008-07-24T08:02-0700'>24/Jul/08 8:02 AM</time></span></span>  </div>
+        <div class="action-body flooded"><p>Erkki,</p>
+
+<p>At this point, you will probably want to pose this issue on the Shibboleth users mailing list: shibboleth-users@internet2.edu. There are folks on that list using the authenticator as well. To subscribe to that list (which I'd suggest doing, if you haven't already) go to: <a href="https://mail.internet2.edu/wws/subrequest/shibboleth-users">https://mail.internet2.edu/wws/subrequest/shibboleth-users</a></p>
+
+<p>While there is a slight chance that the issue could be between Shibboleth and the authenticator itself (like some encoding/decoding issue in Tomcat or whatever appserver/container you are using, or even mod_shib, if using Apache in front of your app server/container), my guess is that it is more likely an issue in Shibboleth (possibly some missing config option) or somewhere closer to the system-of-record.</p>
+
+<p>Please let us know what the solution was when you get this resolved, and best of luck!</p>
+
+<p>Take care,<br/>
+Gary</p> </div>
+    </div>
+    <div class="twixi-wrap concise actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-closed"><span>Show</span></span></a>
+        <div class="action-details flooded">
+            
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="gswduke" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_18946_concise" href="/secure/ViewProfile.jspa?name=gswduke">Gary S. Weaver</a>
+ added a comment  - <span class='commentdate_18946_concise subText'><span class='date user-tz' title='24/Jul/08 8:02 AM'><time datetime='2008-07-24T08:02-0700'>24/Jul/08 8:02 AM</time></span></span>               Erkki,
+
+At this point, you will probably want to pose this issue on the Shibboleth users mailing list: shibboleth-users@internet2.edu. There are folks on that list using the authenticator as well. To subscribe to that list (which I'd suggest doing, if you haven't already) go to: <a href="https://mail.internet2.edu/wws/subrequest/shibboleth-users">https://mail.internet2.edu/wws/subrequest/shibboleth-users</a>
+
+While there is a slight chance that the issue could be between Shibboleth and the authenticator itself (like some encoding/decoding issue in Tomcat or whatever appserver/container you are using, or even mod_shib, if using Apache in front of your app server/container), my guess is that it is more likely an issue in Shibboleth (possibly some missing config option) or somewhere closer to the system-of-record.
+
+Please let us know what the solution was when you get this resolved, and best of luck!
+
+Take care,
+Gary         </div>
+    </div>
+</div>
+                     <div id="comment-19079" class="issue-data-block activity-comment twixi-block expanded">
+    <div class="twixi-wrap verbose actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-opened"><span>Hide</span></span></a>
+        <div class="action-links">
+            <a href="/browse/SHBL-5?focusedCommentId=19079&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-19079" title="A permanent link to this comment." class="icon icon-perma"><span>Permalink</span></a>
+                                </div>
+        <div class="action-details">
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="aalto" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_19079_verbose" href="/secure/ViewProfile.jspa?name=aalto">Erkki Aalto</a>
+ added a comment  - <span class='commentdate_19079_verbose subText'><span class='date user-tz' title='30/Jul/08 12:54 AM'><time datetime='2008-07-30T00:54-0700'>30/Jul/08 12:54 AM</time></span></span>  </div>
+        <div class="action-body flooded"><p>This seems to be a known problem:  when there is something not using utf-8 involved,  16-bit characters get   bytes 83 c2 inserted between. </p>
+
+<p><a href="http://www.google.fi/search?hl=fi&amp;q=83+c2+utf-8&amp;btnG=Hae&amp;meta=">http://www.google.fi/search?hl=fi&amp;q=83+c2+utf-8&amp;btnG=Hae&amp;meta=</a></p>
+
+<p>My colleague Juha Ojaluoma wrote a simple fix to the authenticator, I attach the source here.</p> </div>
+    </div>
+    <div class="twixi-wrap concise actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-closed"><span>Show</span></span></a>
+        <div class="action-details flooded">
+            
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="aalto" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_19079_concise" href="/secure/ViewProfile.jspa?name=aalto">Erkki Aalto</a>
+ added a comment  - <span class='commentdate_19079_concise subText'><span class='date user-tz' title='30/Jul/08 12:54 AM'><time datetime='2008-07-30T00:54-0700'>30/Jul/08 12:54 AM</time></span></span>               This seems to be a known problem:  when there is something not using utf-8 involved,  16-bit characters get   bytes 83 c2 inserted between. 
+
+<a href="http://www.google.fi/search?hl=fi&amp;q=83+c2+utf-8&amp;btnG=Hae&amp;meta=">http://www.google.fi/search?hl=fi&amp;q=83+c2+utf-8&amp;btnG=Hae&amp;meta=</a>
+
+My colleague Juha Ojaluoma wrote a simple fix to the authenticator, I attach the source here.         </div>
+    </div>
+</div>
+                     <div id="comment-19083" class="issue-data-block activity-comment twixi-block expanded">
+    <div class="twixi-wrap verbose actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-opened"><span>Hide</span></span></a>
+        <div class="action-links">
+            <a href="/browse/SHBL-5?focusedCommentId=19083&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-19083" title="A permanent link to this comment." class="icon icon-perma"><span>Permalink</span></a>
+                                </div>
+        <div class="action-details">
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="gswduke" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_19083_verbose" href="/secure/ViewProfile.jspa?name=gswduke">Gary S. Weaver</a>
+ added a comment  - <span class='commentdate_19083_verbose subText'><span class='date user-tz' title='30/Jul/08 8:19 AM'><time datetime='2008-07-30T08:19-0700'>30/Jul/08 8:19 AM</time></span></span>  </div>
+        <div class="action-body flooded"><p>(reopening issue so can track changes)</p>
+
+<p>Erkki,</p>
+
+<p>First of all, thanks to you for submitting this patch and to your friend for writing it. I'll probably change the patch to make the UTF-8 fix an optional part of configuration. I will merge this with trunk and release as v1.3, and will put your friend in the developer list of the plugin, if that is ok with your friend? (Note that v1.3 will have the newer package, so the debug logging configuration will be like the first example I gave you in this ticket instead of the second one that you are using now.)</p>
+
+<p>But I would like to have a quick conversation about this if possible:</p>
+
+<p>If I understand you correctly, you are saying that the purpose of this patch is to fix an issue with the username that is caused separately from the authenticator? If that is the case, you should really work to find out why it is not coming in with the character encoding that you need, because it is likely that you are going to try to Shibbolize some application (integrate some application with the Shibboleth SSO) in the future and run into the same issue again.</p>
+
+<p>I'd much rather put information on the wiki about how to configure a fix for Shibboleth, etc. to fix the UTF-8 issue that could help people resolve other issues with UTF-8 as well for other applications (not just Confluence).</p>
+
+<p>If this is truly an issue that is just with this plugin, that would be very surprising to me, because I was unaware of any UTF-8 issues with headers being passed in, or with any string for that matter. Could you point me to the bug in Apache, Java, Shibboleth, or whatever that references this bug?</p>
+
+<p>Thanks,<br/>
+Gary</p> </div>
+    </div>
+    <div class="twixi-wrap concise actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-closed"><span>Show</span></span></a>
+        <div class="action-details flooded">
+            
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="gswduke" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_19083_concise" href="/secure/ViewProfile.jspa?name=gswduke">Gary S. Weaver</a>
+ added a comment  - <span class='commentdate_19083_concise subText'><span class='date user-tz' title='30/Jul/08 8:19 AM'><time datetime='2008-07-30T08:19-0700'>30/Jul/08 8:19 AM</time></span></span>               (reopening issue so can track changes)
+
+Erkki,
+
+First of all, thanks to you for submitting this patch and to your friend for writing it. I'll probably change the patch to make the UTF-8 fix an optional part of configuration. I will merge this with trunk and release as v1.3, and will put your friend in the developer list of the plugin, if that is ok with your friend? (Note that v1.3 will have the newer package, so the debug logging configuration will be like the first example I gave you in this ticket instead of the second one that you are using now.)
+
+But I would like to have a quick conversation about this if possible:
+
+If I understand you correctly, you are saying that the purpose of this patch is to fix an issue with the username that is caused separately from the authenticator? If that is the case, you should really work to find out why it is not coming in with the character encoding that you need, because it is likely that you are going to try to Shibbolize some application (integrate some application with the Shibboleth SSO) in the future and run into the same issue again.
+
+I'd much rather put information on the wiki about how to configure a fix for Shibboleth, etc. to fix the UTF-8 issue that could help people resolve other issues with UTF-8 as well for other applications (not just Confluence).
+
+If this is truly an issue that is just with this plugin, that would be very surprising to me, because I was unaware of any UTF-8 issues with headers being passed in, or with any string for that matter. Could you point me to the bug in Apache, Java, Shibboleth, or whatever that references this bug?
+
+Thanks,
+Gary         </div>
+    </div>
+</div>
+                     <div id="comment-19085" class="issue-data-block activity-comment twixi-block expanded">
+    <div class="twixi-wrap verbose actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-opened"><span>Hide</span></span></a>
+        <div class="action-links">
+            <a href="/browse/SHBL-5?focusedCommentId=19085&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-19085" title="A permanent link to this comment." class="icon icon-perma"><span>Permalink</span></a>
+                                </div>
+        <div class="action-details">
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="gswduke" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_19085_verbose" href="/secure/ViewProfile.jspa?name=gswduke">Gary S. Weaver</a>
+ added a comment  - <span class='commentdate_19085_verbose subText'><span class='date user-tz' title='30/Jul/08 10:49 AM'><time datetime='2008-07-30T10:49-0700'>30/Jul/08 10:49 AM</time></span></span>  </div>
+        <div class="action-body flooded"><p>Erkki,</p>
+
+<p>Could you try the attached development version of v1.3 to let me know if that works? In addition to the patch you gave me, it converts all header values to UTF-8 using the same conversion code (moved into a util class) and makes the conversion optional. You have to add the following to your properties file in addition to using the newer attached jar to get it to work:</p>
+
+<div class="code panel" style="border-width: 1px;"><div class="codeContent panelContent">
+<pre class="code-java"># Indication whether HTTP header values should be converted to UTF-8 to avoid an issue
+# noted by Helsinki University: "where there is something not using utf-8 involved,
+# 16-bit characters get bytes 83 c2 inserted between." 
+
+# OPTIONAL
+convert.to.utf8=<span class="code-keyword">true</span></pre>
+</div></div>
+
+<p>Also attached the new sample config file (with optional convert.to.utf8 commented, so would have to be uncommented first to have that functionality.</p>
+
+<p>Please let me know if that works, and if so I will release it.</p>
+
+<p>Thanks!<br/>
+Gary</p> </div>
+    </div>
+    <div class="twixi-wrap concise actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-closed"><span>Show</span></span></a>
+        <div class="action-details flooded">
+            
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="gswduke" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_19085_concise" href="/secure/ViewProfile.jspa?name=gswduke">Gary S. Weaver</a>
+ added a comment  - <span class='commentdate_19085_concise subText'><span class='date user-tz' title='30/Jul/08 10:49 AM'><time datetime='2008-07-30T10:49-0700'>30/Jul/08 10:49 AM</time></span></span>               Erkki,
+
+Could you try the attached development version of v1.3 to let me know if that works? In addition to the patch you gave me, it converts all header values to UTF-8 using the same conversion code (moved into a util class) and makes the conversion optional. You have to add the following to your properties file in addition to using the newer attached jar to get it to work:
+
+<div class="code panel" style="border-width: 1px;"><div class="codeContent panelContent">
+<pre class="code-java"># Indication whether HTTP header values should be converted to UTF-8 to avoid an issue
+# noted by Helsinki University: "where there is something not using utf-8 involved,
+# 16-bit characters get bytes 83 c2 inserted between." 
+
+# OPTIONAL
+convert.to.utf8=<span class="code-keyword">true</span></pre>
+</div></div>
+
+Also attached the new sample config file (with optional convert.to.utf8 commented, so would have to be uncommented first to have that functionality.
+
+Please let me know if that works, and if so I will release it.
+
+Thanks!
+Gary         </div>
+    </div>
+</div>
+                     <div id="comment-19096" class="issue-data-block activity-comment twixi-block expanded">
+    <div class="twixi-wrap verbose actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-opened"><span>Hide</span></span></a>
+        <div class="action-links">
+            <a href="/browse/SHBL-5?focusedCommentId=19096&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-19096" title="A permanent link to this comment." class="icon icon-perma"><span>Permalink</span></a>
+                                </div>
+        <div class="action-details">
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="bliong" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_19096_verbose" href="/secure/ViewProfile.jspa?name=bliong">Bruce Liong</a>
+ added a comment  - <span class='commentdate_19096_verbose subText'><span class='date user-tz' title='30/Jul/08 11:29 PM'><time datetime='2008-07-30T23:29-0700'>30/Jul/08 11:29 PM</time></span></span>  </div>
+        <div class="action-body flooded"><p>perhaps also good to try this out first (without the patch) to check that all config for tomcat has been done properly, i.e. tomcat server.xml connectors (8080, 8009, etc) : URIEncoding="UTF-8" . Note that both AJP and tomcat connector ports need this entry added. just to confirm if there is an encoding leakage somewhere.</p>
+
+<p>this plugin consumes inputs as presented by tomcat and it doesn't do anything fancy with them. tomcat by default is using ISO-8859-1 btw.</p>
+
+<p>reference: <a href="http://confluence.atlassian.com/display/DOC/Configuring+Tomcat%27s+URI+encoding">http://confluence.atlassian.com/display/DOC/Configuring+Tomcat%27s+URI+encoding</a></p> </div>
+    </div>
+    <div class="twixi-wrap concise actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-closed"><span>Show</span></span></a>
+        <div class="action-details flooded">
+            
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="bliong" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_19096_concise" href="/secure/ViewProfile.jspa?name=bliong">Bruce Liong</a>
+ added a comment  - <span class='commentdate_19096_concise subText'><span class='date user-tz' title='30/Jul/08 11:29 PM'><time datetime='2008-07-30T23:29-0700'>30/Jul/08 11:29 PM</time></span></span>               perhaps also good to try this out first (without the patch) to check that all config for tomcat has been done properly, i.e. tomcat server.xml connectors (8080, 8009, etc) : URIEncoding="UTF-8" . Note that both AJP and tomcat connector ports need this entry added. just to confirm if there is an encoding leakage somewhere.
+
+this plugin consumes inputs as presented by tomcat and it doesn't do anything fancy with them. tomcat by default is using ISO-8859-1 btw.
+
+reference: <a href="http://confluence.atlassian.com/display/DOC/Configuring+Tomcat%27s+URI+encoding">http://confluence.atlassian.com/display/DOC/Configuring+Tomcat%27s+URI+encoding</a>         </div>
+    </div>
+</div>
+                     <div id="comment-19107" class="issue-data-block activity-comment twixi-block expanded">
+    <div class="twixi-wrap verbose actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-opened"><span>Hide</span></span></a>
+        <div class="action-links">
+            <a href="/browse/SHBL-5?focusedCommentId=19107&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-19107" title="A permanent link to this comment." class="icon icon-perma"><span>Permalink</span></a>
+                                </div>
+        <div class="action-details">
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="aalto" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_19107_verbose" href="/secure/ViewProfile.jspa?name=aalto">Erkki Aalto</a>
+ added a comment  - <span class='commentdate_19107_verbose subText'><span class='date user-tz' title='31/Jul/08 6:30 AM'><time datetime='2008-07-31T06:30-0700'>31/Jul/08 6:30 AM</time></span></span>  </div>
+        <div class="action-body flooded"><p>I added the URIencoding to connector 8080 where it was missing, but that did not prevent the characters to get corrupted. The characters also got corrupted with the 1.3-snapshot, there must still be some problem. If you want to contact my colleague, his email address is juha.ojaluoma@helsinki.fi </p> </div>
+    </div>
+    <div class="twixi-wrap concise actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-closed"><span>Show</span></span></a>
+        <div class="action-details flooded">
+            
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="aalto" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_19107_concise" href="/secure/ViewProfile.jspa?name=aalto">Erkki Aalto</a>
+ added a comment  - <span class='commentdate_19107_concise subText'><span class='date user-tz' title='31/Jul/08 6:30 AM'><time datetime='2008-07-31T06:30-0700'>31/Jul/08 6:30 AM</time></span></span>               I added the URIencoding to connector 8080 where it was missing, but that did not prevent the characters to get corrupted. The characters also got corrupted with the 1.3-snapshot, there must still be some problem. If you want to contact my colleague, his email address is juha.ojaluoma@helsinki.fi          </div>
+    </div>
+</div>
+                     <div id="comment-19108" class="issue-data-block activity-comment twixi-block expanded">
+    <div class="twixi-wrap verbose actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-opened"><span>Hide</span></span></a>
+        <div class="action-links">
+            <a href="/browse/SHBL-5?focusedCommentId=19108&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-19108" title="A permanent link to this comment." class="icon icon-perma"><span>Permalink</span></a>
+                                </div>
+        <div class="action-details">
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="gswduke" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_19108_verbose" href="/secure/ViewProfile.jspa?name=gswduke">Gary S. Weaver</a>
+ added a comment  - <span class='commentdate_19108_verbose subText'><span class='date user-tz' title='31/Jul/08 8:02 AM'><time datetime='2008-07-31T08:02-0700'>31/Jul/08 8:02 AM</time></span></span>  </div>
+        <div class="action-body flooded"><p>In addition, here is a response from Scott Cantor about this issue</p>
+
+<p>-------- Original Message --------<br/>
+Subject: 	RE: <a href="https://studio.plugins.atlassian.com/wiki/display/SHBL/Shib-Users">Shib-Users</a> problem with bytes 83 c2 getting inserted between 16-bit character when UTF-8 passed in via HTTP header from Shibboleth (or mod_shib/Apache?) to confluence authenticator<br/>
+Date: 	Wed, 30 Jul 2008 14:54:21 -0400<br/>
+From: 	Scott Cantor &lt;cantor.2@osu.edu&gt;<br/>
+Reply-To: 	shibboleth-users@internet2.edu<br/>
+Organization: 	The Ohio State University<br/>
+To: 	&lt;shibboleth-users@internet2.edu&gt;<br/>
+References: 	&lt;4890B56B.70408@duke.edu&gt;</p>
+
+
+<p>&gt; Has anyone run into behavior like this where the bytes 83 c2 get<br/>
+&gt; inserted between 16-bit characters that should be UTF-8 when passed in<br/>
+&gt; as an HTTP Header that came from Shibboleth (directly or indirectly)?</p>
+
+<p>This bug (and an old thread on the list) may be related:</p>
+
+<p><a href="https://bugs.internet2.edu/jira/browse/SSPCPP-2">https://bugs.internet2.edu/jira/browse/SSPCPP-2</a></p>
+
+<p>The headers the SP sets are always UTF-8, no exceptions. I don't see any<br/>
+alternative to this right now that would perform acceptably, so if your<br/>
+environment is corrupting the data, it has to be fixed outside the SP, or<br/>
+you can use the loopback, get the raw XML, and deal with it that way, but I<br/>
+can't change the header encoding itself without causing a lot of damage.</p>
+
+<p>Once you get from Apache into Tomcat, a lot of destructive things can<br/>
+happen, and that's probably where you have to focus. What normally happens<br/>
+is that the AJP tunnel is fine, but the data gets picked up and<br/>
+re-interpreted as a different encoding on the Java side. That has to be<br/>
+prevented.</p>
+
+<p>&#8211; Scott</p>
+ </div>
+    </div>
+    <div class="twixi-wrap concise actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-closed"><span>Show</span></span></a>
+        <div class="action-details flooded">
+            
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="gswduke" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_19108_concise" href="/secure/ViewProfile.jspa?name=gswduke">Gary S. Weaver</a>
+ added a comment  - <span class='commentdate_19108_concise subText'><span class='date user-tz' title='31/Jul/08 8:02 AM'><time datetime='2008-07-31T08:02-0700'>31/Jul/08 8:02 AM</time></span></span>               In addition, here is a response from Scott Cantor about this issue
+
+-------- Original Message --------
+Subject: 	RE: <a href="https://studio.plugins.atlassian.com/wiki/display/SHBL/Shib-Users">Shib-Users</a> problem with bytes 83 c2 getting inserted between 16-bit character when UTF-8 passed in via HTTP header from Shibboleth (or mod_shib/Apache?) to confluence authenticator
+Date: 	Wed, 30 Jul 2008 14:54:21 -0400
+From: 	Scott Cantor &lt;cantor.2@osu.edu&gt;
+Reply-To: 	shibboleth-users@internet2.edu
+Organization: 	The Ohio State University
+To: 	&lt;shibboleth-users@internet2.edu&gt;
+References: 	&lt;4890B56B.70408@duke.edu&gt;
+
+
+&gt; Has anyone run into behavior like this where the bytes 83 c2 get
+&gt; inserted between 16-bit characters that should be UTF-8 when passed in
+&gt; as an HTTP Header that came from Shibboleth (directly or indirectly)?
+
+This bug (and an old thread on the list) may be related:
+
+<a href="https://bugs.internet2.edu/jira/browse/SSPCPP-2">https://bugs.internet2.edu/jira/browse/SSPCPP-2</a>
+
+The headers the SP sets are always UTF-8, no exceptions. I don't see any
+alternative to this right now that would perform acceptably, so if your
+environment is corrupting the data, it has to be fixed outside the SP, or
+you can use the loopback, get the raw XML, and deal with it that way, but I
+can't change the header encoding itself without causing a lot of damage.
+
+Once you get from Apache into Tomcat, a lot of destructive things can
+happen, and that's probably where you have to focus. What normally happens
+is that the AJP tunnel is fine, but the data gets picked up and
+re-interpreted as a different encoding on the Java side. That has to be
+prevented.
+
+&#8211; Scott
+         </div>
+    </div>
+</div>
+                     <div id="comment-21472" class="issue-data-block activity-comment twixi-block expanded">
+    <div class="twixi-wrap verbose actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-opened"><span>Hide</span></span></a>
+        <div class="action-links">
+            <a href="/browse/SHBL-5?focusedCommentId=21472&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-21472" title="A permanent link to this comment." class="icon icon-perma"><span>Permalink</span></a>
+                                </div>
+        <div class="action-details">
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="gswduke" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_21472_verbose" href="/secure/ViewProfile.jspa?name=gswduke">Gary S. Weaver</a>
+ added a comment  - <span class='commentdate_21472_verbose subText'><span class='date user-tz' title='03/Dec/08 9:55 AM'><time datetime='2008-12-03T09:55-0800'>03/Dec/08 9:55 AM</time></span></span>  </div>
+        <div class="action-body flooded"><p>Resolving for 1.3. Please let us know if there are any issues.</p> </div>
+    </div>
+    <div class="twixi-wrap concise actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-closed"><span>Show</span></span></a>
+        <div class="action-details flooded">
+            
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="gswduke" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_21472_concise" href="/secure/ViewProfile.jspa?name=gswduke">Gary S. Weaver</a>
+ added a comment  - <span class='commentdate_21472_concise subText'><span class='date user-tz' title='03/Dec/08 9:55 AM'><time datetime='2008-12-03T09:55-0800'>03/Dec/08 9:55 AM</time></span></span>               Resolving for 1.3. Please let us know if there are any issues.         </div>
+    </div>
+</div>
+                 </div>
+</div></div>
+                
+
+            </div>
+        </div>
+
+        <div class="column" id="secondary">
+            <div class="content">
+                
+                    <div class='module toggle-wrap' id='peoplemodule'><div id='peoplemodule_heading' class='mod-header'><h3 class='toggle-title'>People</h3></div><div class='mod-content'><ul class="item-details" id="peopledetails">
+    <li class="people-details">
+                <dl>
+            <dt>Assignee:</dt>
+            <dd id="assignee-val">
+                        <a class="user-hover" rel="gswduke" id="issue_summary_assignee_gswduke" href="/secure/ViewProfile.jspa?name=gswduke">Gary S. Weaver</a>
+            </dd>
+        </dl>
+                        <dl>
+            <dt>Reporter:</dt>
+            <dd id="reporter-val">
+                        <a class="user-hover" rel="aalto" id="issue_summary_reporter_aalto" href="/secure/ViewProfile.jspa?name=aalto">Erkki Aalto</a>
+            </dd>
+        </dl>
+                    </li>
+</ul>
+<div id="votes-val">
+                <span id="vote-label" title="You cannot vote or change your vote on resolved issues."><span class="icon icon-vote-disabled"></span><span class="action-text">Vote</span></span>
+    
+                (<span id="vote-data">0</span>)
+    </div>
+<div id="watchers-val">
+            <span id="watch-label" title="You have to be logged in to watch an issue."><span class="icon icon-watch-disabled"></span>Watch</span>
+    
+        
+            (<span id="watcher-data">2</span>)
+    </div>
+</div></div><div class='module toggle-wrap' id='datesmodule'><div id='datesmodule_heading' class='mod-header'><h3 class='toggle-title'>Dates</h3></div><div class='mod-content'><ul class="item-details">
+    <li>
+            <dl class="dates">
+            <dt>Created:</dt>
+            <dd id="create-date" class="date user-tz"  title="22/Jul/08 3:24 AM" >
+                        <time datetime="2008-07-22T03:24-0700">22/Jul/08 3:24 AM</time></dd>                     </dd>
+        </dl>
+            <dl class="dates">
+            <dt>Updated:</dt>
+            <dd id="updated-date" class="date user-tz"  title="21/Oct/09 8:22 AM" >
+                        <time datetime="2009-10-21T08:22-0700">21/Oct/09 8:22 AM</time></dd>                     </dd>
+        </dl>
+            <dl class="dates">
+            <dt>Resolved:</dt>
+            <dd id="resolved-date" class="date user-tz"  title="03/Dec/08 9:55 AM" >
+                        <time datetime="2008-12-03T09:55-0800">03/Dec/08 9:55 AM</time></dd>                     </dd>
+        </dl>
+        </li>
+</ul>
+</div></div>
+                
+
+            </div>
+        </div>
+        
+            
+                
+            
+        
+
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+<div id="studio-footer" class="footer" style="width:100%; padding:0 0 25px 0;">
+    <div id="poweredby">
+        <p>
+            Powered by <a href="http://www.atlassian.com/hosted/studio">JIRA Studio</a> <span id="studioVersion">107.6 r5978538efb935b5414d28000aa78b98bedfcae46</span> |
+            <a href="http://www.atlassian.com/hosted/terms.jsp">Terms of Use</a> |
+            <a href="http://studio.atlassian.com/browse/JST">Bug/feature request</a> |
+            <a href="https://support.atlassian.com/secure/CreateIssueDetails!init.jspa?summary=Your+summary+here...&amp;issuetype=1&amp;priority=3&amp;description=Please+describe+your+problem+here%3A%0A%0A%0AProblem+reported+from+URL%3A+https%3A%2F%2Fstudio.plugins.atlassian.com%2Fbrowse%2FSHBL-5&amp;customfield_10440=https%3A%2F%2Fstudio.plugins.atlassian.com&amp;pid=10140&amp;">Request Support</a> |
+            <a href="http://confluence.atlassian.com/display/JIRASTUDIO" target="help_JIRASTUDIO" rel="nofollow">Help/Documentation</a> |
+            <a href="http://blogs.atlassian.com/devtools/studio">JIRA Studio Blog</a> |
+            <a href="http://twitter.com/jirastudio">Twitter @JIRAStudio</a>
+        </p>
+    </div>
+</div>
+
+<script type="text/javascript" charset="utf-8" src="/s/en_US-31q2po/650/149/107.6.4/_/download/resources/com.atlassian.studio.static:studio_resources/js/contentnamesearch.js"></script>
+<script type="text/javascript" charset="utf-8" src="/s/en_US-31q2po/650/149/107.6.4/_/download/resources/com.atlassian.studio.static:studio_resources/js/split_button.js"></script>
+<script type="text/javascript" charset="utf-8" src="/s/en_US-31q2po/650/149/107.6.4/_/download/resources/com.atlassian.studio.static:studio_resources/js/userstatus.js"></script>
+
+            <script type="text/javascript" charset="utf-8" src="/s/en_US-31q2po/650/149/107.6.4/_/download/resources/com.atlassian.studio.static:studio_resources/js/safe-ajax.js"></script>
+    
+<script type="text/javascript">
+    // This is the app specific data that the shared js expects
+    studioData = {"jiraUrl" : "https://studio.plugins.atlassian.com"};
+
+            document.cookie = "studio.project.rec.used.cookie=" + escape("SHBL-_-") + "; Max-Age=31536000; path=/;";
+    
+    // Google analytics
+    var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+    document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+    try {
+    var pageTracker = _gat._getTracker("UA-6032469-30");
+    pageTracker._trackPageview();
+    } catch(err) {}
+</script>
+
+<form id="jira_request_timing_info" class="dont-default-focus" >
+	<fieldset class="parameters hidden">
+		<input type="hidden" title="jira.request.start.millis" value="1358699857467" />
+		<input type="hidden" title="jira.request.server.time" value="1793" />
+		<input type="hidden" title="jira.request.id" value="517x7330351x1" />
+		<input type="hidden" title="jira.session.expiry.time" value="-" />
+		<input type="hidden" title="jira.session.expiry.in.mins" value="-" />
+		<input id="jiraConcurrentRequests" type="hidden" name="jira.request.concurrent.requests" value="1" />
+	</fieldset>
+</form>
+<!--
+	                 REQUEST ID : 517x7330351x1
+	          REQUEST TIMESTAMP : [20/Jan/2013:08:37:37 -0800]
+	               REQUEST TIME : 1.7930
+	                 ASESSIONID : 1t2x3q7
+	        CONCURRENT REQUESTS : 1
+-->
+</body>
+</html>

@@ -1,0 +1,2509 @@
+
+
+
+
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<html>
+<head>
+    <title>[#SHBL-53] local user login throws an exception in 4.1 - Atlassian Plugins JIRA Studio </title>
+
+    <meta content="general" name="decorator" />
+    <link rel="index" href="/secure/IssueNavigator.jspa" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="-1" />
+    
+
+    
+<meta id="atlassian-token" name="atlassian-token" content="A5G2-B7UC-JLK8-Z7KY|9d965d4f9b2454ccf9e288cb45488c15ea2fd124|lout">
+
+
+    <link rel="shortcut icon" href="/s/en_US-31q2po/650/149/_/favicon.ico">
+    <link rel="icon" type="image/png" href="/s/en_US-31q2po/650/149/_/images/icons/favicon.png">
+
+    
+    <script type="text/javascript">var contextPath = '';</script>
+<link type="text/css" rel="stylesheet" href="/s/en_US-31q2po/650/149/1/_/download/superbatch/css/batch.css" media="all">
+<!--[if lt IE 9]>
+<link type="text/css" rel="stylesheet" href="/s/en_US-31q2po/650/149/1/_/download/superbatch/css/batch.css?conditionalComment=lt+IE+9" media="all">
+<![endif]-->
+<!--[if IE 9]>
+<link type="text/css" rel="stylesheet" href="/s/en_US-31q2po/650/149/1/_/download/superbatch/css/batch.css?conditionalComment=IE+9" media="all">
+<![endif]-->
+<!--[if lte IE 9]>
+<link type="text/css" rel="stylesheet" href="/s/en_US-31q2po/650/149/1/_/download/superbatch/css/batch.css?conditionalComment=lte+IE+9" media="all">
+<![endif]-->
+<link type="text/css" rel="stylesheet" href="/s/en_US-31q2po/650/149/1.0/_/download/batch/jira.webresources:jquery-fancybox/jira.webresources:jquery-fancybox.css" media="all">
+<link type="text/css" rel="stylesheet" href="/s/en_US-31q2po/650/149/1.0/_/download/batch/jira.webresources:autocomplete/jira.webresources:autocomplete.css" media="all">
+<link type="text/css" rel="stylesheet" href="/s/en_US-31q2po/650/149/1.0/_/download/batch/jira.webresources:global-static/jira.webresources:global-static.css" media="all">
+<link type="text/css" rel="stylesheet" href="/s/en_US-31q2po/650/149/1.0/_/download/batch/jira.webresources:global-static/jira.webresources:global-static.css?media=print" media="print">
+<link type="text/css" rel="stylesheet" href="/s/en_US-31q2po/650/149/5.7/_/download/batch/com.pyxis.greenhopper.jira:gh-ranking/com.pyxis.greenhopper.jira:gh-ranking.css" media="all">
+<link type="text/css" rel="stylesheet" href="/s/en_US-31q2po/650/149/1.0.6/_/download/batch/com.atlassian.plugin.atlassian-feedback-plugin:feedback/com.atlassian.plugin.atlassian-feedback-plugin:feedback.css" media="all">
+<link type="text/css" rel="stylesheet" href="/s/en_US-31q2po/650/149/0.15.4/_/download/batch/com.atlassian.jira.plugins.jira-bitbucket-connector-plugin:resources/com.atlassian.jira.plugins.jira-bitbucket-connector-plugin:resources.css" media="all">
+<link type="text/css" rel="stylesheet" href="/s/en_US-31q2po/650/149/4.4-studio-rc3/_/download/batch/com.atlassian.jira.jira-admin-quicknav-plugin:admin-quicksearch/com.atlassian.jira.jira-admin-quicknav-plugin:admin-quicksearch.css" media="all">
+<script type="text/javascript" src="/s/en_US-31q2po/650/149/1/_/download/superbatch/js/batch.js" ></script>
+<script type="text/javascript" src="/s/en_US-31q2po/650/149/1.0/_/download/batch/jira.webresources:jquery-fancybox/jira.webresources:jquery-fancybox.js" ></script>
+<script type="text/javascript" src="/s/en_US-31q2po/650/149/1.0/_/download/batch/jira.webresources:calendar/jira.webresources:calendar.js" ></script>
+<script type="text/javascript" src="/s/en_US-31q2po/650/149/1.0/_/download/batch/jira.webresources:viewissue/jira.webresources:viewissue.js" ></script>
+<script type="text/javascript" src="/s/en_US-31q2po/650/149/1.0/_/download/batch/jira.webresources:autocomplete/jira.webresources:autocomplete.js" ></script>
+<script type="text/javascript" src="/s/en_US-31q2po/650/149/1.0/_/download/batch/jira.webresources:jira-fields/jira.webresources:jira-fields.js" ></script>
+<script type="text/javascript" src="/s/en_US-31q2po/650/149/1.0/_/download/batch/jira.webresources:calendar-en/jira.webresources:calendar-en.js" ></script>
+<script type="text/javascript" src="/s/en_US-31q2po/650/149/5.7/_/download/batch/com.pyxis.greenhopper.jira:gh-ranking/com.pyxis.greenhopper.jira:gh-ranking.js" ></script>
+<script type="text/javascript" src="/s/en_US-31q2po/650/149/5.7/_/download/batch/com.pyxis.greenhopper.jira:gh-globalkeyboardshortcuts/com.pyxis.greenhopper.jira:gh-globalkeyboardshortcuts.js" ></script>
+<script type="text/javascript" src="/s/en_US-31q2po/650/149/1.0.6/_/download/batch/com.atlassian.plugin.atlassian-feedback-plugin:feedback/com.atlassian.plugin.atlassian-feedback-plugin:feedback.js" ></script>
+<script type="text/javascript" src="/s/en_US-31q2po/650/149/0.4/_/download/batch/com.atlassian.jira.plugins.jira-github-connector-plugin:resources/com.atlassian.jira.plugins.jira-github-connector-plugin:resources.js" ></script>
+<script type="text/javascript" src="/s/en_US-31q2po/650/149/0.15.4/_/download/batch/com.atlassian.jira.plugins.jira-bitbucket-connector-plugin:resources/com.atlassian.jira.plugins.jira-bitbucket-connector-plugin:resources.js" ></script>
+<script type="text/javascript" src="/s/en_US-31q2po/650/149/4.4-studio-rc3/_/download/batch/com.atlassian.jira.jira-soy-plugin:soy-deps/com.atlassian.jira.jira-soy-plugin:soy-deps.js" ></script>
+<script type="text/javascript" src="/s/en_US-31q2po/650/149/4.4-studio-rc3/_/download/batch/com.atlassian.jira.jira-admin-quicknav-plugin:admin-quicksearch/com.atlassian.jira.jira-admin-quicknav-plugin:admin-quicksearch.js" ></script>
+
+    
+        <script type="text/javascript" src="/rest/api/1.0/shortcuts/650/2c704f3b1c272597f28d679bb85da011/shortcuts.js?context=issueaction&amp;context=issuenavigation"></script>
+    
+    <link rel="search" type="application/opensearchdescription+xml" href="/osd.jsp" title="Atlassian Plugins JIRA Studio"/>
+</head>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<body id="jira" class="nl type-ab stalker sn">
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" type="text/css" href="/s/en_US-31q2po/650/149/107.6.4/_/download/resources/com.atlassian.studio.static:studio_resources/css/menu.css">
+<link rel="stylesheet" type="text/css" href="/s/en_US-31q2po/650/149/107.6.4/_/download/resources/com.atlassian.studio.static:studio_resources/css/navbar.css">
+<link rel="stylesheet" type="text/css" href="/s/en_US-31q2po/650/149/107.6.4/_/download/resources/com.atlassian.studio.static:studio_resources/css/dialog.css">
+<!--[if IE]>
+<link rel="stylesheet" type="text/css" href="/s/en_US-31q2po/650/149/107.6.4/_/download/resources/com.atlassian.studio.static:studio_resources/css/dialog-ie.css">
+<![endif]-->
+<!--[if lt IE 9]>
+<link rel="stylesheet" type="text/css" href="/s/en_US-31q2po/650/149/107.6.4/_/download/resources/com.atlassian.studio.static:studio_resources/css/navbar-ie.css">
+<![endif]-->
+<!--[if IE 9]>
+<link rel="stylesheet" type="text/css" href="/s/en_US-31q2po/650/149/107.6.4/_/download/resources/com.atlassian.studio.static:studio_resources/css/navbar-ie9.css">
+<![endif]-->
+<link rel="stylesheet" type="text/css" href="/s/en_US-31q2po/650/149/107.6.4/_/download/resources/com.atlassian.studio.static:studio_resources/css/userstatus.css">
+<link rel="stylesheet" type="text/css" href="/s/en_US-31q2po/650/149/107.6.4/_/download/resources/com.atlassian.studio.static:studio_admin_styles/css/studioadmin.css">
+<link rel="stylesheet" type="text/css" href="/plugins/servlet/studio/dynamiccss/studio-colors-css.css">
+<link rel="stylesheet" type="text/css" href="/s/en_US-31q2po/650/149/107.6.4/_/download/resources/com.atlassian.studio.theme.jira:studio_jira_resources/css/studio-jira-theme-override.css">
+
+<div id="header" style="display:none">
+</div>
+<div class="studio-header" id="studio-header">
+
+	<meta id="application-base-url" name="application-base-url" content="https://studio.plugins.atlassian.com"/>
+<meta id="studio-context-path" name="studio-context-path" content=""/>
+<meta id="jira-base-url" name="jira-base-url" content="https://studio.plugins.atlassian.com"/>
+<meta id="confluence-base-url" name="confluence-base-url" content="https://studio.plugins.atlassian.com/wiki"/>
+
+<div class="header-first-level">
+    <div class="first-level-overlay">
+        <div id="studio-logo">
+            <a href="https://studio.plugins.atlassian.com/secure/Dashboard.jspa" class="logolink"><img src="https://studio.plugins.atlassian.com/download/resources/com.atlassian.studio.static:studio_images/images/StudioLogo.png" border="0" alt="Atlassian Plugins JIRA Studio"></a>
+        </div>
+
+        <div class="top-level-container">
+
+            <div class="nav-dropdowns">
+                <div id="studio-project-menu" class="project-menu">
+	<ul class="ajs-menu-bar">
+    	<li class="normal ajs-menu-item">
+                        			<a class="user trigger ajs-menu-title" href="#"><span><span> Confluence Shibboleth Authenticator </span></span></a>
+
+			<div class="ajs-drop-down hidden">
+    			<ul class="first">
+
+					                		                                                                                                                <li><a href="/browse/CNET" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=10979&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">.NET Authenticator with Single Sign-O...</span></a></li>
+					                        <li><a href="/browse/ATTT" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=11825&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">@ Time Tracker</span></a></li>
+					                        <li><a href="/browse/CONFABAPPLUGIN" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=10982&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">ABAP Code-Formatter</span></a></li>
+					                        <li><a href="/browse/ABAP" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=11605&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">ABAP Syntax Highlighter</span></a></li>
+					                        <li><a href="/browse/APRV" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=10360&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">Ad hoc Workflows</span></a></li>
+					                        <li><a href="/browse/ADHOC" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=10931&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">Adhoc Builder - Deployment Tool</span></a></li>
+					                        <li><a href="/browse/AALOG" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=11604&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">Admin Activity Logger</span></a></li>
+					                        <li><a href="/browse/ATD" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=11521&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">After the Deadline</span></a></li>
+					                        <li><a href="/browse/BAACL" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=11551&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">Agent ACL</span></a></li>
+					                        <li><a href="/browse/AAS" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=10930&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">Agile Application Stack</span></a></li>
+					                        <li><a href="/browse/SPARTEZASCP" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=11123&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">Agile Scrum Cards Print</span></a></li>
+					                        <li><a href="/browse/CAGL" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=10951&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">Agile Toolkit Plugin</span></a></li>
+					                        <li><a href="/browse/JAVT" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=11031&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">Agile Velocity Tracking plugin</span></a></li>
+					                        <li><a href="/browse/ALFRES" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=10933&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">Alfresco Crowd Integration module</span></a></li>
+					                        <li><a href="/browse/ALFCON" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=11320&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">Alfresco to Confluence Connector</span></a></li>
+					                        <li><a href="/browse/ACCF" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=11371&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">All Comments Custom Field Type</span></a></li>
+					                        <li><a href="/browse/CAE" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=10950&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">Archive Extractor Plugin</span></a></li>
+					                        <li><a href="/browse/STRM" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=10570&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">Atlassian Activity Stream Plugin</span></a></li>
+					                        <li><a href="/browse/ACLI" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=10882&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">Atlassian Command Line Interface</span></a></li>
+					                        <li><a href="/browse/PLE" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=11107&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">Atlassian Connector for Eclipse</span></a></li>
+										                                            <li id="ds-more"><a href="https://studio.plugins.atlassian.com/secure/BrowseProjects.jspa?selectedCategory=all" class="more-projects"><span>View All Projects</span></a></li>
+					
+				</ul>
+    		</div>
+    	</li>
+    </ul>
+</div>	
+
+
+                
+	    <div id="studio-user-menu-container">
+        <a class="login-link" href="/login.jsp?os_destination=%2Fbrowse%2FSHBL-53">Log In</a>
+    </div>
+    
+            </div> <!-- /nav-dropdowns -->
+
+            <div class="navigation-tabs studio-menu">
+                
+<ul id="studio-tabs">
+			<li class="current"><a href="/browse/SHBL">Issues</a></li>
+			<li><a href="https://studio.plugins.atlassian.com/wiki/display/SHBL">Wiki</a></li>
+			<li><a href="https://studio.plugins.atlassian.com/source/browse/SHBL">Source</a></li>
+			<li><a href="https://studio.plugins.atlassian.com/source/cru/?filter=custom&project=CR-SHBL">Reviews</a></li>
+			<li><a href="https://studio.plugins.atlassian.com/builds/browse/SHBL">Builds</a></li>
+	</ul>
+
+            </div>
+
+        </div> <!-- /top-level-container -->
+    </div>  <!-- /first-level-overlay -->
+</div> <!-- /header-first-level -->
+
+
+    <div id="header-bottom">
+
+        <div class="second-level-nav studio-menu">
+
+                            
+                
+<ul id="main-nav" class="menu-bar standard-menu-bar">
+                        <li class="aui-dd-parent lazy  ">
+                    <a class="lnk"
+                href="/secure/Dashboard.jspa"
+                 id="home_link"                 accessKey="h"                 title="View your current Dashboard"                >Dashboards</a>
+
+                    <span class="drop-wrap">
+            <a class="drop aui-dd-link"
+                                    id="home_link_drop"
+                    rel="home_link"
+                    accessKey="d"
+                    title="Access more options (Alt+d)"
+                                href="#"><span>Access more options (Alt+d)</span></a></span>
+                </li>
+                        <li class="aui-dd-parent lazy  selected  ">
+                    <a class="lnk"
+                href="/secure/IssueNavigator.jspa"
+                 id="find_link"                 accessKey="f"                 title="View your current filter"                >Issues</a>
+
+                    <span class="drop-wrap">
+            <a class="drop aui-dd-link"
+                                    id="find_link_drop"
+                    rel="find_link"
+                    accessKey="i"
+                    title="Access more options (Alt+i)"
+                                href="#"><span>Access more options (Alt+i)</span></a></span>
+                </li>
+                        <li class="aui-dd-parent nonlazy  ">
+                    <a class="lnk"
+                href="/secure/GreenHopper.jspa"
+                 id="greenhopper_menu"                                 title="Manage your project with GreenHopper"                >Agile</a>
+
+                                                                                                            <span class="drop-wrap">
+                            <a class="drop aui-dd-link"
+                                                                    id="greenhopper_menu_drop"
+                                    accessKey="g"
+                                    rel="greenhopper_menu"
+                                    title="Access more options (Alt+g)"
+                                                                href="#"><span>Access more options</span></a></span>
+                            <div class="aui-list hidden">
+                                                
+                            <ul id="greenhopper_menu_dropdown" class="aui-list-section aui-first   aui-last  ">
+                                                                    <li class="aui-list-item"><a
+                                         id="planningboard-mlink"                                         class="aui-list-item-link   "
+                                                                                                                        href="/secure/VersionBoard.jspa">Planning Board</a></li>
+                                                                    <li class="aui-list-item"><a
+                                         id="taskboard-mlink"                                         class="aui-list-item-link   "
+                                                                                                                        href="/secure/TaskBoard.jspa">Task Board</a></li>
+                                                                    <li class="aui-list-item"><a
+                                         id="chartboard-mlink"                                         class="aui-list-item-link   "
+                                                                                                                        href="/secure/ChartBoard.jspa">Chart Board</a></li>
+                                                                    <li class="aui-list-item"><a
+                                         id="releasedboard-mlink"                                         class="aui-list-item-link   "
+                                                                                                                        href="/secure/ArchiveChartBoard.jspa">Released Board</a></li>
+                                                            </ul>
+                                                    </div>
+                            </li>
+    </ul>
+
+                
+            
+        </div> <!-- /second-level-nav -->
+
+        <div class="quick-action-search">
+
+            
+            <a id="keyshortscuthelp" class="item-link hidden" title="Get more information about JIRA's Keyboard Shortcuts"
+               href="/secure/ViewKeyboardShortcuts!default.jspa">Keyboard Shortcuts</a>
+                            <a id="browse_link" class="hidden" href="/browse/SHBL">Selected Project</a>
+            
+            <form id="quick-search" class="dont-default-focus userpref-form" method="get" action="https://studio.plugins.atlassian.com/secure/StudioSearch.jspa">
+    <fieldset>
+        <legend>Quick Search</legend>
+		<input type="hidden" name="suggest-tracking" value="search" />
+		<input type="hidden" name="quickSearch" value="true" />
+        <input id="studio-quick-search-query" type="text" accessKey="q" autocomplete="off" name="query" size="25"/>
+        <input id="quick-search-submit" type="submit" value="Search"/>
+    </fieldset>
+    <fieldset class="hidden parameters">
+        <input type="hidden" id="quickSearchPlaceholder" value="Search">
+    </fieldset>
+</form>
+
+        </div> <!-- /quick-action-search -->
+
+    </div> <!-- /header-second-level -->
+
+</div>
+
+
+
+
+
+
+
+
+
+
+<fieldset class="hidden parameters">
+    <input type="hidden" title="ajaxTimeout" value="The call to the JIRA server did not complete within the timeout period.  We are unsure of the result of this operation.">
+    <input type="hidden" title="ajaxUnauthorised" value="You are not authorised to perform this operation.  Please try to <a href='/login.jsp?os_destination=%2Fbrowse%2FSHBL-53'>log in</a> or <a href='/secure/Signup!default.jspa'>sign up</a> for an account.">
+    <input type="hidden" title="ajaxUnauthorisedAlert" value="You are not authorised to perform this operation.  Please log in.">
+    <input type="hidden" title="baseURL" value="https://studio.plugins.atlassian.com:443">
+    <input type="hidden" title="ajaxCommsError" value="The JIRA server could not be contacted.  This may be a temporary glitch or the server may be down.">
+    <input type="hidden" title="ajaxServerError" value="The JIRA server was contacted but has returned an error response. We are unsure of the result of this operation.">
+    <input type="hidden" title="ajaxErrorCloseDialog" value="Close this dialog and press refresh in your browser">
+    <input type="hidden" title="ajaxErrorDialogHeading" value="Communications Breakdown">
+
+    <input type="hidden" title="dirtyMessage" value="You have entered new data on this page. If you navigate away from this page without first saving your data, the changes will be lost.">
+    <input type="hidden" title="dirtyDialogMessage" value="You have entered new data in this dialog. If you navigate away from this dialog without first saving your data, the changes will be lost. Click cancel to return to the dialog.">
+    <input type="hidden" title="keyType" value="Type">
+    <input type="hidden" title="keyThen" value="then">
+    <input type="hidden" title="dblClickToExpand" value="Double click to expand">
+    <input type="hidden" title="actions" value="Actions">
+    <input type="hidden" title="removeItem" value="Remove">
+    <input type="hidden" title="workflow" value="Workflow">
+    <input type="hidden" title="labelNew" value="New Label">
+    <input type="hidden" title="enterIssueKey" value="Enter issue key">
+    <input type="hidden" title="issueActionsHint" value="Begin typing for available operations or press down to see all">
+    <input type="hidden" title="closelink" value="Close">
+    <input type="hidden" title="dotOperations" value="Operations">
+    <input type="hidden" title="dotLoading" value="Loading...">
+    <input type="hidden" title="frotherSuggestions" value="Suggestions">
+    <input type="hidden" title="frotherNomatches" value="No Matches">
+    <input type="hidden" title="multiselectVersionsError" value="{0} is not a valid version.">
+    <input type="hidden" title="multiselectComponentsError" value="{0} is not a valid component.">
+    <input type="hidden" title="multiselectGenericError" value="The value {0} is invalid.">
+</fieldset>
+
+
+
+
+<div class="alertHeader">
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-6032469-24");
+pageTracker._trackPageview();
+} catch(err) {}</script>
+
+<script type="text/javascript" charset="utf-8">
+  (function(){
+    t = document.createElement('script');t.async=true;t.type ='text/javascript';
+    t.src = ('https:' == document.location.protocol ? 'https://secure.' : 'http://api.') + 'tellthemwhen.com/api/v2/notices/9ffb4ac1f71.js';
+    var s=document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(t,s);
+  })();
+</script>
+
+<!-- <div id="TTWNotify" style="display:none"></div> -->
+
+<div style="text-align: center; border: #C00; background-color: #FF6600; line-height: 2em">studio.plugins.atlassian.com will be decommissioned in early 2013. If you are a project maintainer, please email <a href="mailto:developer-relations@atlassian.com">Atlassian Developer Relations</a> if you require assistance to migrate your project off this server.</div>
+</div>
+
+
+
+
+<fieldset class="hidden parameters">
+    <input type="hidden" id="viewMoreMsg" value="Click to view {0} more">
+    <input type="hidden" id="hideMsg" value="Hide" >
+    <input type="hidden" id="error-401" value="Cannot perform this operation. You are not logged in." >
+    <input type="hidden" id="issueOpTitleUnvote" value="Remove vote for this issue" >
+    <input type="hidden" id="issueOpTitleVote" value="Vote for this issue" >
+    <input type="hidden" id="issueOpTitleWatch" value="Start watching this issue" >
+    <input type="hidden" id="issueOpTitleUnwatch" value="Stop watching this issue" >
+    <input type="hidden" id="issueOpUnvote" value="Remove Vote" >
+    <input type="hidden" id="issueOpVote" value="Add Vote" >
+    <input type="hidden" id="issueOpWatch" value="Watch Issue" >
+    <input type="hidden" id="issueOpUnwatch" value="Stop Watching" >
+    <input type="hidden" id="i18nVote" value="Vote" >
+    <input type="hidden" id="i18nVoted" value="Voted" >
+    <input type="hidden" id="i18nWatch" value="Watch" >
+    <input type="hidden" id="i18nWatching" value="Watching" >
+</fieldset>
+
+<div id="stalker"  class="stalker">
+    <div class="item-header">
+    
+        
+
+
+
+
+
+
+
+
+
+
+
+
+<h1 class="item-name avatar" style="background-image:url(/secure/projectavatar?pid=10580&amp;avatarId=10011&amp;size=large)">
+        
+            <img id="project-avatar" alt="" class="project-avatar-48" height="48" src="/secure/projectavatar?pid=10580&amp;avatarId=10011&amp;size=large" width="48" />
+        
+        <span>Confluence Shibboleth Authenticator</span>
+</h1>
+
+
+<ul class="breadcrumbs">
+    <li><a id="project-name-val" href="/browse/SHBL">Confluence Shibboleth Authenticator</a></li>
+    
+    <li><a id="key-val" rel="30436" href="/browse/SHBL-53">SHBL-53</a></li>
+</ul>
+
+<h2 id="issue_header_summary" class="item-summary"><a href="/browse/SHBL-53">local user login throws an exception in 4.1</a></h2>
+
+    
+    </div>
+    
+
+
+
+
+    <div class="command-bar">
+        <div class="ops-cont">
+            <div class="ops-menus">
+                
+                
+                    <ul id="opsbar-login" class="first ops">
+                        <li id="ops-login" class="last">
+                            <a id="ops-login-lnk" class="button first last" href="/login.jsp?os_destination=%2Fbrowse%2FSHBL-53">Log In</a>
+                        </li>
+                    </ul>
+                
+                
+                    
+                        
+                    
+                
+                    
+                        
+                    
+                
+                
+                    
+                        <ul class="ops" id="view-drop">
+                            <li>
+                                <div class="aui-dd-parent">
+                                    <a href="#" title="View this issue in another format" class="drop lnk aui-dd-link standard icon-views"><span>Views</span></a>
+                                        <div class="aui-list hidden">
+                                        <ul class="aui-first aui-last aui-list-section">
+                                            
+                                                <li class="aui-list-item">
+                                                    <a class="aui-list-item-link" rel="nofollow" href="/si/jira.issueviews:issue-xml/SHBL-53/SHBL-53.xml">XML</a>
+                                                </li>
+                                            
+                                                <li class="aui-list-item">
+                                                    <a class="aui-list-item-link" rel="nofollow" href="/si/jira.issueviews:issue-word/SHBL-53/SHBL-53.doc">Word</a>
+                                                </li>
+                                            
+                                                <li class="aui-list-item">
+                                                    <a class="aui-list-item-link" rel="nofollow" href="/si/jira.issueviews:issue-html/SHBL-53/SHBL-53.html">Printable</a>
+                                                </li>
+                                            
+                                        </ul>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    
+                
+            </div>
+        </div>
+    </div>          
+
+
+    <div class="btm"></div>
+</div>
+<div id="main-content">
+    <div class="active-area">
+        <div class="column" id="primary">
+            <div class="content">
+                
+                
+                
+                
+
+                    <div id="details-module" class="module toggle-wrap">
+                        <div class="mod-header">
+                            <h3 class="toggle-title">Details</h3>
+                        </div>
+                        <div class="mod-content">
+                            <ul id="issuedetails" class="property-list two-cols">
+    <li class="item">
+        <div class="wrap">
+            <strong class="name">Type:</strong>
+            <span id="type-val" class="value">
+                                                        <img alt="Bug" height="16" src="/images/icons/bug.gif" title="Bug - A problem which impairs or prevents the functions of the product." width="16" />
+             Bug
+            </span>
+        </div>
+    </li>
+    <li class="item item-right">
+        <div class="wrap">
+            <strong class="name">Status:</strong>
+            <span id="status-val" class="value">
+                                                        <img alt="Closed" height="16" src="/images/icons/status_closed.gif" title="Closed - The issue is considered finished, the resolution is correct. Issues which are closed can be reopened." width="16" />
+             Closed
+            </span>
+                    </div>
+    </li>
+            <li class="item">
+            <div class="wrap">
+                <strong class="name">Priority:</strong>
+                <span id="priority-val" class="value">
+                                                                <img alt="Major" height="16" src="/images/icons/priority_major.gif" title="Major - Major loss of function." width="16" />
+             Major
+                </span>
+            </div>
+        </li>
+                                <li class="item item-right">
+            <div class="wrap">
+                <strong class="name">Resolution:</strong>
+                <span id="resolution-val" class="value resolved" >
+                                         Fixed
+                                </span>
+            </div>
+        </li>
+                <li class="item">
+            <div class="wrap">
+                <strong class="name">Affects Version/s:</strong>
+                <span id="versions-val" class="value">
+                                            <span class="shorten" id="versions-field">
+                                                            <span title="2.0.1 Changes by Gary Weaver: SHBL-48: Fixes for Confluence 3.5.x">2.0.1</span>                                                    </span>
+                                    </span>
+            </div>
+        </li>
+                <li class="item item-right">
+            <div class="wrap">
+                <strong class="name">Fix Version/s:</strong>
+                <span id="fixfor-val" class="value">
+                                            <span class="shorten" id="fixVersions-field">
+                                                            <a href="/browse/SHBL/fixforversion/15729" title="2.1.9 Changes by Gary Weaver: SHBL-55, SHBL-56: Support for Confluence 4.1.x">2.1.9</a>                                                    </span>
+                                    </span>
+            </div>
+        </li>
+                <li class="item">
+            <div class="wrap">
+                <strong class="name">Component/s:</strong>
+                <span id="components-val" class="value">
+                                            None
+                                    </span>
+            </div>
+        </li>
+                    <li class="item full-width">
+            <div class="wrap" id="wrap-labels">
+                <strong class="name">Labels:</strong>
+                    <div class="labels-wrap value">
+            <span class="labels" id="labels-30436-value">None</span>
+                </div>
+            </div>
+        </li>
+        </ul>
+
+
+                            
+                                
+
+<div id="customfieldmodule">
+    
+
+    
+    
+    <ul id="tabCellPane1" class="property-list">
+        
+        
+            
+                
+                
+                    <li id="rowForcustomfield_10061" class="item">
+                        <div class="wrap">
+                            <strong title="Internal Complexity" class="name">Internal Complexity:</strong>
+                            <div id="customfield_10061-val" class="value type-select">
+                                 Unknown
+
+                            </div>
+                        </div>
+                    </li>
+                
+            
+        
+            
+                
+                
+                    <li id="rowForcustomfield_10060" class="item">
+                        <div class="wrap">
+                            <strong title="Internal Value" class="name">Internal Value:</strong>
+                            <div id="customfield_10060-val" class="value type-select">
+                                 Unknown
+
+                            </div>
+                        </div>
+                    </li>
+                
+            
+        
+            
+                
+                
+                    <li id="rowForcustomfield_10082" class="item">
+                        <div class="wrap">
+                            <strong title="Rank" class="name">Rank:</strong>
+                            <div id="customfield_10082-val" class="value type-greenhopper-ranking">
+                                
+<div id="RankField_customfield_10082view">	<span id="RankValue_customfield_10082view">Issue can not be ranked.</span>&nbsp;
+			<span id="RankPage_customfield_10082view" class="gh-rankpage gh-jira-rankpage"></span>
+</div>
+
+                            </div>
+                        </div>
+                    </li>
+                
+            
+        
+    </ul>
+    
+</div>
+
+                            
+                        </div>
+                    </div>
+
+                    
+
+
+
+
+<div id="descriptionmodule" class="module toggle-wrap">
+    <div class="mod-header">
+        <h3 class="toggle-title">Description</h3>
+    </div>
+    <div id="issue-description" class="mod-content">
+        <p>Local user login throws an exception:</p>
+
+<p>java.lang.ClassCastException: com.atlassian.confluence.user.SessionSafePrincipal cannot be cast to com.atlassian.user.User<br/>
+    at com.atlassian.confluence.user.AuthenticatedUserThreadLocal.getUser(AuthenticatedUserThreadLocal.java:25) </p>
+
+<p>Shibboleth user login works OK, local user login worked OK in 4.0.</p>
+    </div>
+</div>
+
+
+
+
+
+                    
+                        
+
+
+
+
+
+
+	<div id="attachmentmodule" class="module toggle-wrap">
+		<div class="mod-header">
+            <ul class="ops">
+            
+                <li class="drop" id="attachment-sorting-options">
+                    <div class="aui-dd-parent">
+                        <a href="#" id="attachment-sort-key-list" class="icon drop-menu aui-dropdown-trigger" title="More Options"><span>More Options</span></a>
+                        <div class="aui-dropdown-content aui-list aui-list-checked">
+                            <ul class="aui-list-section">
+                                <li class="aui-list-item  aui-checked">
+                                    <a id="attachment-sort-key-name" class="aui-list-item-link" rel="nofollow"
+                                       href="/browse/SHBL-53?attachmentSortBy=fileName#attachmentmodule"
+                                       title="Sort By Name">
+                                        Sort By Name
+                                    </a>
+                                </li>
+                                <li class="aui-list-item">
+                                    <a id="attachment-sort-key-date" class="aui-list-item-link" rel="nofollow"
+                                       href="/browse/SHBL-53?attachmentSortBy=dateTime#attachmentmodule"
+                                       title="Sort By Date">
+                                        Sort By Date
+                                    </a>
+                                </li>
+                            </ul>
+                            <ul class="aui-list-section " id="attachment-sort-direction-list">
+                                <li class="aui-list-item aui-checked">
+                                    <a id="attachment-sort-direction-asc" class="aui-list-item-link" rel="nofollow"
+                                       href="/browse/SHBL-53?attachmentOrder=asc#attachmentmodule"
+                                       title="Ascending">
+                                        Ascending
+                                    </a>
+                                </li>
+                                <li class="aui-list-item">
+                                    <a id="attachment-sort-direction-desc" class="aui-list-item-link" rel="nofollow"
+                                       href="/browse/SHBL-53?attachmentOrder=desc#attachmentmodule"
+                                       title="Descending">
+                                        Descending
+                                    </a>
+                                </li>
+                            </ul>
+                            
+                                <ul class="aui-list-section aui-last">
+                                    
+                                        <li class="aui-list-item">
+                                            <a id="aszip" href="/secure/attachmentzip/30436.zip"
+                                               class="aui-list-item-link" title="Download all attachments as a ZIP file">
+                                                Download All
+                                            </a>
+                                        </li>
+                                    
+                                    
+                                </ul>
+                            
+                        </div>
+                    </div>
+                </li>
+            </ul>
+            <h3 class="toggle-title">Attachments</h3>
+        </div>
+        <div class="mod-content">
+        
+            <ol id="file_attachments" class="item-attachments">
+            
+                
+                
+
+                <li class="attachment-content ">
+                    
+                    
+                        <div class="attachment-thumb">
+                            <a href="/secure/attachment/19738/catalina.out.gz">
+                                
+
+    
+        <img src="/images/icons/attach/zip.gif" height="16" width="16"
+             border="0" alt="GZip Archive">        
+        
+    
+
+
+                            </a>
+                        </div>
+                        <dl>
+                            
+                    <dt class="attachment-title">
+                        <a href="/secure/attachment/19738/catalina.out.gz"
+                           title="Latest 04/Jan/12 11:08 PM - Erkki Aalto">catalina.out.gz
+                        </a>
+                    </dt>
+                    <dd class="attachment-date">
+                        04/Jan/12 11:08 PM</dd>
+                    <dd class="attachment-size">
+                        92 kB</dd>
+                    <dd class="attachment-author">
+                        Erkki Aalto
+                    </dd>
+                
+                        </dl>
+                    
+                </li>
+            
+            </ol>
+    
+        
+
+        
+        </div>
+    </div>
+
+    
+
+
+                    
+                
+                
+                    <div class='module toggle-wrap' id='activitymodule'><div id='activitymodule_heading' class='mod-header'><h3 class='toggle-title'>Activity</h3></div><div class='mod-content'>    <div class="tabwrap tabs2">
+                    <div class="sortwrap">
+                                    <a class="icon icon-sort-down" rel="nofollow" href="/browse/SHBL-53?actionOrder=desc#issue-tabs" title="Ascending order - Click to sort in descending order"><span>Ascending order - Click to sort in descending order</span></a>
+                            </div>
+                <ul id="issue-tabs" class="tabs horizontal">
+                                    <li><a id="all-tabpanel" href="/browse/SHBL-53?page=com.atlassian.jira.plugin.system.issuetabpanels:all-tabpanel#issue-tabs"><strong>All</strong></a></li>
+                                                <li id="comment-tabpanel" class="active"><strong>Comments</strong></li>
+                                                <li><a id="worklog-tabpanel" href="/browse/SHBL-53?page=com.atlassian.jira.plugin.system.issuetabpanels:worklog-tabpanel#issue-tabs"><strong>Work Log</strong></a></li>
+                                                <li><a id="changehistory-tabpanel" href="/browse/SHBL-53?page=com.atlassian.jira.plugin.system.issuetabpanels:changehistory-tabpanel#issue-tabs"><strong>History</strong></a></li>
+                                                <li><a id="activity-stream-issue-tab" href="/browse/SHBL-53?page=com.atlassian.streams.streams-jira-plugin:activity-stream-issue-tab#issue-tabs"><strong>Activity</strong></a></li>
+                            </ul>
+    </div>
+    <div class="issuePanelContainer" id="issue_actions_container">
+                        <div id="comment-52708" class="issue-data-block activity-comment twixi-block expanded">
+    <div class="twixi-wrap verbose actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-opened"><span>Hide</span></span></a>
+        <div class="action-links">
+            <a href="/browse/SHBL-53?focusedCommentId=52708&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-52708" title="A permanent link to this comment." class="icon icon-perma"><span>Permalink</span></a>
+                                </div>
+        <div class="action-details">
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="gswduke" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_52708_verbose" href="/secure/ViewProfile.jspa?name=gswduke">Gary S. Weaver</a>
+ added a comment  - <span class='commentdate_52708_verbose subText'><span class='date user-tz' title='14/Dec/11 7:18 AM'><time datetime='2011-12-14T07:18-0800'>14/Dec/11 7:18 AM</time></span></span>  </div>
+        <div class="action-body flooded"><p>Erkki,</p>
+
+<p>Thanks for the update. It looks like they've introduced an API incompatibility. Will see what I can do.</p>
+
+<p>Gary</p> </div>
+    </div>
+    <div class="twixi-wrap concise actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-closed"><span>Show</span></span></a>
+        <div class="action-details flooded">
+            
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="gswduke" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_52708_concise" href="/secure/ViewProfile.jspa?name=gswduke">Gary S. Weaver</a>
+ added a comment  - <span class='commentdate_52708_concise subText'><span class='date user-tz' title='14/Dec/11 7:18 AM'><time datetime='2011-12-14T07:18-0800'>14/Dec/11 7:18 AM</time></span></span>               Erkki,
+
+Thanks for the update. It looks like they've introduced an API incompatibility. Will see what I can do.
+
+Gary         </div>
+    </div>
+</div>
+                     <div id="comment-52721" class="issue-data-block activity-comment twixi-block expanded">
+    <div class="twixi-wrap verbose actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-opened"><span>Hide</span></span></a>
+        <div class="action-links">
+            <a href="/browse/SHBL-53?focusedCommentId=52721&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-52721" title="A permanent link to this comment." class="icon icon-perma"><span>Permalink</span></a>
+                                </div>
+        <div class="action-details">
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="gswduke" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_52721_verbose" href="/secure/ViewProfile.jspa?name=gswduke">Gary S. Weaver</a>
+ added a comment  - <span class='commentdate_52721_verbose subText'><span class='date user-tz' title='14/Dec/11 11:38 AM'><time datetime='2011-12-14T11:38-0800'>14/Dec/11 11:38 AM</time></span></span>  </div>
+        <div class="action-body flooded"><p>Attached remoteUserAuth-2.1.0-SNAPSHOT.jar.</p>
+
+<p>This build does not support updating the last login information in the old table, I believe, which was what Jesse Lahtinen had written. So now, no user audit data (history of user logins) will be stored.</p>
+
+<p>I know that it may not be acceptable for there to be no logging of user logins, but if this build works for you in all other respects, let me know, so that I can release it to others that could use it.</p>
+
+<p>Thank you,<br/>
+Gary</p> </div>
+    </div>
+    <div class="twixi-wrap concise actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-closed"><span>Show</span></span></a>
+        <div class="action-details flooded">
+            
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="gswduke" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_52721_concise" href="/secure/ViewProfile.jspa?name=gswduke">Gary S. Weaver</a>
+ added a comment  - <span class='commentdate_52721_concise subText'><span class='date user-tz' title='14/Dec/11 11:38 AM'><time datetime='2011-12-14T11:38-0800'>14/Dec/11 11:38 AM</time></span></span>               Attached remoteUserAuth-2.1.0-SNAPSHOT.jar.
+
+This build does not support updating the last login information in the old table, I believe, which was what Jesse Lahtinen had written. So now, no user audit data (history of user logins) will be stored.
+
+I know that it may not be acceptable for there to be no logging of user logins, but if this build works for you in all other respects, let me know, so that I can release it to others that could use it.
+
+Thank you,
+Gary         </div>
+    </div>
+</div>
+                     <div id="comment-52722" class="issue-data-block activity-comment twixi-block expanded">
+    <div class="twixi-wrap verbose actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-opened"><span>Hide</span></span></a>
+        <div class="action-links">
+            <a href="/browse/SHBL-53?focusedCommentId=52722&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-52722" title="A permanent link to this comment." class="icon icon-perma"><span>Permalink</span></a>
+                                </div>
+        <div class="action-details">
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="gswduke" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_52722_verbose" href="/secure/ViewProfile.jspa?name=gswduke">Gary S. Weaver</a>
+ added a comment  - <span class='commentdate_52722_verbose subText'><span class='date user-tz' title='14/Dec/11 11:42 AM'><time datetime='2011-12-14T11:42-0800'>14/Dec/11 11:42 AM</time></span></span>  </div>
+        <div class="action-body flooded"><p>Actually I'm going to go ahead and release this fix as 2.1.0 since it might affect others.</p> </div>
+    </div>
+    <div class="twixi-wrap concise actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-closed"><span>Show</span></span></a>
+        <div class="action-details flooded">
+            
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="gswduke" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_52722_concise" href="/secure/ViewProfile.jspa?name=gswduke">Gary S. Weaver</a>
+ added a comment  - <span class='commentdate_52722_concise subText'><span class='date user-tz' title='14/Dec/11 11:42 AM'><time datetime='2011-12-14T11:42-0800'>14/Dec/11 11:42 AM</time></span></span>               Actually I'm going to go ahead and release this fix as 2.1.0 since it might affect others.         </div>
+    </div>
+</div>
+                     <div id="comment-52742" class="issue-data-block activity-comment twixi-block expanded">
+    <div class="twixi-wrap verbose actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-opened"><span>Hide</span></span></a>
+        <div class="action-links">
+            <a href="/browse/SHBL-53?focusedCommentId=52742&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-52742" title="A permanent link to this comment." class="icon icon-perma"><span>Permalink</span></a>
+                                </div>
+        <div class="action-details">
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="aalto" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_52742_verbose" href="/secure/ViewProfile.jspa?name=aalto">Erkki Aalto</a>
+ added a comment  - <span class='commentdate_52742_verbose subText'><span class='date user-tz' title='14/Dec/11 11:11 PM'><time datetime='2011-12-14T23:11-0800'>14/Dec/11 11:11 PM</time></span></span>  </div>
+        <div class="action-body flooded"><p>It still throws the same error.</p> </div>
+    </div>
+    <div class="twixi-wrap concise actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-closed"><span>Show</span></span></a>
+        <div class="action-details flooded">
+            
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="aalto" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_52742_concise" href="/secure/ViewProfile.jspa?name=aalto">Erkki Aalto</a>
+ added a comment  - <span class='commentdate_52742_concise subText'><span class='date user-tz' title='14/Dec/11 11:11 PM'><time datetime='2011-12-14T23:11-0800'>14/Dec/11 11:11 PM</time></span></span>               It still throws the same error.         </div>
+    </div>
+</div>
+                     <div id="comment-52771" class="issue-data-block activity-comment twixi-block expanded">
+    <div class="twixi-wrap verbose actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-opened"><span>Hide</span></span></a>
+        <div class="action-links">
+            <a href="/browse/SHBL-53?focusedCommentId=52771&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-52771" title="A permanent link to this comment." class="icon icon-perma"><span>Permalink</span></a>
+                                </div>
+        <div class="action-details">
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="gswduke" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_52771_verbose" href="/secure/ViewProfile.jspa?name=gswduke">Gary S. Weaver</a>
+ added a comment  - <span class='commentdate_52771_verbose subText'><span class='date user-tz' title='15/Dec/11 6:31 AM'><time datetime='2011-12-15T06:31-0800'>15/Dec/11 6:31 AM</time></span></span>  </div>
+        <div class="action-body flooded"><p>Erkki,</p>
+
+<p>I'll take a look, but next time, please post the stack trace or log. Even though it might be the same error, the info below the error in the log specifies the line number.</p>
+
+<p>Gary</p> </div>
+    </div>
+    <div class="twixi-wrap concise actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-closed"><span>Show</span></span></a>
+        <div class="action-details flooded">
+            
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="gswduke" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_52771_concise" href="/secure/ViewProfile.jspa?name=gswduke">Gary S. Weaver</a>
+ added a comment  - <span class='commentdate_52771_concise subText'><span class='date user-tz' title='15/Dec/11 6:31 AM'><time datetime='2011-12-15T06:31-0800'>15/Dec/11 6:31 AM</time></span></span>               Erkki,
+
+I'll take a look, but next time, please post the stack trace or log. Even though it might be the same error, the info below the error in the log specifies the line number.
+
+Gary         </div>
+    </div>
+</div>
+                     <div id="comment-52791" class="issue-data-block activity-comment twixi-block expanded">
+    <div class="twixi-wrap verbose actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-opened"><span>Hide</span></span></a>
+        <div class="action-links">
+            <a href="/browse/SHBL-53?focusedCommentId=52791&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-52791" title="A permanent link to this comment." class="icon icon-perma"><span>Permalink</span></a>
+                                </div>
+        <div class="action-details">
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="aalto" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_52791_verbose" href="/secure/ViewProfile.jspa?name=aalto">Erkki Aalto</a>
+ added a comment  - <span class='commentdate_52791_verbose subText'><span class='date user-tz' title='15/Dec/11 10:14 PM'><time datetime='2011-12-15T22:14-0800'>15/Dec/11 10:14 PM</time></span></span>  </div>
+        <div class="action-body flooded"><p>java.lang.ClassCastException: com.atlassian.confluence.user.SessionSafePrincipal cannot be cast to com.atlassian.user.User<br/>
+	at com.atlassian.confluence.user.AuthenticatedUserThreadLocal.getUser(AuthenticatedUserThreadLocal.java:25)<br/>
+	at com.atlassian.confluence.util.UserThreadLocalFilter.doFilter(UserThreadLocalFilter.java:36)<br/>
+	at com.atlassian.core.filters.AbstractHttpFilter.doFilter(AbstractHttpFilter.java:31)<br/>
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:235)<br/>
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206)<br/>
+	at com.atlassian.seraph.filter.SecurityFilter.doFilter(SecurityFilter.java:211)<br/>
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:235)<br/>
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206)<br/>
+	at com.atlassian.security.auth.trustedapps.filter.TrustedApplicationsFilter.doFilter(TrustedApplicationsFilter.java:98)<br/>
+	at com.atlassian.confluence.util.AbstractBootstrapHotSwappingFilter.doFilter(AbstractBootstrapHotSwappingFilter.java:30)<br/>
+	at com.atlassian.core.filters.AbstractHttpFilter.doFilter(AbstractHttpFilter.java:31)<br/>
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:235)<br/>
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206)<br/>
+	at com.atlassian.seraph.filter.BaseLoginFilter.doFilter(BaseLoginFilter.java:150)<br/>
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:235)<br/>
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206)<br/>
+	at com.atlassian.plugin.servlet.filter.IteratingFilterChain.doFilter(IteratingFilterChain.java:46)<br/>
+	at com.atlassian.plugin.servlet.filter.DelegatingPluginFilter$1.doFilter(DelegatingPluginFilter.java:66)<br/>
+	at com.atlassian.oauth.serviceprovider.internal.servlet.OAuthFilter.doFilter(OAuthFilter.java:71)<br/>
+	at com.atlassian.plugin.servlet.filter.DelegatingPluginFilter.doFilter(DelegatingPluginFilter.java:74)<br/>
+	at com.atlassian.plugin.servlet.filter.IteratingFilterChain.doFilter(IteratingFilterChain.java:42)<br/>
+	at com.atlassian.plugin.servlet.filter.ServletFilterModuleContainerFilter.doFilter(ServletFilterModuleContainerFilter.java:77)<br/>
+	at com.atlassian.plugin.servlet.filter.ServletFilterModuleContainerFilter.doFilter(ServletFilterModuleContainerFilter.java:63)<br/>
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:235)<br/>
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206)<br/>
+	at com.atlassian.confluence.util.ClusterHeaderFilter.doFilter(ClusterHeaderFilter.java:37)<br/>
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:235)<br/>
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206)<br/>
+	at com.atlassian.johnson.filters.AbstractJohnsonFilter.doFilter(AbstractJohnsonFilter.java:72)<br/>
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:235)<br/>
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206)<br/>
+	at org.springframework.orm.hibernate.support.OpenSessionInViewFilter.doFilterInternal(OpenSessionInViewFilter.java:170)<br/>
+	at com.atlassian.spring.filter.FlushingSpringSessionInViewFilter.doFilterInternal(FlushingSpringSessionInViewFilter.java:29)<br/>
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:76)<br/>
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:235)<br/>
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206)<br/>
+	at com.atlassian.confluence.util.ConfluenceErrorFilter.doFilter(ConfluenceErrorFilter.java:22)<br/>
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:235)<br/>
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206)<br/>
+	at com.atlassian.util.profiling.filters.ProfilingFilter.doFilter(ProfilingFilter.java:99)<br/>
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:235)<br/>
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206)<br/>
+	at com.atlassian.confluence.core.datetime.RequestTimeThreadLocalFilter.doFilter(RequestTimeThreadLocalFilter.java:35)<br/>
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:235)<br/>
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206)<br/>
+	at com.atlassian.gzipfilter.GzipFilter.doFilterInternal(GzipFilter.java:80)<br/>
+	at com.atlassian.gzipfilter.GzipFilter.doFilter(GzipFilter.java:51)<br/>
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:235)<br/>
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206)<br/>
+	at com.atlassian.core.filters.cache.AbstractCachingFilter.doFilter(AbstractCachingFilter.java:33)<br/>
+	at com.atlassian.core.filters.AbstractHttpFilter.doFilter(AbstractHttpFilter.java:31)<br/>
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:235)<br/>
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206)<br/>
+	at com.atlassian.plugin.servlet.filter.IteratingFilterChain.doFilter(IteratingFilterChain.java:46)<br/>
+	at com.atlassian.plugin.servlet.filter.DelegatingPluginFilter$1.doFilter(DelegatingPluginFilter.java:66)<br/>
+	at com.atlassian.confluence.extra.webdav.servlet.filter.ReverseProxyFilter.doFilter(ReverseProxyFilter.java:427)<br/>
+	at com.atlassian.confluence.extra.webdav.servlet.filter.AbstractHttpFilter.doFilter(AbstractHttpFilter.java:34)<br/>
+	at com.atlassian.plugin.servlet.filter.DelegatingPluginFilter.doFilter(DelegatingPluginFilter.java:74)<br/>
+	at com.atlassian.plugin.servlet.filter.IteratingFilterChain.doFilter(IteratingFilterChain.java:42)<br/>
+	at com.atlassian.plugin.servlet.filter.ServletFilterModuleContainerFilter.doFilter(ServletFilterModuleContainerFilter.java:77)<br/>
+	at com.atlassian.plugin.servlet.filter.ServletFilterModuleContainerFilter.doFilter(ServletFilterModuleContainerFilter.java:63)<br/>
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:235)<br/>
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206)<br/>
+	at com.atlassian.confluence.web.filter.validateparam.RequestParamValidationFilter.doFilter(RequestParamValidationFilter.java:58)<br/>
+	at com.atlassian.core.filters.AbstractHttpFilter.doFilter(AbstractHttpFilter.java:31)<br/>
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:235)<br/>
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206)<br/>
+	at com.atlassian.confluence.web.filter.TranslationModeFilter.doFilter(TranslationModeFilter.java:43)<br/>
+	at com.atlassian.core.filters.AbstractHttpFilter.doFilter(AbstractHttpFilter.java:31)<br/>
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:235)<br/>
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206)<br/>
+	at com.atlassian.confluence.plugin.servlet.filter.ActionContextCleanUp.doFilter(ActionContextCleanUp.java:71)<br/>
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:235)<br/>
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206)<br/>
+	at com.atlassian.confluence.web.filter.LanguageExtractionFilter.doFilter(LanguageExtractionFilter.java:54)<br/>
+	at com.atlassian.core.filters.AbstractHttpFilter.doFilter(AbstractHttpFilter.java:31)<br/>
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:235)<br/>
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206)<br/>
+	at com.atlassian.confluence.util.RequestCacheThreadLocalFilter.doFilter(RequestCacheThreadLocalFilter.java:25)<br/>
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:235)<br/>
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206)<br/>
+	at com.atlassian.core.filters.encoding.AbstractEncodingFilter.doFilter(AbstractEncodingFilter.java:41)<br/>
+	at com.atlassian.core.filters.AbstractHttpFilter.doFilter(AbstractHttpFilter.java:31)<br/>
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:235)<br/>
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206)<br/>
+	at com.atlassian.core.filters.HeaderSanitisingFilter.doFilter(HeaderSanitisingFilter.java:44)<br/>
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:235)<br/>
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206)<br/>
+	at com.atlassian.confluence.servlet.FourOhFourErrorLoggingFilter.doFilter(FourOhFourErrorLoggingFilter.java:65)<br/>
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:235)<br/>
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206)<br/>
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:233)<br/>
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:191)<br/>
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:127)<br/>
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:102)<br/>
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:109)<br/>
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:298)<br/>
+	at org.apache.jk.server.JkCoyoteHandler.invoke(JkCoyoteHandler.java:190)<br/>
+	at org.apache.jk.common.HandlerRequest.invoke(HandlerRequest.java:291)<br/>
+	at org.apache.jk.common.ChannelSocket.invoke(ChannelSocket.java:776)<br/>
+	at org.apache.jk.common.ChannelSocket.processConnection(ChannelSocket.java:705)<br/>
+	at org.apache.jk.common.ChannelSocket$SocketConnection.runIt(ChannelSocket.java:898)<br/>
+	at org.apache.tomcat.util.threads.ThreadPool$ControlRunnable.run(ThreadPool.java:690)<br/>
+	at java.lang.Thread.run(Thread.java:722)</p> </div>
+    </div>
+    <div class="twixi-wrap concise actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-closed"><span>Show</span></span></a>
+        <div class="action-details flooded">
+            
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="aalto" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_52791_concise" href="/secure/ViewProfile.jspa?name=aalto">Erkki Aalto</a>
+ added a comment  - <span class='commentdate_52791_concise subText'><span class='date user-tz' title='15/Dec/11 10:14 PM'><time datetime='2011-12-15T22:14-0800'>15/Dec/11 10:14 PM</time></span></span>               java.lang.ClassCastException: com.atlassian.confluence.user.SessionSafePrincipal cannot be cast to com.atlassian.user.User
+	at com.atlassian.confluence.user.AuthenticatedUserThreadLocal.getUser(AuthenticatedUserThreadLocal.java:25)
+	at com.atlassian.confluence.util.UserThreadLocalFilter.doFilter(UserThreadLocalFilter.java:36)
+	at com.atlassian.core.filters.AbstractHttpFilter.doFilter(AbstractHttpFilter.java:31)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:235)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206)
+	at com.atlassian.seraph.filter.SecurityFilter.doFilter(SecurityFilter.java:211)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:235)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206)
+	at com.atlassian.security.auth.trustedapps.filter.TrustedApplicationsFilter.doFilter(TrustedApplicationsFilter.java:98)
+	at com.atlassian.confluence.util.AbstractBootstrapHotSwappingFilter.doFilter(AbstractBootstrapHotSwappingFilter.java:30)
+	at com.atlassian.core.filters.AbstractHttpFilter.doFilter(AbstractHttpFilter.java:31)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:235)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206)
+	at com.atlassian.seraph.filter.BaseLoginFilter.doFilter(BaseLoginFilter.java:150)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:235)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206)
+	at com.atlassian.plugin.servlet.filter.IteratingFilterChain.doFilter(IteratingFilterChain.java:46)
+	at com.atlassian.plugin.servlet.filter.DelegatingPluginFilter$1.doFilter(DelegatingPluginFilter.java:66)
+	at com.atlassian.oauth.serviceprovider.internal.servlet.OAuthFilter.doFilter(OAuthFilter.java:71)
+	at com.atlassian.plugin.servlet.filter.DelegatingPluginFilter.doFilter(DelegatingPluginFilter.java:74)
+	at com.atlassian.plugin.servlet.filter.IteratingFilterChain.doFilter(IteratingFilterChain.java:42)
+	at com.atlassian.plugin.servlet.filter.ServletFilterModuleContainerFilter.doFilter(ServletFilterModuleContainerFilter.java:77)
+	at com.atlassian.plugin.servlet.filter.ServletFilterModuleContainerFilter.doFilter(ServletFilterModuleContainerFilter.java:63)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:235)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206)
+	at com.atlassian.confluence.util.ClusterHeaderFilter.doFilter(ClusterHeaderFilter.java:37)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:235)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206)
+	at com.atlassian.johnson.filters.AbstractJohnsonFilter.doFilter(AbstractJohnsonFilter.java:72)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:235)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206)
+	at org.springframework.orm.hibernate.support.OpenSessionInViewFilter.doFilterInternal(OpenSessionInViewFilter.java:170)
+	at com.atlassian.spring.filter.FlushingSpringSessionInViewFilter.doFilterInternal(FlushingSpringSessionInViewFilter.java:29)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:76)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:235)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206)
+	at com.atlassian.confluence.util.ConfluenceErrorFilter.doFilter(ConfluenceErrorFilter.java:22)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:235)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206)
+	at com.atlassian.util.profiling.filters.ProfilingFilter.doFilter(ProfilingFilter.java:99)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:235)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206)
+	at com.atlassian.confluence.core.datetime.RequestTimeThreadLocalFilter.doFilter(RequestTimeThreadLocalFilter.java:35)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:235)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206)
+	at com.atlassian.gzipfilter.GzipFilter.doFilterInternal(GzipFilter.java:80)
+	at com.atlassian.gzipfilter.GzipFilter.doFilter(GzipFilter.java:51)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:235)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206)
+	at com.atlassian.core.filters.cache.AbstractCachingFilter.doFilter(AbstractCachingFilter.java:33)
+	at com.atlassian.core.filters.AbstractHttpFilter.doFilter(AbstractHttpFilter.java:31)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:235)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206)
+	at com.atlassian.plugin.servlet.filter.IteratingFilterChain.doFilter(IteratingFilterChain.java:46)
+	at com.atlassian.plugin.servlet.filter.DelegatingPluginFilter$1.doFilter(DelegatingPluginFilter.java:66)
+	at com.atlassian.confluence.extra.webdav.servlet.filter.ReverseProxyFilter.doFilter(ReverseProxyFilter.java:427)
+	at com.atlassian.confluence.extra.webdav.servlet.filter.AbstractHttpFilter.doFilter(AbstractHttpFilter.java:34)
+	at com.atlassian.plugin.servlet.filter.DelegatingPluginFilter.doFilter(DelegatingPluginFilter.java:74)
+	at com.atlassian.plugin.servlet.filter.IteratingFilterChain.doFilter(IteratingFilterChain.java:42)
+	at com.atlassian.plugin.servlet.filter.ServletFilterModuleContainerFilter.doFilter(ServletFilterModuleContainerFilter.java:77)
+	at com.atlassian.plugin.servlet.filter.ServletFilterModuleContainerFilter.doFilter(ServletFilterModuleContainerFilter.java:63)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:235)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206)
+	at com.atlassian.confluence.web.filter.validateparam.RequestParamValidationFilter.doFilter(RequestParamValidationFilter.java:58)
+	at com.atlassian.core.filters.AbstractHttpFilter.doFilter(AbstractHttpFilter.java:31)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:235)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206)
+	at com.atlassian.confluence.web.filter.TranslationModeFilter.doFilter(TranslationModeFilter.java:43)
+	at com.atlassian.core.filters.AbstractHttpFilter.doFilter(AbstractHttpFilter.java:31)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:235)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206)
+	at com.atlassian.confluence.plugin.servlet.filter.ActionContextCleanUp.doFilter(ActionContextCleanUp.java:71)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:235)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206)
+	at com.atlassian.confluence.web.filter.LanguageExtractionFilter.doFilter(LanguageExtractionFilter.java:54)
+	at com.atlassian.core.filters.AbstractHttpFilter.doFilter(AbstractHttpFilter.java:31)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:235)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206)
+	at com.atlassian.confluence.util.RequestCacheThreadLocalFilter.doFilter(RequestCacheThreadLocalFilter.java:25)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:235)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206)
+	at com.atlassian.core.filters.encoding.AbstractEncodingFilter.doFilter(AbstractEncodingFilter.java:41)
+	at com.atlassian.core.filters.AbstractHttpFilter.doFilter(AbstractHttpFilter.java:31)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:235)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206)
+	at com.atlassian.core.filters.HeaderSanitisingFilter.doFilter(HeaderSanitisingFilter.java:44)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:235)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206)
+	at com.atlassian.confluence.servlet.FourOhFourErrorLoggingFilter.doFilter(FourOhFourErrorLoggingFilter.java:65)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:235)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:233)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:191)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:127)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:102)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:109)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:298)
+	at org.apache.jk.server.JkCoyoteHandler.invoke(JkCoyoteHandler.java:190)
+	at org.apache.jk.common.HandlerRequest.invoke(HandlerRequest.java:291)
+	at org.apache.jk.common.ChannelSocket.invoke(ChannelSocket.java:776)
+	at org.apache.jk.common.ChannelSocket.processConnection(ChannelSocket.java:705)
+	at org.apache.jk.common.ChannelSocket$SocketConnection.runIt(ChannelSocket.java:898)
+	at org.apache.tomcat.util.threads.ThreadPool$ControlRunnable.run(ThreadPool.java:690)
+	at java.lang.Thread.run(Thread.java:722)         </div>
+    </div>
+</div>
+                     <div id="comment-52831" class="issue-data-block activity-comment twixi-block expanded">
+    <div class="twixi-wrap verbose actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-opened"><span>Hide</span></span></a>
+        <div class="action-links">
+            <a href="/browse/SHBL-53?focusedCommentId=52831&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-52831" title="A permanent link to this comment." class="icon icon-perma"><span>Permalink</span></a>
+                                </div>
+        <div class="action-details">
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="gswduke" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_52831_verbose" href="/secure/ViewProfile.jspa?name=gswduke">Gary S. Weaver</a>
+ added a comment  - <span class='commentdate_52831_verbose subText'><span class='date user-tz' title='16/Dec/11 11:17 AM'><time datetime='2011-12-16T11:17-0800'>16/Dec/11 11:17 AM</time></span></span>  </div>
+        <div class="action-body flooded"><p>attaching attempted fix to ticket: remoteUserAuth-2.1.1-SNAPSHOT.jar</p>
+
+<p>Please try it out and provide feedback. This also contains a fix for the other problem (DB login table not being logged to).</p> </div>
+    </div>
+    <div class="twixi-wrap concise actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-closed"><span>Show</span></span></a>
+        <div class="action-details flooded">
+            
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="gswduke" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_52831_concise" href="/secure/ViewProfile.jspa?name=gswduke">Gary S. Weaver</a>
+ added a comment  - <span class='commentdate_52831_concise subText'><span class='date user-tz' title='16/Dec/11 11:17 AM'><time datetime='2011-12-16T11:17-0800'>16/Dec/11 11:17 AM</time></span></span>               attaching attempted fix to ticket: remoteUserAuth-2.1.1-SNAPSHOT.jar
+
+Please try it out and provide feedback. This also contains a fix for the other problem (DB login table not being logged to).         </div>
+    </div>
+</div>
+                     <div id="comment-52832" class="issue-data-block activity-comment twixi-block expanded">
+    <div class="twixi-wrap verbose actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-opened"><span>Hide</span></span></a>
+        <div class="action-links">
+            <a href="/browse/SHBL-53?focusedCommentId=52832&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-52832" title="A permanent link to this comment." class="icon icon-perma"><span>Permalink</span></a>
+                                </div>
+        <div class="action-details">
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="gswduke" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_52832_verbose" href="/secure/ViewProfile.jspa?name=gswduke">Gary S. Weaver</a>
+ added a comment  - <span class='commentdate_52832_verbose subText'><span class='date user-tz' title='16/Dec/11 11:33 AM'><time datetime='2011-12-16T11:33-0800'>16/Dec/11 11:33 AM</time></span></span>  </div>
+        <div class="action-body flooded"><p>Released 2.1.1, since 2.1.0 had critical bug. Hope it works. :|</p> </div>
+    </div>
+    <div class="twixi-wrap concise actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-closed"><span>Show</span></span></a>
+        <div class="action-details flooded">
+            
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="gswduke" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_52832_concise" href="/secure/ViewProfile.jspa?name=gswduke">Gary S. Weaver</a>
+ added a comment  - <span class='commentdate_52832_concise subText'><span class='date user-tz' title='16/Dec/11 11:33 AM'><time datetime='2011-12-16T11:33-0800'>16/Dec/11 11:33 AM</time></span></span>               Released 2.1.1, since 2.1.0 had critical bug. Hope it works. :|         </div>
+    </div>
+</div>
+                     <div id="comment-52861" class="issue-data-block activity-comment twixi-block expanded">
+    <div class="twixi-wrap verbose actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-opened"><span>Hide</span></span></a>
+        <div class="action-links">
+            <a href="/browse/SHBL-53?focusedCommentId=52861&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-52861" title="A permanent link to this comment." class="icon icon-perma"><span>Permalink</span></a>
+                                </div>
+        <div class="action-details">
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="aalto" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_52861_verbose" href="/secure/ViewProfile.jspa?name=aalto">Erkki Aalto</a>
+ added a comment  - <span class='commentdate_52861_verbose subText'><span class='date user-tz' title='18/Dec/11 10:27 PM'><time datetime='2011-12-18T22:27-0800'>18/Dec/11 10:27 PM</time></span></span>  </div>
+        <div class="action-body flooded"><p>Still the same error message:</p>
+
+<p>ava.lang.ClassCastException: com.atlassian.confluence.user.SessionSafePrincipal cannot be cast to com.atlassian.user.User<br/>
+    at com.atlassian.confluence.user.AuthenticatedUserThreadLocal.getUser(AuthenticatedUserThreadLocal.java:25)<br/>
+Stack Trace:<a href="https://studio.plugins.atlassian.com/wiki/display/SHBL/hide">hide</a></p>
+
+<p>java.lang.ClassCastException: com.atlassian.confluence.user.SessionSafePrincipal cannot be cast to com.atlassian.user.User<br/>
+	at com.atlassian.confluence.user.AuthenticatedUserThreadLocal.getUser(AuthenticatedUserThreadLocal.java:25)<br/>
+	at com.atlassian.confluence.util.UserThreadLocalFilter.doFilter(UserThreadLocalFilter.java:36)<br/>
+	at com.atlassian.core.filters.AbstractHttpFilter.doFilter(AbstractHttpFilter.java:31)<br/>
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:235)<br/>
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206)<br/>
+	at com.atlassian.seraph.filter.SecurityFilter.doFilter(SecurityFilter.java:211)<br/>
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:235)<br/>
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206)<br/>
+	at com.atlassian.security.auth.trustedapps.filter.TrustedApplicationsFilter.doFilter(TrustedApplicationsFilter.java:98)<br/>
+	at com.atlassian.confluence.util.AbstractBootstrapHotSwappingFilter.doFilter(AbstractBootstrapHotSwappingFilter.java:30)<br/>
+	at com.atlassian.core.filters.AbstractHttpFilter.doFilter(AbstractHttpFilter.java:31)<br/>
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:235)<br/>
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206)<br/>
+	at com.atlassian.seraph.filter.BaseLoginFilter.doFilter(BaseLoginFilter.java:150)<br/>
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:235)<br/>
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206)<br/>
+	at com.atlassian.plugin.servlet.filter.IteratingFilterChain.doFilter(IteratingFilterChain.java:46)<br/>
+	at com.atlassian.plugin.servlet.filter.DelegatingPluginFilter$1.doFilter(DelegatingPluginFilter.java:66)<br/>
+	at com.atlassian.oauth.serviceprovider.internal.servlet.OAuthFilter.doFilter(OAuthFilter.java:71)<br/>
+	at com.atlassian.plugin.servlet.filter.DelegatingPluginFilter.doFilter(DelegatingPluginFilter.java:74)<br/>
+	at com.atlassian.plugin.servlet.filter.IteratingFilterChain.doFilter(IteratingFilterChain.java:42)<br/>
+	at com.atlassian.plugin.servlet.filter.ServletFilterModuleContainerFilter.doFilter(ServletFilterModuleContainerFilter.java:77)<br/>
+	at com.atlassian.plugin.servlet.filter.ServletFilterModuleContainerFilter.doFilter(ServletFilterModuleContainerFilter.java:63)<br/>
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:235)<br/>
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206)<br/>
+	at com.atlassian.confluence.util.ClusterHeaderFilter.doFilter(ClusterHeaderFilter.java:37)<br/>
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:235)<br/>
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206)<br/>
+	at com.atlassian.johnson.filters.AbstractJohnsonFilter.doFilter(AbstractJohnsonFilter.java:72)<br/>
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:235)<br/>
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206)<br/>
+	at org.springframework.orm.hibernate.support.OpenSessionInViewFilter.doFilterInternal(OpenSessionInViewFilter.java:170)<br/>
+	at com.atlassian.spring.filter.FlushingSpringSessionInViewFilter.doFilterInternal(FlushingSpringSessionInViewFilter.java:29)<br/>
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:76)<br/>
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:235)<br/>
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206)<br/>
+	at com.atlassian.confluence.util.ConfluenceErrorFilter.doFilter(ConfluenceErrorFilter.java:22)<br/>
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:235)<br/>
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206)<br/>
+	at com.atlassian.util.profiling.filters.ProfilingFilter.doFilter(ProfilingFilter.java:99)<br/>
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:235)<br/>
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206)<br/>
+	at com.atlassian.confluence.core.datetime.RequestTimeThreadLocalFilter.doFilter(RequestTimeThreadLocalFilter.java:35)<br/>
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:235)<br/>
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206)<br/>
+	at com.atlassian.gzipfilter.GzipFilter.doFilterInternal(GzipFilter.java:80)<br/>
+	at com.atlassian.gzipfilter.GzipFilter.doFilter(GzipFilter.java:51)<br/>
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:235)<br/>
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206)<br/>
+	at com.atlassian.core.filters.cache.AbstractCachingFilter.doFilter(AbstractCachingFilter.java:33)<br/>
+	at com.atlassian.core.filters.AbstractHttpFilter.doFilter(AbstractHttpFilter.java:31)<br/>
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:235)<br/>
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206)<br/>
+	at com.atlassian.plugin.servlet.filter.IteratingFilterChain.doFilter(IteratingFilterChain.java:46)<br/>
+	at com.atlassian.plugin.servlet.filter.DelegatingPluginFilter$1.doFilter(DelegatingPluginFilter.java:66)<br/>
+	at com.atlassian.confluence.extra.webdav.servlet.filter.ReverseProxyFilter.doFilter(ReverseProxyFilter.java:427)<br/>
+	at com.atlassian.confluence.extra.webdav.servlet.filter.AbstractHttpFilter.doFilter(AbstractHttpFilter.java:34)<br/>
+	at com.atlassian.plugin.servlet.filter.DelegatingPluginFilter.doFilter(DelegatingPluginFilter.java:74)<br/>
+	at com.atlassian.plugin.servlet.filter.IteratingFilterChain.doFilter(IteratingFilterChain.java:42)<br/>
+	at com.atlassian.plugin.servlet.filter.ServletFilterModuleContainerFilter.doFilter(ServletFilterModuleContainerFilter.java:77)<br/>
+	at com.atlassian.plugin.servlet.filter.ServletFilterModuleContainerFilter.doFilter(ServletFilterModuleContainerFilter.java:63)<br/>
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:235)<br/>
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206)<br/>
+	at com.atlassian.confluence.web.filter.validateparam.RequestParamValidationFilter.doFilter(RequestParamValidationFilter.java:58)<br/>
+	at com.atlassian.core.filters.AbstractHttpFilter.doFilter(AbstractHttpFilter.java:31)<br/>
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:235)<br/>
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206)<br/>
+	at com.atlassian.confluence.web.filter.TranslationModeFilter.doFilter(TranslationModeFilter.java:43)<br/>
+	at com.atlassian.core.filters.AbstractHttpFilter.doFilter(AbstractHttpFilter.java:31)<br/>
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:235)<br/>
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206)<br/>
+	at com.atlassian.confluence.plugin.servlet.filter.ActionContextCleanUp.doFilter(ActionContextCleanUp.java:71)<br/>
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:235)<br/>
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206)<br/>
+	at com.atlassian.confluence.web.filter.LanguageExtractionFilter.doFilter(LanguageExtractionFilter.java:54)<br/>
+	at com.atlassian.core.filters.AbstractHttpFilter.doFilter(AbstractHttpFilter.java:31)<br/>
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:235)<br/>
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206)<br/>
+	at com.atlassian.confluence.util.RequestCacheThreadLocalFilter.doFilter(RequestCacheThreadLocalFilter.java:25)<br/>
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:235)<br/>
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206)<br/>
+	at com.atlassian.core.filters.encoding.AbstractEncodingFilter.doFilter(AbstractEncodingFilter.java:41)<br/>
+	at com.atlassian.core.filters.AbstractHttpFilter.doFilter(AbstractHttpFilter.java:31)<br/>
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:235)<br/>
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206)<br/>
+	at com.atlassian.core.filters.HeaderSanitisingFilter.doFilter(HeaderSanitisingFilter.java:44)<br/>
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:235)<br/>
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206)<br/>
+	at com.atlassian.confluence.servlet.FourOhFourErrorLoggingFilter.doFilter(FourOhFourErrorLoggingFilter.java:65)<br/>
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:235)<br/>
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206)<br/>
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:233)<br/>
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:191)<br/>
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:127)<br/>
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:102)<br/>
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:109)<br/>
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:298)<br/>
+	at org.apache.jk.server.JkCoyoteHandler.invoke(JkCoyoteHandler.java:190)<br/>
+	at org.apache.jk.common.HandlerRequest.invoke(HandlerRequest.java:291)<br/>
+	at org.apache.jk.common.ChannelSocket.invoke(ChannelSocket.java:776)<br/>
+	at org.apache.jk.common.ChannelSocket.processConnection(ChannelSocket.java:705)<br/>
+	at org.apache.jk.common.ChannelSocket$SocketConnection.runIt(ChannelSocket.java:898)<br/>
+	at org.apache.tomcat.util.threads.ThreadPool$ControlRunnable.run(ThreadPool.java:690)<br/>
+	at java.lang.Thread.run(Thread.java:722)</p>
+
+<p> Neither is logininfo updated for shibboleth users.       </p> </div>
+    </div>
+    <div class="twixi-wrap concise actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-closed"><span>Show</span></span></a>
+        <div class="action-details flooded">
+            
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="aalto" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_52861_concise" href="/secure/ViewProfile.jspa?name=aalto">Erkki Aalto</a>
+ added a comment  - <span class='commentdate_52861_concise subText'><span class='date user-tz' title='18/Dec/11 10:27 PM'><time datetime='2011-12-18T22:27-0800'>18/Dec/11 10:27 PM</time></span></span>               Still the same error message:
+
+ava.lang.ClassCastException: com.atlassian.confluence.user.SessionSafePrincipal cannot be cast to com.atlassian.user.User
+    at com.atlassian.confluence.user.AuthenticatedUserThreadLocal.getUser(AuthenticatedUserThreadLocal.java:25)
+Stack Trace:<a href="https://studio.plugins.atlassian.com/wiki/display/SHBL/hide">hide</a>
+
+java.lang.ClassCastException: com.atlassian.confluence.user.SessionSafePrincipal cannot be cast to com.atlassian.user.User
+	at com.atlassian.confluence.user.AuthenticatedUserThreadLocal.getUser(AuthenticatedUserThreadLocal.java:25)
+	at com.atlassian.confluence.util.UserThreadLocalFilter.doFilter(UserThreadLocalFilter.java:36)
+	at com.atlassian.core.filters.AbstractHttpFilter.doFilter(AbstractHttpFilter.java:31)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:235)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206)
+	at com.atlassian.seraph.filter.SecurityFilter.doFilter(SecurityFilter.java:211)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:235)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206)
+	at com.atlassian.security.auth.trustedapps.filter.TrustedApplicationsFilter.doFilter(TrustedApplicationsFilter.java:98)
+	at com.atlassian.confluence.util.AbstractBootstrapHotSwappingFilter.doFilter(AbstractBootstrapHotSwappingFilter.java:30)
+	at com.atlassian.core.filters.AbstractHttpFilter.doFilter(AbstractHttpFilter.java:31)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:235)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206)
+	at com.atlassian.seraph.filter.BaseLoginFilter.doFilter(BaseLoginFilter.java:150)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:235)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206)
+	at com.atlassian.plugin.servlet.filter.IteratingFilterChain.doFilter(IteratingFilterChain.java:46)
+	at com.atlassian.plugin.servlet.filter.DelegatingPluginFilter$1.doFilter(DelegatingPluginFilter.java:66)
+	at com.atlassian.oauth.serviceprovider.internal.servlet.OAuthFilter.doFilter(OAuthFilter.java:71)
+	at com.atlassian.plugin.servlet.filter.DelegatingPluginFilter.doFilter(DelegatingPluginFilter.java:74)
+	at com.atlassian.plugin.servlet.filter.IteratingFilterChain.doFilter(IteratingFilterChain.java:42)
+	at com.atlassian.plugin.servlet.filter.ServletFilterModuleContainerFilter.doFilter(ServletFilterModuleContainerFilter.java:77)
+	at com.atlassian.plugin.servlet.filter.ServletFilterModuleContainerFilter.doFilter(ServletFilterModuleContainerFilter.java:63)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:235)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206)
+	at com.atlassian.confluence.util.ClusterHeaderFilter.doFilter(ClusterHeaderFilter.java:37)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:235)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206)
+	at com.atlassian.johnson.filters.AbstractJohnsonFilter.doFilter(AbstractJohnsonFilter.java:72)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:235)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206)
+	at org.springframework.orm.hibernate.support.OpenSessionInViewFilter.doFilterInternal(OpenSessionInViewFilter.java:170)
+	at com.atlassian.spring.filter.FlushingSpringSessionInViewFilter.doFilterInternal(FlushingSpringSessionInViewFilter.java:29)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:76)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:235)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206)
+	at com.atlassian.confluence.util.ConfluenceErrorFilter.doFilter(ConfluenceErrorFilter.java:22)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:235)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206)
+	at com.atlassian.util.profiling.filters.ProfilingFilter.doFilter(ProfilingFilter.java:99)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:235)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206)
+	at com.atlassian.confluence.core.datetime.RequestTimeThreadLocalFilter.doFilter(RequestTimeThreadLocalFilter.java:35)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:235)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206)
+	at com.atlassian.gzipfilter.GzipFilter.doFilterInternal(GzipFilter.java:80)
+	at com.atlassian.gzipfilter.GzipFilter.doFilter(GzipFilter.java:51)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:235)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206)
+	at com.atlassian.core.filters.cache.AbstractCachingFilter.doFilter(AbstractCachingFilter.java:33)
+	at com.atlassian.core.filters.AbstractHttpFilter.doFilter(AbstractHttpFilter.java:31)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:235)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206)
+	at com.atlassian.plugin.servlet.filter.IteratingFilterChain.doFilter(IteratingFilterChain.java:46)
+	at com.atlassian.plugin.servlet.filter.DelegatingPluginFilter$1.doFilter(DelegatingPluginFilter.java:66)
+	at com.atlassian.confluence.extra.webdav.servlet.filter.ReverseProxyFilter.doFilter(ReverseProxyFilter.java:427)
+	at com.atlassian.confluence.extra.webdav.servlet.filter.AbstractHttpFilter.doFilter(AbstractHttpFilter.java:34)
+	at com.atlassian.plugin.servlet.filter.DelegatingPluginFilter.doFilter(DelegatingPluginFilter.java:74)
+	at com.atlassian.plugin.servlet.filter.IteratingFilterChain.doFilter(IteratingFilterChain.java:42)
+	at com.atlassian.plugin.servlet.filter.ServletFilterModuleContainerFilter.doFilter(ServletFilterModuleContainerFilter.java:77)
+	at com.atlassian.plugin.servlet.filter.ServletFilterModuleContainerFilter.doFilter(ServletFilterModuleContainerFilter.java:63)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:235)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206)
+	at com.atlassian.confluence.web.filter.validateparam.RequestParamValidationFilter.doFilter(RequestParamValidationFilter.java:58)
+	at com.atlassian.core.filters.AbstractHttpFilter.doFilter(AbstractHttpFilter.java:31)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:235)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206)
+	at com.atlassian.confluence.web.filter.TranslationModeFilter.doFilter(TranslationModeFilter.java:43)
+	at com.atlassian.core.filters.AbstractHttpFilter.doFilter(AbstractHttpFilter.java:31)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:235)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206)
+	at com.atlassian.confluence.plugin.servlet.filter.ActionContextCleanUp.doFilter(ActionContextCleanUp.java:71)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:235)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206)
+	at com.atlassian.confluence.web.filter.LanguageExtractionFilter.doFilter(LanguageExtractionFilter.java:54)
+	at com.atlassian.core.filters.AbstractHttpFilter.doFilter(AbstractHttpFilter.java:31)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:235)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206)
+	at com.atlassian.confluence.util.RequestCacheThreadLocalFilter.doFilter(RequestCacheThreadLocalFilter.java:25)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:235)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206)
+	at com.atlassian.core.filters.encoding.AbstractEncodingFilter.doFilter(AbstractEncodingFilter.java:41)
+	at com.atlassian.core.filters.AbstractHttpFilter.doFilter(AbstractHttpFilter.java:31)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:235)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206)
+	at com.atlassian.core.filters.HeaderSanitisingFilter.doFilter(HeaderSanitisingFilter.java:44)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:235)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206)
+	at com.atlassian.confluence.servlet.FourOhFourErrorLoggingFilter.doFilter(FourOhFourErrorLoggingFilter.java:65)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:235)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:233)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:191)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:127)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:102)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:109)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:298)
+	at org.apache.jk.server.JkCoyoteHandler.invoke(JkCoyoteHandler.java:190)
+	at org.apache.jk.common.HandlerRequest.invoke(HandlerRequest.java:291)
+	at org.apache.jk.common.ChannelSocket.invoke(ChannelSocket.java:776)
+	at org.apache.jk.common.ChannelSocket.processConnection(ChannelSocket.java:705)
+	at org.apache.jk.common.ChannelSocket$SocketConnection.runIt(ChannelSocket.java:898)
+	at org.apache.tomcat.util.threads.ThreadPool$ControlRunnable.run(ThreadPool.java:690)
+	at java.lang.Thread.run(Thread.java:722)
+
+ Neither is logininfo updated for shibboleth users.                </div>
+    </div>
+</div>
+                     <div id="comment-52899" class="issue-data-block activity-comment twixi-block expanded">
+    <div class="twixi-wrap verbose actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-opened"><span>Hide</span></span></a>
+        <div class="action-links">
+            <a href="/browse/SHBL-53?focusedCommentId=52899&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-52899" title="A permanent link to this comment." class="icon icon-perma"><span>Permalink</span></a>
+                                </div>
+        <div class="action-details">
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="gswduke" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_52899_verbose" href="/secure/ViewProfile.jspa?name=gswduke">Gary S. Weaver</a>
+ added a comment  - <span class='commentdate_52899_verbose subText'><span class='date user-tz' title='19/Dec/11 9:26 AM'><time datetime='2011-12-19T09:26-0800'>19/Dec/11 9:26 AM</time></span></span>  </div>
+        <div class="action-body flooded"><p>Erkki,</p>
+
+<p>I have released v2.1.2 with the fixes (attached). Sorry, I failed to remove all of the casts to User even though it didn't use the casting. Should be fixed now, so please test it out. Thanks.</p>
+
+<p>Gary</p> </div>
+    </div>
+    <div class="twixi-wrap concise actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-closed"><span>Show</span></span></a>
+        <div class="action-details flooded">
+            
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="gswduke" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_52899_concise" href="/secure/ViewProfile.jspa?name=gswduke">Gary S. Weaver</a>
+ added a comment  - <span class='commentdate_52899_concise subText'><span class='date user-tz' title='19/Dec/11 9:26 AM'><time datetime='2011-12-19T09:26-0800'>19/Dec/11 9:26 AM</time></span></span>               Erkki,
+
+I have released v2.1.2 with the fixes (attached). Sorry, I failed to remove all of the casts to User even though it didn't use the casting. Should be fixed now, so please test it out. Thanks.
+
+Gary         </div>
+    </div>
+</div>
+                     <div id="comment-52921" class="issue-data-block activity-comment twixi-block expanded">
+    <div class="twixi-wrap verbose actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-opened"><span>Hide</span></span></a>
+        <div class="action-links">
+            <a href="/browse/SHBL-53?focusedCommentId=52921&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-52921" title="A permanent link to this comment." class="icon icon-perma"><span>Permalink</span></a>
+                                </div>
+        <div class="action-details">
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="aalto" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_52921_verbose" href="/secure/ViewProfile.jspa?name=aalto">Erkki Aalto</a>
+ added a comment  - <span class='commentdate_52921_verbose subText'><span class='date user-tz' title='19/Dec/11 10:26 PM'><time datetime='2011-12-19T22:26-0800'>19/Dec/11 10:26 PM</time></span></span>  </div>
+        <div class="action-body flooded"><p>Still the same:</p>
+
+<p>Cause</p>
+
+<p>java.lang.ClassCastException: com.atlassian.confluence.user.SessionSafePrincipal cannot be cast to com.atlassian.user.User<br/>
+    at com.atlassian.confluence.user.AuthenticatedUserThreadLocal.getUser(AuthenticatedUserThreadLocal.java:25)<br/>
+Stack Trace:<a href="https://studio.plugins.atlassian.com/wiki/display/SHBL/hide">hide</a></p>
+
+<p>java.lang.ClassCastException: com.atlassian.confluence.user.SessionSafePrincipal cannot be cast to com.atlassian.user.User<br/>
+	at com.atlassian.confluence.user.AuthenticatedUserThreadLocal.getUser(AuthenticatedUserThreadLocal.java:25)<br/>
+	at com.atlassian.confluence.util.UserThreadLocalFilter.doFilter(UserThreadLocalFilter.java:36)<br/>
+	at com.atlassian.core.filters.AbstractHttpFilter.doFilter(AbstractHttpFilter.java:31)<br/>
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:235)<br/>
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206)<br/>
+	at com.atlassian.seraph.filter.SecurityFilter.doFilter(SecurityFilter.java:211)<br/>
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:235)<br/>
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206)<br/>
+	at com.atlassian.security.auth.trustedapps.filter.TrustedApplicationsFilter.doFilter(TrustedApplicationsFilter.java:98)<br/>
+	at com.atlassian.confluence.util.AbstractBootstrapHotSwappingFilter.doFilter(AbstractBootstrapHotSwappingFilter.java:30)<br/>
+	at com.atlassian.core.filters.AbstractHttpFilter.doFilter(AbstractHttpFilter.java:31)<br/>
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:235)<br/>
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206)<br/>
+	at com.atlassian.seraph.filter.BaseLoginFilter.doFilter(BaseLoginFilter.java:150)<br/>
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:235)<br/>
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206)<br/>
+	at com.atlassian.plugin.servlet.filter.IteratingFilterChain.doFilter(IteratingFilterChain.java:46)<br/>
+	at com.atlassian.plugin.servlet.filter.DelegatingPluginFilter$1.doFilter(DelegatingPluginFilter.java:66)<br/>
+	at com.atlassian.oauth.serviceprovider.internal.servlet.OAuthFilter.doFilter(OAuthFilter.java:71)<br/>
+	at com.atlassian.plugin.servlet.filter.DelegatingPluginFilter.doFilter(DelegatingPluginFilter.java:74)<br/>
+	at com.atlassian.plugin.servlet.filter.IteratingFilterChain.doFilter(IteratingFilterChain.java:42)<br/>
+	at com.atlassian.plugin.servlet.filter.ServletFilterModuleContainerFilter.doFilter(ServletFilterModuleContainerFilter.java:77)<br/>
+	at com.atlassian.plugin.servlet.filter.ServletFilterModuleContainerFilter.doFilter(ServletFilterModuleContainerFilter.java:63)<br/>
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:235)<br/>
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206)<br/>
+	at com.atlassian.confluence.util.ClusterHeaderFilter.doFilter(ClusterHeaderFilter.java:37)<br/>
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:235)<br/>
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206)<br/>
+	at com.atlassian.johnson.filters.AbstractJohnsonFilter.doFilter(AbstractJohnsonFilter.java:72)<br/>
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:235)<br/>
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206)<br/>
+	at org.springframework.orm.hibernate.support.OpenSessionInViewFilter.doFilterInternal(OpenSessionInViewFilter.java:170)<br/>
+	at com.atlassian.spring.filter.FlushingSpringSessionInViewFilter.doFilterInternal(FlushingSpringSessionInViewFilter.java:29)<br/>
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:76)<br/>
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:235)<br/>
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206)<br/>
+	at com.atlassian.confluence.util.ConfluenceErrorFilter.doFilter(ConfluenceErrorFilter.java:22)<br/>
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:235)<br/>
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206)<br/>
+	at com.atlassian.util.profiling.filters.ProfilingFilter.doFilter(ProfilingFilter.java:99)<br/>
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:235)<br/>
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206)<br/>
+	at com.atlassian.confluence.core.datetime.RequestTimeThreadLocalFilter.doFilter(RequestTimeThreadLocalFilter.java:35)<br/>
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:235)<br/>
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206)<br/>
+	at com.atlassian.gzipfilter.GzipFilter.doFilterInternal(GzipFilter.java:80)<br/>
+	at com.atlassian.gzipfilter.GzipFilter.doFilter(GzipFilter.java:51)<br/>
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:235)<br/>
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206)<br/>
+	at com.atlassian.core.filters.cache.AbstractCachingFilter.doFilter(AbstractCachingFilter.java:33)<br/>
+	at com.atlassian.core.filters.AbstractHttpFilter.doFilter(AbstractHttpFilter.java:31)<br/>
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:235)<br/>
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206)<br/>
+	at com.atlassian.plugin.servlet.filter.IteratingFilterChain.doFilter(IteratingFilterChain.java:46)<br/>
+	at com.atlassian.plugin.servlet.filter.DelegatingPluginFilter$1.doFilter(DelegatingPluginFilter.java:66)<br/>
+	at com.atlassian.confluence.extra.webdav.servlet.filter.ReverseProxyFilter.doFilter(ReverseProxyFilter.java:427)<br/>
+	at com.atlassian.confluence.extra.webdav.servlet.filter.AbstractHttpFilter.doFilter(AbstractHttpFilter.java:34)<br/>
+	at com.atlassian.plugin.servlet.filter.DelegatingPluginFilter.doFilter(DelegatingPluginFilter.java:74)<br/>
+	at com.atlassian.plugin.servlet.filter.IteratingFilterChain.doFilter(IteratingFilterChain.java:42)<br/>
+	at com.atlassian.plugin.servlet.filter.ServletFilterModuleContainerFilter.doFilter(ServletFilterModuleContainerFilter.java:77)<br/>
+	at com.atlassian.plugin.servlet.filter.ServletFilterModuleContainerFilter.doFilter(ServletFilterModuleContainerFilter.java:63)<br/>
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:235)<br/>
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206)<br/>
+	at com.atlassian.confluence.web.filter.validateparam.RequestParamValidationFilter.doFilter(RequestParamValidationFilter.java:58)<br/>
+	at com.atlassian.core.filters.AbstractHttpFilter.doFilter(AbstractHttpFilter.java:31)<br/>
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:235)<br/>
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206)<br/>
+	at com.atlassian.confluence.web.filter.TranslationModeFilter.doFilter(TranslationModeFilter.java:43)<br/>
+	at com.atlassian.core.filters.AbstractHttpFilter.doFilter(AbstractHttpFilter.java:31)<br/>
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:235)<br/>
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206)<br/>
+	at com.atlassian.confluence.plugin.servlet.filter.ActionContextCleanUp.doFilter(ActionContextCleanUp.java:71)<br/>
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:235)<br/>
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206)<br/>
+	at com.atlassian.confluence.web.filter.LanguageExtractionFilter.doFilter(LanguageExtractionFilter.java:54)<br/>
+	at com.atlassian.core.filters.AbstractHttpFilter.doFilter(AbstractHttpFilter.java:31)<br/>
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:235)<br/>
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206)<br/>
+	at com.atlassian.confluence.util.RequestCacheThreadLocalFilter.doFilter(RequestCacheThreadLocalFilter.java:25)<br/>
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:235)<br/>
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206)<br/>
+	at com.atlassian.core.filters.encoding.AbstractEncodingFilter.doFilter(AbstractEncodingFilter.java:41)<br/>
+	at com.atlassian.core.filters.AbstractHttpFilter.doFilter(AbstractHttpFilter.java:31)<br/>
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:235)<br/>
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206)<br/>
+	at com.atlassian.core.filters.HeaderSanitisingFilter.doFilter(HeaderSanitisingFilter.java:44)<br/>
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:235)<br/>
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206)<br/>
+	at com.atlassian.confluence.servlet.FourOhFourErrorLoggingFilter.doFilter(FourOhFourErrorLoggingFilter.java:65)<br/>
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:235)<br/>
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206)<br/>
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:233)<br/>
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:191)<br/>
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:127)<br/>
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:102)<br/>
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:109)<br/>
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:298)<br/>
+	at org.apache.jk.server.JkCoyoteHandler.invoke(JkCoyoteHandler.java:190)<br/>
+	at org.apache.jk.common.HandlerRequest.invoke(HandlerRequest.java:291)<br/>
+	at org.apache.jk.common.ChannelSocket.invoke(ChannelSocket.java:776)<br/>
+	at org.apache.jk.common.ChannelSocket.processConnection(ChannelSocket.java:705)<br/>
+	at org.apache.jk.common.ChannelSocket$SocketConnection.runIt(ChannelSocket.java:898)<br/>
+	at org.apache.tomcat.util.threads.ThreadPool$ControlRunnable.run(ThreadPool.java:690)<br/>
+	at java.lang.Thread.run(Thread.java:722)</p>
+
+
+
+<p>Referer URL</p>
+
+<p><a href="https://nautawiki.it.helsinki.fi/login.action?os_destination=%2Fdashboard.action">https://nautawiki.it.helsinki.fi/login.action?os_destination=%2Fdashboard.action</a></p> </div>
+    </div>
+    <div class="twixi-wrap concise actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-closed"><span>Show</span></span></a>
+        <div class="action-details flooded">
+            
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="aalto" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_52921_concise" href="/secure/ViewProfile.jspa?name=aalto">Erkki Aalto</a>
+ added a comment  - <span class='commentdate_52921_concise subText'><span class='date user-tz' title='19/Dec/11 10:26 PM'><time datetime='2011-12-19T22:26-0800'>19/Dec/11 10:26 PM</time></span></span>               Still the same:
+
+Cause
+
+java.lang.ClassCastException: com.atlassian.confluence.user.SessionSafePrincipal cannot be cast to com.atlassian.user.User
+    at com.atlassian.confluence.user.AuthenticatedUserThreadLocal.getUser(AuthenticatedUserThreadLocal.java:25)
+Stack Trace:<a href="https://studio.plugins.atlassian.com/wiki/display/SHBL/hide">hide</a>
+
+java.lang.ClassCastException: com.atlassian.confluence.user.SessionSafePrincipal cannot be cast to com.atlassian.user.User
+	at com.atlassian.confluence.user.AuthenticatedUserThreadLocal.getUser(AuthenticatedUserThreadLocal.java:25)
+	at com.atlassian.confluence.util.UserThreadLocalFilter.doFilter(UserThreadLocalFilter.java:36)
+	at com.atlassian.core.filters.AbstractHttpFilter.doFilter(AbstractHttpFilter.java:31)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:235)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206)
+	at com.atlassian.seraph.filter.SecurityFilter.doFilter(SecurityFilter.java:211)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:235)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206)
+	at com.atlassian.security.auth.trustedapps.filter.TrustedApplicationsFilter.doFilter(TrustedApplicationsFilter.java:98)
+	at com.atlassian.confluence.util.AbstractBootstrapHotSwappingFilter.doFilter(AbstractBootstrapHotSwappingFilter.java:30)
+	at com.atlassian.core.filters.AbstractHttpFilter.doFilter(AbstractHttpFilter.java:31)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:235)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206)
+	at com.atlassian.seraph.filter.BaseLoginFilter.doFilter(BaseLoginFilter.java:150)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:235)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206)
+	at com.atlassian.plugin.servlet.filter.IteratingFilterChain.doFilter(IteratingFilterChain.java:46)
+	at com.atlassian.plugin.servlet.filter.DelegatingPluginFilter$1.doFilter(DelegatingPluginFilter.java:66)
+	at com.atlassian.oauth.serviceprovider.internal.servlet.OAuthFilter.doFilter(OAuthFilter.java:71)
+	at com.atlassian.plugin.servlet.filter.DelegatingPluginFilter.doFilter(DelegatingPluginFilter.java:74)
+	at com.atlassian.plugin.servlet.filter.IteratingFilterChain.doFilter(IteratingFilterChain.java:42)
+	at com.atlassian.plugin.servlet.filter.ServletFilterModuleContainerFilter.doFilter(ServletFilterModuleContainerFilter.java:77)
+	at com.atlassian.plugin.servlet.filter.ServletFilterModuleContainerFilter.doFilter(ServletFilterModuleContainerFilter.java:63)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:235)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206)
+	at com.atlassian.confluence.util.ClusterHeaderFilter.doFilter(ClusterHeaderFilter.java:37)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:235)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206)
+	at com.atlassian.johnson.filters.AbstractJohnsonFilter.doFilter(AbstractJohnsonFilter.java:72)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:235)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206)
+	at org.springframework.orm.hibernate.support.OpenSessionInViewFilter.doFilterInternal(OpenSessionInViewFilter.java:170)
+	at com.atlassian.spring.filter.FlushingSpringSessionInViewFilter.doFilterInternal(FlushingSpringSessionInViewFilter.java:29)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:76)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:235)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206)
+	at com.atlassian.confluence.util.ConfluenceErrorFilter.doFilter(ConfluenceErrorFilter.java:22)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:235)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206)
+	at com.atlassian.util.profiling.filters.ProfilingFilter.doFilter(ProfilingFilter.java:99)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:235)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206)
+	at com.atlassian.confluence.core.datetime.RequestTimeThreadLocalFilter.doFilter(RequestTimeThreadLocalFilter.java:35)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:235)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206)
+	at com.atlassian.gzipfilter.GzipFilter.doFilterInternal(GzipFilter.java:80)
+	at com.atlassian.gzipfilter.GzipFilter.doFilter(GzipFilter.java:51)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:235)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206)
+	at com.atlassian.core.filters.cache.AbstractCachingFilter.doFilter(AbstractCachingFilter.java:33)
+	at com.atlassian.core.filters.AbstractHttpFilter.doFilter(AbstractHttpFilter.java:31)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:235)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206)
+	at com.atlassian.plugin.servlet.filter.IteratingFilterChain.doFilter(IteratingFilterChain.java:46)
+	at com.atlassian.plugin.servlet.filter.DelegatingPluginFilter$1.doFilter(DelegatingPluginFilter.java:66)
+	at com.atlassian.confluence.extra.webdav.servlet.filter.ReverseProxyFilter.doFilter(ReverseProxyFilter.java:427)
+	at com.atlassian.confluence.extra.webdav.servlet.filter.AbstractHttpFilter.doFilter(AbstractHttpFilter.java:34)
+	at com.atlassian.plugin.servlet.filter.DelegatingPluginFilter.doFilter(DelegatingPluginFilter.java:74)
+	at com.atlassian.plugin.servlet.filter.IteratingFilterChain.doFilter(IteratingFilterChain.java:42)
+	at com.atlassian.plugin.servlet.filter.ServletFilterModuleContainerFilter.doFilter(ServletFilterModuleContainerFilter.java:77)
+	at com.atlassian.plugin.servlet.filter.ServletFilterModuleContainerFilter.doFilter(ServletFilterModuleContainerFilter.java:63)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:235)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206)
+	at com.atlassian.confluence.web.filter.validateparam.RequestParamValidationFilter.doFilter(RequestParamValidationFilter.java:58)
+	at com.atlassian.core.filters.AbstractHttpFilter.doFilter(AbstractHttpFilter.java:31)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:235)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206)
+	at com.atlassian.confluence.web.filter.TranslationModeFilter.doFilter(TranslationModeFilter.java:43)
+	at com.atlassian.core.filters.AbstractHttpFilter.doFilter(AbstractHttpFilter.java:31)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:235)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206)
+	at com.atlassian.confluence.plugin.servlet.filter.ActionContextCleanUp.doFilter(ActionContextCleanUp.java:71)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:235)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206)
+	at com.atlassian.confluence.web.filter.LanguageExtractionFilter.doFilter(LanguageExtractionFilter.java:54)
+	at com.atlassian.core.filters.AbstractHttpFilter.doFilter(AbstractHttpFilter.java:31)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:235)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206)
+	at com.atlassian.confluence.util.RequestCacheThreadLocalFilter.doFilter(RequestCacheThreadLocalFilter.java:25)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:235)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206)
+	at com.atlassian.core.filters.encoding.AbstractEncodingFilter.doFilter(AbstractEncodingFilter.java:41)
+	at com.atlassian.core.filters.AbstractHttpFilter.doFilter(AbstractHttpFilter.java:31)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:235)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206)
+	at com.atlassian.core.filters.HeaderSanitisingFilter.doFilter(HeaderSanitisingFilter.java:44)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:235)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206)
+	at com.atlassian.confluence.servlet.FourOhFourErrorLoggingFilter.doFilter(FourOhFourErrorLoggingFilter.java:65)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:235)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:233)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:191)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:127)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:102)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:109)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:298)
+	at org.apache.jk.server.JkCoyoteHandler.invoke(JkCoyoteHandler.java:190)
+	at org.apache.jk.common.HandlerRequest.invoke(HandlerRequest.java:291)
+	at org.apache.jk.common.ChannelSocket.invoke(ChannelSocket.java:776)
+	at org.apache.jk.common.ChannelSocket.processConnection(ChannelSocket.java:705)
+	at org.apache.jk.common.ChannelSocket$SocketConnection.runIt(ChannelSocket.java:898)
+	at org.apache.tomcat.util.threads.ThreadPool$ControlRunnable.run(ThreadPool.java:690)
+	at java.lang.Thread.run(Thread.java:722)
+
+
+
+Referer URL
+
+<a href="https://nautawiki.it.helsinki.fi/login.action?os_destination=%2Fdashboard.action">https://nautawiki.it.helsinki.fi/login.action?os_destination=%2Fdashboard.action</a>         </div>
+    </div>
+</div>
+                     <div id="comment-52957" class="issue-data-block activity-comment twixi-block expanded">
+    <div class="twixi-wrap verbose actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-opened"><span>Hide</span></span></a>
+        <div class="action-links">
+            <a href="/browse/SHBL-53?focusedCommentId=52957&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-52957" title="A permanent link to this comment." class="icon icon-perma"><span>Permalink</span></a>
+                                </div>
+        <div class="action-details">
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="gswduke" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_52957_verbose" href="/secure/ViewProfile.jspa?name=gswduke">Gary S. Weaver</a>
+ added a comment  - <span class='commentdate_52957_verbose subText'><span class='date user-tz' title='20/Dec/11 7:38 AM'><time datetime='2011-12-20T07:38-0800'>20/Dec/11 7:38 AM</time></span></span>  </div>
+        <div class="action-body flooded"><p>Erkki,</p>
+
+<p>I just grepped the codebase for "(User)" and "User " and am not seeing any obvious problems with casting to an incorrect class type. Please get your Java developer resource to help you debug it if possible, as I don't have the time/resources available to take this on.</p>
+
+<p>There is a good chance I will not be able to fix this anytime in the near future unless I have help finding what is going wrong, since the stacktrace you provided is not giving me a line number of my own code (because I don't have access to all of the related Atlassian source between the authenticator and the point causing the error, and because I don't have an environment I can reproduce the issue with). If you search for "shib" in the stacktrace and it isn't there, then the stacktrace likely won't help much, at least at this point.</p>
+
+<p>Thanks,<br/>
+Gary</p> </div>
+    </div>
+    <div class="twixi-wrap concise actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-closed"><span>Show</span></span></a>
+        <div class="action-details flooded">
+            
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="gswduke" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_52957_concise" href="/secure/ViewProfile.jspa?name=gswduke">Gary S. Weaver</a>
+ added a comment  - <span class='commentdate_52957_concise subText'><span class='date user-tz' title='20/Dec/11 7:38 AM'><time datetime='2011-12-20T07:38-0800'>20/Dec/11 7:38 AM</time></span></span>               Erkki,
+
+I just grepped the codebase for "(User)" and "User " and am not seeing any obvious problems with casting to an incorrect class type. Please get your Java developer resource to help you debug it if possible, as I don't have the time/resources available to take this on.
+
+There is a good chance I will not be able to fix this anytime in the near future unless I have help finding what is going wrong, since the stacktrace you provided is not giving me a line number of my own code (because I don't have access to all of the related Atlassian source between the authenticator and the point causing the error, and because I don't have an environment I can reproduce the issue with). If you search for "shib" in the stacktrace and it isn't there, then the stacktrace likely won't help much, at least at this point.
+
+Thanks,
+Gary         </div>
+    </div>
+</div>
+                     <div id="comment-53359" class="issue-data-block activity-comment twixi-block expanded">
+    <div class="twixi-wrap verbose actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-opened"><span>Hide</span></span></a>
+        <div class="action-links">
+            <a href="/browse/SHBL-53?focusedCommentId=53359&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-53359" title="A permanent link to this comment." class="icon icon-perma"><span>Permalink</span></a>
+                                </div>
+        <div class="action-details">
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="gswduke" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_53359_verbose" href="/secure/ViewProfile.jspa?name=gswduke">Gary S. Weaver</a>
+ added a comment  - <span class='commentdate_53359_verbose subText'><span class='date user-tz' title='03/Jan/12 2:25 PM'><time datetime='2012-01-03T14:25-0800'>03/Jan/12 2:25 PM</time></span></span>  </div>
+        <div class="action-body flooded"><p>2.1.3 released with this fix. Please try it out: <a href="https://studio.plugins.atlassian.com/svn/SHBL/releases/remoteUserAuth-2.1.3.jar">https://studio.plugins.atlassian.com/svn/SHBL/releases/remoteUserAuth-2.1.3.jar</a></p> </div>
+    </div>
+    <div class="twixi-wrap concise actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-closed"><span>Show</span></span></a>
+        <div class="action-details flooded">
+            
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="gswduke" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_53359_concise" href="/secure/ViewProfile.jspa?name=gswduke">Gary S. Weaver</a>
+ added a comment  - <span class='commentdate_53359_concise subText'><span class='date user-tz' title='03/Jan/12 2:25 PM'><time datetime='2012-01-03T14:25-0800'>03/Jan/12 2:25 PM</time></span></span>               2.1.3 released with this fix. Please try it out: <a href="https://studio.plugins.atlassian.com/svn/SHBL/releases/remoteUserAuth-2.1.3.jar">https://studio.plugins.atlassian.com/svn/SHBL/releases/remoteUserAuth-2.1.3.jar</a>         </div>
+    </div>
+</div>
+                     <div id="comment-53406" class="issue-data-block activity-comment twixi-block expanded">
+    <div class="twixi-wrap verbose actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-opened"><span>Hide</span></span></a>
+        <div class="action-links">
+            <a href="/browse/SHBL-53?focusedCommentId=53406&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-53406" title="A permanent link to this comment." class="icon icon-perma"><span>Permalink</span></a>
+                                </div>
+        <div class="action-details">
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="gswduke" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_53406_verbose" href="/secure/ViewProfile.jspa?name=gswduke">Gary S. Weaver</a>
+ added a comment  - <span class='commentdate_53406_verbose subText'><span class='date user-tz' title='04/Jan/12 7:08 AM'><time datetime='2012-01-04T07:08-0800'>04/Jan/12 7:08 AM</time></span></span>  </div>
+        <div class="action-body flooded"><p>Assuming fixed in 2.1.3.</p> </div>
+    </div>
+    <div class="twixi-wrap concise actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-closed"><span>Show</span></span></a>
+        <div class="action-details flooded">
+            
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="gswduke" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_53406_concise" href="/secure/ViewProfile.jspa?name=gswduke">Gary S. Weaver</a>
+ added a comment  - <span class='commentdate_53406_concise subText'><span class='date user-tz' title='04/Jan/12 7:08 AM'><time datetime='2012-01-04T07:08-0800'>04/Jan/12 7:08 AM</time></span></span>               Assuming fixed in 2.1.3.         </div>
+    </div>
+</div>
+                     <div id="comment-53449" class="issue-data-block activity-comment twixi-block expanded">
+    <div class="twixi-wrap verbose actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-opened"><span>Hide</span></span></a>
+        <div class="action-links">
+            <a href="/browse/SHBL-53?focusedCommentId=53449&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-53449" title="A permanent link to this comment." class="icon icon-perma"><span>Permalink</span></a>
+                                </div>
+        <div class="action-details">
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="aalto" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_53449_verbose" href="/secure/ViewProfile.jspa?name=aalto">Erkki Aalto</a>
+ added a comment  - <span class='commentdate_53449_verbose subText'><span class='date user-tz' title='04/Jan/12 11:13 PM'><time datetime='2012-01-04T23:13-0800'>04/Jan/12 11:13 PM</time></span></span>  </div>
+        <div class="action-body flooded"><p>The attached log file should have about the maximum amount of debug information.<br/>
+It has first a record of attempted login as a local user psaukko resunting in the exception and then of a successful login as a shibboleth user aalto@helsinki.fi with updating the table logininfo still missing.</p> </div>
+    </div>
+    <div class="twixi-wrap concise actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-closed"><span>Show</span></span></a>
+        <div class="action-details flooded">
+            
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="aalto" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_53449_concise" href="/secure/ViewProfile.jspa?name=aalto">Erkki Aalto</a>
+ added a comment  - <span class='commentdate_53449_concise subText'><span class='date user-tz' title='04/Jan/12 11:13 PM'><time datetime='2012-01-04T23:13-0800'>04/Jan/12 11:13 PM</time></span></span>               The attached log file should have about the maximum amount of debug information.
+It has first a record of attempted login as a local user psaukko resunting in the exception and then of a successful login as a shibboleth user aalto@helsinki.fi with updating the table logininfo still missing.         </div>
+    </div>
+</div>
+                     <div id="comment-53471" class="issue-data-block activity-comment twixi-block expanded">
+    <div class="twixi-wrap verbose actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-opened"><span>Hide</span></span></a>
+        <div class="action-links">
+            <a href="/browse/SHBL-53?focusedCommentId=53471&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-53471" title="A permanent link to this comment." class="icon icon-perma"><span>Permalink</span></a>
+                                </div>
+        <div class="action-details">
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="gswduke" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_53471_verbose" href="/secure/ViewProfile.jspa?name=gswduke">Gary S. Weaver</a>
+ added a comment  - <span class='commentdate_53471_verbose subText'><span class='date user-tz' title='05/Jan/12 10:38 AM'><time datetime='2012-01-05T10:38-0800'>05/Jan/12 10:38 AM</time></span></span>  </div>
+        <div class="action-body flooded"><p>Erkki,</p>
+
+<p><a href="/browse/SHBL-50" title="Authenticator does not update table logininfo in 4.x"><del>SHBL-50</del></a> logininfo table issue fixed in 2.1.4 I hope.</p>
+
+<p>I looked at the attached log file and grepped through the code. There is no direct reference to com.atlassian.user.User, and the only indirect method is via the shibauth/confluence/authentication/shibboleth/RemoteUserAuthenticator$4.class which is due to use of the UserAccessor class to create a user, but as far as I know we have no choice but to use that method since there is no equivalent in CrowdService that does not require a password. I created this ticket, even though it should be move to the embedded crowd project, probably, so I suggested that. Feel free to vote for it: <a href="https://jira.atlassian.com/browse/CONF-24340">https://jira.atlassian.com/browse/CONF-24340</a></p>
+
+<p>But, I doubt that reference to UserAccessor is causing the issue, because this local user already exists, and it only happens when there is a local user. The following is the code that gets called as far as I know in the case of a local user login vs. non-local:</p>
+
+<div class="code panel" style="border-width: 1px;"><div class="codeContent panelContent">
+<pre class="code-java"><span class="code-comment">// Calling <span class="code-keyword">super</span>.login to <span class="code-keyword">try</span> local login <span class="code-keyword">if</span> username and password are set. Local login won't work <span class="code-keyword">if</span>
+</span>            <span class="code-comment">// ShibLoginFilter is used
+</span>            <span class="code-keyword">if</span> (username != <span class="code-keyword">null</span> &amp;&amp; password != <span class="code-keyword">null</span>) {
+                <span class="code-keyword">if</span> (log.isDebugEnabled()) {
+                    log.debug(<span class="code-quote">"Trying local login <span class="code-keyword">for</span> user "</span> + username);
+                }
+
+                <span class="code-keyword">return</span> <span class="code-keyword">super</span>.login(request, response, username, password, cookie);
+            }</pre>
+</div></div>
+
+<p>That calls Atlassian ConfluenceAuthenticator's login method. Looking at the log, this is not the cause either.</p>
+
+<p>So, this error appears to happen separately from the authenticator from what I can tell. It appears to be something that is either happening in Confluence itself, or perhaps another customization/plugin you are using, but I didn't see a non-Atlassian class in the stacktrace other than libraries it uses, at least at first glance.</p>
+
+<p>Further, you can see this in the log:</p>
+
+<div class="preformatted panel" style="border-width: 1px;"><div class="preformattedContent panelContent">
+<pre>2012-01-05 09:03:11,986 DEBUG [TP-Processor24] [confluence.authentication.shibboleth.RemoteUserAuthenticator] getUserForAtlassianLoginFilter psaukko already logged in, returning.
+2012-01-05 09:03:11,988 ERROR [TP-Processor24] [[Standalone].[localhost].[/].[action]] log Servlet.service() for servlet action threw exception
+java.lang.ClassCastException: com.atlassian.confluence.user.SessionSafePrincipal cannot be cast to com.atlassian.user.User
+	at com.atlassian.confluence.user.AuthenticatedUserThreadLocal.getUser(AuthenticatedUserThreadLocal.java:25)
+...
+</pre>
+</div></div>
+
+<p>The log statement "psaukko already logged in, returning." shows that the following code in the login method in the authenticator is being called mulitple times and returning true as it should:</p>
+
+<div class="code panel" style="border-width: 1px;"><div class="codeContent panelContent">
+<pre class="code-java"><span class="code-comment">// Check <span class="code-keyword">if</span> the user is already logged in
+</span>        <span class="code-keyword">if</span> (httpSession.getAttribute(ConfluenceAuthenticator.LOGGED_IN_KEY) != <span class="code-keyword">null</span>) {
+            user = (Principal) httpSession.getAttribute(ConfluenceAuthenticator.LOGGED_IN_KEY);
+
+            <span class="code-keyword">if</span> (log.isDebugEnabled()) {
+                log.debug(<span class="code-quote">"" + user.getName() + "</span> already logged in, returning.");
+            }
+
+            <span class="code-keyword">return</span> <span class="code-keyword">true</span>;
+        }</pre>
+</div></div>
+
+<p>So, basically, this is not our bug.</p>
+
+<p>When you ask Atlassian for help on this, you should first probably try using the default com.atlassian.confluence.user.ConfluenceAuthenticator and just try local login to see if it works, if it fails, you are in luck, because they can help. If it doesn't fail, you will need your Java programmer or someone else to help you debug it on the Atlassian side, because the issue itself is not in this authenticator.</p>
+
+<p>Good luck.</p>
+
+<p>Gary</p> </div>
+    </div>
+    <div class="twixi-wrap concise actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-closed"><span>Show</span></span></a>
+        <div class="action-details flooded">
+            
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="gswduke" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_53471_concise" href="/secure/ViewProfile.jspa?name=gswduke">Gary S. Weaver</a>
+ added a comment  - <span class='commentdate_53471_concise subText'><span class='date user-tz' title='05/Jan/12 10:38 AM'><time datetime='2012-01-05T10:38-0800'>05/Jan/12 10:38 AM</time></span></span>               Erkki,
+
+<a href="/browse/SHBL-50" title="Authenticator does not update table logininfo in 4.x"><del>SHBL-50</del></a> logininfo table issue fixed in 2.1.4 I hope.
+
+I looked at the attached log file and grepped through the code. There is no direct reference to com.atlassian.user.User, and the only indirect method is via the shibauth/confluence/authentication/shibboleth/RemoteUserAuthenticator$4.class which is due to use of the UserAccessor class to create a user, but as far as I know we have no choice but to use that method since there is no equivalent in CrowdService that does not require a password. I created this ticket, even though it should be move to the embedded crowd project, probably, so I suggested that. Feel free to vote for it: <a href="https://jira.atlassian.com/browse/CONF-24340">https://jira.atlassian.com/browse/CONF-24340</a>
+
+But, I doubt that reference to UserAccessor is causing the issue, because this local user already exists, and it only happens when there is a local user. The following is the code that gets called as far as I know in the case of a local user login vs. non-local:
+
+<div class="code panel" style="border-width: 1px;"><div class="codeContent panelContent">
+<pre class="code-java"><span class="code-comment">// Calling <span class="code-keyword">super</span>.login to <span class="code-keyword">try</span> local login <span class="code-keyword">if</span> username and password are set. Local login won't work <span class="code-keyword">if</span>
+</span>            <span class="code-comment">// ShibLoginFilter is used
+</span>            <span class="code-keyword">if</span> (username != <span class="code-keyword">null</span> &amp;&amp; password != <span class="code-keyword">null</span>) {
+                <span class="code-keyword">if</span> (log.isDebugEnabled()) {
+                    log.debug(<span class="code-quote">"Trying local login <span class="code-keyword">for</span> user "</span> + username);
+                }
+
+                <span class="code-keyword">return</span> <span class="code-keyword">super</span>.login(request, response, username, password, cookie);
+            }</pre>
+</div></div>
+
+That calls Atlassian ConfluenceAuthenticator's login method. Looking at the log, this is not the cause either.
+
+So, this error appears to happen separately from the authenticator from what I can tell. It appears to be something that is either happening in Confluence itself, or perhaps another customization/plugin you are using, but I didn't see a non-Atlassian class in the stacktrace other than libraries it uses, at least at first glance.
+
+Further, you can see this in the log:
+
+<div class="preformatted panel" style="border-width: 1px;"><div class="preformattedContent panelContent">
+<pre>2012-01-05 09:03:11,986 DEBUG [TP-Processor24] [confluence.authentication.shibboleth.RemoteUserAuthenticator] getUserForAtlassianLoginFilter psaukko already logged in, returning.
+2012-01-05 09:03:11,988 ERROR [TP-Processor24] [[Standalone].[localhost].[/].[action]] log Servlet.service() for servlet action threw exception
+java.lang.ClassCastException: com.atlassian.confluence.user.SessionSafePrincipal cannot be cast to com.atlassian.user.User
+	at com.atlassian.confluence.user.AuthenticatedUserThreadLocal.getUser(AuthenticatedUserThreadLocal.java:25)
+...
+</pre>
+</div></div>
+
+The log statement "psaukko already logged in, returning." shows that the following code in the login method in the authenticator is being called mulitple times and returning true as it should:
+
+<div class="code panel" style="border-width: 1px;"><div class="codeContent panelContent">
+<pre class="code-java"><span class="code-comment">// Check <span class="code-keyword">if</span> the user is already logged in
+</span>        <span class="code-keyword">if</span> (httpSession.getAttribute(ConfluenceAuthenticator.LOGGED_IN_KEY) != <span class="code-keyword">null</span>) {
+            user = (Principal) httpSession.getAttribute(ConfluenceAuthenticator.LOGGED_IN_KEY);
+
+            <span class="code-keyword">if</span> (log.isDebugEnabled()) {
+                log.debug(<span class="code-quote">"" + user.getName() + "</span> already logged in, returning.");
+            }
+
+            <span class="code-keyword">return</span> <span class="code-keyword">true</span>;
+        }</pre>
+</div></div>
+
+So, basically, this is not our bug.
+
+When you ask Atlassian for help on this, you should first probably try using the default com.atlassian.confluence.user.ConfluenceAuthenticator and just try local login to see if it works, if it fails, you are in luck, because they can help. If it doesn't fail, you will need your Java programmer or someone else to help you debug it on the Atlassian side, because the issue itself is not in this authenticator.
+
+Good luck.
+
+Gary         </div>
+    </div>
+</div>
+                     <div id="comment-53571" class="issue-data-block activity-comment twixi-block expanded">
+    <div class="twixi-wrap verbose actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-opened"><span>Hide</span></span></a>
+        <div class="action-links">
+            <a href="/browse/SHBL-53?focusedCommentId=53571&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-53571" title="A permanent link to this comment." class="icon icon-perma"><span>Permalink</span></a>
+                                </div>
+        <div class="action-details">
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="aalto" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_53571_verbose" href="/secure/ViewProfile.jspa?name=aalto">Erkki Aalto</a>
+ added a comment  - <span class='commentdate_53571_verbose subText'><span class='date user-tz' title='08/Jan/12 10:20 PM'><time datetime='2012-01-08T22:20-0800'>08/Jan/12 10:20 PM</time></span></span>  </div>
+        <div class="action-body flooded"><p>Of course it works with the default authenticator. Hope  my programmer has soon some time to look at this.</p> </div>
+    </div>
+    <div class="twixi-wrap concise actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-closed"><span>Show</span></span></a>
+        <div class="action-details flooded">
+            
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="aalto" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_53571_concise" href="/secure/ViewProfile.jspa?name=aalto">Erkki Aalto</a>
+ added a comment  - <span class='commentdate_53571_concise subText'><span class='date user-tz' title='08/Jan/12 10:20 PM'><time datetime='2012-01-08T22:20-0800'>08/Jan/12 10:20 PM</time></span></span>               Of course it works with the default authenticator. Hope  my programmer has soon some time to look at this.         </div>
+    </div>
+</div>
+                     <div id="comment-53606" class="issue-data-block activity-comment twixi-block expanded">
+    <div class="twixi-wrap verbose actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-opened"><span>Hide</span></span></a>
+        <div class="action-links">
+            <a href="/browse/SHBL-53?focusedCommentId=53606&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-53606" title="A permanent link to this comment." class="icon icon-perma"><span>Permalink</span></a>
+                                </div>
+        <div class="action-details">
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="gswduke" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_53606_verbose" href="/secure/ViewProfile.jspa?name=gswduke">Gary S. Weaver</a>
+ added a comment  - <span class='commentdate_53606_verbose subText'><span class='date user-tz' title='09/Jan/12 6:41 AM'><time datetime='2012-01-09T06:41-0800'>09/Jan/12 6:41 AM</time></span></span>  </div>
+        <div class="action-body flooded"><p>Erkki,</p>
+
+<p>I can tell you are frustrated, and I appreciate your patience and help in testing. However, I've spent a good deal of time supporting you with these issues, and at this point I think I've done all I can to help and have spend much more time than I had planned. Good luck to your developer.</p>
+
+<p>Thanks,<br/>
+Gary</p> </div>
+    </div>
+    <div class="twixi-wrap concise actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-closed"><span>Show</span></span></a>
+        <div class="action-details flooded">
+            
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="gswduke" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_53606_concise" href="/secure/ViewProfile.jspa?name=gswduke">Gary S. Weaver</a>
+ added a comment  - <span class='commentdate_53606_concise subText'><span class='date user-tz' title='09/Jan/12 6:41 AM'><time datetime='2012-01-09T06:41-0800'>09/Jan/12 6:41 AM</time></span></span>               Erkki,
+
+I can tell you are frustrated, and I appreciate your patience and help in testing. However, I've spent a good deal of time supporting you with these issues, and at this point I think I've done all I can to help and have spend much more time than I had planned. Good luck to your developer.
+
+Thanks,
+Gary         </div>
+    </div>
+</div>
+                     <div id="comment-54489" class="issue-data-block activity-comment twixi-block expanded">
+    <div class="twixi-wrap verbose actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-opened"><span>Hide</span></span></a>
+        <div class="action-links">
+            <a href="/browse/SHBL-53?focusedCommentId=54489&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-54489" title="A permanent link to this comment." class="icon icon-perma"><span>Permalink</span></a>
+                                </div>
+        <div class="action-details">
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="gswduke" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_54489_verbose" href="/secure/ViewProfile.jspa?name=gswduke">Gary S. Weaver</a>
+ added a comment  - <span class='commentdate_54489_verbose subText'><span class='date user-tz' title='27/Jan/12 8:35 AM'><time datetime='2012-01-27T08:35-0800'>27/Jan/12 8:35 AM</time></span></span>  </div>
+        <div class="action-body flooded"><p>Released a fix in 2.1.5. Not tested. Thanks to Mathias Kresin for the info on using getUserFromSession(request) vs. request.getSession().getAttribute(DefaultAuthenticator.LOGGED_IN_KEY). We now only use request.getSession().getAttribute(DefaultAuthenticator.LOGGED_IN_KEY) as a fallback. References he provided:<br/>
+<a href="https://answers.atlassian.com/questions/22920/ntlm-authenticator-does-not-work-any-more-with-confluence-4-x-probably-same-problem-with-3-5-x">https://answers.atlassian.com/questions/22920/ntlm-authenticator-does-not-work-any-more-with-confluence-4-x-probably-same-problem-with-3-5-x</a></p> </div>
+    </div>
+    <div class="twixi-wrap concise actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-closed"><span>Show</span></span></a>
+        <div class="action-details flooded">
+            
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="gswduke" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_54489_concise" href="/secure/ViewProfile.jspa?name=gswduke">Gary S. Weaver</a>
+ added a comment  - <span class='commentdate_54489_concise subText'><span class='date user-tz' title='27/Jan/12 8:35 AM'><time datetime='2012-01-27T08:35-0800'>27/Jan/12 8:35 AM</time></span></span>               Released a fix in 2.1.5. Not tested. Thanks to Mathias Kresin for the info on using getUserFromSession(request) vs. request.getSession().getAttribute(DefaultAuthenticator.LOGGED_IN_KEY). We now only use request.getSession().getAttribute(DefaultAuthenticator.LOGGED_IN_KEY) as a fallback. References he provided:
+<a href="https://answers.atlassian.com/questions/22920/ntlm-authenticator-does-not-work-any-more-with-confluence-4-x-probably-same-problem-with-3-5-x">https://answers.atlassian.com/questions/22920/ntlm-authenticator-does-not-work-any-more-with-confluence-4-x-probably-same-problem-with-3-5-x</a>         </div>
+    </div>
+</div>
+                     <div id="comment-54816" class="issue-data-block activity-comment twixi-block expanded">
+    <div class="twixi-wrap verbose actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-opened"><span>Hide</span></span></a>
+        <div class="action-links">
+            <a href="/browse/SHBL-53?focusedCommentId=54816&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-54816" title="A permanent link to this comment." class="icon icon-perma"><span>Permalink</span></a>
+                                </div>
+        <div class="action-details">
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="rackley" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_54816_verbose" href="/secure/ViewProfile.jspa?name=rackley">Ryan Ackley</a>
+ added a comment  - <span class='commentdate_54816_verbose subText'><span class='date user-tz' title='05/Feb/12 6:23 PM'><time datetime='2012-02-05T18:23-0800'>05/Feb/12 6:23 PM</time></span></span>  </div>
+        <div class="action-body flooded"><p>Hi Gary,</p>
+
+<p>Confluence developer here. I believe the problem is that we no longer store the User in the http session. In other words, this code is the problem</p>
+<div class="code panel" style="border-width: 1px;"><div class="codeContent panelContent">
+<pre class="code-java"><span class="code-comment">// Check <span class="code-keyword">if</span> the user is already logged in
+</span>       <span class="code-keyword">if</span> (httpSession.getAttribute(ConfluenceAuthenticator.LOGGED_IN_KEY) != <span class="code-keyword">null</span>) {
+           user = (Principal) httpSession.getAttribute(ConfluenceAuthenticator.LOGGED_IN_KEY);
+ 
+           <span class="code-keyword">if</span> (log.isDebugEnabled()) {
+               log.debug(<span class="code-quote">"" + user.getName() + "</span> already logged in, returning.");
+           }
+ 
+           <span class="code-keyword">return</span> user;
+       }</pre>
+</div></div>
+<p>Specifically, the variable <tt>user</tt> is not a <tt>com.atlassian.user.User</tt>. It's an internal data structure used by our default authenticator that implements the <tt>Principal</tt> interface. This was a change made in Confluence 4.1. Your implementation of <tt>getUser</tt> must return an instance of <tt>com.atlassian.user.User</tt>. Therefore, in the above case you will need to call something like <tt>return getUserAccessor().getUser(user.getName())</tt>. Let me know if you have any questions.</p>
+
+<p>-Ryan</p> </div>
+    </div>
+    <div class="twixi-wrap concise actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-closed"><span>Show</span></span></a>
+        <div class="action-details flooded">
+            
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="rackley" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_54816_concise" href="/secure/ViewProfile.jspa?name=rackley">Ryan Ackley</a>
+ added a comment  - <span class='commentdate_54816_concise subText'><span class='date user-tz' title='05/Feb/12 6:23 PM'><time datetime='2012-02-05T18:23-0800'>05/Feb/12 6:23 PM</time></span></span>               Hi Gary,
+
+Confluence developer here. I believe the problem is that we no longer store the User in the http session. In other words, this code is the problem
+<div class="code panel" style="border-width: 1px;"><div class="codeContent panelContent">
+<pre class="code-java"><span class="code-comment">// Check <span class="code-keyword">if</span> the user is already logged in
+</span>       <span class="code-keyword">if</span> (httpSession.getAttribute(ConfluenceAuthenticator.LOGGED_IN_KEY) != <span class="code-keyword">null</span>) {
+           user = (Principal) httpSession.getAttribute(ConfluenceAuthenticator.LOGGED_IN_KEY);
+ 
+           <span class="code-keyword">if</span> (log.isDebugEnabled()) {
+               log.debug(<span class="code-quote">"" + user.getName() + "</span> already logged in, returning.");
+           }
+ 
+           <span class="code-keyword">return</span> user;
+       }</pre>
+</div></div>
+Specifically, the variable <tt>user</tt> is not a <tt>com.atlassian.user.User</tt>. It's an internal data structure used by our default authenticator that implements the <tt>Principal</tt> interface. This was a change made in Confluence 4.1. Your implementation of <tt>getUser</tt> must return an instance of <tt>com.atlassian.user.User</tt>. Therefore, in the above case you will need to call something like <tt>return getUserAccessor().getUser(user.getName())</tt>. Let me know if you have any questions.
+
+-Ryan         </div>
+    </div>
+</div>
+                     <div id="comment-54852" class="issue-data-block activity-comment twixi-block expanded">
+    <div class="twixi-wrap verbose actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-opened"><span>Hide</span></span></a>
+        <div class="action-links">
+            <a href="/browse/SHBL-53?focusedCommentId=54852&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-54852" title="A permanent link to this comment." class="icon icon-perma"><span>Permalink</span></a>
+                                </div>
+        <div class="action-details">
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="gswduke" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_54852_verbose" href="/secure/ViewProfile.jspa?name=gswduke">Gary S. Weaver</a>
+ added a comment  - <span class='commentdate_54852_verbose subText'><span class='date user-tz' title='06/Feb/12 12:54 PM'><time datetime='2012-02-06T12:54-0800'>06/Feb/12 12:54 PM</time></span></span>  </div>
+        <div class="action-body flooded"><p>Thanks, Ryan! I had it defaulting to use that if it couldn't get it via getUserFromSession(request), but I just removed that. Hopefully that will fix this and <a href="/browse/SHBL-55" title="NullPointerException in RemoteUserAuthenticator.java:289 with confluence 4.1.4 and remoteUserAuth-2.1.5.jar"><del>SHBL-55</del></a>. Unfortunately, I have no way to test at the moment.</p> </div>
+    </div>
+    <div class="twixi-wrap concise actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-closed"><span>Show</span></span></a>
+        <div class="action-details flooded">
+            
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="gswduke" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_54852_concise" href="/secure/ViewProfile.jspa?name=gswduke">Gary S. Weaver</a>
+ added a comment  - <span class='commentdate_54852_concise subText'><span class='date user-tz' title='06/Feb/12 12:54 PM'><time datetime='2012-02-06T12:54-0800'>06/Feb/12 12:54 PM</time></span></span>               Thanks, Ryan! I had it defaulting to use that if it couldn't get it via getUserFromSession(request), but I just removed that. Hopefully that will fix this and <a href="/browse/SHBL-55" title="NullPointerException in RemoteUserAuthenticator.java:289 with confluence 4.1.4 and remoteUserAuth-2.1.5.jar"><del>SHBL-55</del></a>. Unfortunately, I have no way to test at the moment.         </div>
+    </div>
+</div>
+                     <div id="comment-54853" class="issue-data-block activity-comment twixi-block expanded">
+    <div class="twixi-wrap verbose actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-opened"><span>Hide</span></span></a>
+        <div class="action-links">
+            <a href="/browse/SHBL-53?focusedCommentId=54853&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-54853" title="A permanent link to this comment." class="icon icon-perma"><span>Permalink</span></a>
+                                </div>
+        <div class="action-details">
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="gswduke" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_54853_verbose" href="/secure/ViewProfile.jspa?name=gswduke">Gary S. Weaver</a>
+ added a comment  - <span class='commentdate_54853_verbose subText'><span class='date user-tz' title='06/Feb/12 12:55 PM'><time datetime='2012-02-06T12:55-0800'>06/Feb/12 12:55 PM</time></span></span>  </div>
+        <div class="action-body flooded"><p>Released that and now defaulting some config options for easy transition between versions: <a href="https://studio.plugins.atlassian.com/svn/SHBL/releases/remoteUserAuth-2.1.6.jar">https://studio.plugins.atlassian.com/svn/SHBL/releases/remoteUserAuth-2.1.6.jar</a></p> </div>
+    </div>
+    <div class="twixi-wrap concise actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-closed"><span>Show</span></span></a>
+        <div class="action-details flooded">
+            
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="gswduke" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_54853_concise" href="/secure/ViewProfile.jspa?name=gswduke">Gary S. Weaver</a>
+ added a comment  - <span class='commentdate_54853_concise subText'><span class='date user-tz' title='06/Feb/12 12:55 PM'><time datetime='2012-02-06T12:55-0800'>06/Feb/12 12:55 PM</time></span></span>               Released that and now defaulting some config options for easy transition between versions: <a href="https://studio.plugins.atlassian.com/svn/SHBL/releases/remoteUserAuth-2.1.6.jar">https://studio.plugins.atlassian.com/svn/SHBL/releases/remoteUserAuth-2.1.6.jar</a>         </div>
+    </div>
+</div>
+                     <div id="comment-54909" class="issue-data-block activity-comment twixi-block expanded">
+    <div class="twixi-wrap verbose actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-opened"><span>Hide</span></span></a>
+        <div class="action-links">
+            <a href="/browse/SHBL-53?focusedCommentId=54909&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-54909" title="A permanent link to this comment." class="icon icon-perma"><span>Permalink</span></a>
+                                </div>
+        <div class="action-details">
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="gswduke" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_54909_verbose" href="/secure/ViewProfile.jspa?name=gswduke">Gary S. Weaver</a>
+ added a comment  - <span class='commentdate_54909_verbose subText'><span class='date user-tz' title='07/Feb/12 12:43 PM'><time datetime='2012-02-07T12:43-0800'>07/Feb/12 12:43 PM</time></span></span>  </div>
+        <div class="action-body flooded"><p>Fixed in 2.1.8</p> </div>
+    </div>
+    <div class="twixi-wrap concise actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-closed"><span>Show</span></span></a>
+        <div class="action-details flooded">
+            
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="gswduke" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_54909_concise" href="/secure/ViewProfile.jspa?name=gswduke">Gary S. Weaver</a>
+ added a comment  - <span class='commentdate_54909_concise subText'><span class='date user-tz' title='07/Feb/12 12:43 PM'><time datetime='2012-02-07T12:43-0800'>07/Feb/12 12:43 PM</time></span></span>               Fixed in 2.1.8         </div>
+    </div>
+</div>
+                     <div id="comment-54928" class="issue-data-block activity-comment twixi-block expanded">
+    <div class="twixi-wrap verbose actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-opened"><span>Hide</span></span></a>
+        <div class="action-links">
+            <a href="/browse/SHBL-53?focusedCommentId=54928&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-54928" title="A permanent link to this comment." class="icon icon-perma"><span>Permalink</span></a>
+                                </div>
+        <div class="action-details">
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="aalto" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_54928_verbose" href="/secure/ViewProfile.jspa?name=aalto">Erkki Aalto</a>
+ added a comment  - <span class='commentdate_54928_verbose subText'><span class='date user-tz' title='07/Feb/12 11:03 PM'><time datetime='2012-02-07T23:03-0800'>07/Feb/12 11:03 PM</time></span></span>  </div>
+        <div class="action-body flooded"><p>Indeed, I can confirm it is fixed.</p> </div>
+    </div>
+    <div class="twixi-wrap concise actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-closed"><span>Show</span></span></a>
+        <div class="action-details flooded">
+            
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="aalto" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_54928_concise" href="/secure/ViewProfile.jspa?name=aalto">Erkki Aalto</a>
+ added a comment  - <span class='commentdate_54928_concise subText'><span class='date user-tz' title='07/Feb/12 11:03 PM'><time datetime='2012-02-07T23:03-0800'>07/Feb/12 11:03 PM</time></span></span>               Indeed, I can confirm it is fixed.         </div>
+    </div>
+</div>
+                 </div>
+</div></div>
+                
+
+            </div>
+        </div>
+
+        <div class="column" id="secondary">
+            <div class="content">
+                
+                    <div class='module toggle-wrap' id='peoplemodule'><div id='peoplemodule_heading' class='mod-header'><h3 class='toggle-title'>People</h3></div><div class='mod-content'><ul class="item-details" id="peopledetails">
+    <li class="people-details">
+                <dl>
+            <dt>Assignee:</dt>
+            <dd id="assignee-val">
+                        <a class="user-hover" rel="gswduke" id="issue_summary_assignee_gswduke" href="/secure/ViewProfile.jspa?name=gswduke">Gary S. Weaver</a>
+            </dd>
+        </dl>
+                        <dl>
+            <dt>Reporter:</dt>
+            <dd id="reporter-val">
+                        <a class="user-hover" rel="aalto" id="issue_summary_reporter_aalto" href="/secure/ViewProfile.jspa?name=aalto">Erkki Aalto</a>
+            </dd>
+        </dl>
+                    </li>
+</ul>
+<div id="votes-val">
+                <span id="vote-label" title="You cannot vote or change your vote on resolved issues."><span class="icon icon-vote-disabled"></span><span class="action-text">Vote</span></span>
+    
+                (<span id="vote-data">0</span>)
+    </div>
+<div id="watchers-val">
+            <span id="watch-label" title="You have to be logged in to watch an issue."><span class="icon icon-watch-disabled"></span>Watch</span>
+    
+        
+            (<span id="watcher-data">2</span>)
+    </div>
+</div></div><div class='module toggle-wrap' id='datesmodule'><div id='datesmodule_heading' class='mod-header'><h3 class='toggle-title'>Dates</h3></div><div class='mod-content'><ul class="item-details">
+    <li>
+            <dl class="dates">
+            <dt>Created:</dt>
+            <dd id="create-date" class="date user-tz"  title="14/Dec/11 4:13 AM" >
+                        <time datetime="2011-12-14T04:13-0800">14/Dec/11 4:13 AM</time></dd>                     </dd>
+        </dl>
+            <dl class="dates">
+            <dt>Updated:</dt>
+            <dd id="updated-date" class="date user-tz"  title="08/Feb/12 7:15 AM" >
+                        <time datetime="2012-02-08T07:15-0800">08/Feb/12 7:15 AM</time></dd>                     </dd>
+        </dl>
+            <dl class="dates">
+            <dt>Resolved:</dt>
+            <dd id="resolved-date" class="date user-tz"  title="08/Feb/12 7:14 AM" >
+                        <time datetime="2012-02-08T07:14-0800">08/Feb/12 7:14 AM</time></dd>                     </dd>
+        </dl>
+        </li>
+</ul>
+</div></div>
+                
+
+            </div>
+        </div>
+        
+            
+                
+            
+        
+
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+<div id="studio-footer" class="footer" style="width:100%; padding:0 0 25px 0;">
+    <div id="poweredby">
+        <p>
+            Powered by <a href="http://www.atlassian.com/hosted/studio">JIRA Studio</a> <span id="studioVersion">107.6 r5978538efb935b5414d28000aa78b98bedfcae46</span> |
+            <a href="http://www.atlassian.com/hosted/terms.jsp">Terms of Use</a> |
+            <a href="http://studio.atlassian.com/browse/JST">Bug/feature request</a> |
+            <a href="https://support.atlassian.com/secure/CreateIssueDetails!init.jspa?summary=Your+summary+here...&amp;issuetype=1&amp;priority=3&amp;description=Please+describe+your+problem+here%3A%0A%0A%0AProblem+reported+from+URL%3A+https%3A%2F%2Fstudio.plugins.atlassian.com%2Fbrowse%2FSHBL-53&amp;customfield_10440=https%3A%2F%2Fstudio.plugins.atlassian.com&amp;pid=10140&amp;">Request Support</a> |
+            <a href="http://confluence.atlassian.com/display/JIRASTUDIO" target="help_JIRASTUDIO" rel="nofollow">Help/Documentation</a> |
+            <a href="http://blogs.atlassian.com/devtools/studio">JIRA Studio Blog</a> |
+            <a href="http://twitter.com/jirastudio">Twitter @JIRAStudio</a>
+        </p>
+    </div>
+</div>
+
+<script type="text/javascript" charset="utf-8" src="/s/en_US-31q2po/650/149/107.6.4/_/download/resources/com.atlassian.studio.static:studio_resources/js/contentnamesearch.js"></script>
+<script type="text/javascript" charset="utf-8" src="/s/en_US-31q2po/650/149/107.6.4/_/download/resources/com.atlassian.studio.static:studio_resources/js/split_button.js"></script>
+<script type="text/javascript" charset="utf-8" src="/s/en_US-31q2po/650/149/107.6.4/_/download/resources/com.atlassian.studio.static:studio_resources/js/userstatus.js"></script>
+
+            <script type="text/javascript" charset="utf-8" src="/s/en_US-31q2po/650/149/107.6.4/_/download/resources/com.atlassian.studio.static:studio_resources/js/safe-ajax.js"></script>
+    
+<script type="text/javascript">
+    // This is the app specific data that the shared js expects
+    studioData = {"jiraUrl" : "https://studio.plugins.atlassian.com"};
+
+            document.cookie = "studio.project.rec.used.cookie=" + escape("SHBL-_-") + "; Max-Age=31536000; path=/;";
+    
+    // Google analytics
+    var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+    document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+    try {
+    var pageTracker = _gat._getTracker("UA-6032469-30");
+    pageTracker._trackPageview();
+    } catch(err) {}
+</script>
+
+<form id="jira_request_timing_info" class="dont-default-focus" >
+	<fieldset class="parameters hidden">
+		<input type="hidden" title="jira.request.start.millis" value="1358699924333" />
+		<input type="hidden" title="jira.request.server.time" value="1349" />
+		<input type="hidden" title="jira.request.id" value="518x7330420x1" />
+		<input type="hidden" title="jira.session.expiry.time" value="-" />
+		<input type="hidden" title="jira.session.expiry.in.mins" value="-" />
+		<input id="jiraConcurrentRequests" type="hidden" name="jira.request.concurrent.requests" value="2" />
+	</fieldset>
+</form>
+<!--
+	                 REQUEST ID : 518x7330420x1
+	          REQUEST TIMESTAMP : [20/Jan/2013:08:38:44 -0800]
+	               REQUEST TIME : 1.3490
+	                 ASESSIONID : 16gsomr
+	        CONCURRENT REQUESTS : 2
+-->
+</body>
+</html>

@@ -1,7 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-         
+	<!--
+	Confluence HTTP Authenticator
+	formerly known as:
+	Confluence Shibboleth Authenticator,
+	Shibboleth Authenticator for Confluence,
+	and Georgetown University's remoteUserAuth
+	-->
     <modelVersion>4.0.0</modelVersion>
     <groupId>shibauth</groupId>
     <artifactId>remoteUserAuth</artifactId>
@@ -13,20 +19,14 @@
         <crowd.embedded.version>1.5.3</crowd.embedded.version>
     </properties>
     <issueManagement>
-        <system>Atlassian Developer JIRA</system>
-        <url>http://developer.atlassian.com/jira/browse/SHBL</url>
+        <url>https://github.com/chauth/confluence_http_authenticator/issues</url>
     </issueManagement>
-    <scm>
-        <connection>scm:svn:http://studio.plugins.atlassian.com/svn/SHBL/trunk</connection>
-        <developerConnection>scm:svn:https://studio.plugins.atlassian.com/svn/SHBL/trunk</developerConnection>
-        <url>https://studio.plugins.atlassian.com/source/browse/SHBL/trunk</url>
-    </scm>
     <licenses>
         <license>
             <name>BSD-Style License</name>
             <distribution>manual</distribution>
             <comments>
-                Copyright (c) 2008-2012, Shibboleth Authenticator for Confluence Team
+                Copyright (c) 2008-2013, Confluence HTTP Authenticator Team
                 All rights reserved.
 
                 Redistribution and use in source and binary forms, with or without

@@ -1,0 +1,1553 @@
+
+
+
+
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<html>
+<head>
+    <title>[#SHBL-50] Authenticator does not update table logininfo in 4.x - Atlassian Plugins JIRA Studio </title>
+
+    <meta content="general" name="decorator" />
+    <link rel="index" href="/secure/IssueNavigator.jspa" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="-1" />
+    
+
+    
+<meta id="atlassian-token" name="atlassian-token" content="A5G2-B7UC-JLK8-Z7KY|e9b75aa90671ce58ecb46850167b0339a0916ca9|lout">
+
+
+    <link rel="shortcut icon" href="/s/en_US-31q2po/650/149/_/favicon.ico">
+    <link rel="icon" type="image/png" href="/s/en_US-31q2po/650/149/_/images/icons/favicon.png">
+
+    
+    <script type="text/javascript">var contextPath = '';</script>
+<link type="text/css" rel="stylesheet" href="/s/en_US-31q2po/650/149/1/_/download/superbatch/css/batch.css" media="all">
+<!--[if lt IE 9]>
+<link type="text/css" rel="stylesheet" href="/s/en_US-31q2po/650/149/1/_/download/superbatch/css/batch.css?conditionalComment=lt+IE+9" media="all">
+<![endif]-->
+<!--[if IE 9]>
+<link type="text/css" rel="stylesheet" href="/s/en_US-31q2po/650/149/1/_/download/superbatch/css/batch.css?conditionalComment=IE+9" media="all">
+<![endif]-->
+<!--[if lte IE 9]>
+<link type="text/css" rel="stylesheet" href="/s/en_US-31q2po/650/149/1/_/download/superbatch/css/batch.css?conditionalComment=lte+IE+9" media="all">
+<![endif]-->
+<link type="text/css" rel="stylesheet" href="/s/en_US-31q2po/650/149/1.0/_/download/batch/jira.webresources:jquery-fancybox/jira.webresources:jquery-fancybox.css" media="all">
+<link type="text/css" rel="stylesheet" href="/s/en_US-31q2po/650/149/1.0/_/download/batch/jira.webresources:autocomplete/jira.webresources:autocomplete.css" media="all">
+<link type="text/css" rel="stylesheet" href="/s/en_US-31q2po/650/149/1.0/_/download/batch/jira.webresources:global-static/jira.webresources:global-static.css" media="all">
+<link type="text/css" rel="stylesheet" href="/s/en_US-31q2po/650/149/1.0/_/download/batch/jira.webresources:global-static/jira.webresources:global-static.css?media=print" media="print">
+<link type="text/css" rel="stylesheet" href="/s/en_US-31q2po/650/149/5.7/_/download/batch/com.pyxis.greenhopper.jira:gh-ranking/com.pyxis.greenhopper.jira:gh-ranking.css" media="all">
+<link type="text/css" rel="stylesheet" href="/s/en_US-31q2po/650/149/1.0.6/_/download/batch/com.atlassian.plugin.atlassian-feedback-plugin:feedback/com.atlassian.plugin.atlassian-feedback-plugin:feedback.css" media="all">
+<link type="text/css" rel="stylesheet" href="/s/en_US-31q2po/650/149/0.15.4/_/download/batch/com.atlassian.jira.plugins.jira-bitbucket-connector-plugin:resources/com.atlassian.jira.plugins.jira-bitbucket-connector-plugin:resources.css" media="all">
+<link type="text/css" rel="stylesheet" href="/s/en_US-31q2po/650/149/4.4-studio-rc3/_/download/batch/com.atlassian.jira.jira-admin-quicknav-plugin:admin-quicksearch/com.atlassian.jira.jira-admin-quicknav-plugin:admin-quicksearch.css" media="all">
+<script type="text/javascript" src="/s/en_US-31q2po/650/149/1/_/download/superbatch/js/batch.js" ></script>
+<script type="text/javascript" src="/s/en_US-31q2po/650/149/1.0/_/download/batch/jira.webresources:jquery-fancybox/jira.webresources:jquery-fancybox.js" ></script>
+<script type="text/javascript" src="/s/en_US-31q2po/650/149/1.0/_/download/batch/jira.webresources:calendar/jira.webresources:calendar.js" ></script>
+<script type="text/javascript" src="/s/en_US-31q2po/650/149/1.0/_/download/batch/jira.webresources:viewissue/jira.webresources:viewissue.js" ></script>
+<script type="text/javascript" src="/s/en_US-31q2po/650/149/1.0/_/download/batch/jira.webresources:autocomplete/jira.webresources:autocomplete.js" ></script>
+<script type="text/javascript" src="/s/en_US-31q2po/650/149/1.0/_/download/batch/jira.webresources:jira-fields/jira.webresources:jira-fields.js" ></script>
+<script type="text/javascript" src="/s/en_US-31q2po/650/149/1.0/_/download/batch/jira.webresources:calendar-en/jira.webresources:calendar-en.js" ></script>
+<script type="text/javascript" src="/s/en_US-31q2po/650/149/5.7/_/download/batch/com.pyxis.greenhopper.jira:gh-ranking/com.pyxis.greenhopper.jira:gh-ranking.js" ></script>
+<script type="text/javascript" src="/s/en_US-31q2po/650/149/5.7/_/download/batch/com.pyxis.greenhopper.jira:gh-globalkeyboardshortcuts/com.pyxis.greenhopper.jira:gh-globalkeyboardshortcuts.js" ></script>
+<script type="text/javascript" src="/s/en_US-31q2po/650/149/1.0.6/_/download/batch/com.atlassian.plugin.atlassian-feedback-plugin:feedback/com.atlassian.plugin.atlassian-feedback-plugin:feedback.js" ></script>
+<script type="text/javascript" src="/s/en_US-31q2po/650/149/0.4/_/download/batch/com.atlassian.jira.plugins.jira-github-connector-plugin:resources/com.atlassian.jira.plugins.jira-github-connector-plugin:resources.js" ></script>
+<script type="text/javascript" src="/s/en_US-31q2po/650/149/0.15.4/_/download/batch/com.atlassian.jira.plugins.jira-bitbucket-connector-plugin:resources/com.atlassian.jira.plugins.jira-bitbucket-connector-plugin:resources.js" ></script>
+<script type="text/javascript" src="/s/en_US-31q2po/650/149/4.4-studio-rc3/_/download/batch/com.atlassian.jira.jira-soy-plugin:soy-deps/com.atlassian.jira.jira-soy-plugin:soy-deps.js" ></script>
+<script type="text/javascript" src="/s/en_US-31q2po/650/149/4.4-studio-rc3/_/download/batch/com.atlassian.jira.jira-admin-quicknav-plugin:admin-quicksearch/com.atlassian.jira.jira-admin-quicknav-plugin:admin-quicksearch.js" ></script>
+
+    
+        <script type="text/javascript" src="/rest/api/1.0/shortcuts/650/2c704f3b1c272597f28d679bb85da011/shortcuts.js?context=issueaction&amp;context=issuenavigation"></script>
+    
+    <link rel="search" type="application/opensearchdescription+xml" href="/osd.jsp" title="Atlassian Plugins JIRA Studio"/>
+</head>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<body id="jira" class="nl type-ab stalker sn">
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" type="text/css" href="/s/en_US-31q2po/650/149/107.6.4/_/download/resources/com.atlassian.studio.static:studio_resources/css/menu.css">
+<link rel="stylesheet" type="text/css" href="/s/en_US-31q2po/650/149/107.6.4/_/download/resources/com.atlassian.studio.static:studio_resources/css/navbar.css">
+<link rel="stylesheet" type="text/css" href="/s/en_US-31q2po/650/149/107.6.4/_/download/resources/com.atlassian.studio.static:studio_resources/css/dialog.css">
+<!--[if IE]>
+<link rel="stylesheet" type="text/css" href="/s/en_US-31q2po/650/149/107.6.4/_/download/resources/com.atlassian.studio.static:studio_resources/css/dialog-ie.css">
+<![endif]-->
+<!--[if lt IE 9]>
+<link rel="stylesheet" type="text/css" href="/s/en_US-31q2po/650/149/107.6.4/_/download/resources/com.atlassian.studio.static:studio_resources/css/navbar-ie.css">
+<![endif]-->
+<!--[if IE 9]>
+<link rel="stylesheet" type="text/css" href="/s/en_US-31q2po/650/149/107.6.4/_/download/resources/com.atlassian.studio.static:studio_resources/css/navbar-ie9.css">
+<![endif]-->
+<link rel="stylesheet" type="text/css" href="/s/en_US-31q2po/650/149/107.6.4/_/download/resources/com.atlassian.studio.static:studio_resources/css/userstatus.css">
+<link rel="stylesheet" type="text/css" href="/s/en_US-31q2po/650/149/107.6.4/_/download/resources/com.atlassian.studio.static:studio_admin_styles/css/studioadmin.css">
+<link rel="stylesheet" type="text/css" href="/plugins/servlet/studio/dynamiccss/studio-colors-css.css">
+<link rel="stylesheet" type="text/css" href="/s/en_US-31q2po/650/149/107.6.4/_/download/resources/com.atlassian.studio.theme.jira:studio_jira_resources/css/studio-jira-theme-override.css">
+
+<div id="header" style="display:none">
+</div>
+<div class="studio-header" id="studio-header">
+
+	<meta id="application-base-url" name="application-base-url" content="https://studio.plugins.atlassian.com"/>
+<meta id="studio-context-path" name="studio-context-path" content=""/>
+<meta id="jira-base-url" name="jira-base-url" content="https://studio.plugins.atlassian.com"/>
+<meta id="confluence-base-url" name="confluence-base-url" content="https://studio.plugins.atlassian.com/wiki"/>
+
+<div class="header-first-level">
+    <div class="first-level-overlay">
+        <div id="studio-logo">
+            <a href="https://studio.plugins.atlassian.com/secure/Dashboard.jspa" class="logolink"><img src="https://studio.plugins.atlassian.com/download/resources/com.atlassian.studio.static:studio_images/images/StudioLogo.png" border="0" alt="Atlassian Plugins JIRA Studio"></a>
+        </div>
+
+        <div class="top-level-container">
+
+            <div class="nav-dropdowns">
+                <div id="studio-project-menu" class="project-menu">
+	<ul class="ajs-menu-bar">
+    	<li class="normal ajs-menu-item">
+                        			<a class="user trigger ajs-menu-title" href="#"><span><span> Confluence Shibboleth Authenticator </span></span></a>
+
+			<div class="ajs-drop-down hidden">
+    			<ul class="first">
+
+					                		                                                                                                                <li><a href="/browse/CNET" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=10979&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">.NET Authenticator with Single Sign-O...</span></a></li>
+					                        <li><a href="/browse/ATTT" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=11825&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">@ Time Tracker</span></a></li>
+					                        <li><a href="/browse/CONFABAPPLUGIN" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=10982&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">ABAP Code-Formatter</span></a></li>
+					                        <li><a href="/browse/ABAP" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=11605&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">ABAP Syntax Highlighter</span></a></li>
+					                        <li><a href="/browse/APRV" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=10360&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">Ad hoc Workflows</span></a></li>
+					                        <li><a href="/browse/ADHOC" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=10931&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">Adhoc Builder - Deployment Tool</span></a></li>
+					                        <li><a href="/browse/AALOG" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=11604&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">Admin Activity Logger</span></a></li>
+					                        <li><a href="/browse/ATD" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=11521&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">After the Deadline</span></a></li>
+					                        <li><a href="/browse/BAACL" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=11551&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">Agent ACL</span></a></li>
+					                        <li><a href="/browse/AAS" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=10930&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">Agile Application Stack</span></a></li>
+					                        <li><a href="/browse/SPARTEZASCP" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=11123&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">Agile Scrum Cards Print</span></a></li>
+					                        <li><a href="/browse/CAGL" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=10951&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">Agile Toolkit Plugin</span></a></li>
+					                        <li><a href="/browse/JAVT" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=11031&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">Agile Velocity Tracking plugin</span></a></li>
+					                        <li><a href="/browse/ALFRES" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=10933&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">Alfresco Crowd Integration module</span></a></li>
+					                        <li><a href="/browse/ALFCON" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=11320&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">Alfresco to Confluence Connector</span></a></li>
+					                        <li><a href="/browse/ACCF" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=11371&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">All Comments Custom Field Type</span></a></li>
+					                        <li><a href="/browse/CAE" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=10950&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">Archive Extractor Plugin</span></a></li>
+					                        <li><a href="/browse/STRM" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=10570&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">Atlassian Activity Stream Plugin</span></a></li>
+					                        <li><a href="/browse/ACLI" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=10882&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">Atlassian Command Line Interface</span></a></li>
+					                        <li><a href="/browse/PLE" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=11107&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">Atlassian Connector for Eclipse</span></a></li>
+										                                            <li id="ds-more"><a href="https://studio.plugins.atlassian.com/secure/BrowseProjects.jspa?selectedCategory=all" class="more-projects"><span>View All Projects</span></a></li>
+					
+				</ul>
+    		</div>
+    	</li>
+    </ul>
+</div>	
+
+
+                
+	    <div id="studio-user-menu-container">
+        <a class="login-link" href="/login.jsp?os_destination=%2Fbrowse%2FSHBL-50">Log In</a>
+    </div>
+    
+            </div> <!-- /nav-dropdowns -->
+
+            <div class="navigation-tabs studio-menu">
+                
+<ul id="studio-tabs">
+			<li class="current"><a href="/browse/SHBL">Issues</a></li>
+			<li><a href="https://studio.plugins.atlassian.com/wiki/display/SHBL">Wiki</a></li>
+			<li><a href="https://studio.plugins.atlassian.com/source/browse/SHBL">Source</a></li>
+			<li><a href="https://studio.plugins.atlassian.com/source/cru/?filter=custom&project=CR-SHBL">Reviews</a></li>
+			<li><a href="https://studio.plugins.atlassian.com/builds/browse/SHBL">Builds</a></li>
+	</ul>
+
+            </div>
+
+        </div> <!-- /top-level-container -->
+    </div>  <!-- /first-level-overlay -->
+</div> <!-- /header-first-level -->
+
+
+    <div id="header-bottom">
+
+        <div class="second-level-nav studio-menu">
+
+                            
+                
+<ul id="main-nav" class="menu-bar standard-menu-bar">
+                        <li class="aui-dd-parent lazy  ">
+                    <a class="lnk"
+                href="/secure/Dashboard.jspa"
+                 id="home_link"                 accessKey="h"                 title="View your current Dashboard"                >Dashboards</a>
+
+                    <span class="drop-wrap">
+            <a class="drop aui-dd-link"
+                                    id="home_link_drop"
+                    rel="home_link"
+                    accessKey="d"
+                    title="Access more options (Alt+d)"
+                                href="#"><span>Access more options (Alt+d)</span></a></span>
+                </li>
+                        <li class="aui-dd-parent lazy  selected  ">
+                    <a class="lnk"
+                href="/secure/IssueNavigator.jspa"
+                 id="find_link"                 accessKey="f"                 title="View your current filter"                >Issues</a>
+
+                    <span class="drop-wrap">
+            <a class="drop aui-dd-link"
+                                    id="find_link_drop"
+                    rel="find_link"
+                    accessKey="i"
+                    title="Access more options (Alt+i)"
+                                href="#"><span>Access more options (Alt+i)</span></a></span>
+                </li>
+                        <li class="aui-dd-parent nonlazy  ">
+                    <a class="lnk"
+                href="/secure/GreenHopper.jspa"
+                 id="greenhopper_menu"                                 title="Manage your project with GreenHopper"                >Agile</a>
+
+                                                                                                            <span class="drop-wrap">
+                            <a class="drop aui-dd-link"
+                                                                    id="greenhopper_menu_drop"
+                                    accessKey="g"
+                                    rel="greenhopper_menu"
+                                    title="Access more options (Alt+g)"
+                                                                href="#"><span>Access more options</span></a></span>
+                            <div class="aui-list hidden">
+                                                
+                            <ul id="greenhopper_menu_dropdown" class="aui-list-section aui-first   aui-last  ">
+                                                                    <li class="aui-list-item"><a
+                                         id="planningboard-mlink"                                         class="aui-list-item-link   "
+                                                                                                                        href="/secure/VersionBoard.jspa">Planning Board</a></li>
+                                                                    <li class="aui-list-item"><a
+                                         id="taskboard-mlink"                                         class="aui-list-item-link   "
+                                                                                                                        href="/secure/TaskBoard.jspa">Task Board</a></li>
+                                                                    <li class="aui-list-item"><a
+                                         id="chartboard-mlink"                                         class="aui-list-item-link   "
+                                                                                                                        href="/secure/ChartBoard.jspa">Chart Board</a></li>
+                                                                    <li class="aui-list-item"><a
+                                         id="releasedboard-mlink"                                         class="aui-list-item-link   "
+                                                                                                                        href="/secure/ArchiveChartBoard.jspa">Released Board</a></li>
+                                                            </ul>
+                                                    </div>
+                            </li>
+    </ul>
+
+                
+            
+        </div> <!-- /second-level-nav -->
+
+        <div class="quick-action-search">
+
+            
+            <a id="keyshortscuthelp" class="item-link hidden" title="Get more information about JIRA's Keyboard Shortcuts"
+               href="/secure/ViewKeyboardShortcuts!default.jspa">Keyboard Shortcuts</a>
+                            <a id="browse_link" class="hidden" href="/browse/SHBL">Selected Project</a>
+            
+            <form id="quick-search" class="dont-default-focus userpref-form" method="get" action="https://studio.plugins.atlassian.com/secure/StudioSearch.jspa">
+    <fieldset>
+        <legend>Quick Search</legend>
+		<input type="hidden" name="suggest-tracking" value="search" />
+		<input type="hidden" name="quickSearch" value="true" />
+        <input id="studio-quick-search-query" type="text" accessKey="q" autocomplete="off" name="query" size="25"/>
+        <input id="quick-search-submit" type="submit" value="Search"/>
+    </fieldset>
+    <fieldset class="hidden parameters">
+        <input type="hidden" id="quickSearchPlaceholder" value="Search">
+    </fieldset>
+</form>
+
+        </div> <!-- /quick-action-search -->
+
+    </div> <!-- /header-second-level -->
+
+</div>
+
+
+
+
+
+
+
+
+
+
+<fieldset class="hidden parameters">
+    <input type="hidden" title="ajaxTimeout" value="The call to the JIRA server did not complete within the timeout period.  We are unsure of the result of this operation.">
+    <input type="hidden" title="ajaxUnauthorised" value="You are not authorised to perform this operation.  Please try to <a href='/login.jsp?os_destination=%2Fbrowse%2FSHBL-50'>log in</a> or <a href='/secure/Signup!default.jspa'>sign up</a> for an account.">
+    <input type="hidden" title="ajaxUnauthorisedAlert" value="You are not authorised to perform this operation.  Please log in.">
+    <input type="hidden" title="baseURL" value="https://studio.plugins.atlassian.com:443">
+    <input type="hidden" title="ajaxCommsError" value="The JIRA server could not be contacted.  This may be a temporary glitch or the server may be down.">
+    <input type="hidden" title="ajaxServerError" value="The JIRA server was contacted but has returned an error response. We are unsure of the result of this operation.">
+    <input type="hidden" title="ajaxErrorCloseDialog" value="Close this dialog and press refresh in your browser">
+    <input type="hidden" title="ajaxErrorDialogHeading" value="Communications Breakdown">
+
+    <input type="hidden" title="dirtyMessage" value="You have entered new data on this page. If you navigate away from this page without first saving your data, the changes will be lost.">
+    <input type="hidden" title="dirtyDialogMessage" value="You have entered new data in this dialog. If you navigate away from this dialog without first saving your data, the changes will be lost. Click cancel to return to the dialog.">
+    <input type="hidden" title="keyType" value="Type">
+    <input type="hidden" title="keyThen" value="then">
+    <input type="hidden" title="dblClickToExpand" value="Double click to expand">
+    <input type="hidden" title="actions" value="Actions">
+    <input type="hidden" title="removeItem" value="Remove">
+    <input type="hidden" title="workflow" value="Workflow">
+    <input type="hidden" title="labelNew" value="New Label">
+    <input type="hidden" title="enterIssueKey" value="Enter issue key">
+    <input type="hidden" title="issueActionsHint" value="Begin typing for available operations or press down to see all">
+    <input type="hidden" title="closelink" value="Close">
+    <input type="hidden" title="dotOperations" value="Operations">
+    <input type="hidden" title="dotLoading" value="Loading...">
+    <input type="hidden" title="frotherSuggestions" value="Suggestions">
+    <input type="hidden" title="frotherNomatches" value="No Matches">
+    <input type="hidden" title="multiselectVersionsError" value="{0} is not a valid version.">
+    <input type="hidden" title="multiselectComponentsError" value="{0} is not a valid component.">
+    <input type="hidden" title="multiselectGenericError" value="The value {0} is invalid.">
+</fieldset>
+
+
+
+
+<div class="alertHeader">
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-6032469-24");
+pageTracker._trackPageview();
+} catch(err) {}</script>
+
+<script type="text/javascript" charset="utf-8">
+  (function(){
+    t = document.createElement('script');t.async=true;t.type ='text/javascript';
+    t.src = ('https:' == document.location.protocol ? 'https://secure.' : 'http://api.') + 'tellthemwhen.com/api/v2/notices/9ffb4ac1f71.js';
+    var s=document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(t,s);
+  })();
+</script>
+
+<!-- <div id="TTWNotify" style="display:none"></div> -->
+
+<div style="text-align: center; border: #C00; background-color: #FF6600; line-height: 2em">studio.plugins.atlassian.com will be decommissioned in early 2013. If you are a project maintainer, please email <a href="mailto:developer-relations@atlassian.com">Atlassian Developer Relations</a> if you require assistance to migrate your project off this server.</div>
+</div>
+
+
+
+
+<fieldset class="hidden parameters">
+    <input type="hidden" id="viewMoreMsg" value="Click to view {0} more">
+    <input type="hidden" id="hideMsg" value="Hide" >
+    <input type="hidden" id="error-401" value="Cannot perform this operation. You are not logged in." >
+    <input type="hidden" id="issueOpTitleUnvote" value="Remove vote for this issue" >
+    <input type="hidden" id="issueOpTitleVote" value="Vote for this issue" >
+    <input type="hidden" id="issueOpTitleWatch" value="Start watching this issue" >
+    <input type="hidden" id="issueOpTitleUnwatch" value="Stop watching this issue" >
+    <input type="hidden" id="issueOpUnvote" value="Remove Vote" >
+    <input type="hidden" id="issueOpVote" value="Add Vote" >
+    <input type="hidden" id="issueOpWatch" value="Watch Issue" >
+    <input type="hidden" id="issueOpUnwatch" value="Stop Watching" >
+    <input type="hidden" id="i18nVote" value="Vote" >
+    <input type="hidden" id="i18nVoted" value="Voted" >
+    <input type="hidden" id="i18nWatch" value="Watch" >
+    <input type="hidden" id="i18nWatching" value="Watching" >
+</fieldset>
+
+<div id="stalker"  class="stalker">
+    <div class="item-header">
+    
+        
+
+
+
+
+
+
+
+
+
+
+
+
+<h1 class="item-name avatar" style="background-image:url(/secure/projectavatar?pid=10580&amp;avatarId=10011&amp;size=large)">
+        
+            <img id="project-avatar" alt="" class="project-avatar-48" height="48" src="/secure/projectavatar?pid=10580&amp;avatarId=10011&amp;size=large" width="48" />
+        
+        <span>Confluence Shibboleth Authenticator</span>
+</h1>
+
+
+<ul class="breadcrumbs">
+    <li><a id="project-name-val" href="/browse/SHBL">Confluence Shibboleth Authenticator</a></li>
+    
+    <li><a id="key-val" rel="30086" href="/browse/SHBL-50">SHBL-50</a></li>
+</ul>
+
+<h2 id="issue_header_summary" class="item-summary"><a href="/browse/SHBL-50">Authenticator does not update table logininfo in 4.x</a></h2>
+
+    
+    </div>
+    
+
+
+
+
+    <div class="command-bar">
+        <div class="ops-cont">
+            <div class="ops-menus">
+                
+                
+                    <ul id="opsbar-login" class="first ops">
+                        <li id="ops-login" class="last">
+                            <a id="ops-login-lnk" class="button first last" href="/login.jsp?os_destination=%2Fbrowse%2FSHBL-50">Log In</a>
+                        </li>
+                    </ul>
+                
+                
+                    
+                        
+                    
+                
+                    
+                        
+                    
+                
+                
+                    
+                        <ul class="ops" id="view-drop">
+                            <li>
+                                <div class="aui-dd-parent">
+                                    <a href="#" title="View this issue in another format" class="drop lnk aui-dd-link standard icon-views"><span>Views</span></a>
+                                        <div class="aui-list hidden">
+                                        <ul class="aui-first aui-last aui-list-section">
+                                            
+                                                <li class="aui-list-item">
+                                                    <a class="aui-list-item-link" rel="nofollow" href="/si/jira.issueviews:issue-xml/SHBL-50/SHBL-50.xml">XML</a>
+                                                </li>
+                                            
+                                                <li class="aui-list-item">
+                                                    <a class="aui-list-item-link" rel="nofollow" href="/si/jira.issueviews:issue-word/SHBL-50/SHBL-50.doc">Word</a>
+                                                </li>
+                                            
+                                                <li class="aui-list-item">
+                                                    <a class="aui-list-item-link" rel="nofollow" href="/si/jira.issueviews:issue-html/SHBL-50/SHBL-50.html">Printable</a>
+                                                </li>
+                                            
+                                        </ul>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    
+                
+            </div>
+        </div>
+    </div>          
+
+
+    <div class="btm"></div>
+</div>
+<div id="main-content">
+    <div class="active-area">
+        <div class="column" id="primary">
+            <div class="content">
+                
+                
+                
+                
+
+                    <div id="details-module" class="module toggle-wrap">
+                        <div class="mod-header">
+                            <h3 class="toggle-title">Details</h3>
+                        </div>
+                        <div class="mod-content">
+                            <ul id="issuedetails" class="property-list two-cols">
+    <li class="item">
+        <div class="wrap">
+            <strong class="name">Type:</strong>
+            <span id="type-val" class="value">
+                                                        <img alt="Improvement" height="16" src="/images/icons/improvement.gif" title="Improvement - An improvement or enhancement to an existing feature or task." width="16" />
+             Improvement
+            </span>
+        </div>
+    </li>
+    <li class="item item-right">
+        <div class="wrap">
+            <strong class="name">Status:</strong>
+            <span id="status-val" class="value">
+                                                        <img alt="Closed" height="16" src="/images/icons/status_closed.gif" title="Closed - The issue is considered finished, the resolution is correct. Issues which are closed can be reopened." width="16" />
+             Closed
+            </span>
+                    </div>
+    </li>
+            <li class="item">
+            <div class="wrap">
+                <strong class="name">Priority:</strong>
+                <span id="priority-val" class="value">
+                                                                <img alt="Minor" height="16" src="/images/icons/priority_minor.gif" title="Minor - Minor loss of function, or other problem where easy workaround is present." width="16" />
+             Minor
+                </span>
+            </div>
+        </li>
+                                <li class="item item-right">
+            <div class="wrap">
+                <strong class="name">Resolution:</strong>
+                <span id="resolution-val" class="value resolved" >
+                                         Fixed
+                                </span>
+            </div>
+        </li>
+                <li class="item">
+            <div class="wrap">
+                <strong class="name">Affects Version/s:</strong>
+                <span id="versions-val" class="value">
+                                            <span class="shorten" id="versions-field">
+                                                            <span title="2.0.1 Changes by Gary Weaver: SHBL-48: Fixes for Confluence 3.5.x">2.0.1</span>                                                    </span>
+                                    </span>
+            </div>
+        </li>
+                <li class="item item-right">
+            <div class="wrap">
+                <strong class="name">Fix Version/s:</strong>
+                <span id="fixfor-val" class="value">
+                                            <span class="shorten" id="fixVersions-field">
+                                                            <a href="/browse/SHBL/fixforversion/15729" title="2.1.9 Changes by Gary Weaver: SHBL-55, SHBL-56: Support for Confluence 4.1.x">2.1.9</a>                                                    </span>
+                                    </span>
+            </div>
+        </li>
+                <li class="item">
+            <div class="wrap">
+                <strong class="name">Component/s:</strong>
+                <span id="components-val" class="value">
+                                            None
+                                    </span>
+            </div>
+        </li>
+                    <li class="item full-width">
+            <div class="wrap" id="wrap-labels">
+                <strong class="name">Labels:</strong>
+                    <div class="labels-wrap value">
+            <span class="labels" id="labels-30086-value">None</span>
+                </div>
+            </div>
+        </li>
+        </ul>
+
+
+                            
+                                
+
+<div id="customfieldmodule">
+    
+
+    
+    
+    <ul id="tabCellPane1" class="property-list">
+        
+        
+            
+                
+                
+                    <li id="rowForcustomfield_10061" class="item">
+                        <div class="wrap">
+                            <strong title="Internal Complexity" class="name">Internal Complexity:</strong>
+                            <div id="customfield_10061-val" class="value type-select">
+                                 Unknown
+
+                            </div>
+                        </div>
+                    </li>
+                
+            
+        
+            
+                
+                
+                    <li id="rowForcustomfield_10060" class="item">
+                        <div class="wrap">
+                            <strong title="Internal Value" class="name">Internal Value:</strong>
+                            <div id="customfield_10060-val" class="value type-select">
+                                 Unknown
+
+                            </div>
+                        </div>
+                    </li>
+                
+            
+        
+            
+                
+                
+                    <li id="rowForcustomfield_10082" class="item">
+                        <div class="wrap">
+                            <strong title="Rank" class="name">Rank:</strong>
+                            <div id="customfield_10082-val" class="value type-greenhopper-ranking">
+                                
+<div id="RankField_customfield_10082view">	<span id="RankValue_customfield_10082view">Issue can not be ranked.</span>&nbsp;
+			<span id="RankPage_customfield_10082view" class="gh-rankpage gh-jira-rankpage"></span>
+</div>
+
+                            </div>
+                        </div>
+                    </li>
+                
+            
+        
+    </ul>
+    
+</div>
+
+                            
+                        </div>
+                    </div>
+
+                    
+
+
+
+
+<div id="descriptionmodule" class="module toggle-wrap">
+    <div class="mod-header">
+        <h3 class="toggle-title">Description</h3>
+    </div>
+    <div id="issue-description" class="mod-content">
+        <p>Confluence 4.0 has a new table logininfo:</p>
+
+<p>                Table "public.logininfo"<br/>
+     Column      |            Type             | Modifiers <br/>
+----------------<del><ins></del>---------------------------<del></ins></del>----------<br/>
+ id              | bigint                      | not null<br/>
+ curfailed       | integer                     | <br/>
+ totalfailed     | integer                     | <br/>
+ successdate     | timestamp without time zone | <br/>
+ prevsuccessdate | timestamp without time zone | <br/>
+ faileddate      | timestamp without time zone | <br/>
+ username        | character varying(255)      | not null<br/>
+Indexes:<br/>
+    "logininfo_pkey" PRIMARY KEY, btree (id)<br/>
+    "logininfo_username_key" UNIQUE, btree (username)</p>
+
+<p>The authenticator does not update it. The last login date can, however, still be obtained from table os_propertyentry.</p>
+    </div>
+</div>
+
+
+
+
+
+                    
+                        
+
+
+
+
+
+
+                    
+                
+                
+                    <div class='module toggle-wrap' id='activitymodule'><div id='activitymodule_heading' class='mod-header'><h3 class='toggle-title'>Activity</h3></div><div class='mod-content'>    <div class="tabwrap tabs2">
+                    <div class="sortwrap">
+                                    <a class="icon icon-sort-down" rel="nofollow" href="/browse/SHBL-50?actionOrder=desc#issue-tabs" title="Ascending order - Click to sort in descending order"><span>Ascending order - Click to sort in descending order</span></a>
+                            </div>
+                <ul id="issue-tabs" class="tabs horizontal">
+                                    <li><a id="all-tabpanel" href="/browse/SHBL-50?page=com.atlassian.jira.plugin.system.issuetabpanels:all-tabpanel#issue-tabs"><strong>All</strong></a></li>
+                                                <li id="comment-tabpanel" class="active"><strong>Comments</strong></li>
+                                                <li><a id="worklog-tabpanel" href="/browse/SHBL-50?page=com.atlassian.jira.plugin.system.issuetabpanels:worklog-tabpanel#issue-tabs"><strong>Work Log</strong></a></li>
+                                                <li><a id="changehistory-tabpanel" href="/browse/SHBL-50?page=com.atlassian.jira.plugin.system.issuetabpanels:changehistory-tabpanel#issue-tabs"><strong>History</strong></a></li>
+                                                <li><a id="activity-stream-issue-tab" href="/browse/SHBL-50?page=com.atlassian.streams.streams-jira-plugin:activity-stream-issue-tab#issue-tabs"><strong>Activity</strong></a></li>
+                            </ul>
+    </div>
+    <div class="issuePanelContainer" id="issue_actions_container">
+                        <div id="comment-51569" class="issue-data-block activity-comment twixi-block expanded">
+    <div class="twixi-wrap verbose actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-opened"><span>Hide</span></span></a>
+        <div class="action-links">
+            <a href="/browse/SHBL-50?focusedCommentId=51569&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-51569" title="A permanent link to this comment." class="icon icon-perma"><span>Permalink</span></a>
+                                </div>
+        <div class="action-details">
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="gswduke" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_51569_verbose" href="/secure/ViewProfile.jspa?name=gswduke">Gary S. Weaver</a>
+ added a comment  - <span class='commentdate_51569_verbose subText'><span class='date user-tz' title='17/Nov/11 10:17 AM'><time datetime='2011-11-17T10:17-0800'>17/Nov/11 10:17 AM</time></span></span>  </div>
+        <div class="action-body flooded"><p>Erkki, I'm not sure how to proceed and currently don't have time to help, but I have asked the Confluence community and Atlassian here: <a href="https://answers.atlassian.com/questions/21460/how-to-update-logininfo-table-in-confluence-4-0-in-custom-confluence-authenticator">https://answers.atlassian.com/questions/21460/how-to-update-logininfo-table-in-confluence-4-0-in-custom-confluence-authenticator</a></p>
+
+<p>Feel free to click on the right side of that page to follow the question. I assume that this isn't a high priority for you since there is a workaround that you mentioned, but hopefully someone will have a suggestion that we can easily implement. Also, if anyone wants to work on this, please feel free. I would suggest using Confluence/Crowd API versus directly updating the database table, though.</p>
+
+<p>I'll leave this ticket open, but note that it is basically on hold for now.</p> </div>
+    </div>
+    <div class="twixi-wrap concise actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-closed"><span>Show</span></span></a>
+        <div class="action-details flooded">
+            
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="gswduke" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_51569_concise" href="/secure/ViewProfile.jspa?name=gswduke">Gary S. Weaver</a>
+ added a comment  - <span class='commentdate_51569_concise subText'><span class='date user-tz' title='17/Nov/11 10:17 AM'><time datetime='2011-11-17T10:17-0800'>17/Nov/11 10:17 AM</time></span></span>               Erkki, I'm not sure how to proceed and currently don't have time to help, but I have asked the Confluence community and Atlassian here: <a href="https://answers.atlassian.com/questions/21460/how-to-update-logininfo-table-in-confluence-4-0-in-custom-confluence-authenticator">https://answers.atlassian.com/questions/21460/how-to-update-logininfo-table-in-confluence-4-0-in-custom-confluence-authenticator</a>
+
+Feel free to click on the right side of that page to follow the question. I assume that this isn't a high priority for you since there is a workaround that you mentioned, but hopefully someone will have a suggestion that we can easily implement. Also, if anyone wants to work on this, please feel free. I would suggest using Confluence/Crowd API versus directly updating the database table, though.
+
+I'll leave this ticket open, but note that it is basically on hold for now.         </div>
+    </div>
+</div>
+                     <div id="comment-51769" class="issue-data-block activity-comment twixi-block expanded">
+    <div class="twixi-wrap verbose actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-opened"><span>Hide</span></span></a>
+        <div class="action-links">
+            <a href="/browse/SHBL-50?focusedCommentId=51769&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-51769" title="A permanent link to this comment." class="icon icon-perma"><span>Permalink</span></a>
+                                </div>
+        <div class="action-details">
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="gswduke" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_51769_verbose" href="/secure/ViewProfile.jspa?name=gswduke">Gary S. Weaver</a>
+ added a comment  - <span class='commentdate_51769_verbose subText'><span class='date user-tz' title='22/Nov/11 11:32 AM'><time datetime='2011-11-22T11:32-0800'>22/Nov/11 11:32 AM</time></span></span>  </div>
+        <div class="action-body flooded"><p>Erkki and others,</p>
+
+<p>Please vote for this question. Whenever it is voted for it will move to the top of the queue for people to answer, afaik:<br/>
+<a href="https://answers.atlassian.com/questions/21460/how-to-update-logininfo-table-in-confluence-4-0-in-custom-confluence-authenticator">https://answers.atlassian.com/questions/21460/how-to-update-logininfo-table-in-confluence-4-0-in-custom-confluence-authenticator</a></p>
+
+<p>Thanks,<br/>
+Gary</p> </div>
+    </div>
+    <div class="twixi-wrap concise actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-closed"><span>Show</span></span></a>
+        <div class="action-details flooded">
+            
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="gswduke" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_51769_concise" href="/secure/ViewProfile.jspa?name=gswduke">Gary S. Weaver</a>
+ added a comment  - <span class='commentdate_51769_concise subText'><span class='date user-tz' title='22/Nov/11 11:32 AM'><time datetime='2011-11-22T11:32-0800'>22/Nov/11 11:32 AM</time></span></span>               Erkki and others,
+
+Please vote for this question. Whenever it is voted for it will move to the top of the queue for people to answer, afaik:
+<a href="https://answers.atlassian.com/questions/21460/how-to-update-logininfo-table-in-confluence-4-0-in-custom-confluence-authenticator">https://answers.atlassian.com/questions/21460/how-to-update-logininfo-table-in-confluence-4-0-in-custom-confluence-authenticator</a>
+
+Thanks,
+Gary         </div>
+    </div>
+</div>
+                     <div id="comment-51828" class="issue-data-block activity-comment twixi-block expanded">
+    <div class="twixi-wrap verbose actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-opened"><span>Hide</span></span></a>
+        <div class="action-links">
+            <a href="/browse/SHBL-50?focusedCommentId=51828&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-51828" title="A permanent link to this comment." class="icon icon-perma"><span>Permalink</span></a>
+                                </div>
+        <div class="action-details">
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="gswduke" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_51828_verbose" href="/secure/ViewProfile.jspa?name=gswduke">Gary S. Weaver</a>
+ added a comment  - <span class='commentdate_51828_verbose subText'><span class='date user-tz' title='23/Nov/11 9:02 AM'><time datetime='2011-11-23T09:02-0800'>23/Nov/11 9:02 AM</time></span></span>  </div>
+        <div class="action-body flooded"><p>Sent email to developer relations asking for assistance/guidance on this issue.</p> </div>
+    </div>
+    <div class="twixi-wrap concise actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-closed"><span>Show</span></span></a>
+        <div class="action-details flooded">
+            
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="gswduke" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_51828_concise" href="/secure/ViewProfile.jspa?name=gswduke">Gary S. Weaver</a>
+ added a comment  - <span class='commentdate_51828_concise subText'><span class='date user-tz' title='23/Nov/11 9:02 AM'><time datetime='2011-11-23T09:02-0800'>23/Nov/11 9:02 AM</time></span></span>               Sent email to developer relations asking for assistance/guidance on this issue.         </div>
+    </div>
+</div>
+                     <div id="comment-52177" class="issue-data-block activity-comment twixi-block expanded">
+    <div class="twixi-wrap verbose actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-opened"><span>Hide</span></span></a>
+        <div class="action-links">
+            <a href="/browse/SHBL-50?focusedCommentId=52177&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-52177" title="A permanent link to this comment." class="icon icon-perma"><span>Permalink</span></a>
+                                </div>
+        <div class="action-details">
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="gswduke" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_52177_verbose" href="/secure/ViewProfile.jspa?name=gswduke">Gary S. Weaver</a>
+ added a comment  - <span class='commentdate_52177_verbose subText'><span class='date user-tz' title='01/Dec/11 8:33 AM'><time datetime='2011-12-01T08:33-0800'>01/Dec/11 8:33 AM</time></span></span>  </div>
+        <div class="action-body flooded"><p>Created the following ticket. Please vote for it/watch it/add as much info as you can there. Be sure to clarify that this is an issue with Confluence 4.x compatibility with custom authenticators in-general that work with previous releases of Confluence and tell them where the user login info is being logged in OS_PROPERTYENTRY but not in LOGININFO table, even though it appears to be attempting to update that table: <a href="https://jira.atlassian.com/browse/CONF-24033">https://jira.atlassian.com/browse/CONF-24033</a></p> </div>
+    </div>
+    <div class="twixi-wrap concise actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-closed"><span>Show</span></span></a>
+        <div class="action-details flooded">
+            
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="gswduke" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_52177_concise" href="/secure/ViewProfile.jspa?name=gswduke">Gary S. Weaver</a>
+ added a comment  - <span class='commentdate_52177_concise subText'><span class='date user-tz' title='01/Dec/11 8:33 AM'><time datetime='2011-12-01T08:33-0800'>01/Dec/11 8:33 AM</time></span></span>               Created the following ticket. Please vote for it/watch it/add as much info as you can there. Be sure to clarify that this is an issue with Confluence 4.x compatibility with custom authenticators in-general that work with previous releases of Confluence and tell them where the user login info is being logged in OS_PROPERTYENTRY but not in LOGININFO table, even though it appears to be attempting to update that table: <a href="https://jira.atlassian.com/browse/CONF-24033">https://jira.atlassian.com/browse/CONF-24033</a>         </div>
+    </div>
+</div>
+                     <div id="comment-52210" class="issue-data-block activity-comment twixi-block expanded">
+    <div class="twixi-wrap verbose actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-opened"><span>Hide</span></span></a>
+        <div class="action-links">
+            <a href="/browse/SHBL-50?focusedCommentId=52210&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-52210" title="A permanent link to this comment." class="icon icon-perma"><span>Permalink</span></a>
+                                </div>
+        <div class="action-details">
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="gswduke" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_52210_verbose" href="/secure/ViewProfile.jspa?name=gswduke">Gary S. Weaver</a>
+ added a comment  - <span class='commentdate_52210_verbose subText'><span class='date user-tz' title='02/Dec/11 4:14 AM'><time datetime='2011-12-02T04:14-0800'>02/Dec/11 4:14 AM</time></span></span>  </div>
+        <div class="action-body flooded"><p>From <a href="https://answers.atlassian.com/questions/21460/how-to-update-logininfo-table-in-confluence-4-0-in-custom-confluence-authenticator:">https://answers.atlassian.com/questions/21460/how-to-update-logininfo-table-in-confluence-4-0-in-custom-confluence-authenticator:</a></p>
+
+<p>This is what debugging tells about updating the table:</p>
+
+<p>2011-11-30 13:35:07,460 DEBUG <a href="https://studio.plugins.atlassian.com/wiki/display/SHBL/TP-Processor3">TP-Processor3</a> [atlassian.seraph.filter.PasswordB<br/>
+asedLoginFilter] runAuthentication runAuthentication : 'admin' was successfully<br/>
+authenticated<br/>
+2011-11-30 13:35:07,461 DEBUG <a href="https://studio.plugins.atlassian.com/wiki/display/SHBL/TP-Processor3">TP-Processor3</a> <a href="https://studio.plugins.atlassian.com/wiki/display/SHBL/net.sf.hibernate.SQL">net.sf.hibernate.SQL</a> log select userlogini0_.id as id, userlogini0_.CURFAILED as CURFAILED, userlogini0_.TOTALFAILED as TOTALFAI3_, userlogini0_.SUCCESSDATE as SUCCESSD4_, userlogini0_.PREVSUCCESSDATE as PREVSUCC5_, userlogini0_.FAILEDDATE as FAILEDDATE, userlogini0_.USERNAME as USERNAME from logininfo userlogini0_ where (userlogini0_.USERNAME=? )<br/>
+2011-11-30 13:35:07,464 DEBUG <a href="https://studio.plugins.atlassian.com/wiki/display/SHBL/TP-Processor3">TP-Processor3</a> <a href="https://studio.plugins.atlassian.com/wiki/display/SHBL/net.sf.hibernate.SQL">net.sf.hibernate.SQL</a> log update logininfo set CURFAILED=?, TOTALFAILED=?, SUCCESSDATE=?, PREVSUCCESSDATE=?, FAILEDDATE=?, USERNAME=? where id=?<br/>
+2011-11-30 13:35:07,467 DEBUG <a href="https://studio.plugins.atlassian.com/wiki/display/SHBL/TP-Processor3">TP-Processor3</a> <a href="https://studio.plugins.atlassian.com/wiki/display/SHBL/atlassian.seraph.filter.BaseLoginFilter">atlassian.seraph.filter.BaseLoginFilter</a> doFilter doFilter : Login completed for 'admin' - os_authstatus = 'success'</p>
+
+<p>Erkki Aalto By Erkki Aalto (26 karma) on Dec 01 at 2:40 a.m.<br/>
+permanent link|edit|report (0)</p> </div>
+    </div>
+    <div class="twixi-wrap concise actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-closed"><span>Show</span></span></a>
+        <div class="action-details flooded">
+            
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="gswduke" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_52210_concise" href="/secure/ViewProfile.jspa?name=gswduke">Gary S. Weaver</a>
+ added a comment  - <span class='commentdate_52210_concise subText'><span class='date user-tz' title='02/Dec/11 4:14 AM'><time datetime='2011-12-02T04:14-0800'>02/Dec/11 4:14 AM</time></span></span>               From <a href="https://answers.atlassian.com/questions/21460/how-to-update-logininfo-table-in-confluence-4-0-in-custom-confluence-authenticator:">https://answers.atlassian.com/questions/21460/how-to-update-logininfo-table-in-confluence-4-0-in-custom-confluence-authenticator:</a>
+
+This is what debugging tells about updating the table:
+
+2011-11-30 13:35:07,460 DEBUG <a href="https://studio.plugins.atlassian.com/wiki/display/SHBL/TP-Processor3">TP-Processor3</a> [atlassian.seraph.filter.PasswordB
+asedLoginFilter] runAuthentication runAuthentication : 'admin' was successfully
+authenticated
+2011-11-30 13:35:07,461 DEBUG <a href="https://studio.plugins.atlassian.com/wiki/display/SHBL/TP-Processor3">TP-Processor3</a> <a href="https://studio.plugins.atlassian.com/wiki/display/SHBL/net.sf.hibernate.SQL">net.sf.hibernate.SQL</a> log select userlogini0_.id as id, userlogini0_.CURFAILED as CURFAILED, userlogini0_.TOTALFAILED as TOTALFAI3_, userlogini0_.SUCCESSDATE as SUCCESSD4_, userlogini0_.PREVSUCCESSDATE as PREVSUCC5_, userlogini0_.FAILEDDATE as FAILEDDATE, userlogini0_.USERNAME as USERNAME from logininfo userlogini0_ where (userlogini0_.USERNAME=? )
+2011-11-30 13:35:07,464 DEBUG <a href="https://studio.plugins.atlassian.com/wiki/display/SHBL/TP-Processor3">TP-Processor3</a> <a href="https://studio.plugins.atlassian.com/wiki/display/SHBL/net.sf.hibernate.SQL">net.sf.hibernate.SQL</a> log update logininfo set CURFAILED=?, TOTALFAILED=?, SUCCESSDATE=?, PREVSUCCESSDATE=?, FAILEDDATE=?, USERNAME=? where id=?
+2011-11-30 13:35:07,467 DEBUG <a href="https://studio.plugins.atlassian.com/wiki/display/SHBL/TP-Processor3">TP-Processor3</a> <a href="https://studio.plugins.atlassian.com/wiki/display/SHBL/atlassian.seraph.filter.BaseLoginFilter">atlassian.seraph.filter.BaseLoginFilter</a> doFilter doFilter : Login completed for 'admin' - os_authstatus = 'success'
+
+Erkki Aalto By Erkki Aalto (26 karma) on Dec 01 at 2:40 a.m.
+permanent link|edit|report (0)         </div>
+    </div>
+</div>
+                     <div id="comment-52211" class="issue-data-block activity-comment twixi-block expanded">
+    <div class="twixi-wrap verbose actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-opened"><span>Hide</span></span></a>
+        <div class="action-links">
+            <a href="/browse/SHBL-50?focusedCommentId=52211&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-52211" title="A permanent link to this comment." class="icon icon-perma"><span>Permalink</span></a>
+                                </div>
+        <div class="action-details">
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="gswduke" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_52211_verbose" href="/secure/ViewProfile.jspa?name=gswduke">Gary S. Weaver</a>
+ added a comment  - <span class='commentdate_52211_verbose subText'><span class='date user-tz' title='02/Dec/11 4:14 AM'><time datetime='2011-12-02T04:14-0800'>02/Dec/11 4:14 AM</time></span></span>  </div>
+        <div class="action-body flooded"><p>From <a href="https://answers.atlassian.com/questions/21460/how-to-update-logininfo-table-in-confluence-4-0-in-custom-confluence-authenticator:">https://answers.atlassian.com/questions/21460/how-to-update-logininfo-table-in-confluence-4-0-in-custom-confluence-authenticator:</a></p>
+
+<p>To be more precise, the log above tells something about updating logininfo for a local user and there logininfo is indeed updated correctly. For a user autheticating via Shibboleth the log shows this:</p>
+
+<p>2011-11-30 13:41:35,162 DEBUG <a href="https://studio.plugins.atlassian.com/wiki/display/SHBL/TP-Processor11">TP-Processor11</a> <a href="https://studio.plugins.atlassian.com/wiki/display/SHBL/atlassian.seraph.filter.PasswordBasedLoginFilter">atlassian.seraph.filter.PasswordBasedLoginFilter</a> login login : No user name or password was returned. No authentication attempt will be made. User may still be found via a SecurityFilter later.<br/>
+2011-11-30 13:41:35,162 DEBUG <a href="https://studio.plugins.atlassian.com/wiki/display/SHBL/TP-Processor11">TP-Processor11</a> <a href="https://studio.plugins.atlassian.com/wiki/display/SHBL/atlassian.seraph.filter.BaseLoginFilter">atlassian.seraph.filter.BaseLoginFilter</a> doFilter doFilter : Login completed for 'aalto@helsinki.fi' - os_authstatus = 'null'</p>
+
+<p>Erkki Aalto By Erkki Aalto (26 karma) on Dec 02 at 1:51 a.m.<br/>
+permanent link|edit|report (0)</p> </div>
+    </div>
+    <div class="twixi-wrap concise actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-closed"><span>Show</span></span></a>
+        <div class="action-details flooded">
+            
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="gswduke" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_52211_concise" href="/secure/ViewProfile.jspa?name=gswduke">Gary S. Weaver</a>
+ added a comment  - <span class='commentdate_52211_concise subText'><span class='date user-tz' title='02/Dec/11 4:14 AM'><time datetime='2011-12-02T04:14-0800'>02/Dec/11 4:14 AM</time></span></span>               From <a href="https://answers.atlassian.com/questions/21460/how-to-update-logininfo-table-in-confluence-4-0-in-custom-confluence-authenticator:">https://answers.atlassian.com/questions/21460/how-to-update-logininfo-table-in-confluence-4-0-in-custom-confluence-authenticator:</a>
+
+To be more precise, the log above tells something about updating logininfo for a local user and there logininfo is indeed updated correctly. For a user autheticating via Shibboleth the log shows this:
+
+2011-11-30 13:41:35,162 DEBUG <a href="https://studio.plugins.atlassian.com/wiki/display/SHBL/TP-Processor11">TP-Processor11</a> <a href="https://studio.plugins.atlassian.com/wiki/display/SHBL/atlassian.seraph.filter.PasswordBasedLoginFilter">atlassian.seraph.filter.PasswordBasedLoginFilter</a> login login : No user name or password was returned. No authentication attempt will be made. User may still be found via a SecurityFilter later.
+2011-11-30 13:41:35,162 DEBUG <a href="https://studio.plugins.atlassian.com/wiki/display/SHBL/TP-Processor11">TP-Processor11</a> <a href="https://studio.plugins.atlassian.com/wiki/display/SHBL/atlassian.seraph.filter.BaseLoginFilter">atlassian.seraph.filter.BaseLoginFilter</a> doFilter doFilter : Login completed for 'aalto@helsinki.fi' - os_authstatus = 'null'
+
+Erkki Aalto By Erkki Aalto (26 karma) on Dec 02 at 1:51 a.m.
+permanent link|edit|report (0)         </div>
+    </div>
+</div>
+                     <div id="comment-52212" class="issue-data-block activity-comment twixi-block expanded">
+    <div class="twixi-wrap verbose actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-opened"><span>Hide</span></span></a>
+        <div class="action-links">
+            <a href="/browse/SHBL-50?focusedCommentId=52212&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-52212" title="A permanent link to this comment." class="icon icon-perma"><span>Permalink</span></a>
+                                </div>
+        <div class="action-details">
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="gswduke" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_52212_verbose" href="/secure/ViewProfile.jspa?name=gswduke">Gary S. Weaver</a>
+ added a comment  - <span class='commentdate_52212_verbose subText'><span class='date user-tz' title='02/Dec/11 4:15 AM'><time datetime='2011-12-02T04:15-0800'>02/Dec/11 4:15 AM</time></span></span>  </div>
+        <div class="action-body flooded"><p>From CONF-24033:</p>
+
+<p>Erkki Aalto added a comment - 02/Dec/11 12:18 AM</p>
+
+<p>Sorry, there is a misunderstanding. The log piece shows what happens in a local user login where logininfo is indeed updated correctly. There is no indication of a bug.</p> </div>
+    </div>
+    <div class="twixi-wrap concise actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-closed"><span>Show</span></span></a>
+        <div class="action-details flooded">
+            
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="gswduke" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_52212_concise" href="/secure/ViewProfile.jspa?name=gswduke">Gary S. Weaver</a>
+ added a comment  - <span class='commentdate_52212_concise subText'><span class='date user-tz' title='02/Dec/11 4:15 AM'><time datetime='2011-12-02T04:15-0800'>02/Dec/11 4:15 AM</time></span></span>               From CONF-24033:
+
+Erkki Aalto added a comment - 02/Dec/11 12:18 AM
+
+Sorry, there is a misunderstanding. The log piece shows what happens in a local user login where logininfo is indeed updated correctly. There is no indication of a bug.         </div>
+    </div>
+</div>
+                     <div id="comment-52214" class="issue-data-block activity-comment twixi-block expanded">
+    <div class="twixi-wrap verbose actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-opened"><span>Hide</span></span></a>
+        <div class="action-links">
+            <a href="/browse/SHBL-50?focusedCommentId=52214&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-52214" title="A permanent link to this comment." class="icon icon-perma"><span>Permalink</span></a>
+                                </div>
+        <div class="action-details">
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="gswduke" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_52214_verbose" href="/secure/ViewProfile.jspa?name=gswduke">Gary S. Weaver</a>
+ added a comment  - <span class='commentdate_52214_verbose subText'><span class='date user-tz' title='02/Dec/11 4:21 AM'><time datetime='2011-12-02T04:21-0800'>02/Dec/11 4:21 AM</time></span></span>  </div>
+        <div class="action-body flooded"><p>Erkki,</p>
+
+<p>I'm closing this ticket because I understand from you that it is working correctly. If that is incorrect and the authenticator is still not updating that table correctly, then I need to reopen the question or create a new question on answers.atlassian.com? Please tell me exactly what you need if this has not been resolved, as we do not know how to change the authenticator to get what is needed. We do not have the resources to reproduce the problem, so there is no way we can help further without more info.</p>
+
+<p>Thanks,<br/>
+Gary</p> </div>
+    </div>
+    <div class="twixi-wrap concise actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-closed"><span>Show</span></span></a>
+        <div class="action-details flooded">
+            
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="gswduke" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_52214_concise" href="/secure/ViewProfile.jspa?name=gswduke">Gary S. Weaver</a>
+ added a comment  - <span class='commentdate_52214_concise subText'><span class='date user-tz' title='02/Dec/11 4:21 AM'><time datetime='2011-12-02T04:21-0800'>02/Dec/11 4:21 AM</time></span></span>               Erkki,
+
+I'm closing this ticket because I understand from you that it is working correctly. If that is incorrect and the authenticator is still not updating that table correctly, then I need to reopen the question or create a new question on answers.atlassian.com? Please tell me exactly what you need if this has not been resolved, as we do not know how to change the authenticator to get what is needed. We do not have the resources to reproduce the problem, so there is no way we can help further without more info.
+
+Thanks,
+Gary         </div>
+    </div>
+</div>
+                     <div id="comment-52216" class="issue-data-block activity-comment twixi-block expanded">
+    <div class="twixi-wrap verbose actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-opened"><span>Hide</span></span></a>
+        <div class="action-links">
+            <a href="/browse/SHBL-50?focusedCommentId=52216&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-52216" title="A permanent link to this comment." class="icon icon-perma"><span>Permalink</span></a>
+                                </div>
+        <div class="action-details">
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="aalto" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_52216_verbose" href="/secure/ViewProfile.jspa?name=aalto">Erkki Aalto</a>
+ added a comment  - <span class='commentdate_52216_verbose subText'><span class='date user-tz' title='02/Dec/11 4:47 AM'><time datetime='2011-12-02T04:47-0800'>02/Dec/11 4:47 AM</time></span></span>  </div>
+        <div class="action-body flooded"><p>NO! It is not updating the logininfo table for Shibboleth users. It is updating it for local users. I posted the debug logs trying to give some sort of hint about the difference between local and Shibboleth users and the cases where logininfo is and is not updated.</p>
+
+<p>The authenticator should of course always update the table. If you do not have resources to solve this, the you do not have them, but this does not make this case solved.</p> </div>
+    </div>
+    <div class="twixi-wrap concise actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-closed"><span>Show</span></span></a>
+        <div class="action-details flooded">
+            
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="aalto" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_52216_concise" href="/secure/ViewProfile.jspa?name=aalto">Erkki Aalto</a>
+ added a comment  - <span class='commentdate_52216_concise subText'><span class='date user-tz' title='02/Dec/11 4:47 AM'><time datetime='2011-12-02T04:47-0800'>02/Dec/11 4:47 AM</time></span></span>               NO! It is not updating the logininfo table for Shibboleth users. It is updating it for local users. I posted the debug logs trying to give some sort of hint about the difference between local and Shibboleth users and the cases where logininfo is and is not updated.
+
+The authenticator should of course always update the table. If you do not have resources to solve this, the you do not have them, but this does not make this case solved.         </div>
+    </div>
+</div>
+                     <div id="comment-52301" class="issue-data-block activity-comment twixi-block expanded">
+    <div class="twixi-wrap verbose actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-opened"><span>Hide</span></span></a>
+        <div class="action-links">
+            <a href="/browse/SHBL-50?focusedCommentId=52301&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-52301" title="A permanent link to this comment." class="icon icon-perma"><span>Permalink</span></a>
+                                </div>
+        <div class="action-details">
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="gswduke" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_52301_verbose" href="/secure/ViewProfile.jspa?name=gswduke">Gary S. Weaver</a>
+ added a comment  - <span class='commentdate_52301_verbose subText'><span class='date user-tz' title='05/Dec/11 6:42 AM'><time datetime='2011-12-05T06:42-0800'>05/Dec/11 6:42 AM</time></span></span>  </div>
+        <div class="action-body flooded"><p>Erkki,</p>
+
+<p>I'm sorry for the misunderstanding. I was unclear about what you were trying to say until the last comment.</p>
+
+<p>I don't have time to debug this issue right now, and upon brief glance the logs that you provided seem to indicate that it is a problem with Confluence not getting the user information it expected? If the user that you are trying to authenticate via Shibboleth is already in the Confluence database (i.e. was not a new user) then perhaps Confluence is expecting information in the user that the Shib authenticator is not providing, per:</p>
+
+<p>2011-11-30 13:41:35,162 DEBUG TP-Processor11 atlassian.seraph.filter.PasswordBasedLoginFilter login login : No user name or password was returned. No authentication attempt will be made. User may still be found via a SecurityFilter later.<br/>
+2011-11-30 13:41:35,162 DEBUG TP-Processor11 atlassian.seraph.filter.BaseLoginFilter doFilter doFilter : Login completed for 'aalto@helsinki.fi' - os_authstatus = 'null'</p>
+
+<p>It would have been nice to have had Atlassian's help with this, but you stated it wasn't a bug and they closed the ticket before we had a chance to find out. It isn't their job to help us debug the plugin, but I'm unfamiliar with the Atlassian PasswordBasedLoginFilter/BaseLoginFilter and don't have access to the Atlassian source for Confluence, so it would have been helpful to get their assistance.</p>
+
+<p>You'll need to find another resource to assist you unless you can wait a few or more months.</p>
+
+<p>Good luck,<br/>
+Gary</p> </div>
+    </div>
+    <div class="twixi-wrap concise actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-closed"><span>Show</span></span></a>
+        <div class="action-details flooded">
+            
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="gswduke" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_52301_concise" href="/secure/ViewProfile.jspa?name=gswduke">Gary S. Weaver</a>
+ added a comment  - <span class='commentdate_52301_concise subText'><span class='date user-tz' title='05/Dec/11 6:42 AM'><time datetime='2011-12-05T06:42-0800'>05/Dec/11 6:42 AM</time></span></span>               Erkki,
+
+I'm sorry for the misunderstanding. I was unclear about what you were trying to say until the last comment.
+
+I don't have time to debug this issue right now, and upon brief glance the logs that you provided seem to indicate that it is a problem with Confluence not getting the user information it expected? If the user that you are trying to authenticate via Shibboleth is already in the Confluence database (i.e. was not a new user) then perhaps Confluence is expecting information in the user that the Shib authenticator is not providing, per:
+
+2011-11-30 13:41:35,162 DEBUG TP-Processor11 atlassian.seraph.filter.PasswordBasedLoginFilter login login : No user name or password was returned. No authentication attempt will be made. User may still be found via a SecurityFilter later.
+2011-11-30 13:41:35,162 DEBUG TP-Processor11 atlassian.seraph.filter.BaseLoginFilter doFilter doFilter : Login completed for 'aalto@helsinki.fi' - os_authstatus = 'null'
+
+It would have been nice to have had Atlassian's help with this, but you stated it wasn't a bug and they closed the ticket before we had a chance to find out. It isn't their job to help us debug the plugin, but I'm unfamiliar with the Atlassian PasswordBasedLoginFilter/BaseLoginFilter and don't have access to the Atlassian source for Confluence, so it would have been helpful to get their assistance.
+
+You'll need to find another resource to assist you unless you can wait a few or more months.
+
+Good luck,
+Gary         </div>
+    </div>
+</div>
+                     <div id="comment-52303" class="issue-data-block activity-comment twixi-block expanded">
+    <div class="twixi-wrap verbose actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-opened"><span>Hide</span></span></a>
+        <div class="action-links">
+            <a href="/browse/SHBL-50?focusedCommentId=52303&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-52303" title="A permanent link to this comment." class="icon icon-perma"><span>Permalink</span></a>
+                                </div>
+        <div class="action-details">
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="gswduke" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_52303_verbose" href="/secure/ViewProfile.jspa?name=gswduke">Gary S. Weaver</a>
+ added a comment  - <span class='commentdate_52303_verbose subText'><span class='date user-tz' title='05/Dec/11 7:01 AM'><time datetime='2011-12-05T07:01-0800'>05/Dec/11 7:01 AM</time></span></span>  </div>
+        <div class="action-body flooded"><p>(reopening issue)</p> </div>
+    </div>
+    <div class="twixi-wrap concise actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-closed"><span>Show</span></span></a>
+        <div class="action-details flooded">
+            
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="gswduke" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_52303_concise" href="/secure/ViewProfile.jspa?name=gswduke">Gary S. Weaver</a>
+ added a comment  - <span class='commentdate_52303_concise subText'><span class='date user-tz' title='05/Dec/11 7:01 AM'><time datetime='2011-12-05T07:01-0800'>05/Dec/11 7:01 AM</time></span></span>               (reopening issue)         </div>
+    </div>
+</div>
+                     <div id="comment-52371" class="issue-data-block activity-comment twixi-block expanded">
+    <div class="twixi-wrap verbose actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-opened"><span>Hide</span></span></a>
+        <div class="action-links">
+            <a href="/browse/SHBL-50?focusedCommentId=52371&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-52371" title="A permanent link to this comment." class="icon icon-perma"><span>Permalink</span></a>
+                                </div>
+        <div class="action-details">
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="aalto" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_52371_verbose" href="/secure/ViewProfile.jspa?name=aalto">Erkki Aalto</a>
+ added a comment  - <span class='commentdate_52371_verbose subText'><span class='date user-tz' title='06/Dec/11 10:31 PM'><time datetime='2011-12-06T22:31-0800'>06/Dec/11 10:31 PM</time></span></span>  </div>
+        <div class="action-body flooded"><p>One thing I should have noticed before: Last login date is updated to os_propertyentry only for shibboleth users. Apparently, the login information should be in in logininfo and only in logininfo.</p> </div>
+    </div>
+    <div class="twixi-wrap concise actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-closed"><span>Show</span></span></a>
+        <div class="action-details flooded">
+            
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="aalto" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_52371_concise" href="/secure/ViewProfile.jspa?name=aalto">Erkki Aalto</a>
+ added a comment  - <span class='commentdate_52371_concise subText'><span class='date user-tz' title='06/Dec/11 10:31 PM'><time datetime='2011-12-06T22:31-0800'>06/Dec/11 10:31 PM</time></span></span>               One thing I should have noticed before: Last login date is updated to os_propertyentry only for shibboleth users. Apparently, the login information should be in in logininfo and only in logininfo.         </div>
+    </div>
+</div>
+                     <div id="comment-52556" class="issue-data-block activity-comment twixi-block expanded">
+    <div class="twixi-wrap verbose actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-opened"><span>Hide</span></span></a>
+        <div class="action-links">
+            <a href="/browse/SHBL-50?focusedCommentId=52556&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-52556" title="A permanent link to this comment." class="icon icon-perma"><span>Permalink</span></a>
+                                </div>
+        <div class="action-details">
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="gswduke" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_52556_verbose" href="/secure/ViewProfile.jspa?name=gswduke">Gary S. Weaver</a>
+ added a comment  - <span class='commentdate_52556_verbose subText'><span class='date user-tz' title='12/Dec/11 6:58 AM'><time datetime='2011-12-12T06:58-0800'>12/Dec/11 6:58 AM</time></span></span>  </div>
+        <div class="action-body flooded"><p>Developer relations stated we should create a Crowd Jira ticket:<br/>
+&#8212;</p>
+
+<p>Hello!</p>
+
+<p>Your request (#708) has been deemed solved.</p>
+
+
+<p>Ben Speakmon, Dec-09 11:12 (PST):<br/>
+Sorry &#8211; none of us are anything close to Crowd experts. If the forums were no help, opening an issue is probably best.</p>
+
+<p>Cheers,<br/>
+Ben<br/>
+Atlassian Developer Relations</p>
+<hr />
+<p>Follow us on twitter: @atlassiandev<br/>
+Get in touch on IRC: irc.freenode.org #atlassiandev<br/>
+Get involved: <a href="http://confluence.atlassian.com/x/0YBiCg">http://confluence.atlassian.com/x/0YBiCg</a></p>
+
+<p>Sign up for Atlassian Plugin Developer email updates: <a href="https://my.atlassian.com/email">https://my.atlassian.com/email</a></p>
+
+
+<p>Gary Weaver, Nov-23 09:01 (PST):<br/>
+Hello,</p>
+
+<p>Didn't see a response to this question on Atlassian and it is affecting a Finnish customer of Atlassian that uses the plugin I maintain, so wondering if someone would weigh in, even if only to say that there is no Atlassian API to modify this table from a Confluence custom authenticator. If the right person is not around to answer or you don't have time, this is not an emergency. If desired I can create a Jira issue for it. Let me know:</p>
+
+<p><a href="https://answers.atlassian.com/questions/21460/how-to-update-logininfo-table-in-confluence-4-0-in-custom-confluence-authenticator">https://answers.atlassian.com/questions/21460/how-to-update-logininfo-table-in-confluence-4-0-in-custom-confluence-authenticator</a></p>
+
+<p>Thanks,<br/>
+Gary</p> </div>
+    </div>
+    <div class="twixi-wrap concise actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-closed"><span>Show</span></span></a>
+        <div class="action-details flooded">
+            
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="gswduke" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_52556_concise" href="/secure/ViewProfile.jspa?name=gswduke">Gary S. Weaver</a>
+ added a comment  - <span class='commentdate_52556_concise subText'><span class='date user-tz' title='12/Dec/11 6:58 AM'><time datetime='2011-12-12T06:58-0800'>12/Dec/11 6:58 AM</time></span></span>               Developer relations stated we should create a Crowd Jira ticket:
+&#8212;
+
+Hello!
+
+Your request (#708) has been deemed solved.
+
+
+Ben Speakmon, Dec-09 11:12 (PST):
+Sorry &#8211; none of us are anything close to Crowd experts. If the forums were no help, opening an issue is probably best.
+
+Cheers,
+Ben
+Atlassian Developer Relations
+<hr />
+Follow us on twitter: @atlassiandev
+Get in touch on IRC: irc.freenode.org #atlassiandev
+Get involved: <a href="http://confluence.atlassian.com/x/0YBiCg">http://confluence.atlassian.com/x/0YBiCg</a>
+
+Sign up for Atlassian Plugin Developer email updates: <a href="https://my.atlassian.com/email">https://my.atlassian.com/email</a>
+
+
+Gary Weaver, Nov-23 09:01 (PST):
+Hello,
+
+Didn't see a response to this question on Atlassian and it is affecting a Finnish customer of Atlassian that uses the plugin I maintain, so wondering if someone would weigh in, even if only to say that there is no Atlassian API to modify this table from a Confluence custom authenticator. If the right person is not around to answer or you don't have time, this is not an emergency. If desired I can create a Jira issue for it. Let me know:
+
+<a href="https://answers.atlassian.com/questions/21460/how-to-update-logininfo-table-in-confluence-4-0-in-custom-confluence-authenticator">https://answers.atlassian.com/questions/21460/how-to-update-logininfo-table-in-confluence-4-0-in-custom-confluence-authenticator</a>
+
+Thanks,
+Gary         </div>
+    </div>
+</div>
+                     <div id="comment-52557" class="issue-data-block activity-comment twixi-block expanded">
+    <div class="twixi-wrap verbose actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-opened"><span>Hide</span></span></a>
+        <div class="action-links">
+            <a href="/browse/SHBL-50?focusedCommentId=52557&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-52557" title="A permanent link to this comment." class="icon icon-perma"><span>Permalink</span></a>
+                                </div>
+        <div class="action-details">
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="gswduke" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_52557_verbose" href="/secure/ViewProfile.jspa?name=gswduke">Gary S. Weaver</a>
+ added a comment  - <span class='commentdate_52557_verbose subText'><span class='date user-tz' title='12/Dec/11 6:59 AM'><time datetime='2011-12-12T06:59-0800'>12/Dec/11 6:59 AM</time></span></span>  </div>
+        <div class="action-body flooded"><p>Created crowd ticket: <a href="https://jira.atlassian.com/browse/CWD-2728">https://jira.atlassian.com/browse/CWD-2728</a></p>
+
+<p>The intent is to find out why no data is being passed into the filter that should be logging to this table. May be an issue with custom authenticators and embedded crowd usage in confluence 4.0.</p> </div>
+    </div>
+    <div class="twixi-wrap concise actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-closed"><span>Show</span></span></a>
+        <div class="action-details flooded">
+            
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="gswduke" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_52557_concise" href="/secure/ViewProfile.jspa?name=gswduke">Gary S. Weaver</a>
+ added a comment  - <span class='commentdate_52557_concise subText'><span class='date user-tz' title='12/Dec/11 6:59 AM'><time datetime='2011-12-12T06:59-0800'>12/Dec/11 6:59 AM</time></span></span>               Created crowd ticket: <a href="https://jira.atlassian.com/browse/CWD-2728">https://jira.atlassian.com/browse/CWD-2728</a>
+
+The intent is to find out why no data is being passed into the filter that should be logging to this table. May be an issue with custom authenticators and embedded crowd usage in confluence 4.0.         </div>
+    </div>
+</div>
+                     <div id="comment-53360" class="issue-data-block activity-comment twixi-block expanded">
+    <div class="twixi-wrap verbose actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-opened"><span>Hide</span></span></a>
+        <div class="action-links">
+            <a href="/browse/SHBL-50?focusedCommentId=53360&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-53360" title="A permanent link to this comment." class="icon icon-perma"><span>Permalink</span></a>
+                                </div>
+        <div class="action-details">
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="gswduke" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_53360_verbose" href="/secure/ViewProfile.jspa?name=gswduke">Gary S. Weaver</a>
+ added a comment  - <span class='commentdate_53360_verbose subText'><span class='date user-tz' title='03/Jan/12 2:25 PM'><time datetime='2012-01-03T14:25-0800'>03/Jan/12 2:25 PM</time></span></span>  </div>
+        <div class="action-body flooded"><p>2.1.3 released with this fix. Please try it out: <a href="https://studio.plugins.atlassian.com/svn/SHBL/releases/remoteUserAuth-2.1.3.jar">https://studio.plugins.atlassian.com/svn/SHBL/releases/remoteUserAuth-2.1.3.jar</a></p> </div>
+    </div>
+    <div class="twixi-wrap concise actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-closed"><span>Show</span></span></a>
+        <div class="action-details flooded">
+            
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="gswduke" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_53360_concise" href="/secure/ViewProfile.jspa?name=gswduke">Gary S. Weaver</a>
+ added a comment  - <span class='commentdate_53360_concise subText'><span class='date user-tz' title='03/Jan/12 2:25 PM'><time datetime='2012-01-03T14:25-0800'>03/Jan/12 2:25 PM</time></span></span>               2.1.3 released with this fix. Please try it out: <a href="https://studio.plugins.atlassian.com/svn/SHBL/releases/remoteUserAuth-2.1.3.jar">https://studio.plugins.atlassian.com/svn/SHBL/releases/remoteUserAuth-2.1.3.jar</a>         </div>
+    </div>
+</div>
+                     <div id="comment-53408" class="issue-data-block activity-comment twixi-block expanded">
+    <div class="twixi-wrap verbose actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-opened"><span>Hide</span></span></a>
+        <div class="action-links">
+            <a href="/browse/SHBL-50?focusedCommentId=53408&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-53408" title="A permanent link to this comment." class="icon icon-perma"><span>Permalink</span></a>
+                                </div>
+        <div class="action-details">
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="gswduke" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_53408_verbose" href="/secure/ViewProfile.jspa?name=gswduke">Gary S. Weaver</a>
+ added a comment  - <span class='commentdate_53408_verbose subText'><span class='date user-tz' title='04/Jan/12 7:09 AM'><time datetime='2012-01-04T07:09-0800'>04/Jan/12 7:09 AM</time></span></span>  </div>
+        <div class="action-body flooded"><p>Assuming fixed in 2.1.3.</p> </div>
+    </div>
+    <div class="twixi-wrap concise actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-closed"><span>Show</span></span></a>
+        <div class="action-details flooded">
+            
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="gswduke" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_53408_concise" href="/secure/ViewProfile.jspa?name=gswduke">Gary S. Weaver</a>
+ added a comment  - <span class='commentdate_53408_concise subText'><span class='date user-tz' title='04/Jan/12 7:09 AM'><time datetime='2012-01-04T07:09-0800'>04/Jan/12 7:09 AM</time></span></span>               Assuming fixed in 2.1.3.         </div>
+    </div>
+</div>
+                     <div id="comment-53470" class="issue-data-block activity-comment twixi-block expanded">
+    <div class="twixi-wrap verbose actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-opened"><span>Hide</span></span></a>
+        <div class="action-links">
+            <a href="/browse/SHBL-50?focusedCommentId=53470&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-53470" title="A permanent link to this comment." class="icon icon-perma"><span>Permalink</span></a>
+                                </div>
+        <div class="action-details">
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="gswduke" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_53470_verbose" href="/secure/ViewProfile.jspa?name=gswduke">Gary S. Weaver</a>
+ added a comment  - <span class='commentdate_53470_verbose subText'><span class='date user-tz' title='05/Jan/12 9:47 AM'><time datetime='2012-01-05T09:47-0800'>05/Jan/12 9:47 AM</time></span></span>  </div>
+        <div class="action-body flooded"><p>Released fix containing proposed changes in 2.1.4. Please try it out.</p> </div>
+    </div>
+    <div class="twixi-wrap concise actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-closed"><span>Show</span></span></a>
+        <div class="action-details flooded">
+            
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="gswduke" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_53470_concise" href="/secure/ViewProfile.jspa?name=gswduke">Gary S. Weaver</a>
+ added a comment  - <span class='commentdate_53470_concise subText'><span class='date user-tz' title='05/Jan/12 9:47 AM'><time datetime='2012-01-05T09:47-0800'>05/Jan/12 9:47 AM</time></span></span>               Released fix containing proposed changes in 2.1.4. Please try it out.         </div>
+    </div>
+</div>
+                     <div id="comment-53574" class="issue-data-block activity-comment twixi-block expanded">
+    <div class="twixi-wrap verbose actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-opened"><span>Hide</span></span></a>
+        <div class="action-links">
+            <a href="/browse/SHBL-50?focusedCommentId=53574&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-53574" title="A permanent link to this comment." class="icon icon-perma"><span>Permalink</span></a>
+                                </div>
+        <div class="action-details">
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="aalto" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_53574_verbose" href="/secure/ViewProfile.jspa?name=aalto">Erkki Aalto</a>
+ added a comment  - <span class='commentdate_53574_verbose subText'><span class='date user-tz' title='08/Jan/12 11:53 PM'><time datetime='2012-01-08T23:53-0800'>08/Jan/12 11:53 PM</time></span></span>  </div>
+        <div class="action-body flooded"><p>No, still nothing in logininfo. Hope my java programmer finds some time for this.</p> </div>
+    </div>
+    <div class="twixi-wrap concise actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-closed"><span>Show</span></span></a>
+        <div class="action-details flooded">
+            
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="aalto" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_53574_concise" href="/secure/ViewProfile.jspa?name=aalto">Erkki Aalto</a>
+ added a comment  - <span class='commentdate_53574_concise subText'><span class='date user-tz' title='08/Jan/12 11:53 PM'><time datetime='2012-01-08T23:53-0800'>08/Jan/12 11:53 PM</time></span></span>               No, still nothing in logininfo. Hope my java programmer finds some time for this.         </div>
+    </div>
+</div>
+                     <div id="comment-53607" class="issue-data-block activity-comment twixi-block expanded">
+    <div class="twixi-wrap verbose actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-opened"><span>Hide</span></span></a>
+        <div class="action-links">
+            <a href="/browse/SHBL-50?focusedCommentId=53607&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-53607" title="A permanent link to this comment." class="icon icon-perma"><span>Permalink</span></a>
+                                </div>
+        <div class="action-details">
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="gswduke" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_53607_verbose" href="/secure/ViewProfile.jspa?name=gswduke">Gary S. Weaver</a>
+ added a comment  - <span class='commentdate_53607_verbose subText'><span class='date user-tz' title='09/Jan/12 6:43 AM'><time datetime='2012-01-09T06:43-0800'>09/Jan/12 6:43 AM</time></span></span>  </div>
+        <div class="action-body flooded"><p>Good luck. I've done all I can on this side.</p> </div>
+    </div>
+    <div class="twixi-wrap concise actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-closed"><span>Show</span></span></a>
+        <div class="action-details flooded">
+            
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="gswduke" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_53607_concise" href="/secure/ViewProfile.jspa?name=gswduke">Gary S. Weaver</a>
+ added a comment  - <span class='commentdate_53607_concise subText'><span class='date user-tz' title='09/Jan/12 6:43 AM'><time datetime='2012-01-09T06:43-0800'>09/Jan/12 6:43 AM</time></span></span>               Good luck. I've done all I can on this side.         </div>
+    </div>
+</div>
+                 </div>
+</div></div>
+                
+
+            </div>
+        </div>
+
+        <div class="column" id="secondary">
+            <div class="content">
+                
+                    <div class='module toggle-wrap' id='peoplemodule'><div id='peoplemodule_heading' class='mod-header'><h3 class='toggle-title'>People</h3></div><div class='mod-content'><ul class="item-details" id="peopledetails">
+    <li class="people-details">
+                <dl>
+            <dt>Assignee:</dt>
+            <dd id="assignee-val">
+                        <a class="user-hover" rel="gswduke" id="issue_summary_assignee_gswduke" href="/secure/ViewProfile.jspa?name=gswduke">Gary S. Weaver</a>
+            </dd>
+        </dl>
+                        <dl>
+            <dt>Reporter:</dt>
+            <dd id="reporter-val">
+                        <a class="user-hover" rel="aalto" id="issue_summary_reporter_aalto" href="/secure/ViewProfile.jspa?name=aalto">Erkki Aalto</a>
+            </dd>
+        </dl>
+                    </li>
+</ul>
+<div id="votes-val">
+                <span id="vote-label" title="You cannot vote or change your vote on resolved issues."><span class="icon icon-vote-disabled"></span><span class="action-text">Vote</span></span>
+    
+                (<span id="vote-data">1</span>)
+    </div>
+<div id="watchers-val">
+            <span id="watch-label" title="You have to be logged in to watch an issue."><span class="icon icon-watch-disabled"></span>Watch</span>
+    
+        
+            (<span id="watcher-data">2</span>)
+    </div>
+</div></div><div class='module toggle-wrap' id='datesmodule'><div id='datesmodule_heading' class='mod-header'><h3 class='toggle-title'>Dates</h3></div><div class='mod-content'><ul class="item-details">
+    <li>
+            <dl class="dates">
+            <dt>Created:</dt>
+            <dd id="create-date" class="date user-tz"  title="16/Nov/11 11:55 PM" >
+                        <time datetime="2011-11-16T23:55-0800">16/Nov/11 11:55 PM</time></dd>                     </dd>
+        </dl>
+            <dl class="dates">
+            <dt>Updated:</dt>
+            <dd id="updated-date" class="date user-tz"  title="08/Feb/12 7:12 AM" >
+                        <time datetime="2012-02-08T07:12-0800">08/Feb/12 7:12 AM</time></dd>                     </dd>
+        </dl>
+            <dl class="dates">
+            <dt>Resolved:</dt>
+            <dd id="resolved-date" class="date user-tz"  title="08/Feb/12 7:12 AM" >
+                        <time datetime="2012-02-08T07:12-0800">08/Feb/12 7:12 AM</time></dd>                     </dd>
+        </dl>
+        </li>
+</ul>
+</div></div>
+                
+
+            </div>
+        </div>
+        
+            
+                
+            
+        
+
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+<div id="studio-footer" class="footer" style="width:100%; padding:0 0 25px 0;">
+    <div id="poweredby">
+        <p>
+            Powered by <a href="http://www.atlassian.com/hosted/studio">JIRA Studio</a> <span id="studioVersion">107.6 r5978538efb935b5414d28000aa78b98bedfcae46</span> |
+            <a href="http://www.atlassian.com/hosted/terms.jsp">Terms of Use</a> |
+            <a href="http://studio.atlassian.com/browse/JST">Bug/feature request</a> |
+            <a href="https://support.atlassian.com/secure/CreateIssueDetails!init.jspa?summary=Your+summary+here...&amp;issuetype=1&amp;priority=3&amp;description=Please+describe+your+problem+here%3A%0A%0A%0AProblem+reported+from+URL%3A+https%3A%2F%2Fstudio.plugins.atlassian.com%2Fbrowse%2FSHBL-50&amp;customfield_10440=https%3A%2F%2Fstudio.plugins.atlassian.com&amp;pid=10140&amp;">Request Support</a> |
+            <a href="http://confluence.atlassian.com/display/JIRASTUDIO" target="help_JIRASTUDIO" rel="nofollow">Help/Documentation</a> |
+            <a href="http://blogs.atlassian.com/devtools/studio">JIRA Studio Blog</a> |
+            <a href="http://twitter.com/jirastudio">Twitter @JIRAStudio</a>
+        </p>
+    </div>
+</div>
+
+<script type="text/javascript" charset="utf-8" src="/s/en_US-31q2po/650/149/107.6.4/_/download/resources/com.atlassian.studio.static:studio_resources/js/contentnamesearch.js"></script>
+<script type="text/javascript" charset="utf-8" src="/s/en_US-31q2po/650/149/107.6.4/_/download/resources/com.atlassian.studio.static:studio_resources/js/split_button.js"></script>
+<script type="text/javascript" charset="utf-8" src="/s/en_US-31q2po/650/149/107.6.4/_/download/resources/com.atlassian.studio.static:studio_resources/js/userstatus.js"></script>
+
+            <script type="text/javascript" charset="utf-8" src="/s/en_US-31q2po/650/149/107.6.4/_/download/resources/com.atlassian.studio.static:studio_resources/js/safe-ajax.js"></script>
+    
+<script type="text/javascript">
+    // This is the app specific data that the shared js expects
+    studioData = {"jiraUrl" : "https://studio.plugins.atlassian.com"};
+
+            document.cookie = "studio.project.rec.used.cookie=" + escape("SHBL-_-") + "; Max-Age=31536000; path=/;";
+    
+    // Google analytics
+    var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+    document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+    try {
+    var pageTracker = _gat._getTracker("UA-6032469-30");
+    pageTracker._trackPageview();
+    } catch(err) {}
+</script>
+
+<form id="jira_request_timing_info" class="dont-default-focus" >
+	<fieldset class="parameters hidden">
+		<input type="hidden" title="jira.request.start.millis" value="1358699918042" />
+		<input type="hidden" title="jira.request.server.time" value="1416" />
+		<input type="hidden" title="jira.request.id" value="518x7330414x1" />
+		<input type="hidden" title="jira.session.expiry.time" value="-" />
+		<input type="hidden" title="jira.session.expiry.in.mins" value="-" />
+		<input id="jiraConcurrentRequests" type="hidden" name="jira.request.concurrent.requests" value="2" />
+	</fieldset>
+</form>
+<!--
+	                 REQUEST ID : 518x7330414x1
+	          REQUEST TIMESTAMP : [20/Jan/2013:08:38:38 -0800]
+	               REQUEST TIME : 1.4160
+	                 ASESSIONID : mwcdqh
+	        CONCURRENT REQUESTS : 2
+-->
+</body>
+</html>
