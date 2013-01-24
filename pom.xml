@@ -224,7 +224,7 @@
         </developer>
     </developers>
     <organization>
-        <name>Shibboleth Authenticator for Confluence Team</name>
+        <name>Confluence HTTP Authenticator Team</name>
         <url>https://studio.plugins.atlassian.com/wiki/display/SHBL/Confluence+Shibboleth+Authenticator</url>
     </organization>
     <name>Confluence Shibboleth Authenticator</name>
