@@ -1,0 +1,1245 @@
+
+
+
+
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<html>
+<head>
+    <title>[#SHBL-19] Seraph inconsistent in &quot;originalurl&quot; and breaks login to protected pages. - Atlassian Plugins JIRA Studio </title>
+
+    <meta content="general" name="decorator" />
+    <link rel="index" href="/secure/IssueNavigator.jspa" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="-1" />
+    
+
+    
+<meta id="atlassian-token" name="atlassian-token" content="A5G2-B7UC-JLK8-Z7KY|95ffbbe447a518c37a6a9f1af3510ce62f629b21|lout">
+
+
+    <link rel="shortcut icon" href="/s/en_US-31q2po/650/149/_/favicon.ico">
+    <link rel="icon" type="image/png" href="/s/en_US-31q2po/650/149/_/images/icons/favicon.png">
+
+    
+    <script type="text/javascript">var contextPath = '';</script>
+<link type="text/css" rel="stylesheet" href="/s/en_US-31q2po/650/149/1/_/download/superbatch/css/batch.css" media="all">
+<!--[if lt IE 9]>
+<link type="text/css" rel="stylesheet" href="/s/en_US-31q2po/650/149/1/_/download/superbatch/css/batch.css?conditionalComment=lt+IE+9" media="all">
+<![endif]-->
+<!--[if IE 9]>
+<link type="text/css" rel="stylesheet" href="/s/en_US-31q2po/650/149/1/_/download/superbatch/css/batch.css?conditionalComment=IE+9" media="all">
+<![endif]-->
+<!--[if lte IE 9]>
+<link type="text/css" rel="stylesheet" href="/s/en_US-31q2po/650/149/1/_/download/superbatch/css/batch.css?conditionalComment=lte+IE+9" media="all">
+<![endif]-->
+<link type="text/css" rel="stylesheet" href="/s/en_US-31q2po/650/149/1.0/_/download/batch/jira.webresources:jquery-fancybox/jira.webresources:jquery-fancybox.css" media="all">
+<link type="text/css" rel="stylesheet" href="/s/en_US-31q2po/650/149/1.0/_/download/batch/jira.webresources:autocomplete/jira.webresources:autocomplete.css" media="all">
+<link type="text/css" rel="stylesheet" href="/s/en_US-31q2po/650/149/1.0/_/download/batch/jira.webresources:global-static/jira.webresources:global-static.css" media="all">
+<link type="text/css" rel="stylesheet" href="/s/en_US-31q2po/650/149/1.0/_/download/batch/jira.webresources:global-static/jira.webresources:global-static.css?media=print" media="print">
+<link type="text/css" rel="stylesheet" href="/s/en_US-31q2po/650/149/5.7/_/download/batch/com.pyxis.greenhopper.jira:gh-ranking/com.pyxis.greenhopper.jira:gh-ranking.css" media="all">
+<link type="text/css" rel="stylesheet" href="/s/en_US-31q2po/650/149/1.0.6/_/download/batch/com.atlassian.plugin.atlassian-feedback-plugin:feedback/com.atlassian.plugin.atlassian-feedback-plugin:feedback.css" media="all">
+<link type="text/css" rel="stylesheet" href="/s/en_US-31q2po/650/149/0.15.4/_/download/batch/com.atlassian.jira.plugins.jira-bitbucket-connector-plugin:resources/com.atlassian.jira.plugins.jira-bitbucket-connector-plugin:resources.css" media="all">
+<link type="text/css" rel="stylesheet" href="/s/en_US-31q2po/650/149/4.4-studio-rc3/_/download/batch/com.atlassian.jira.jira-admin-quicknav-plugin:admin-quicksearch/com.atlassian.jira.jira-admin-quicknav-plugin:admin-quicksearch.css" media="all">
+<script type="text/javascript" src="/s/en_US-31q2po/650/149/1/_/download/superbatch/js/batch.js" ></script>
+<script type="text/javascript" src="/s/en_US-31q2po/650/149/1.0/_/download/batch/jira.webresources:jquery-fancybox/jira.webresources:jquery-fancybox.js" ></script>
+<script type="text/javascript" src="/s/en_US-31q2po/650/149/1.0/_/download/batch/jira.webresources:calendar/jira.webresources:calendar.js" ></script>
+<script type="text/javascript" src="/s/en_US-31q2po/650/149/1.0/_/download/batch/jira.webresources:viewissue/jira.webresources:viewissue.js" ></script>
+<script type="text/javascript" src="/s/en_US-31q2po/650/149/1.0/_/download/batch/jira.webresources:autocomplete/jira.webresources:autocomplete.js" ></script>
+<script type="text/javascript" src="/s/en_US-31q2po/650/149/1.0/_/download/batch/jira.webresources:jira-fields/jira.webresources:jira-fields.js" ></script>
+<script type="text/javascript" src="/s/en_US-31q2po/650/149/1.0/_/download/batch/jira.webresources:calendar-en/jira.webresources:calendar-en.js" ></script>
+<script type="text/javascript" src="/s/en_US-31q2po/650/149/5.7/_/download/batch/com.pyxis.greenhopper.jira:gh-ranking/com.pyxis.greenhopper.jira:gh-ranking.js" ></script>
+<script type="text/javascript" src="/s/en_US-31q2po/650/149/5.7/_/download/batch/com.pyxis.greenhopper.jira:gh-globalkeyboardshortcuts/com.pyxis.greenhopper.jira:gh-globalkeyboardshortcuts.js" ></script>
+<script type="text/javascript" src="/s/en_US-31q2po/650/149/1.0.6/_/download/batch/com.atlassian.plugin.atlassian-feedback-plugin:feedback/com.atlassian.plugin.atlassian-feedback-plugin:feedback.js" ></script>
+<script type="text/javascript" src="/s/en_US-31q2po/650/149/0.4/_/download/batch/com.atlassian.jira.plugins.jira-github-connector-plugin:resources/com.atlassian.jira.plugins.jira-github-connector-plugin:resources.js" ></script>
+<script type="text/javascript" src="/s/en_US-31q2po/650/149/0.15.4/_/download/batch/com.atlassian.jira.plugins.jira-bitbucket-connector-plugin:resources/com.atlassian.jira.plugins.jira-bitbucket-connector-plugin:resources.js" ></script>
+<script type="text/javascript" src="/s/en_US-31q2po/650/149/4.4-studio-rc3/_/download/batch/com.atlassian.jira.jira-soy-plugin:soy-deps/com.atlassian.jira.jira-soy-plugin:soy-deps.js" ></script>
+<script type="text/javascript" src="/s/en_US-31q2po/650/149/4.4-studio-rc3/_/download/batch/com.atlassian.jira.jira-admin-quicknav-plugin:admin-quicksearch/com.atlassian.jira.jira-admin-quicknav-plugin:admin-quicksearch.js" ></script>
+
+    
+        <script type="text/javascript" src="/rest/api/1.0/shortcuts/650/2c704f3b1c272597f28d679bb85da011/shortcuts.js?context=issueaction&amp;context=issuenavigation"></script>
+    
+    <link rel="search" type="application/opensearchdescription+xml" href="/osd.jsp" title="Atlassian Plugins JIRA Studio"/>
+</head>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<body id="jira" class="nl type-ab stalker sn">
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" type="text/css" href="/s/en_US-31q2po/650/149/107.6.4/_/download/resources/com.atlassian.studio.static:studio_resources/css/menu.css">
+<link rel="stylesheet" type="text/css" href="/s/en_US-31q2po/650/149/107.6.4/_/download/resources/com.atlassian.studio.static:studio_resources/css/navbar.css">
+<link rel="stylesheet" type="text/css" href="/s/en_US-31q2po/650/149/107.6.4/_/download/resources/com.atlassian.studio.static:studio_resources/css/dialog.css">
+<!--[if IE]>
+<link rel="stylesheet" type="text/css" href="/s/en_US-31q2po/650/149/107.6.4/_/download/resources/com.atlassian.studio.static:studio_resources/css/dialog-ie.css">
+<![endif]-->
+<!--[if lt IE 9]>
+<link rel="stylesheet" type="text/css" href="/s/en_US-31q2po/650/149/107.6.4/_/download/resources/com.atlassian.studio.static:studio_resources/css/navbar-ie.css">
+<![endif]-->
+<!--[if IE 9]>
+<link rel="stylesheet" type="text/css" href="/s/en_US-31q2po/650/149/107.6.4/_/download/resources/com.atlassian.studio.static:studio_resources/css/navbar-ie9.css">
+<![endif]-->
+<link rel="stylesheet" type="text/css" href="/s/en_US-31q2po/650/149/107.6.4/_/download/resources/com.atlassian.studio.static:studio_resources/css/userstatus.css">
+<link rel="stylesheet" type="text/css" href="/s/en_US-31q2po/650/149/107.6.4/_/download/resources/com.atlassian.studio.static:studio_admin_styles/css/studioadmin.css">
+<link rel="stylesheet" type="text/css" href="/plugins/servlet/studio/dynamiccss/studio-colors-css.css">
+<link rel="stylesheet" type="text/css" href="/s/en_US-31q2po/650/149/107.6.4/_/download/resources/com.atlassian.studio.theme.jira:studio_jira_resources/css/studio-jira-theme-override.css">
+
+<div id="header" style="display:none">
+</div>
+<div class="studio-header" id="studio-header">
+
+	<meta id="application-base-url" name="application-base-url" content="https://studio.plugins.atlassian.com"/>
+<meta id="studio-context-path" name="studio-context-path" content=""/>
+<meta id="jira-base-url" name="jira-base-url" content="https://studio.plugins.atlassian.com"/>
+<meta id="confluence-base-url" name="confluence-base-url" content="https://studio.plugins.atlassian.com/wiki"/>
+
+<div class="header-first-level">
+    <div class="first-level-overlay">
+        <div id="studio-logo">
+            <a href="https://studio.plugins.atlassian.com/secure/Dashboard.jspa" class="logolink"><img src="https://studio.plugins.atlassian.com/download/resources/com.atlassian.studio.static:studio_images/images/StudioLogo.png" border="0" alt="Atlassian Plugins JIRA Studio"></a>
+        </div>
+
+        <div class="top-level-container">
+
+            <div class="nav-dropdowns">
+                <div id="studio-project-menu" class="project-menu">
+	<ul class="ajs-menu-bar">
+    	<li class="normal ajs-menu-item">
+                        			<a class="user trigger ajs-menu-title" href="#"><span><span> Confluence Shibboleth Authenticator </span></span></a>
+
+			<div class="ajs-drop-down hidden">
+    			<ul class="first">
+
+					                		                                                                                                                <li><a href="/browse/CNET" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=10979&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">.NET Authenticator with Single Sign-O...</span></a></li>
+					                        <li><a href="/browse/ATTT" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=11825&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">@ Time Tracker</span></a></li>
+					                        <li><a href="/browse/CONFABAPPLUGIN" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=10982&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">ABAP Code-Formatter</span></a></li>
+					                        <li><a href="/browse/ABAP" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=11605&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">ABAP Syntax Highlighter</span></a></li>
+					                        <li><a href="/browse/APRV" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=10360&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">Ad hoc Workflows</span></a></li>
+					                        <li><a href="/browse/ADHOC" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=10931&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">Adhoc Builder - Deployment Tool</span></a></li>
+					                        <li><a href="/browse/AALOG" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=11604&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">Admin Activity Logger</span></a></li>
+					                        <li><a href="/browse/ATD" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=11521&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">After the Deadline</span></a></li>
+					                        <li><a href="/browse/BAACL" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=11551&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">Agent ACL</span></a></li>
+					                        <li><a href="/browse/AAS" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=10930&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">Agile Application Stack</span></a></li>
+					                        <li><a href="/browse/SPARTEZASCP" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=11123&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">Agile Scrum Cards Print</span></a></li>
+					                        <li><a href="/browse/CAGL" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=10951&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">Agile Toolkit Plugin</span></a></li>
+					                        <li><a href="/browse/JAVT" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=11031&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">Agile Velocity Tracking plugin</span></a></li>
+					                        <li><a href="/browse/ALFRES" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=10933&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">Alfresco Crowd Integration module</span></a></li>
+					                        <li><a href="/browse/ALFCON" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=11320&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">Alfresco to Confluence Connector</span></a></li>
+					                        <li><a href="/browse/ACCF" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=11371&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">All Comments Custom Field Type</span></a></li>
+					                        <li><a href="/browse/CAE" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=10950&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">Archive Extractor Plugin</span></a></li>
+					                        <li><a href="/browse/STRM" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=10570&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">Atlassian Activity Stream Plugin</span></a></li>
+					                        <li><a href="/browse/ACLI" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=10882&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">Atlassian Command Line Interface</span></a></li>
+					                        <li><a href="/browse/PLE" style="background-image:url(https://studio.plugins.atlassian.com/secure/projectavatar?pid=11107&amp;avatarId=10011&amp;size=small);"><span class="ds-project-name">Atlassian Connector for Eclipse</span></a></li>
+										                                            <li id="ds-more"><a href="https://studio.plugins.atlassian.com/secure/BrowseProjects.jspa?selectedCategory=all" class="more-projects"><span>View All Projects</span></a></li>
+					
+				</ul>
+    		</div>
+    	</li>
+    </ul>
+</div>	
+
+
+                
+	    <div id="studio-user-menu-container">
+        <a class="login-link" href="/login.jsp?os_destination=%2Fbrowse%2FSHBL-19">Log In</a>
+    </div>
+    
+            </div> <!-- /nav-dropdowns -->
+
+            <div class="navigation-tabs studio-menu">
+                
+<ul id="studio-tabs">
+			<li class="current"><a href="/browse/SHBL">Issues</a></li>
+			<li><a href="https://studio.plugins.atlassian.com/wiki/display/SHBL">Wiki</a></li>
+			<li><a href="https://studio.plugins.atlassian.com/source/browse/SHBL">Source</a></li>
+			<li><a href="https://studio.plugins.atlassian.com/source/cru/?filter=custom&project=CR-SHBL">Reviews</a></li>
+			<li><a href="https://studio.plugins.atlassian.com/builds/browse/SHBL">Builds</a></li>
+	</ul>
+
+            </div>
+
+        </div> <!-- /top-level-container -->
+    </div>  <!-- /first-level-overlay -->
+</div> <!-- /header-first-level -->
+
+
+    <div id="header-bottom">
+
+        <div class="second-level-nav studio-menu">
+
+                            
+                
+<ul id="main-nav" class="menu-bar standard-menu-bar">
+                        <li class="aui-dd-parent lazy  ">
+                    <a class="lnk"
+                href="/secure/Dashboard.jspa"
+                 id="home_link"                 accessKey="h"                 title="View your current Dashboard"                >Dashboards</a>
+
+                    <span class="drop-wrap">
+            <a class="drop aui-dd-link"
+                                    id="home_link_drop"
+                    rel="home_link"
+                    accessKey="d"
+                    title="Access more options (Alt+d)"
+                                href="#"><span>Access more options (Alt+d)</span></a></span>
+                </li>
+                        <li class="aui-dd-parent lazy  selected  ">
+                    <a class="lnk"
+                href="/secure/IssueNavigator.jspa"
+                 id="find_link"                 accessKey="f"                 title="View your current filter"                >Issues</a>
+
+                    <span class="drop-wrap">
+            <a class="drop aui-dd-link"
+                                    id="find_link_drop"
+                    rel="find_link"
+                    accessKey="i"
+                    title="Access more options (Alt+i)"
+                                href="#"><span>Access more options (Alt+i)</span></a></span>
+                </li>
+                        <li class="aui-dd-parent nonlazy  ">
+                    <a class="lnk"
+                href="/secure/GreenHopper.jspa"
+                 id="greenhopper_menu"                                 title="Manage your project with GreenHopper"                >Agile</a>
+
+                                                                                                            <span class="drop-wrap">
+                            <a class="drop aui-dd-link"
+                                                                    id="greenhopper_menu_drop"
+                                    accessKey="g"
+                                    rel="greenhopper_menu"
+                                    title="Access more options (Alt+g)"
+                                                                href="#"><span>Access more options</span></a></span>
+                            <div class="aui-list hidden">
+                                                
+                            <ul id="greenhopper_menu_dropdown" class="aui-list-section aui-first   aui-last  ">
+                                                                    <li class="aui-list-item"><a
+                                         id="planningboard-mlink"                                         class="aui-list-item-link   "
+                                                                                                                        href="/secure/VersionBoard.jspa">Planning Board</a></li>
+                                                                    <li class="aui-list-item"><a
+                                         id="taskboard-mlink"                                         class="aui-list-item-link   "
+                                                                                                                        href="/secure/TaskBoard.jspa">Task Board</a></li>
+                                                                    <li class="aui-list-item"><a
+                                         id="chartboard-mlink"                                         class="aui-list-item-link   "
+                                                                                                                        href="/secure/ChartBoard.jspa">Chart Board</a></li>
+                                                                    <li class="aui-list-item"><a
+                                         id="releasedboard-mlink"                                         class="aui-list-item-link   "
+                                                                                                                        href="/secure/ArchiveChartBoard.jspa">Released Board</a></li>
+                                                            </ul>
+                                                    </div>
+                            </li>
+    </ul>
+
+                
+            
+        </div> <!-- /second-level-nav -->
+
+        <div class="quick-action-search">
+
+            
+            <a id="keyshortscuthelp" class="item-link hidden" title="Get more information about JIRA's Keyboard Shortcuts"
+               href="/secure/ViewKeyboardShortcuts!default.jspa">Keyboard Shortcuts</a>
+                            <a id="browse_link" class="hidden" href="/browse/SHBL">Selected Project</a>
+            
+            <form id="quick-search" class="dont-default-focus userpref-form" method="get" action="https://studio.plugins.atlassian.com/secure/StudioSearch.jspa">
+    <fieldset>
+        <legend>Quick Search</legend>
+		<input type="hidden" name="suggest-tracking" value="search" />
+		<input type="hidden" name="quickSearch" value="true" />
+        <input id="studio-quick-search-query" type="text" accessKey="q" autocomplete="off" name="query" size="25"/>
+        <input id="quick-search-submit" type="submit" value="Search"/>
+    </fieldset>
+    <fieldset class="hidden parameters">
+        <input type="hidden" id="quickSearchPlaceholder" value="Search">
+    </fieldset>
+</form>
+
+        </div> <!-- /quick-action-search -->
+
+    </div> <!-- /header-second-level -->
+
+</div>
+
+
+
+
+
+
+
+
+
+
+<fieldset class="hidden parameters">
+    <input type="hidden" title="ajaxTimeout" value="The call to the JIRA server did not complete within the timeout period.  We are unsure of the result of this operation.">
+    <input type="hidden" title="ajaxUnauthorised" value="You are not authorised to perform this operation.  Please try to <a href='/login.jsp?os_destination=%2Fbrowse%2FSHBL-19'>log in</a> or <a href='/secure/Signup!default.jspa'>sign up</a> for an account.">
+    <input type="hidden" title="ajaxUnauthorisedAlert" value="You are not authorised to perform this operation.  Please log in.">
+    <input type="hidden" title="baseURL" value="https://studio.plugins.atlassian.com:443">
+    <input type="hidden" title="ajaxCommsError" value="The JIRA server could not be contacted.  This may be a temporary glitch or the server may be down.">
+    <input type="hidden" title="ajaxServerError" value="The JIRA server was contacted but has returned an error response. We are unsure of the result of this operation.">
+    <input type="hidden" title="ajaxErrorCloseDialog" value="Close this dialog and press refresh in your browser">
+    <input type="hidden" title="ajaxErrorDialogHeading" value="Communications Breakdown">
+
+    <input type="hidden" title="dirtyMessage" value="You have entered new data on this page. If you navigate away from this page without first saving your data, the changes will be lost.">
+    <input type="hidden" title="dirtyDialogMessage" value="You have entered new data in this dialog. If you navigate away from this dialog without first saving your data, the changes will be lost. Click cancel to return to the dialog.">
+    <input type="hidden" title="keyType" value="Type">
+    <input type="hidden" title="keyThen" value="then">
+    <input type="hidden" title="dblClickToExpand" value="Double click to expand">
+    <input type="hidden" title="actions" value="Actions">
+    <input type="hidden" title="removeItem" value="Remove">
+    <input type="hidden" title="workflow" value="Workflow">
+    <input type="hidden" title="labelNew" value="New Label">
+    <input type="hidden" title="enterIssueKey" value="Enter issue key">
+    <input type="hidden" title="issueActionsHint" value="Begin typing for available operations or press down to see all">
+    <input type="hidden" title="closelink" value="Close">
+    <input type="hidden" title="dotOperations" value="Operations">
+    <input type="hidden" title="dotLoading" value="Loading...">
+    <input type="hidden" title="frotherSuggestions" value="Suggestions">
+    <input type="hidden" title="frotherNomatches" value="No Matches">
+    <input type="hidden" title="multiselectVersionsError" value="{0} is not a valid version.">
+    <input type="hidden" title="multiselectComponentsError" value="{0} is not a valid component.">
+    <input type="hidden" title="multiselectGenericError" value="The value {0} is invalid.">
+</fieldset>
+
+
+
+
+<div class="alertHeader">
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-6032469-24");
+pageTracker._trackPageview();
+} catch(err) {}</script>
+
+<script type="text/javascript" charset="utf-8">
+  (function(){
+    t = document.createElement('script');t.async=true;t.type ='text/javascript';
+    t.src = ('https:' == document.location.protocol ? 'https://secure.' : 'http://api.') + 'tellthemwhen.com/api/v2/notices/9ffb4ac1f71.js';
+    var s=document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(t,s);
+  })();
+</script>
+
+<!-- <div id="TTWNotify" style="display:none"></div> -->
+
+<div style="text-align: center; border: #C00; background-color: #FF6600; line-height: 2em">studio.plugins.atlassian.com will be decommissioned in early 2013. If you are a project maintainer, please email <a href="mailto:developer-relations@atlassian.com">Atlassian Developer Relations</a> if you require assistance to migrate your project off this server.</div>
+</div>
+
+
+
+
+<fieldset class="hidden parameters">
+    <input type="hidden" id="viewMoreMsg" value="Click to view {0} more">
+    <input type="hidden" id="hideMsg" value="Hide" >
+    <input type="hidden" id="error-401" value="Cannot perform this operation. You are not logged in." >
+    <input type="hidden" id="issueOpTitleUnvote" value="Remove vote for this issue" >
+    <input type="hidden" id="issueOpTitleVote" value="Vote for this issue" >
+    <input type="hidden" id="issueOpTitleWatch" value="Start watching this issue" >
+    <input type="hidden" id="issueOpTitleUnwatch" value="Stop watching this issue" >
+    <input type="hidden" id="issueOpUnvote" value="Remove Vote" >
+    <input type="hidden" id="issueOpVote" value="Add Vote" >
+    <input type="hidden" id="issueOpWatch" value="Watch Issue" >
+    <input type="hidden" id="issueOpUnwatch" value="Stop Watching" >
+    <input type="hidden" id="i18nVote" value="Vote" >
+    <input type="hidden" id="i18nVoted" value="Voted" >
+    <input type="hidden" id="i18nWatch" value="Watch" >
+    <input type="hidden" id="i18nWatching" value="Watching" >
+</fieldset>
+
+<div id="stalker"  class="stalker">
+    <div class="item-header">
+    
+        
+
+
+
+
+
+
+
+
+
+
+
+
+<h1 class="item-name avatar" style="background-image:url(/secure/projectavatar?pid=10580&amp;avatarId=10011&amp;size=large)">
+        
+            <img id="project-avatar" alt="" class="project-avatar-48" height="48" src="/secure/projectavatar?pid=10580&amp;avatarId=10011&amp;size=large" width="48" />
+        
+        <span>Confluence Shibboleth Authenticator</span>
+</h1>
+
+
+<ul class="breadcrumbs">
+    <li><a id="project-name-val" href="/browse/SHBL">Confluence Shibboleth Authenticator</a></li>
+    
+    <li><a id="key-val" rel="18402" href="/browse/SHBL-19">SHBL-19</a></li>
+</ul>
+
+<h2 id="issue_header_summary" class="item-summary"><a href="/browse/SHBL-19">Seraph inconsistent in &quot;originalurl&quot; and breaks login to protected pages.</a></h2>
+
+    
+    </div>
+    
+
+
+
+
+    <div class="command-bar">
+        <div class="ops-cont">
+            <div class="ops-menus">
+                
+                
+                    <ul id="opsbar-login" class="first ops">
+                        <li id="ops-login" class="last">
+                            <a id="ops-login-lnk" class="button first last" href="/login.jsp?os_destination=%2Fbrowse%2FSHBL-19">Log In</a>
+                        </li>
+                    </ul>
+                
+                
+                    
+                        
+                    
+                
+                    
+                        
+                    
+                
+                
+                    
+                        <ul class="ops" id="view-drop">
+                            <li>
+                                <div class="aui-dd-parent">
+                                    <a href="#" title="View this issue in another format" class="drop lnk aui-dd-link standard icon-views"><span>Views</span></a>
+                                        <div class="aui-list hidden">
+                                        <ul class="aui-first aui-last aui-list-section">
+                                            
+                                                <li class="aui-list-item">
+                                                    <a class="aui-list-item-link" rel="nofollow" href="/si/jira.issueviews:issue-xml/SHBL-19/SHBL-19.xml">XML</a>
+                                                </li>
+                                            
+                                                <li class="aui-list-item">
+                                                    <a class="aui-list-item-link" rel="nofollow" href="/si/jira.issueviews:issue-word/SHBL-19/SHBL-19.doc">Word</a>
+                                                </li>
+                                            
+                                                <li class="aui-list-item">
+                                                    <a class="aui-list-item-link" rel="nofollow" href="/si/jira.issueviews:issue-html/SHBL-19/SHBL-19.html">Printable</a>
+                                                </li>
+                                            
+                                        </ul>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    
+                
+            </div>
+        </div>
+    </div>          
+
+
+    <div class="btm"></div>
+</div>
+<div id="main-content">
+    <div class="active-area">
+        <div class="column" id="primary">
+            <div class="content">
+                
+                
+                
+                
+
+                    <div id="details-module" class="module toggle-wrap">
+                        <div class="mod-header">
+                            <h3 class="toggle-title">Details</h3>
+                        </div>
+                        <div class="mod-content">
+                            <ul id="issuedetails" class="property-list two-cols">
+    <li class="item">
+        <div class="wrap">
+            <strong class="name">Type:</strong>
+            <span id="type-val" class="value">
+                                                        <img alt="Third-party issue" height="16" src="/images/icons/genericissue.gif" title="Third-party issue - " width="16" />
+             Third-party issue
+            </span>
+        </div>
+    </li>
+    <li class="item item-right">
+        <div class="wrap">
+            <strong class="name">Status:</strong>
+            <span id="status-val" class="value">
+                                                        <img alt="Closed" height="16" src="/images/icons/status_closed.gif" title="Closed - The issue is considered finished, the resolution is correct. Issues which are closed can be reopened." width="16" />
+             Closed
+            </span>
+                    </div>
+    </li>
+            <li class="item">
+            <div class="wrap">
+                <strong class="name">Priority:</strong>
+                <span id="priority-val" class="value">
+                                                                <img alt="Minor" height="16" src="/images/icons/priority_minor.gif" title="Minor - Minor loss of function, or other problem where easy workaround is present." width="16" />
+             Minor
+                </span>
+            </div>
+        </li>
+                                <li class="item item-right">
+            <div class="wrap">
+                <strong class="name">Resolution:</strong>
+                <span id="resolution-val" class="value resolved" >
+                                         Fixed
+                                </span>
+            </div>
+        </li>
+                <li class="item">
+            <div class="wrap">
+                <strong class="name">Affects Version/s:</strong>
+                <span id="versions-val" class="value">
+                                            <span class="shorten" id="versions-field">
+                                                            <span title="1.4 Changes made by Vladimir Mencl to implemented two new features requested in SHBL-10 and SHBL-11:
+* SHBL-10: Addresses the issue where users dynamically assigned to groups would stay in these groups even when they no longer have (temporary) attributes that originally gained them the membership (such as codes of courses they are taking). Now, such groups can be specified with purge.roles, such as:
+purge.roles=course-ABCD123,course-DCBA321
+(Requires update.roles=true)
+* SHBL-11: Restarting Confluence after adding a dynamic mapping would have too much impact on a production environment. With this feature, the module checks for changes to the configuration file (remoteAuthentication.propeties) on each user login and reloads the file if needed. It is also possible to set a minimal delay between the checks (in milliseconds, defaults to 0). To activate this feature, add the following to your configuration file:
+reload.config=true
+reload.config.check.interval=5000">1.4</span>                                                    </span>
+                                    </span>
+            </div>
+        </li>
+                <li class="item item-right">
+            <div class="wrap">
+                <strong class="name">Fix Version/s:</strong>
+                <span id="fixfor-val" class="value">
+                                            None
+                                    </span>
+            </div>
+        </li>
+                <li class="item">
+            <div class="wrap">
+                <strong class="name">Component/s:</strong>
+                <span id="components-val" class="value">
+                                            None
+                                    </span>
+            </div>
+        </li>
+                    <li class="item full-width">
+            <div class="wrap" id="wrap-labels">
+                <strong class="name">Labels:</strong>
+                    <div class="labels-wrap value">
+            <span class="labels" id="labels-18402-value">None</span>
+                </div>
+            </div>
+        </li>
+                <li class="item full-width">
+            <div class="wrap">
+                <strong class="name">Environment:</strong>
+                <div id="environment-val" class="value">
+                                  Confluence 2.10 standalone on RHEL 5, Shibboleth SP 1.3.
+      
+                </div>
+            </div>
+        </li>
+    </ul>
+
+
+                            
+                                
+
+<div id="customfieldmodule">
+    
+
+    
+    
+    <ul id="tabCellPane1" class="property-list">
+        
+        
+            
+                
+                
+                    <li id="rowForcustomfield_10061" class="item">
+                        <div class="wrap">
+                            <strong title="Internal Complexity" class="name">Internal Complexity:</strong>
+                            <div id="customfield_10061-val" class="value type-select">
+                                 Unknown
+
+                            </div>
+                        </div>
+                    </li>
+                
+            
+        
+            
+                
+                
+                    <li id="rowForcustomfield_10060" class="item">
+                        <div class="wrap">
+                            <strong title="Internal Value" class="name">Internal Value:</strong>
+                            <div id="customfield_10060-val" class="value type-select">
+                                 Unknown
+
+                            </div>
+                        </div>
+                    </li>
+                
+            
+        
+            
+                
+                
+                    <li id="rowForcustomfield_10082" class="item">
+                        <div class="wrap">
+                            <strong title="Rank" class="name">Rank:</strong>
+                            <div id="customfield_10082-val" class="value type-greenhopper-ranking">
+                                
+<div id="RankField_customfield_10082view">	<span id="RankValue_customfield_10082view">11</span>&nbsp;
+			<span id="RankPage_customfield_10082view" class="gh-rankpage gh-jira-rankpage"></span>
+</div>
+
+                            </div>
+                        </div>
+                    </li>
+                
+            
+        
+    </ul>
+    
+</div>
+
+                            
+                        </div>
+                    </div>
+
+                    
+
+
+
+
+<div id="descriptionmodule" class="module toggle-wrap">
+    <div class="mod-header">
+        <h3 class="toggle-title">Description</h3>
+    </div>
+    <div id="issue-description" class="mod-content">
+        <p>Hi,</p>
+
+<p>I have had a problem with my Confluence, where the automatic login redirect did not work in some cases, and users were getting a "Session Initiator Error: Target resource was not an absolute URL."</p>
+
+<p>I have reported that to Confluence support (see details below) and they acknowledged that this is a known bug, reported and fixed by Sun (patch to be integrated in Confluence 3.0).</p>
+
+<p>I finally found a workaround by fixing the login URL with Apache redirects.</p>
+
+<p>I'm posting the details on the problem and on the fix below.  As a very quick summary, it strikes when an anonymous user follows a link to a page with viewing restrictions in an otherwise publicly viewable space.</p>
+
+<p>I thought this might be of interest to all users of the plugin - so here it goes.</p>
+
+
+<p>Cheers,<br/>
+Vlad</p>
+
+<ul>
+	<li>My original post to Confluence support:<br/>
+----------------------------------------------------------------------------------------------------------------<br/>
+Hi,</li>
+</ul>
+
+
+<p>I am using and developing (/contributing to) the Shibboleth Authenticator<br/>
+for Confluence.</p>
+
+<p>I have a problem with how Seraph handles the login URL.</p>
+
+<p>In <tt>seraph-config.xml</tt>, I am using the ${originalurl} macro for<br/>
+<tt>login.url</tt> and <tt>link.login.url</tt> - but Seraph behaves inconsistently<br/>
+in how it expands the originalurl macro.  Sometimes it's an absolute URL<br/>
+and sometimes a relative URL.</p>
+
+
+<p>I have observed that:</p>
+<ul>
+	<li>If the login URL is a relative URL, ${originalurl} also expands to a<br/>
+relative URL and I need to prefix it with the local hostname.<br/>
+Example:<div class="code panel" style="border-width: 1px;"><div class="codeContent panelContent">
+<pre class="code-java"><span class="code-quote">"/Shibboleth.sso/Login?target=https%3A%2F%2Fwiki.example.edu${originalurl}"</span></pre>
+</div></div></li>
+	<li>If the login URL is an absolute URL (with a different protocol, https,<br/>
+even though pointing to the same host), ${originalurl} also expands to an<br/>
+absolute URL and I should not prefix it with an absolute hostname.<br/>
+Example:<div class="code panel" style="border-width: 1px;"><div class="codeContent panelContent">
+<pre class="code-java"><span class="code-quote">"https:<span class="code-comment">//wiki.example.edu/Shibboleth.sso/Login?target=${originalurl}"</span></span></pre>
+</div></div></li>
+</ul>
+
+
+<p>In my situation, where Confluence is acccessed via plain http (port 80),<br/>
+but the login URL points to an https URL at the same host (where<br/>
+Shibboleth lives), I have to used the second scenario - and it has worked<br/>
+well with the Authenticator module.</p>
+
+<p>However, I have now realized that when browsing Confluence as an anonymous<br/>
+user and accessing a restricted page (e.g., via a link at an anonymously<br/>
+accessible page), the login URL generated by Seraph expands<br/>
+${originalurl} to a relative URL - and breaks the Shibboleth login,<br/>
+requiring an absolute URL.</p>
+
+<p>Is this a bug or a feature?</p>
+
+<p>Is there some documentation on what macros can be used in seraph-config.xml ?</p>
+
+<p>Or documentation on macros in general?  Documenting what originalurl<br/>
+should expand to?</p>
+
+<p>Is there a different macro that would do the same thing as originalurl,<br/>
+but be consistent in choosing a relative or absolute URL ?</p>
+
+<p>I would appreciate any recommendation on this.</p>
+
+
+<p>Cheers,<br/>
+Vlad</p>
+
+<p>PS: To be more specific on this particular case:<br/>
+In my seraph-config.xml, I set both login.url and link.login.url<br/>
+to:<div class="code panel" style="border-width: 1px;"><div class="codeContent panelContent">
+<pre class="code-java">https:<span class="code-comment">//wiki.canterbury.ac.nz/Shibboleth.sso/WAYF/idp.canterbury.ac.nz?target=${originalurl}</span></pre>
+</div></div></p>
+
+<p>When accessing a [page in restricted<br/>
+space|http://wiki.canterbury.ac.nz/display/ICTSLINUX/Home], I get<br/>
+redirected<br/>
+to:<div class="code panel" style="border-width: 1px;"><div class="codeContent panelContent">
+<pre class="code-java">https:<span class="code-comment">//wiki.canterbury.ac.nz/Shibboleth.sso/WAYF/idp.canterbury.ac.nz?target=http%3A%2F%2Fwiki.canterbury.ac.nz%2Fdisplay%2FICTSLINUX%2FHome</span></pre>
+</div></div></p>
+
+<p>But when accessing a [restricted<br/>
+page|http://wiki.canterbury.ac.nz/display/TE21TLR1/Case+Studies] in an<br/>
+unrestricted space, I get redirected<br/>
+to:<div class="code panel" style="border-width: 1px;"><div class="codeContent panelContent">
+<pre class="code-java">https:<span class="code-comment">//wiki.canterbury.ac.nz/Shibboleth.sso/WAYF/idp.canterbury.ac.nz?target=%2Fpages%2Fviewpage.action%3FspaceKey%3DTE21TLR1%26title%3DCase%2BStudies</span></pre>
+</div></div></p>
+
+<p>----------------------------------------------------------------------------------------------------------------</p>
+
+<ul>
+	<li>The reply I got:</li>
+</ul>
+
+
+<p>Hi Vlad,</p>
+
+<p>Thanks for reporting this. It is definitely a bug with the redirect generated by Confluence when you don't have permission to view a particular page due to page restrictions.</p>
+
+<p>In fact, it turns out that we've had a patch for this exact issue submitted by Sun, and accepted into Confluence trunk this week.</p>
+
+<p><a href="http://jira.atlassian.com/browse/CONF-12417">http://jira.atlassian.com/browse/CONF-12417</a></p>
+
+<p>This fix will be released as part of Confluence 3.0, which is current planned in two or three months' time. The patch on the issue should apply for your version of Confluence if you'd like a short-term workaround.</p>
+
+<p>Regards,<br/>
+Matt</p>
+
+<p>----------------------------------------------------------------------------------------------------------------</p>
+
+<ul>
+	<li>And my follow-up post with the fix:</li>
+</ul>
+
+
+
+<p>Hi Matt,</p>
+
+<p>Thanks for this pointer - that puts a lot of light into this issue.</p>
+
+<p>I'm just not sure I would be rebuilding Confluence from source to be used on our production system.... I would feel more comfortable about a single jar I would be replacing.</p>
+
+<p>I have now created a workaround with Apache Rewrite rules:</p>
+
+<div class="code panel" style="border-width: 1px;"><div class="codeContent panelContent">
+<pre class="code-java"># For requests to the session initiator, rewrite relative target URLs to absolute ones.
+# Ie, wherever target starts with %2F ("/), insert the host prefix there...
+# We can:
+# back-references (%N) to the last matched RewriteCond pattern
+RewriteCond %{QUERY_STRING} ^target=%2F(.*)$
+RewriteRule ^/Shibboleth.sso/WAYF/idp.canterbury.ac.nz$ /Shibboleth.sso/WAYF/idp.canterbury.ac.nz?target=http:<span class="code-comment">//confluencewiki.canterbury.ac.nz/%1 [R,NE]
+</span># Do not <span class="code-object">double</span>-escape the output</pre>
+</div></div>
+
+<p>I'll keep watching the issue - and maybe I'll wait for it to make it to a Confluence release.</p>
+
+<p>Thanks for the link to the patches though!</p>
+
+<p>Cheers,<br/>
+Vlad</p>
+
+
+
+    </div>
+</div>
+
+
+
+
+
+                    
+                        
+
+
+
+
+
+
+                    
+                
+                
+                    <div class='module toggle-wrap' id='activitymodule'><div id='activitymodule_heading' class='mod-header'><h3 class='toggle-title'>Activity</h3></div><div class='mod-content'>    <div class="tabwrap tabs2">
+                    <div class="sortwrap">
+                                    <a class="icon icon-sort-down" rel="nofollow" href="/browse/SHBL-19?actionOrder=desc#issue-tabs" title="Ascending order - Click to sort in descending order"><span>Ascending order - Click to sort in descending order</span></a>
+                            </div>
+                <ul id="issue-tabs" class="tabs horizontal">
+                                    <li><a id="all-tabpanel" href="/browse/SHBL-19?page=com.atlassian.jira.plugin.system.issuetabpanels:all-tabpanel#issue-tabs"><strong>All</strong></a></li>
+                                                <li id="comment-tabpanel" class="active"><strong>Comments</strong></li>
+                                                <li><a id="worklog-tabpanel" href="/browse/SHBL-19?page=com.atlassian.jira.plugin.system.issuetabpanels:worklog-tabpanel#issue-tabs"><strong>Work Log</strong></a></li>
+                                                <li><a id="changehistory-tabpanel" href="/browse/SHBL-19?page=com.atlassian.jira.plugin.system.issuetabpanels:changehistory-tabpanel#issue-tabs"><strong>History</strong></a></li>
+                                                <li><a id="activity-stream-issue-tab" href="/browse/SHBL-19?page=com.atlassian.streams.streams-jira-plugin:activity-stream-issue-tab#issue-tabs"><strong>Activity</strong></a></li>
+                            </ul>
+    </div>
+    <div class="issuePanelContainer" id="issue_actions_container">
+                        <div id="comment-23962" class="issue-data-block activity-comment twixi-block expanded">
+    <div class="twixi-wrap verbose actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-opened"><span>Hide</span></span></a>
+        <div class="action-links">
+            <a href="/browse/SHBL-19?focusedCommentId=23962&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-23962" title="A permanent link to this comment." class="icon icon-perma"><span>Permalink</span></a>
+                                </div>
+        <div class="action-details">
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="gswduke" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_23962_verbose" href="/secure/ViewProfile.jspa?name=gswduke">Gary S. Weaver</a>
+ added a comment  - <span class='commentdate_23962_verbose subText'><span class='date user-tz' title='05/Mar/09 8:09 AM'><time datetime='2009-03-05T08:09-0800'>05/Mar/09 8:09 AM</time></span></span>  </div>
+        <div class="action-body flooded"><p>Vlad,</p>
+
+<p>Thanks for logging this here and for your changes to <a href="http://confluence.atlassian.com/display/CONFEXT/How+to+Shibbolize+Confluence">http://confluence.atlassian.com/display/CONFEXT/How+to+Shibbolize+Confluence</a></p>
+
+<p>If you haven't already, could you update <a href="http://confluence.atlassian.com/display/CONFEXT/How+to+Shibbolize+Confluence">http://confluence.atlassian.com/display/CONFEXT/How+to+Shibbolize+Confluence</a> to indicate this fix? (I know you edited it yesterday, but the config in the page doesn't match the fix above exactly, and my brain is too slow this morning to figure out whether it is the same change or not, so forgive me if I missed it.) Also, could you mention there a brief description of the confluence bug and what part of the config is a workaround for that bug (and maybe mention the confluence version it is fixed in? I'd like to do that for you, but I'm afraid I'll make a mistake since I don't know much about this issue.</p>
+
+<p>Thanks so much again, and if you are busy don't worry about doing any of that.</p>
+
+<p>Also, please feel free to close this ticket with "not a bug" or similar, since it is nothing we can do except update the documented configuration.</p>
+
+<p>Gary</p> </div>
+    </div>
+    <div class="twixi-wrap concise actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-closed"><span>Show</span></span></a>
+        <div class="action-details flooded">
+            
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="gswduke" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_23962_concise" href="/secure/ViewProfile.jspa?name=gswduke">Gary S. Weaver</a>
+ added a comment  - <span class='commentdate_23962_concise subText'><span class='date user-tz' title='05/Mar/09 8:09 AM'><time datetime='2009-03-05T08:09-0800'>05/Mar/09 8:09 AM</time></span></span>               Vlad,
+
+Thanks for logging this here and for your changes to <a href="http://confluence.atlassian.com/display/CONFEXT/How+to+Shibbolize+Confluence">http://confluence.atlassian.com/display/CONFEXT/How+to+Shibbolize+Confluence</a>
+
+If you haven't already, could you update <a href="http://confluence.atlassian.com/display/CONFEXT/How+to+Shibbolize+Confluence">http://confluence.atlassian.com/display/CONFEXT/How+to+Shibbolize+Confluence</a> to indicate this fix? (I know you edited it yesterday, but the config in the page doesn't match the fix above exactly, and my brain is too slow this morning to figure out whether it is the same change or not, so forgive me if I missed it.) Also, could you mention there a brief description of the confluence bug and what part of the config is a workaround for that bug (and maybe mention the confluence version it is fixed in? I'd like to do that for you, but I'm afraid I'll make a mistake since I don't know much about this issue.
+
+Thanks so much again, and if you are busy don't worry about doing any of that.
+
+Also, please feel free to close this ticket with "not a bug" or similar, since it is nothing we can do except update the documented configuration.
+
+Gary         </div>
+    </div>
+</div>
+                     <div id="comment-23963" class="issue-data-block activity-comment twixi-block expanded">
+    <div class="twixi-wrap verbose actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-opened"><span>Hide</span></span></a>
+        <div class="action-links">
+            <a href="/browse/SHBL-19?focusedCommentId=23963&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-23963" title="A permanent link to this comment." class="icon icon-perma"><span>Permalink</span></a>
+                                </div>
+        <div class="action-details">
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="gswduke" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_23963_verbose" href="/secure/ViewProfile.jspa?name=gswduke">Gary S. Weaver</a>
+ added a comment  - <span class='commentdate_23963_verbose subText'><span class='date user-tz' title='05/Mar/09 8:09 AM'><time datetime='2009-03-05T08:09-0800'>05/Mar/09 8:09 AM</time></span></span>  </div>
+        <div class="action-body flooded"><p>assigning to Vlad, who is welcome to reassign to me if desired <img class="emoticon" src="/images/icons/emoticons/wink.gif" height="20" width="20" align="absmiddle" alt="" border="0"/></p> </div>
+    </div>
+    <div class="twixi-wrap concise actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-closed"><span>Show</span></span></a>
+        <div class="action-details flooded">
+            
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="gswduke" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_23963_concise" href="/secure/ViewProfile.jspa?name=gswduke">Gary S. Weaver</a>
+ added a comment  - <span class='commentdate_23963_concise subText'><span class='date user-tz' title='05/Mar/09 8:09 AM'><time datetime='2009-03-05T08:09-0800'>05/Mar/09 8:09 AM</time></span></span>               assigning to Vlad, who is welcome to reassign to me if desired <img class="emoticon" src="/images/icons/emoticons/wink.gif" height="20" width="20" align="absmiddle" alt="" border="0"/>         </div>
+    </div>
+</div>
+                     <div id="comment-23968" class="issue-data-block activity-comment twixi-block expanded">
+    <div class="twixi-wrap verbose actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-opened"><span>Hide</span></span></a>
+        <div class="action-links">
+            <a href="/browse/SHBL-19?focusedCommentId=23968&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-23968" title="A permanent link to this comment." class="icon icon-perma"><span>Permalink</span></a>
+                                </div>
+        <div class="action-details">
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="vladimir.mencl" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_23968_verbose" href="/secure/ViewProfile.jspa?name=vladimir.mencl">Vladimir Mencl</a>
+ added a comment  - <span class='commentdate_23968_verbose subText'><span class='date user-tz' title='05/Mar/09 1:42 PM'><time datetime='2009-03-05T13:42-0800'>05/Mar/09 1:42 PM</time></span></span>  </div>
+        <div class="action-body flooded"><p>Hi Gary,</p>
+
+<p>I did document this at the <a href="http://confluence.atlassian.com/display/CONFEXT/How+to+Shibbolize+Confluence">How to Shibbolize Confluence</a> page - already in my first edit:</p>
+
+<p>.bq If you are running Confluence on http but Shibboleth on https (and you are using the second form of the Seraph login URL), add also the following redirect rules to address an issue with Seraph being inconsistent in how it constructs "target" URLs Shibboleth should redirect back to. Otherwise, automatic login to Restricted pages would break (with Shibboleth reporting "Session Initiator Error: Target resource was not an absolute URL."). Remember to replace /Login with what the login URL configured above is.</p>
+
+<p>The only difference between what I posted there and in this issue is the WAYF URL - which is also documented in this comment.  I did the change to be consistent with the WAYF URL syntax used earlier in the document.</p>
+
+<p>Does make sense all together - or should I clarify some bits?</p> </div>
+    </div>
+    <div class="twixi-wrap concise actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-closed"><span>Show</span></span></a>
+        <div class="action-details flooded">
+            
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="vladimir.mencl" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_23968_concise" href="/secure/ViewProfile.jspa?name=vladimir.mencl">Vladimir Mencl</a>
+ added a comment  - <span class='commentdate_23968_concise subText'><span class='date user-tz' title='05/Mar/09 1:42 PM'><time datetime='2009-03-05T13:42-0800'>05/Mar/09 1:42 PM</time></span></span>               Hi Gary,
+
+I did document this at the <a href="http://confluence.atlassian.com/display/CONFEXT/How+to+Shibbolize+Confluence">How to Shibbolize Confluence</a> page - already in my first edit:
+
+.bq If you are running Confluence on http but Shibboleth on https (and you are using the second form of the Seraph login URL), add also the following redirect rules to address an issue with Seraph being inconsistent in how it constructs "target" URLs Shibboleth should redirect back to. Otherwise, automatic login to Restricted pages would break (with Shibboleth reporting "Session Initiator Error: Target resource was not an absolute URL."). Remember to replace /Login with what the login URL configured above is.
+
+The only difference between what I posted there and in this issue is the WAYF URL - which is also documented in this comment.  I did the change to be consistent with the WAYF URL syntax used earlier in the document.
+
+Does make sense all together - or should I clarify some bits?         </div>
+    </div>
+</div>
+                     <div id="comment-23969" class="issue-data-block activity-comment twixi-block expanded">
+    <div class="twixi-wrap verbose actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-opened"><span>Hide</span></span></a>
+        <div class="action-links">
+            <a href="/browse/SHBL-19?focusedCommentId=23969&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-23969" title="A permanent link to this comment." class="icon icon-perma"><span>Permalink</span></a>
+                                </div>
+        <div class="action-details">
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="gswduke" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_23969_verbose" href="/secure/ViewProfile.jspa?name=gswduke">Gary S. Weaver</a>
+ added a comment  - <span class='commentdate_23969_verbose subText'><span class='date user-tz' title='05/Mar/09 3:01 PM'><time datetime='2009-03-05T15:01-0800'>05/Mar/09 3:01 PM</time></span></span>  </div>
+        <div class="action-body flooded"><p>Sounds fine with me. If Scott, etc. or you want to make any edits it is all good. <img class="emoticon" src="/images/icons/emoticons/smile.gif" height="20" width="20" align="absmiddle" alt="" border="0"/></p>
+
+<p>I'm resolving/closing as fixed since you added the documentation. Thanks again!</p> </div>
+    </div>
+    <div class="twixi-wrap concise actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-closed"><span>Show</span></span></a>
+        <div class="action-details flooded">
+            
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="gswduke" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_23969_concise" href="/secure/ViewProfile.jspa?name=gswduke">Gary S. Weaver</a>
+ added a comment  - <span class='commentdate_23969_concise subText'><span class='date user-tz' title='05/Mar/09 3:01 PM'><time datetime='2009-03-05T15:01-0800'>05/Mar/09 3:01 PM</time></span></span>               Sounds fine with me. If Scott, etc. or you want to make any edits it is all good. <img class="emoticon" src="/images/icons/emoticons/smile.gif" height="20" width="20" align="absmiddle" alt="" border="0"/>
+
+I'm resolving/closing as fixed since you added the documentation. Thanks again!         </div>
+    </div>
+</div>
+                     <div id="comment-31548" class="issue-data-block activity-comment twixi-block expanded">
+    <div class="twixi-wrap verbose actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-opened"><span>Hide</span></span></a>
+        <div class="action-links">
+            <a href="/browse/SHBL-19?focusedCommentId=31548&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-31548" title="A permanent link to this comment." class="icon icon-perma"><span>Permalink</span></a>
+                                </div>
+        <div class="action-details">
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="cantor.2@osu.edu" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_31548_verbose" href="/secure/ViewProfile.jspa?name=cantor.2%40osu.edu">Scott Cantor</a>
+ added a comment  - <span class='commentdate_31548_verbose subText'><span class='date user-tz' title='06/Apr/10 3:32 PM'><time datetime='2010-04-06T15:32-0700'>06/Apr/10 3:32 PM</time></span></span>  </div>
+        <div class="action-body flooded"><p>Just for the record, my setup, which relied on originalurl always being <b>relative</b> is now breaking in this exception case by generating an absolute URL. This was just noticed following an upgrade, so their fix is rather questionable, I'd say. Now a typical install on one port for everything is such that originalurl is sometimes absolute and sometimes relative, so the "common case" now needs a mod_rewrite workaround.</p> </div>
+    </div>
+    <div class="twixi-wrap concise actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-closed"><span>Show</span></span></a>
+        <div class="action-details flooded">
+            
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="cantor.2@osu.edu" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_31548_concise" href="/secure/ViewProfile.jspa?name=cantor.2%40osu.edu">Scott Cantor</a>
+ added a comment  - <span class='commentdate_31548_concise subText'><span class='date user-tz' title='06/Apr/10 3:32 PM'><time datetime='2010-04-06T15:32-0700'>06/Apr/10 3:32 PM</time></span></span>               Just for the record, my setup, which relied on originalurl always being <b>relative</b> is now breaking in this exception case by generating an absolute URL. This was just noticed following an upgrade, so their fix is rather questionable, I'd say. Now a typical install on one port for everything is such that originalurl is sometimes absolute and sometimes relative, so the "common case" now needs a mod_rewrite workaround.         </div>
+    </div>
+</div>
+                     <div id="comment-31586" class="issue-data-block activity-comment twixi-block expanded">
+    <div class="twixi-wrap verbose actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-opened"><span>Hide</span></span></a>
+        <div class="action-links">
+            <a href="/browse/SHBL-19?focusedCommentId=31586&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-31586" title="A permanent link to this comment." class="icon icon-perma"><span>Permalink</span></a>
+                                </div>
+        <div class="action-details">
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="gswduke" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_31586_verbose" href="/secure/ViewProfile.jspa?name=gswduke">Gary S. Weaver</a>
+ added a comment  - <span class='commentdate_31586_verbose subText'><span class='date user-tz' title='07/Apr/10 7:02 AM'><time datetime='2010-04-07T07:02-0700'>07/Apr/10 7:02 AM</time></span></span>  </div>
+        <div class="action-body flooded"><p>Scott,</p>
+
+<p>Thanks for sharing this issue!</p>
+
+<p>If you get time, could you:</p>
+
+<ul>
+	<li>add a note to the Troubleshooting section in the Confluence Shibboleth Authenticator (Atlassian appears to have renamed the plugin?) wiki which they moved here: <a href="https://studio.plugins.atlassian.com/wiki/display/SHBL/Confluence+Shibboleth+Authenticator">https://studio.plugins.atlassian.com/wiki/display/SHBL/Confluence+Shibboleth+Authenticator</a></li>
+</ul>
+
+
+<ul>
+	<li>add your notes and any example config (just the 1-2 lines that are needed I bet) for mod_rewrite workaround to: <a href="https://studio.plugins.atlassian.com/wiki/display/SHBL/How+to+Shibbolize+Confluence">https://studio.plugins.atlassian.com/wiki/display/SHBL/How+to+Shibbolize+Confluence</a></li>
+</ul>
+
+
+<ul>
+	<li>Could you create a new Confluence bug in jira.atlassian.com to let them know about your issue and link or mention <a href="http://jira.atlassian.com/browse/CONF-12417">http://jira.atlassian.com/browse/CONF-12417</a> being the possible cause.</li>
+</ul>
+
+
+<p>I could help with this if you want, but for purposes of clarification and notification, if you did this, it would totally rock!</p>
+
+<p>Thanks so much for your help with the authenticator, and thanks also for the help you've provided us in the shib users mailing list!</p>
+
+<p>Take care and hope all is going well,</p>
+
+<p>Gary</p> </div>
+    </div>
+    <div class="twixi-wrap concise actionContainer">
+        <a href="#" class="twixi"><span class="icon twixi-closed"><span>Show</span></span></a>
+        <div class="action-details flooded">
+            
+    
+    
+    
+                
+
+    <a class="user-hover user-avatar" rel="gswduke" style="background-image:url(/secure/useravatar?size=small&amp;avatarId=10182);"  id="commentauthor_31586_concise" href="/secure/ViewProfile.jspa?name=gswduke">Gary S. Weaver</a>
+ added a comment  - <span class='commentdate_31586_concise subText'><span class='date user-tz' title='07/Apr/10 7:02 AM'><time datetime='2010-04-07T07:02-0700'>07/Apr/10 7:02 AM</time></span></span>               Scott,
+
+Thanks for sharing this issue!
+
+If you get time, could you:
+
+<ul>
+	<li>add a note to the Troubleshooting section in the Confluence Shibboleth Authenticator (Atlassian appears to have renamed the plugin?) wiki which they moved here: <a href="https://studio.plugins.atlassian.com/wiki/display/SHBL/Confluence+Shibboleth+Authenticator">https://studio.plugins.atlassian.com/wiki/display/SHBL/Confluence+Shibboleth+Authenticator</a></li>
+</ul>
+
+
+<ul>
+	<li>add your notes and any example config (just the 1-2 lines that are needed I bet) for mod_rewrite workaround to: <a href="https://studio.plugins.atlassian.com/wiki/display/SHBL/How+to+Shibbolize+Confluence">https://studio.plugins.atlassian.com/wiki/display/SHBL/How+to+Shibbolize+Confluence</a></li>
+</ul>
+
+
+<ul>
+	<li>Could you create a new Confluence bug in jira.atlassian.com to let them know about your issue and link or mention <a href="http://jira.atlassian.com/browse/CONF-12417">http://jira.atlassian.com/browse/CONF-12417</a> being the possible cause.</li>
+</ul>
+
+
+I could help with this if you want, but for purposes of clarification and notification, if you did this, it would totally rock!
+
+Thanks so much for your help with the authenticator, and thanks also for the help you've provided us in the shib users mailing list!
+
+Take care and hope all is going well,
+
+Gary         </div>
+    </div>
+</div>
+                 </div>
+</div></div>
+                
+
+            </div>
+        </div>
+
+        <div class="column" id="secondary">
+            <div class="content">
+                
+                    <div class='module toggle-wrap' id='peoplemodule'><div id='peoplemodule_heading' class='mod-header'><h3 class='toggle-title'>People</h3></div><div class='mod-content'><ul class="item-details" id="peopledetails">
+    <li class="people-details">
+                <dl>
+            <dt>Assignee:</dt>
+            <dd id="assignee-val">
+                        <a class="user-hover" rel="vladimir.mencl" id="issue_summary_assignee_vladimir.mencl" href="/secure/ViewProfile.jspa?name=vladimir.mencl">Vladimir Mencl</a>
+            </dd>
+        </dl>
+                        <dl>
+            <dt>Reporter:</dt>
+            <dd id="reporter-val">
+                        <a class="user-hover" rel="vladimir.mencl" id="issue_summary_reporter_vladimir.mencl" href="/secure/ViewProfile.jspa?name=vladimir.mencl">Vladimir Mencl</a>
+            </dd>
+        </dl>
+                    </li>
+</ul>
+<div id="votes-val">
+                <span id="vote-label" title="You cannot vote or change your vote on resolved issues."><span class="icon icon-vote-disabled"></span><span class="action-text">Vote</span></span>
+    
+                (<span id="vote-data">0</span>)
+    </div>
+<div id="watchers-val">
+            <span id="watch-label" title="You have to be logged in to watch an issue."><span class="icon icon-watch-disabled"></span>Watch</span>
+    
+        
+            (<span id="watcher-data">1</span>)
+    </div>
+</div></div><div class='module toggle-wrap' id='datesmodule'><div id='datesmodule_heading' class='mod-header'><h3 class='toggle-title'>Dates</h3></div><div class='mod-content'><ul class="item-details">
+    <li>
+            <dl class="dates">
+            <dt>Created:</dt>
+            <dd id="create-date" class="date user-tz"  title="04/Mar/09 5:59 PM" >
+                        <time datetime="2009-03-04T17:59-0800">04/Mar/09 5:59 PM</time></dd>                     </dd>
+        </dl>
+            <dl class="dates">
+            <dt>Updated:</dt>
+            <dd id="updated-date" class="date user-tz"  title="07/Apr/10 7:02 AM" >
+                        <time datetime="2010-04-07T07:02-0700">07/Apr/10 7:02 AM</time></dd>                     </dd>
+        </dl>
+            <dl class="dates">
+            <dt>Resolved:</dt>
+            <dd id="resolved-date" class="date user-tz"  title="05/Mar/09 3:01 PM" >
+                        <time datetime="2009-03-05T15:01-0800">05/Mar/09 3:01 PM</time></dd>                     </dd>
+        </dl>
+        </li>
+</ul>
+</div></div>
+                
+
+            </div>
+        </div>
+        
+            
+                
+            
+        
+
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+<div id="studio-footer" class="footer" style="width:100%; padding:0 0 25px 0;">
+    <div id="poweredby">
+        <p>
+            Powered by <a href="http://www.atlassian.com/hosted/studio">JIRA Studio</a> <span id="studioVersion">107.6 r5978538efb935b5414d28000aa78b98bedfcae46</span> |
+            <a href="http://www.atlassian.com/hosted/terms.jsp">Terms of Use</a> |
+            <a href="http://studio.atlassian.com/browse/JST">Bug/feature request</a> |
+            <a href="https://support.atlassian.com/secure/CreateIssueDetails!init.jspa?summary=Your+summary+here...&amp;issuetype=1&amp;priority=3&amp;description=Please+describe+your+problem+here%3A%0A%0A%0AProblem+reported+from+URL%3A+https%3A%2F%2Fstudio.plugins.atlassian.com%2Fbrowse%2FSHBL-19&amp;customfield_10440=https%3A%2F%2Fstudio.plugins.atlassian.com&amp;pid=10140&amp;">Request Support</a> |
+            <a href="http://confluence.atlassian.com/display/JIRASTUDIO" target="help_JIRASTUDIO" rel="nofollow">Help/Documentation</a> |
+            <a href="http://blogs.atlassian.com/devtools/studio">JIRA Studio Blog</a> |
+            <a href="http://twitter.com/jirastudio">Twitter @JIRAStudio</a>
+        </p>
+    </div>
+</div>
+
+<script type="text/javascript" charset="utf-8" src="/s/en_US-31q2po/650/149/107.6.4/_/download/resources/com.atlassian.studio.static:studio_resources/js/contentnamesearch.js"></script>
+<script type="text/javascript" charset="utf-8" src="/s/en_US-31q2po/650/149/107.6.4/_/download/resources/com.atlassian.studio.static:studio_resources/js/split_button.js"></script>
+<script type="text/javascript" charset="utf-8" src="/s/en_US-31q2po/650/149/107.6.4/_/download/resources/com.atlassian.studio.static:studio_resources/js/userstatus.js"></script>
+
+            <script type="text/javascript" charset="utf-8" src="/s/en_US-31q2po/650/149/107.6.4/_/download/resources/com.atlassian.studio.static:studio_resources/js/safe-ajax.js"></script>
+    
+<script type="text/javascript">
+    // This is the app specific data that the shared js expects
+    studioData = {"jiraUrl" : "https://studio.plugins.atlassian.com"};
+
+            document.cookie = "studio.project.rec.used.cookie=" + escape("SHBL-_-") + "; Max-Age=31536000; path=/;";
+    
+    // Google analytics
+    var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+    document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+    try {
+    var pageTracker = _gat._getTracker("UA-6032469-30");
+    pageTracker._trackPageview();
+    } catch(err) {}
+</script>
+
+<form id="jira_request_timing_info" class="dont-default-focus" >
+	<fieldset class="parameters hidden">
+		<input type="hidden" title="jira.request.start.millis" value="1358699880401" />
+		<input type="hidden" title="jira.request.server.time" value="1214" />
+		<input type="hidden" title="jira.request.id" value="518x7330373x2" />
+		<input type="hidden" title="jira.session.expiry.time" value="-" />
+		<input type="hidden" title="jira.session.expiry.in.mins" value="-" />
+		<input id="jiraConcurrentRequests" type="hidden" name="jira.request.concurrent.requests" value="2" />
+	</fieldset>
+</form>
+<!--
+	                 REQUEST ID : 518x7330373x2
+	          REQUEST TIMESTAMP : [20/Jan/2013:08:38:00 -0800]
+	               REQUEST TIME : 1.2140
+	                 ASESSIONID : se9612
+	        CONCURRENT REQUESTS : 2
+-->
+</body>
+</html>

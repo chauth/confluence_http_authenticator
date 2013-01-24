@@ -1,0 +1,684 @@
+------------------------------------------------------------------------
+r35285 | gswduke | 2009-09-23 10:03:13 -0400 (Wed, 23 Sep 2009) | 1 line
+Changed paths:
+   M /contrib/confluence/shibboleth-authenticator/trunk/README
+
+updated README
+------------------------------------------------------------------------
+r35284 | gswduke | 2009-09-23 09:25:30 -0400 (Wed, 23 Sep 2009) | 1 line
+Changed paths:
+   M /contrib/confluence/shibboleth-authenticator/trunk/TAGGING
+
+updated TAGGING doc
+------------------------------------------------------------------------
+r35283 | gswduke | 2009-09-23 09:21:05 -0400 (Wed, 23 Sep 2009) | 1 line
+Changed paths:
+   M /contrib/confluence/shibboleth-authenticator/trunk/README
+
+Added correct URL for plugins.atlassian.com
+------------------------------------------------------------------------
+r34030 | gswduke | 2009-08-25 13:08:24 -0400 (Tue, 25 Aug 2009) | 1 line
+Changed paths:
+   M /contrib/confluence/shibboleth-authenticator/trunk/conf/remoteUserAuthenticator.properties
+   M /contrib/confluence/shibboleth-authenticator/trunk/pom.xml
+   M /contrib/confluence/shibboleth-authenticator/trunk/src/main/java/shibauth/confluence/authentication/shibboleth/RemoteUserAuthenticator.java
+   M /contrib/confluence/shibboleth-authenticator/trunk/src/main/java/shibauth/confluence/authentication/shibboleth/ShibAuthConfigLoader.java
+   M /contrib/confluence/shibboleth-authenticator/trunk/src/main/java/shibauth/confluence/authentication/shibboleth/ShibAuthConfiguration.java
+   M /contrib/confluence/shibboleth-authenticator/trunk/src/main/java/shibauth/confluence/authentication/shibboleth/ShibAuthConstants.java
+
+SHBL-24 - fixing authentication for local accounts by integrating patch by Freie Universität Berlin and making it optional to use ShibLoginFilter, but turning off support for it by default. SHBL-28 - adding regexp matching for full name for Freie Universität Berlin so that they could use our plugin without mods
+------------------------------------------------------------------------
+r33617 | gswduke | 2009-08-14 09:45:26 -0400 (Fri, 14 Aug 2009) | 2 lines
+Changed paths:
+   M /contrib/confluence/shibboleth-authenticator/trunk/README
+
+added release info for http://plugins.atlassian.com
+
+------------------------------------------------------------------------
+r33571 | gswduke | 2009-08-12 15:51:44 -0400 (Wed, 12 Aug 2009) | 1 line
+Changed paths:
+   M /contrib/confluence/shibboleth-authenticator/trunk/pom.xml
+
+updating pom.xml with contributions for this release
+------------------------------------------------------------------------
+r33570 | gswduke | 2009-08-12 15:34:20 -0400 (Wed, 12 Aug 2009) | 1 line
+Changed paths:
+   M /contrib/confluence/shibboleth-authenticator/trunk/src/main/java/shibauth/confluence/authentication/shibboleth/RemoteUserAuthenticator.java
+
+SHBL-26 - integrating patch from Michael Gettes not to try to update read-only users
+------------------------------------------------------------------------
+r33362 | gswduke | 2009-08-04 08:58:27 -0400 (Tue, 04 Aug 2009) | 2 lines
+Changed paths:
+   M /contrib/confluence/shibboleth-authenticator/trunk/src/main/java/shibauth/confluence/authentication/shibboleth/GroupMapper.java
+   M /contrib/confluence/shibboleth-authenticator/trunk/src/main/java/shibauth/confluence/authentication/shibboleth/RemoteUserAuthenticator.java
+
+Had to enable debug of HTTP Headers and regexp match so that USC could debug their headers/regexp. Cleaned up logging a bit around those so that all HTTP headers logged at once (which might be more helpful in higher traffic).
+
+------------------------------------------------------------------------
+r33090 | bliong | 2009-07-23 00:41:20 -0400 (Thu, 23 Jul 2009) | 1 line
+Changed paths:
+   M /contrib/confluence/shibboleth-authenticator/trunk/src/main/java/shibauth/confluence/authentication/shibboleth/StringUtil.java
+
+Allow empty strings in the list rather than nulls. Null always requires special treatment in code, hence a lot simplified to use empty string.
+------------------------------------------------------------------------
+r33089 | bliong | 2009-07-22 23:18:21 -0400 (Wed, 22 Jul 2009) | 1 line
+Changed paths:
+   M /contrib/confluence/shibboleth-authenticator/trunk/conf/remoteUserAuthenticator.properties
+
+just deleting a few words in properties (forgotten & left unchecked previously)
+------------------------------------------------------------------------
+r33088 | bliong | 2009-07-22 23:12:03 -0400 (Wed, 22 Jul 2009) | 1 line
+Changed paths:
+   M /contrib/confluence/shibboleth-authenticator/trunk/conf/remoteUserAuthenticator.properties
+   M /contrib/confluence/shibboleth-authenticator/trunk/src/main/java/shibauth/confluence/authentication/shibboleth/GroupMapper.java
+   M /contrib/confluence/shibboleth-authenticator/trunk/src/main/java/shibauth/confluence/authentication/shibboleth/RemoteUserAuthenticator.java
+   M /contrib/confluence/shibboleth-authenticator/trunk/src/main/java/shibauth/confluence/authentication/shibboleth/ShibAuthConfigLoader.java
+   M /contrib/confluence/shibboleth-authenticator/trunk/src/main/java/shibauth/confluence/authentication/shibboleth/ShibAuthConfiguration.java
+   M /contrib/confluence/shibboleth-authenticator/trunk/src/main/java/shibauth/confluence/authentication/shibboleth/ShibAuthConstants.java
+   M /contrib/confluence/shibboleth-authenticator/trunk/src/main/java/shibauth/confluence/authentication/shibboleth/ShibLoginFilter.java
+   M /contrib/confluence/shibboleth-authenticator/trunk/src/main/java/shibauth/confluence/authentication/shibboleth/StringUtil.java
+
+Solution to SHBL-25. An option is provided to allow remote user to be transformed/mapped based on regex to be used by Confluence userid. Read config properties file for example and detail.
+------------------------------------------------------------------------
+r32316 | gswduke | 2009-06-26 14:08:21 -0400 (Fri, 26 Jun 2009) | 2 lines
+Changed paths:
+   M /contrib/confluence/shibboleth-authenticator/trunk/pom.xml
+
+updated version and comment
+
+------------------------------------------------------------------------
+r32231 | gswduke | 2009-06-24 13:30:47 -0400 (Wed, 24 Jun 2009) | 2 lines
+Changed paths:
+   M /contrib/confluence/shibboleth-authenticator/trunk/pom.xml
+
+changed version to 1.5.1-SNAPSHOT
+
+------------------------------------------------------------------------
+r32230 | gswduke | 2009-06-24 13:29:23 -0400 (Wed, 24 Jun 2009) | 2 lines
+Changed paths:
+   M /contrib/confluence/shibboleth-authenticator/trunk/src/main/java/shibauth/confluence/authentication/shibboleth/RemoteUserAuthenticator.java
+
+SHBL-23 - changing No mapper capable of processing role message to being logged as DEBUG
+
+------------------------------------------------------------------------
+r32229 | gswduke | 2009-06-24 13:24:38 -0400 (Wed, 24 Jun 2009) | 2 lines
+Changed paths:
+   M /contrib/confluence/shibboleth-authenticator/trunk/pom.xml
+
+fixed bad pom
+
+------------------------------------------------------------------------
+r32227 | gswduke | 2009-06-24 10:25:36 -0400 (Wed, 24 Jun 2009) | 2 lines
+Changed paths:
+   M /contrib/confluence/shibboleth-authenticator/trunk/pom.xml
+
+fixing developer comments again
+
+------------------------------------------------------------------------
+r32226 | gswduke | 2009-06-24 10:11:39 -0400 (Wed, 24 Jun 2009) | 2 lines
+Changed paths:
+   M /contrib/confluence/shibboleth-authenticator/trunk/pom.xml
+
+updated pom.xml version to 1.6-SNAPSHOT
+
+------------------------------------------------------------------------
+r32222 | gswduke | 2009-06-24 10:08:53 -0400 (Wed, 24 Jun 2009) | 2 lines
+Changed paths:
+   M /contrib/confluence/shibboleth-authenticator/trunk/pom.xml
+
+fixing version of snapshot, fixing pom developer notes
+
+------------------------------------------------------------------------
+r32160 | gswduke | 2009-06-22 10:52:41 -0400 (Mon, 22 Jun 2009) | 2 lines
+Changed paths:
+   M /contrib/confluence/shibboleth-authenticator/trunk/src/main/java/shibauth/confluence/authentication/shibboleth/RemoteUserAuthenticator.java
+
+SHBL-21 - applying patch contributed from Michael Gettes because call to hasMembership and only calling addMembership when needed he determined was faster than only calling addMembership. 
+
+------------------------------------------------------------------------
+r29057 | gswduke | 2009-03-16 09:41:29 -0400 (Mon, 16 Mar 2009) | 2 lines
+Changed paths:
+   M /contrib/confluence/shibboleth-authenticator/trunk/src/main/java/shibauth/confluence/authentication/shibboleth/ShibAuthConfigLoader.java
+   M /contrib/confluence/shibboleth-authenticator/trunk/src/main/java/shibauth/confluence/authentication/shibboleth/ShibAuthConfiguration.java
+
+fix for SHBL-20 and some other possible config related issues not yet noticed. changed from using static values in config to instance. config instance itself is static and gets reloaded, so we don't want static member variables in the configuration instance itself, unless I'm missing something. we should consider moving to spring config for v2.0. config is a little out of hand now.
+
+------------------------------------------------------------------------
+r28524 | gswduke | 2009-02-24 14:37:20 -0500 (Tue, 24 Feb 2009) | 2 lines
+Changed paths:
+   M /contrib/confluence/shibboleth-authenticator/trunk/conf/remoteUserAuthenticator.properties
+   M /contrib/confluence/shibboleth-authenticator/trunk/src/main/java/shibauth/confluence/authentication/shibboleth/RemoteUserAuthenticator.java
+
+resolving SHBL-18. added null checks for header.fullname and header.email in config and updated config
+
+------------------------------------------------------------------------
+r28522 | gswduke | 2009-02-24 14:10:52 -0500 (Tue, 24 Feb 2009) | 2 lines
+Changed paths:
+   M /contrib/confluence/shibboleth-authenticator/trunk/conf/remoteUserAuthenticator.properties
+
+added more comments
+
+------------------------------------------------------------------------
+r28521 | gswduke | 2009-02-24 14:01:36 -0500 (Tue, 24 Feb 2009) | 2 lines
+Changed paths:
+   M /contrib/confluence/shibboleth-authenticator/trunk/conf/remoteUserAuthenticator.properties
+
+Added additional comments by fullname and email headers
+
+------------------------------------------------------------------------
+r27647 | gswduke | 2009-01-28 11:33:50 -0500 (Wed, 28 Jan 2009) | 2 lines
+Changed paths:
+   M /contrib/confluence/shibboleth-authenticator/trunk/pom.xml
+
+Per some recent commits, there seems to now be a dependency on a newer version of seraph than may be included in earlier versions of confluence. In fact, upping the confluence version (tried several versions) didn't seem to include these. I looked at Atlassian's pom for confluence and it appears that only an earlier version of seraph (not atlassian-seraph) was referenced in earlier builds, and later builds don't include the version they may/may not use. We may end up needing to make changes to the code to make it work with older versions of Confluence, or we may need to change the dependencies (and maybe change versions?) to have a scope that would include these jars in the plugin rather than expect that Confluence provide them, in which case compatibility could be an ongoing issue
+
+------------------------------------------------------------------------
+r27519 | bliong | 2009-01-22 05:38:08 -0500 (Thu, 22 Jan 2009) | 8 lines
+Changed paths:
+   M /contrib/confluence/shibboleth-authenticator/trunk/conf/remoteUserAuthenticator.properties
+   M /contrib/confluence/shibboleth-authenticator/trunk/src/main/java/shibauth/confluence/authentication/shibboleth/RemoteUserAuthenticator.java
+   A /contrib/confluence/shibboleth-authenticator/trunk/src/main/java/shibauth/confluence/authentication/shibboleth/ShibLoginFilter.java
+
+resolve SHBL-16, hopefully improve response time slightly for SHBL-15. Also this has made updateLastLogin option to be optional, we're letting confluence to take care of that now.
+
+you will need to use the provided LoginFilter, edit web.xml:
+<filter-name>login</filter-name>
+<!-- <filter-class>com.atlassian.seraph.filter.LoginFilter</filter-class>  -->
+<filter-class>shibauth.confluence.authentication.shibboleth.ShibLoginFilter</filter-class>
+
+Failure to use this Login Filter in web.xml will produce previous behaviour (i.e. before SHBL-16 fix; updateLastLogin is fully obeyed).
+------------------------------------------------------------------------
+r27123 | bliong | 2009-01-09 21:42:03 -0500 (Fri, 09 Jan 2009) | 2 lines
+Changed paths:
+   M /contrib/confluence/shibboleth-authenticator/trunk/conf/remoteUserAuthenticator.properties
+   M /contrib/confluence/shibboleth-authenticator/trunk/src/main/java/shibauth/confluence/authentication/shibboleth/RemoteUserAuthenticator.java
+   M /contrib/confluence/shibboleth-authenticator/trunk/src/main/java/shibauth/confluence/authentication/shibboleth/ShibAuthConfigLoader.java
+   M /contrib/confluence/shibboleth-authenticator/trunk/src/main/java/shibauth/confluence/authentication/shibboleth/ShibAuthConfiguration.java
+   M /contrib/confluence/shibboleth-authenticator/trunk/src/main/java/shibauth/confluence/authentication/shibboleth/ShibAuthConstants.java
+   M /contrib/confluence/shibboleth-authenticator/trunk/src/main/java/shibauth/confluence/authentication/shibboleth/StringUtil.java
+
+* provide option dynamicroles.output.tolowercase to convert all group output to lower case by default.
+* change StringUtil.convertToUTF8 to have new String(getBytes("UTF-8"),"UTF-8") to see if UTF-8 conversion works, otherwise byte by byte conversion needs to be put in placed.
+------------------------------------------------------------------------
+r27058 | bliong | 2009-01-08 01:30:41 -0500 (Thu, 08 Jan 2009) | 5 lines
+Changed paths:
+   M /contrib/confluence/shibboleth-authenticator/trunk
+   M /contrib/confluence/shibboleth-authenticator/trunk/conf/remoteUserAuthenticator.properties
+   A /contrib/confluence/shibboleth-authenticator/trunk/src/main/java/shibauth/confluence/authentication/shibboleth/GroupMapper.java
+   M /contrib/confluence/shibboleth-authenticator/trunk/src/main/java/shibauth/confluence/authentication/shibboleth/RemoteUserAuthenticator.java
+   M /contrib/confluence/shibboleth-authenticator/trunk/src/main/java/shibauth/confluence/authentication/shibboleth/ShibAuthConfigLoader.java
+   M /contrib/confluence/shibboleth-authenticator/trunk/src/main/java/shibauth/confluence/authentication/shibboleth/ShibAuthConfiguration.java
+   M /contrib/confluence/shibboleth-authenticator/trunk/src/main/java/shibauth/confluence/authentication/shibboleth/ShibAuthConstants.java
+   M /contrib/confluence/shibboleth-authenticator/trunk/src/main/java/shibauth/confluence/authentication/shibboleth/StringUtil.java
+
+Revamp of group mapping, ref SHBL-6. Include capabilities of:
+- mapping with regex
+- inspecting only necessary headers for group mapping
+- purging roles with regex
+- multiple regex/mappers can be specified per header
+------------------------------------------------------------------------
+r26939 | gswduke | 2009-01-05 09:50:01 -0500 (Mon, 05 Jan 2009) | 2 lines
+Changed paths:
+   M /contrib/confluence/shibboleth-authenticator/trunk/pom.xml
+   M /contrib/confluence/shibboleth-authenticator/trunk/src/main/java/shibauth/confluence/authentication/shibboleth/RemoteUserAuthenticator.java
+
+correct attribution to Jesse Lahtinen of Technical University (jesse@tkk.fi) for SHBL-14 fix. I had just assumed Juha did it. Sorry!
+
+------------------------------------------------------------------------
+r26906 | gswduke | 2009-01-02 10:07:34 -0500 (Fri, 02 Jan 2009) | 2 lines
+Changed paths:
+   M /contrib/confluence/shibboleth-authenticator/trunk/conf/remoteUserAuthenticator.properties
+   M /contrib/confluence/shibboleth-authenticator/trunk/pom.xml
+   M /contrib/confluence/shibboleth-authenticator/trunk/src/main/java/shibauth/confluence/authentication/shibboleth/RemoteUserAuthenticator.java
+   M /contrib/confluence/shibboleth-authenticator/trunk/src/main/java/shibauth/confluence/authentication/shibboleth/ShibAuthConfigLoader.java
+   M /contrib/confluence/shibboleth-authenticator/trunk/src/main/java/shibauth/confluence/authentication/shibboleth/ShibAuthConfiguration.java
+   M /contrib/confluence/shibboleth-authenticator/trunk/src/main/java/shibauth/confluence/authentication/shibboleth/ShibAuthConstants.java
+   M /contrib/confluence/shibboleth-authenticator/trunk/src/main/java/shibauth/confluence/authentication/shibboleth/StringUtil.java
+
+Implementing patch submitted by Erkki Aalto written by Juha Ojaluoma for SHBL-14. Note that USER-254 possible bug related to this feature. This feature implements a new config option called update.last.login.date (true/false) in config that sets properties for the user in os_propertyentry even if not using osuser schema otherwise according to Erkki. Also updated License text.
+
+------------------------------------------------------------------------
+r26545 | vladimir.mencl | 2008-12-11 21:07:51 -0500 (Thu, 11 Dec 2008) | 3 lines
+Changed paths:
+   M /contrib/confluence/shibboleth-authenticator/trunk/conf/remoteUserAuthenticator.properties
+   M /contrib/confluence/shibboleth-authenticator/trunk/src/main/java/shibauth/confluence/authentication/shibboleth/RemoteUserAuthenticator.java
+   M /contrib/confluence/shibboleth-authenticator/trunk/src/main/java/shibauth/confluence/authentication/shibboleth/ShibAuthConfigLoader.java
+   M /contrib/confluence/shibboleth-authenticator/trunk/src/main/java/shibauth/confluence/authentication/shibboleth/ShibAuthConfiguration.java
+   M /contrib/confluence/shibboleth-authenticator/trunk/src/main/java/shibauth/confluence/authentication/shibboleth/ShibAuthConstants.java
+
+SHBL-11: implemented an additional setting "reload.config.check.interval" to set (in milliseconds) how long to wait between checking the configuration file for changes.
+
+
+------------------------------------------------------------------------
+r26536 | vladimir.mencl | 2008-12-11 01:27:40 -0500 (Thu, 11 Dec 2008) | 19 lines
+Changed paths:
+   M /contrib/confluence/shibboleth-authenticator/trunk/conf/remoteUserAuthenticator.properties
+   M /contrib/confluence/shibboleth-authenticator/trunk/src/main/java/shibauth/confluence/authentication/shibboleth/RemoteUserAuthenticator.java
+   M /contrib/confluence/shibboleth-authenticator/trunk/src/main/java/shibauth/confluence/authentication/shibboleth/ShibAuthConfigLoader.java
+   M /contrib/confluence/shibboleth-authenticator/trunk/src/main/java/shibauth/confluence/authentication/shibboleth/ShibAuthConfiguration.java
+   M /contrib/confluence/shibboleth-authenticator/trunk/src/main/java/shibauth/confluence/authentication/shibboleth/ShibAuthConstants.java
+
+Implemented two new features requested in SHBL-10 and SHBL-11
+
+SHBL-10: Addresses the issue where dynamically assigned to groups would stay in these groups even when they no longer have attributes that originally gained them the membership (such as codes of courses they are taking).
+
+Now, such groups can be specified with purge.roles, such as:
+
+purge.roles=course-ABCD123,course-DCBA321
+
+(Requires update.roles=true)
+
+SHBL-11: Restarting Confluence after adding a dynamic mapping would have too much impact on a production environment.
+
+With this feature, the module checks for changes to the configuration file (remoteAuthentication.propeties) on each login and reloads the file if needed.
+
+To activate this feature, add the following to your configuration file:
+
+reload.config=true
+
+
+------------------------------------------------------------------------
+r26431 | gswduke | 2008-12-05 10:05:02 -0500 (Fri, 05 Dec 2008) | 2 lines
+Changed paths:
+   M /contrib/confluence/shibboleth-authenticator/trunk/README
+   M /contrib/confluence/shibboleth-authenticator/trunk/pom.xml
+
+updated README and version to 1.4...
+
+------------------------------------------------------------------------
+r26396 | gswduke | 2008-12-04 09:18:52 -0500 (Thu, 04 Dec 2008) | 2 lines
+Changed paths:
+   M /contrib/confluence/shibboleth-authenticator/trunk/pom.xml
+   M /contrib/confluence/shibboleth-authenticator/trunk/src/main/java/shibauth/confluence/authentication/shibboleth/ShibAuthConfigLoader.java
+
+SHBL-9 - Applied shibboleth-authenticator-updateRoles-fix2.diff from Vlad that was attached to SHBL-9, but changed the confluence version to 2.3 instead of 2.9.2, because I am having trouble compiling it against 2.9.2, and since it compiles against 2.3 and no confluence classes are included in the jar, only the class, package names, and method signatures it relies on matter afaik, with the exception of the use of the ContainerManager to get groupManager, which depends on Spring configuration, which would in a way depend on the Confluence version and user configuration. However, Atlassian (Matt Ryall) had provided a Confluence authenticator that was supposed to work with Confluence 2.2 that used groupManager bean name and ContainerManager the same way that Vlad implemented, so I don't think that should be an issue, although I guess we don't know until it is tested in a version prior to 2.9.2.
+
+------------------------------------------------------------------------
+r26343 | gswduke | 2008-12-03 09:56:12 -0500 (Wed, 03 Dec 2008) | 2 lines
+Changed paths:
+   M /contrib/confluence/shibboleth-authenticator/trunk/pom.xml
+
+updated version to 1.4-SNAPSHOT
+
+------------------------------------------------------------------------
+r26339 | gswduke | 2008-12-03 09:48:56 -0500 (Wed, 03 Dec 2008) | 2 lines
+Changed paths:
+   M /contrib/confluence/shibboleth-authenticator/trunk/pom.xml
+
+oops removed 1.3 tag. needed to put in developer info first. changing version back to 1.3-SNAPSHOT
+
+------------------------------------------------------------------------
+r26337 | gswduke | 2008-12-03 09:46:45 -0500 (Wed, 03 Dec 2008) | 2 lines
+Changed paths:
+   M /contrib/confluence/shibboleth-authenticator/trunk/pom.xml
+
+changed pom version to 1.4-SNAPSHOT
+
+------------------------------------------------------------------------
+r26335 | gswduke | 2008-12-03 09:33:11 -0500 (Wed, 03 Dec 2008) | 2 lines
+Changed paths:
+   M /contrib/confluence/shibboleth-authenticator/trunk/src/main/java/shibauth/confluence/authentication/shibboleth/RemoteUserAuthenticator.java
+
+SHBL-8 - incorporated patch from Vladimir Mencl in SHBL-8. I added a few comments. Issue is that in Confluence 2.9.2 unless anonymous users have permission to use confluence, when it calls addMembership to add the user to a role, the GroupManager instance is not being returned. The fix incorporates similar code to that of the example that Matt Ryall of Atlassian suggested (in http://jira.atlassian.com/browse/CONF-12158 ) and was part of an example authenticator ConfluenceGroupJoiningAuthenticator (Matt Ryall of Atlassian attached it as http://confluence.atlassian.com/download/attachments/192312/ConfluenceGroupJoiningAuthenticator.java?version=1 )
+
+------------------------------------------------------------------------
+r21549 | gswduke | 2008-07-31 11:53:00 -0400 (Thu, 31 Jul 2008) | 2 lines
+Changed paths:
+   M /contrib/confluence/shibboleth-authenticator/trunk/src/main/java/shibauth/confluence/authentication/shibboleth/RemoteUserAuthenticator.java
+
+SHBL-7 - added ability for it to handle email or fullname first header value if it contains multiple email addresses or fullnames separated by comma or semicolon, as SP tends to send it according to Scott Cantor.
+
+------------------------------------------------------------------------
+r21548 | gswduke | 2008-07-31 11:40:01 -0400 (Thu, 31 Jul 2008) | 2 lines
+Changed paths:
+   M /contrib/confluence/shibboleth-authenticator/trunk/src/main/java/shibauth/confluence/authentication/shibboleth/RemoteUserAuthenticator.java
+
+SHBL-7 - added ability to handle multiple headers, even though Scott said that probably won't happen
+
+------------------------------------------------------------------------
+r21541 | gswduke | 2008-07-31 10:28:51 -0400 (Thu, 31 Jul 2008) | 3 lines
+Changed paths:
+   M /contrib/confluence/shibboleth-authenticator/trunk/src/main/java/shibauth/confluence/authentication/shibboleth/StringUtil.java
+
+added changes to utf8 conversion from Bruc Liong and Gary Weaver
+
+
+------------------------------------------------------------------------
+r21479 | gswduke | 2008-07-30 11:45:18 -0400 (Wed, 30 Jul 2008) | 2 lines
+Changed paths:
+   M /contrib/confluence/shibboleth-authenticator/trunk/conf/remoteUserAuthenticator.properties
+
+updated to add convert.to.utf8 property to default config, per SHBL-5. Also note in previous commit that changed from Apache license to BSD license.
+
+------------------------------------------------------------------------
+r21477 | gswduke | 2008-07-30 11:23:10 -0400 (Wed, 30 Jul 2008) | 2 lines
+Changed paths:
+   M /contrib/confluence/shibboleth-authenticator/trunk/pom.xml
+   M /contrib/confluence/shibboleth-authenticator/trunk/src/main/java/shibauth/confluence/authentication/shibboleth/RemoteUserAuthenticator.java
+   M /contrib/confluence/shibboleth-authenticator/trunk/src/main/java/shibauth/confluence/authentication/shibboleth/ShibAuthConfigLoader.java
+   M /contrib/confluence/shibboleth-authenticator/trunk/src/main/java/shibauth/confluence/authentication/shibboleth/ShibAuthConfiguration.java
+   M /contrib/confluence/shibboleth-authenticator/trunk/src/main/java/shibauth/confluence/authentication/shibboleth/ShibAuthConstants.java
+   M /contrib/confluence/shibboleth-authenticator/trunk/src/main/java/shibauth/confluence/authentication/shibboleth/StringUtil.java
+
+Integrating patch from Juha Ojaluoma for SHBL-5. Gary changed patch to convert all header values to UTF-8 instead of just full name. Fixed jar name
+
+------------------------------------------------------------------------
+r16651 | gswduke | 2008-03-07 15:19:09 -0500 (Fri, 07 Mar 2008) | 2 lines
+Changed paths:
+   M /contrib/confluence/shibboleth-authenticator/trunk/build.xml.old
+
+added comment to old build.xml
+
+------------------------------------------------------------------------
+r16650 | gswduke | 2008-03-07 15:18:23 -0500 (Fri, 07 Mar 2008) | 2 lines
+Changed paths:
+   A /contrib/confluence/shibboleth-authenticator/trunk/README
+   D /contrib/confluence/shibboleth-authenticator/trunk/build.xml
+   A /contrib/confluence/shibboleth-authenticator/trunk/build.xml.old (from /contrib/confluence/shibboleth-authenticator/trunk/build.xml:16648)
+
+have switched to Maven 2 build, because Atlassian plugin development better supports it (easy to change dependencies)
+
+------------------------------------------------------------------------
+r16649 | gswduke | 2008-03-07 15:16:48 -0500 (Fri, 07 Mar 2008) | 2 lines
+Changed paths:
+   D /contrib/confluence/shibboleth-authenticator/trunk/test
+
+removing old test src dir
+
+------------------------------------------------------------------------
+r16648 | gswduke | 2008-03-07 15:16:07 -0500 (Fri, 07 Mar 2008) | 2 lines
+Changed paths:
+   M /contrib/confluence/shibboleth-authenticator/trunk/src/test/java/shibauth/confluence/authentication/shibboleth/RemoteAuthenticatorTest.java
+
+changed package in test
+
+------------------------------------------------------------------------
+r16647 | gswduke | 2008-03-07 15:15:14 -0500 (Fri, 07 Mar 2008) | 2 lines
+Changed paths:
+   D /contrib/confluence/shibboleth-authenticator/trunk/build-lib
+   A /contrib/confluence/shibboleth-authenticator/trunk/src/test
+   A /contrib/confluence/shibboleth-authenticator/trunk/src/test/java
+   A /contrib/confluence/shibboleth-authenticator/trunk/src/test/java/shibauth
+   A /contrib/confluence/shibboleth-authenticator/trunk/src/test/java/shibauth/confluence
+   A /contrib/confluence/shibboleth-authenticator/trunk/src/test/java/shibauth/confluence/authentication
+   A /contrib/confluence/shibboleth-authenticator/trunk/src/test/java/shibauth/confluence/authentication/shibboleth
+   A /contrib/confluence/shibboleth-authenticator/trunk/src/test/java/shibauth/confluence/authentication/shibboleth/RemoteAuthenticatorTest.java (from /contrib/confluence/shibboleth-authenticator/trunk/test/edu/georgetown/middleware/confluence/RemoteAuthenticatorTest.java:16630)
+   D /contrib/confluence/shibboleth-authenticator/trunk/test/edu/georgetown/middleware/confluence/RemoteAuthenticatorTest.java
+
+moving java test source package
+
+------------------------------------------------------------------------
+r16646 | gswduke | 2008-03-07 15:12:10 -0500 (Fri, 07 Mar 2008) | 2 lines
+Changed paths:
+   A /contrib/confluence/shibboleth-authenticator/trunk/pom.xml
+
+adding pom.xml
+
+------------------------------------------------------------------------
+r16645 | gswduke | 2008-03-07 15:11:31 -0500 (Fri, 07 Mar 2008) | 2 lines
+Changed paths:
+   M /contrib/confluence/shibboleth-authenticator/trunk/src/main/java/shibauth/confluence/authentication/shibboleth/RemoteUserAuthenticator.java
+   M /contrib/confluence/shibboleth-authenticator/trunk/src/main/java/shibauth/confluence/authentication/shibboleth/ShibAuthConfigLoader.java
+   M /contrib/confluence/shibboleth-authenticator/trunk/src/main/java/shibauth/confluence/authentication/shibboleth/ShibAuthConfiguration.java
+   M /contrib/confluence/shibboleth-authenticator/trunk/src/main/java/shibauth/confluence/authentication/shibboleth/ShibAuthConstants.java
+   M /contrib/confluence/shibboleth-authenticator/trunk/src/main/java/shibauth/confluence/authentication/shibboleth/StringUtil.java
+
+changed package in java source
+
+------------------------------------------------------------------------
+r16644 | gswduke | 2008-03-07 15:09:39 -0500 (Fri, 07 Mar 2008) | 2 lines
+Changed paths:
+   D /contrib/confluence/shibboleth-authenticator/trunk/src/main/java/shibauth/georgetown
+
+removing empty package
+
+------------------------------------------------------------------------
+r16643 | gswduke | 2008-03-07 15:09:20 -0500 (Fri, 07 Mar 2008) | 2 lines
+Changed paths:
+   D /contrib/confluence/shibboleth-authenticator/trunk/src/main/java/shibauth/RemoteUserAuthenticator.java
+   D /contrib/confluence/shibboleth-authenticator/trunk/src/main/java/shibauth/ShibAuthConfigLoader.java
+   D /contrib/confluence/shibboleth-authenticator/trunk/src/main/java/shibauth/ShibAuthConfiguration.java
+   D /contrib/confluence/shibboleth-authenticator/trunk/src/main/java/shibauth/ShibAuthConstants.java
+   D /contrib/confluence/shibboleth-authenticator/trunk/src/main/java/shibauth/StringUtil.java
+   A /contrib/confluence/shibboleth-authenticator/trunk/src/main/java/shibauth/confluence/authentication/shibboleth
+   A /contrib/confluence/shibboleth-authenticator/trunk/src/main/java/shibauth/confluence/authentication/shibboleth/RemoteUserAuthenticator.java (from /contrib/confluence/shibboleth-authenticator/trunk/src/main/java/shibauth/RemoteUserAuthenticator.java:16641)
+   A /contrib/confluence/shibboleth-authenticator/trunk/src/main/java/shibauth/confluence/authentication/shibboleth/ShibAuthConfigLoader.java (from /contrib/confluence/shibboleth-authenticator/trunk/src/main/java/shibauth/ShibAuthConfigLoader.java:16641)
+   A /contrib/confluence/shibboleth-authenticator/trunk/src/main/java/shibauth/confluence/authentication/shibboleth/ShibAuthConfiguration.java (from /contrib/confluence/shibboleth-authenticator/trunk/src/main/java/shibauth/ShibAuthConfiguration.java:16641)
+   A /contrib/confluence/shibboleth-authenticator/trunk/src/main/java/shibauth/confluence/authentication/shibboleth/ShibAuthConstants.java (from /contrib/confluence/shibboleth-authenticator/trunk/src/main/java/shibauth/ShibAuthConstants.java:16641)
+   A /contrib/confluence/shibboleth-authenticator/trunk/src/main/java/shibauth/confluence/authentication/shibboleth/StringUtil.java (from /contrib/confluence/shibboleth-authenticator/trunk/src/main/java/shibauth/StringUtil.java:16641)
+
+moved classes into shibauth/confluence/authentication/shibboleth package
+
+------------------------------------------------------------------------
+r16642 | gswduke | 2008-03-07 15:07:41 -0500 (Fri, 07 Mar 2008) | 2 lines
+Changed paths:
+   A /contrib/confluence/shibboleth-authenticator/trunk/src/main/java/shibauth/confluence
+   A /contrib/confluence/shibboleth-authenticator/trunk/src/main/java/shibauth/confluence/authentication
+
+added confluence/authentication part of package name
+
+------------------------------------------------------------------------
+r16641 | gswduke | 2008-03-07 15:05:59 -0500 (Fri, 07 Mar 2008) | 2 lines
+Changed paths:
+   D /contrib/confluence/shibboleth-authenticator/trunk/src/main/java/edu
+
+removing edu package
+
+------------------------------------------------------------------------
+r16640 | gswduke | 2008-03-07 15:04:38 -0500 (Fri, 07 Mar 2008) | 2 lines
+Changed paths:
+   A /contrib/confluence/shibboleth-authenticator/trunk/src/main/java/shibauth/RemoteUserAuthenticator.java (from /contrib/confluence/shibboleth-authenticator/trunk/src/main/java/shibauth/georgetown/middleware/confluence/RemoteUserAuthenticator.java:16639)
+   A /contrib/confluence/shibboleth-authenticator/trunk/src/main/java/shibauth/ShibAuthConfigLoader.java (from /contrib/confluence/shibboleth-authenticator/trunk/src/main/java/shibauth/georgetown/middleware/confluence/ShibAuthConfigLoader.java:16639)
+   A /contrib/confluence/shibboleth-authenticator/trunk/src/main/java/shibauth/ShibAuthConfiguration.java (from /contrib/confluence/shibboleth-authenticator/trunk/src/main/java/shibauth/georgetown/middleware/confluence/ShibAuthConfiguration.java:16639)
+   A /contrib/confluence/shibboleth-authenticator/trunk/src/main/java/shibauth/ShibAuthConstants.java (from /contrib/confluence/shibboleth-authenticator/trunk/src/main/java/shibauth/georgetown/middleware/confluence/ShibAuthConstants.java:16639)
+   A /contrib/confluence/shibboleth-authenticator/trunk/src/main/java/shibauth/StringUtil.java (from /contrib/confluence/shibboleth-authenticator/trunk/src/main/java/shibauth/georgetown/middleware/confluence/StringUtil.java:16639)
+   D /contrib/confluence/shibboleth-authenticator/trunk/src/main/java/shibauth/georgetown/middleware/confluence/RemoteUserAuthenticator.java
+   D /contrib/confluence/shibboleth-authenticator/trunk/src/main/java/shibauth/georgetown/middleware/confluence/ShibAuthConfigLoader.java
+   D /contrib/confluence/shibboleth-authenticator/trunk/src/main/java/shibauth/georgetown/middleware/confluence/ShibAuthConfiguration.java
+   D /contrib/confluence/shibboleth-authenticator/trunk/src/main/java/shibauth/georgetown/middleware/confluence/ShibAuthConstants.java
+   D /contrib/confluence/shibboleth-authenticator/trunk/src/main/java/shibauth/georgetown/middleware/confluence/StringUtil.java
+
+moving files into new package shibauth
+
+------------------------------------------------------------------------
+r16639 | gswduke | 2008-03-07 15:03:25 -0500 (Fri, 07 Mar 2008) | 2 lines
+Changed paths:
+   A /contrib/confluence/shibboleth-authenticator/trunk/src/main/java/shibauth (from /contrib/confluence/shibboleth-authenticator/trunk/src/main/java/edu:16638)
+
+added shibauth package
+
+------------------------------------------------------------------------
+r16638 | gswduke | 2008-03-07 15:01:39 -0500 (Fri, 07 Mar 2008) | 2 lines
+Changed paths:
+   D /contrib/confluence/shibboleth-authenticator/trunk/src/main/edu
+   A /contrib/confluence/shibboleth-authenticator/trunk/src/main/java
+   A /contrib/confluence/shibboleth-authenticator/trunk/src/main/java/edu (from /contrib/confluence/shibboleth-authenticator/trunk/src/main/edu:16637)
+
+added java and moved source under it
+
+------------------------------------------------------------------------
+r16637 | gswduke | 2008-03-07 15:01:12 -0500 (Fri, 07 Mar 2008) | 2 lines
+Changed paths:
+   D /contrib/confluence/shibboleth-authenticator/trunk/src/edu
+   A /contrib/confluence/shibboleth-authenticator/trunk/src/main/edu (from /contrib/confluence/shibboleth-authenticator/trunk/src/edu:16630)
+
+moving source under main
+
+------------------------------------------------------------------------
+r16636 | gswduke | 2008-03-07 15:00:50 -0500 (Fri, 07 Mar 2008) | 2 lines
+Changed paths:
+   A /contrib/confluence/shibboleth-authenticator/trunk/src/main
+
+added main
+
+------------------------------------------------------------------------
+r16635 | gswduke | 2008-03-07 14:34:49 -0500 (Fri, 07 Mar 2008) | 2 lines
+Changed paths:
+   D /contrib/confluence/shibboleth-authenticator/trunk/build
+
+no idea how the build dir got checked in. removing it
+
+------------------------------------------------------------------------
+r16631 | gswduke | 2008-03-07 11:56:00 -0500 (Fri, 07 Mar 2008) | 2 lines
+Changed paths:
+   M /contrib/confluence/shibboleth-authenticator/trunk/build.xml
+
+updating version to 1.3
+
+------------------------------------------------------------------------
+r14378 | gswduke | 2008-01-16 11:44:27 -0500 (Wed, 16 Jan 2008) | 4 lines
+Changed paths:
+   M /contrib/confluence/shibboleth-authenticator/trunk/build/edu/georgetown/middleware/confluence/RemoteUserAuthenticator.class
+   M /contrib/confluence/shibboleth-authenticator/trunk/build.xml
+   M /contrib/confluence/shibboleth-authenticator/trunk/conf/remoteUserAuthenticator.properties
+   M /contrib/confluence/shibboleth-authenticator/trunk/src/edu/georgetown/middleware/confluence/RemoteUserAuthenticator.java
+   A /contrib/confluence/shibboleth-authenticator/trunk/src/edu/georgetown/middleware/confluence/ShibAuthConfigLoader.java
+   A /contrib/confluence/shibboleth-authenticator/trunk/src/edu/georgetown/middleware/confluence/ShibAuthConfiguration.java
+   A /contrib/confluence/shibboleth-authenticator/trunk/src/edu/georgetown/middleware/confluence/ShibAuthConstants.java
+   A /contrib/confluence/shibboleth-authenticator/trunk/src/edu/georgetown/middleware/confluence/StringUtil.java
+
+Refactored config loading, constants, method to split string by comma/semi-colon, and configuration VO. Changed comments in properties file to indicate "roles" are "groups" and worked a little on the comments in the config file. Changed version to 1.2 in build file.
+
+Needs to be tested.
+
+------------------------------------------------------------------------
+r14283 | bliong | 2008-01-13 21:25:53 -0500 (Sun, 13 Jan 2008) | 2 lines
+Changed paths:
+   M /contrib/confluence/shibboleth-authenticator/trunk/conf/remoteUserAuthenticator.properties
+   M /contrib/confluence/shibboleth-authenticator/trunk/src/edu/georgetown/middleware/confluence/RemoteUserAuthenticator.java
+
+updated files to contain role mapping and small refactoring of previous code.
+read remoteUserAuthenticator.properties for options available to do role/group assignment
+------------------------------------------------------------------------
+r13330 | gswduke | 2007-12-10 15:50:42 -0500 (Mon, 10 Dec 2007) | 2 lines
+Changed paths:
+   D /contrib/confluence/shibboleth-authenticator/trunk/dist
+
+removing accidentally checked in dist dir
+
+------------------------------------------------------------------------
+r13326 | gswduke | 2007-12-10 15:47:08 -0500 (Mon, 10 Dec 2007) | 2 lines
+Changed paths:
+   A /contrib/confluence/shibboleth-authenticator/trunk/test
+   A /contrib/confluence/shibboleth-authenticator/trunk/test/edu
+   A /contrib/confluence/shibboleth-authenticator/trunk/test/edu/georgetown
+   A /contrib/confluence/shibboleth-authenticator/trunk/test/edu/georgetown/middleware
+   A /contrib/confluence/shibboleth-authenticator/trunk/test/edu/georgetown/middleware/confluence
+   A /contrib/confluence/shibboleth-authenticator/trunk/test/edu/georgetown/middleware/confluence/RemoteAuthenticatorTest.java
+
+added test dir
+
+------------------------------------------------------------------------
+r13323 | gswduke | 2007-12-10 15:44:38 -0500 (Mon, 10 Dec 2007) | 2 lines
+Changed paths:
+   A /contrib/confluence/shibboleth-authenticator/trunk/TAGGING
+
+added doc on tagging
+
+------------------------------------------------------------------------
+r13322 | gswduke | 2007-12-10 15:41:47 -0500 (Mon, 10 Dec 2007) | 2 lines
+Changed paths:
+   M /contrib/confluence/shibboleth-authenticator/trunk/build/edu/georgetown/middleware/confluence/RemoteUserAuthenticator.class
+   D /contrib/confluence/shibboleth-authenticator/trunk/build-lib/atlassian-bucket-2006.03.14.branch.jar
+   A /contrib/confluence/shibboleth-authenticator/trunk/build-lib/atlassian-bucket-2007.01.23.jar
+   A /contrib/confluence/shibboleth-authenticator/trunk/build-lib/atlassian-spring-0.4.jar
+   D /contrib/confluence/shibboleth-authenticator/trunk/build-lib/atlassian-user-0.6.0e.jar
+   A /contrib/confluence/shibboleth-authenticator/trunk/build-lib/atlassian-user-2007-05-22.jar
+   A /contrib/confluence/shibboleth-authenticator/trunk/build-lib/commons-logging-1.0.4.jar
+   A /contrib/confluence/shibboleth-authenticator/trunk/build-lib/confluence-2.4.5.jar
+   A /contrib/confluence/shibboleth-authenticator/trunk/build-lib/junit.jar
+   D /contrib/confluence/shibboleth-authenticator/trunk/build-lib/log4j-1.2.12.jar
+   A /contrib/confluence/shibboleth-authenticator/trunk/build-lib/log4j-1.2.8.jar
+   D /contrib/confluence/shibboleth-authenticator/trunk/build-lib/seraph-0.7.13.jar
+   A /contrib/confluence/shibboleth-authenticator/trunk/build-lib/seraph-0.7.23.jar
+   R /contrib/confluence/shibboleth-authenticator/trunk/build-lib/servlet-api.jar
+   M /contrib/confluence/shibboleth-authenticator/trunk/build.xml
+   M /contrib/confluence/shibboleth-authenticator/trunk/src/edu/georgetown/middleware/confluence/RemoteUserAuthenticator.java
+
+implementing changes made by Duke University to make the authenticator work with more recent versions of Confluence
+
+------------------------------------------------------------------------
+r13321 | gswduke | 2007-12-10 15:05:29 -0500 (Mon, 10 Dec 2007) | 48 lines
+Changed paths:
+   A /contrib/confluence/shibboleth-authenticator/trunk/build
+   A /contrib/confluence/shibboleth-authenticator/trunk/build/edu
+   A /contrib/confluence/shibboleth-authenticator/trunk/build/edu/georgetown
+   A /contrib/confluence/shibboleth-authenticator/trunk/build/edu/georgetown/middleware
+   A /contrib/confluence/shibboleth-authenticator/trunk/build/edu/georgetown/middleware/confluence
+   A /contrib/confluence/shibboleth-authenticator/trunk/build/edu/georgetown/middleware/confluence/RemoteUserAuthenticator.class
+   A /contrib/confluence/shibboleth-authenticator/trunk/build-lib
+   A /contrib/confluence/shibboleth-authenticator/trunk/build-lib/atlassian-bucket-2006.03.14.branch.jar
+   A /contrib/confluence/shibboleth-authenticator/trunk/build-lib/atlassian-user-0.6.0e.jar
+   A /contrib/confluence/shibboleth-authenticator/trunk/build-lib/log4j-1.2.12.jar
+   A /contrib/confluence/shibboleth-authenticator/trunk/build-lib/seraph-0.7.13.jar
+   A /contrib/confluence/shibboleth-authenticator/trunk/build-lib/servlet-api.jar
+   A /contrib/confluence/shibboleth-authenticator/trunk/build.xml
+   A /contrib/confluence/shibboleth-authenticator/trunk/conf
+   A /contrib/confluence/shibboleth-authenticator/trunk/conf/remoteUserAuthenticator.properties
+   A /contrib/confluence/shibboleth-authenticator/trunk/dist
+   A /contrib/confluence/shibboleth-authenticator/trunk/dist/remoteUserAuth-1.0.jar
+   A /contrib/confluence/shibboleth-authenticator/trunk/src
+   A /contrib/confluence/shibboleth-authenticator/trunk/src/edu
+   A /contrib/confluence/shibboleth-authenticator/trunk/src/edu/georgetown
+   A /contrib/confluence/shibboleth-authenticator/trunk/src/edu/georgetown/middleware
+   A /contrib/confluence/shibboleth-authenticator/trunk/src/edu/georgetown/middleware/confluence
+   A /contrib/confluence/shibboleth-authenticator/trunk/src/edu/georgetown/middleware/confluence/RemoteUserAuthenticator.java
+
+moving version 1.0 (from Georgetown's svn at https://svn.middleware.georgetown.edu/confluence/remoteAuthn/ ) into trunk with permission of Chad LaJoie of Georgetown. this is verbatim what is in the 1.0 tag:
+
+-------- Original Message --------
+Subject: 	Re: Latest Shibboleth authenticator plugin?
+Date: 	Wed, 05 Dec 2007 09:59:17 -0800
+From: 	Chad La Joie <chad.lajoie@switch.ch>
+Organization: 	SWITCH
+To: 	Gary Weaver <gary.weaver@duke.edu>
+CC: 	Michael R. Gettes <gettes@internet2.edu>, Scott Cantor <cantor.2@osu.edu>
+References: 	<005401c836c2$f75fdfb0$e61f9f10$%2@osu.edu> <4756CBAC.1080201@duke.edu> <009201c8375b$cbe6a0a0$63b3e1e0$@2@osu.edu> <1C1F3B3F-7F86-47B9-8E8B-88FC986FA87A@internet2.edu> <4756D773.9080109@duke.edu>
+
+
+Sounds fine to me.  Go for it.
+
+The license on all my work is Apache 2.
+
+Gary Weaver wrote:
+> Do you guys mind if I move the most recent code (without the 
+> DukeStripper hack) in under Atlassian contrib's svn instance then and 
+> then we can just change the ShibbolizedConfluence page to point at it 
+> instead?
+> 
+> I could copy the older Georgetown version of the code into their 
+> subversion also and make the older jar available for older versions of 
+> confluence.
+> 
+> Chad, I'd definitely leave you (and anyone else that helped) on the 
+> author list, as the changes I made were mostly just to use the newer API 
+> and do some work to logging and exception handling (and refactorish kind 
+> of work- moving methods around and changing little things). But I can 
+> omit your new contact info if you don't want to be contacted (or if 
+> you'd rather provide gmail or some other long-lasting address just let 
+> me know).
+> 
+> I could get the code into atlassian subversion super-quick (I have the 
+> root of confluence under contrib checked out so I can easily add 
+> projects, and I can request a new plugin.
+> 
+> I don't remember what the license was for the Georgetown code. Any 
+> suggestions for what to use for the license? (I have been using BSD-style.)
+> 
+> Am I ok doing this?
+> 
+> Thanks,
+> 
+> Gary
+
+
+------------------------------------------------------------------------
+r13317 | gswduke | 2007-12-10 14:52:35 -0500 (Mon, 10 Dec 2007) | 2 lines
+Changed paths:
+   A /contrib/confluence/shibboleth-authenticator/branches
+   A /contrib/confluence/shibboleth-authenticator/tags
+   A /contrib/confluence/shibboleth-authenticator/trunk
+
+added trunk, branches, tags
+
+------------------------------------------------------------------------
