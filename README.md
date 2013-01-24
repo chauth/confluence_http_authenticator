@@ -35,9 +35,163 @@ Why isn't there support for installation of the plugin via Plugin Repository?
 
 ### Configuration
 
-* See How to Shibbolize Confluence to get setup.
-* See How to Configure Confluence HTTP Authenticator for info on how to tweak the authenticator's config to take advantage of its many features.
-* Be sure to read the read of this document for additional information about security and troubleshooting.
+The following describes how to configure the authenticator. For more information on the process of Shibbolizing Confluence, see that page and [How to Shibbolize Confluence].
+
+The authenticator uses Atlassian's (Java-based) Confluence User API to make changes to users and their group memberships. This means that if Atlassian's Confluence API supports those actions, then the authenticator should also be able to support those actions. If you aren't sure, try it and see (in your test environment).
+
+#### About Configuration
+
+The authenticator's config file is *remoteUserAuthenticator.properties*. A sample one comes with the version of the authenticator that you are using is provided as a separate download along with the authenticator jar, but you may need to tweak it for your environment. Back up any existing version of remoteUserAuthenticator.properties, and download the one for your version, and put it into Confluence's WEB-INF/classes directory.
+
+A description of each property available in the plugin and how it can be configured is in the *remoteUserAuthenticator.properties* file provided as an additional download alongside the authenticator jar. To download that file, see [Confluence Shibboleth Authenticator].
+
+#### Basic Configuration
+
+(Note: There should NOT be quotes in the values of header.fullname and header.email as there were in a previous version of remoteUserAuthenticator.properties, the header.fullname and header.email need to match the header names in AAP.xml, and the Attribute Rules for the header names in AAP.xml need to be uncommented).
+
+These properties are not optional, except header.fullname and header.email [which are only optional in Shib Auth for Conf v1.5 and greater (SHBL-18). See the sample config for more information on each property. Note that the values of the headers provided by Shibboleth can be empty (which will populate the Confluence user with empty values for those headers). It is strongly suggested if you want Confluence to create users, to also let it update the info (on each login), and to specify headers which more often than not will provide fullname and email values for each user (since these are used by the application).
+
+For this example, I made the header.fullname and header.email match the headers defined by default in AAP.xml:
+
+	create.users=true
+	update.info=true
+	default.roles=confluence-users
+	header.fullname=Shib-InetOrgPerson-displayName
+	header.email=Shib-InetOrgPerson-mail
+	header.remote_user=REMOTE_USER
+	
+Note that even if you supply update.info=true, it will not attempt to update read-only users (such as those from an LDAP repository). That way the authenticator can support having both read-only and read-write user repositories.
+
+Warning: Be sure to uncomment header.remote_user in the configuration and to change it to REMOTE_USER if that is how you are passing the username in, which is the typical usage. This will be fixed in future versions.
+
+#### Dynamic Roles
+
+This optional feature allows the authenticator to automatically assign users to roles based on attribute values they have, list the attribute name in *header.dynamicroles.attributenames* and specify the roles each value should map to. To automatically remove the user from the role when the user no longer has the attribute value, list the role also in *purge.roles*.
+
+	header.dynamicroles.attributenames=SHIB-EP-ENTITLEMENT, Shib-EP-UnscopedAffiliation
+	header.dynamicroles.testing=test-users, qa-test-users
+	header.dynamicroles.some\:urn\:organization.com\:role\:manage=confluence-administrators
+	purge.roles=test-users,qa-test-users
+
+You can also use regex to map dynamically.  For example, if you wanted to take all the attributes in a header called {{nameofheader}}, and create groups in Confluence in the format 'prefix\-{{content}}' (so a user with {{nameofheader}}={{content}} becomes a member of the group {{prefix-content}}) then this would work:
+
+    header.dynamicroles.attributenames=nameofheader
+    
+	dynamicroles.header.nameofheader=nameofmap
+
+	dynamicroles.mapper.nameofmap.match=(.*)
+	dynamicroles.mapper.nameofmap.transform=prefix-$1
+
+You can then replace {{nameofheader}} and {{nameofmap}} to create your own mappings, and customise the regex ('match') and output ('transform') to suit your needs.  Only the set part (within brackets) of the regex will be passed to the transform in {{$1}}.
+
+{note}If you are having trouble mapping roles, try using Shibboleth on the same server to guard a script that can print out the HTTP Headers being passed in from the SP, like the following PhP script from David Eisinger:
+{code}<pre><? print_r(apache_request_headers()); ?></pre>
+{code}Look at the HTTP headers. The header.dynamicroles.attributenames values need to match the HTTP Header names coming from the SP. If you're not seeing the headers you want, talk to your Shibboleth administrator or email [shibboleth-users|https://mail.internet2.edu/wws/arc/shibboleth-users] to get Shibboleth support (and first try turning on debug logging in Shibboleth to make sure the IdP is sending the SP what you think it should be).{note}
+
+#### Cleaner Usernames Using Regular Expressions
+
+This optional feature allows the authenticator to generate the username based on a regular expression based on the REMOTE_USER header instead of just using the exact value of REMOTE_USER header.
+
+	# Example: suppose the remote user has initial value
+	#   "https://idp.edu/idp!https://sp.edu/shibboleth!1234-56789-#00%00-TTT"
+	# and we would like it to be transformed to
+	#   "123456789A00c00@idp.edu"
+	# then we can define the following:
+	remoteuser=remoteusermap
+	remoteuser.replace=#,A,%,c,(-|TTT),,
+	remoteuser.map.remoteusermap.match = ^(http|https)://(.*?)(:|/)?[^!]*?!([^!]*?)!(.*)
+	remoteuser.map.remoteusermap.casesensitive = false
+	remoteuser.map.remoteusermap.transform = $5@$2
+	#
+	# remoteusermap is the mapping label to be used, multiple labels
+	# can be used but only 1st result from the label is chosen as remote user)
+	#
+	# .replace is pair-wise regex & replacement strings to be applied to the FINAL
+	# remote-user once the mapping has been performed. null (as replacement string)
+	# can be represented by simply empty string (e.g. '-' and 'TTT' above are removed)
+
+
+#### Cleaner Full Names Using Regular Expressions
+
+This optional feature allows the authenticator to do mapping on values presented in header defined as value of header.fullname. This is for those that don't have a "display name" type attribute that can be exposed to Confluence's Shibboleth SP, but must put a full name together from multiple values, etc. This feature has similar syntax to dynamic roles. If a regex map doesn't match the input provided, then the mapping is not performed, and it will use the first value of that header.
+
+	# Example 1: suppose the full name has the header value
+	#   "Doe; John"
+	# and we would like it to be transformed to
+	#   "John Doe"
+	# then we can define the following:
+	fullname=fullnamemap
+	fullname.map.fullnamemap.match = ^(.*);(.*)
+	fullname.map.fullnamemap.casesensitive = false
+	fullname.map.fullnamemap.transform = $2 $1
+	# Note: if the expression doesn't match, it will split the string by comma or semi-colon and get the first value, so
+	# the fullname would be:
+	#   "Doe"
+
+
+	# Example 2: suppose the full name has the header value
+	#   "Doe#,%John"
+	# and we would like it to be transformed to
+	#   "John Doe"
+	# then we can define the following:
+	fullname=fullnamemap
+	fullname.replace=#,,%,,
+	fullname.map.fullnamemap.match = ^(.*),(.*)
+	fullname.map.fullnamemap.casesensitive = false
+	fullname.map.fullnamemap.transform = $2 $1
+	# Note: if the expression doesn't match, it will split the string by comma or semi-colon and get the first value, so
+	# the fullname would be:
+	#   "Doe#"
+	#
+	# fullnamemap is the mapping label to be used, multiple labels
+	# can be used but only 1st result from the label is chosen as remote user)
+	#
+	# .replace is pair-wise regex & replacement strings to be applied to the FINAL
+	# full name once the mapping has been performed. null (as replacement string)
+	# can be represented by simply empty string (e.g. '-' and 'TTT' above are removed)
+
+#### Automatically Reloading the Configuration File
+
+Restarting Confluence after adding a dynamic mapping would have too much impact on a production environment.  To make the module check for changes to the configuration file (*remoteAuthentication.propeties*) on each user login and reloads the file if changed, set the *reload.config* property. It is also possible to set a minimal delay between the checks (in milliseconds, defaults to 0).
+
+    reload.config=true
+    reload.config.check.interval=5000
+
+#### Character Set Conversion
+
+To convert HTTP header values to UTF-8           :
+
+    convert.to.utf8=true
+
+#### Using a Read-only User Repository
+
+If you are only using a read-only repository such as LDAP for users, then you may want to disable the options that attempt to update user information by doing this in the config:
+
+	create.users=false
+	update.info=false
+
+However, you should just be able to still have create-users as true and update-info as true and it shouldn't try to create the user (since it exists) nor should it attempt to update existing users (because it checks to see whether the user is read-only).
+
+Assuming you needed to add those read-only users to the confluence-users group, and the Confluence API has the ability to create those group memberships, the following default settings for those options should work:
+
+	default.roles=confluence-users
+	update.roles=true
+
+#### Using ShibLoginFilter
+
+The ShibLoginFilter was introduced in v1.5 and is turned off by default in v1.7 because it kept those wanting to use local authN from being able to do that while using the authenticator. To turn it back on you can set this to true, but it shouldn't be needed and you should see the problems with it discussed in SHBL-24 if you decide to do that. Use of the ShibLoginFilter is deprecated and it will likely be removed in a later release.
+
+	# Set this to true if you'd like to use the ShibLoginFilter that was used in v1.5, v1.5.1, and v1.6 of the plugin,
+	# which requires Confluence to be using shibauth.confluence.authentication.shibboleth.ShibLoginFilter which in some/most
+	# versions of Confluence involves Confluence's web.xml to be altered such that it contains:
+	# <filter-name>login</filter-name>
+	# <filter-class>shibauth.confluence.authentication.shibboleth.ShibLoginFilter</filter-class>
+	# See SHBL-24
+
+	# OPTIONAL:
+	using.shib.login.filter=true
+
+Warning: If you are unsure, leave this commented out or set to false. If you set using.shib.login.filter to true, then local authN will not work. Use of the shib login filter is deprecated and off by default. This option was created and left here for compatibility with previous versions and will be removed completely in a future version.
 
 ### How to Allow Anonymous Access to Certain Parts of Confluence
 
