@@ -40,7 +40,7 @@ Why isn't there support for installation of the plugin via Plugin Repository?
 * See How to Configure Shibboleth Authenticator for Confluence for info on how to tweak the authenticator's config to take advantage of its many features.
 * Be sure to read the read of this document for additional information about security and troubleshooting.
 
-How to Allow Anonymous Access to Certain Parts of Confluence
+### How to Allow Anonymous Access to Certain Parts of Confluence
 
 (The following information was provided by Vladimir Mencl.)
 
@@ -52,7 +52,7 @@ If you are running into issues where anyone accessing the space (or the whole Co
 
 3. Configure Shibboleth for Lazy sessions in mod_shib:
 
-      module configuration ("ShibRequestSetting requireSession 0")
+        module configuration ("ShibRequestSetting requireSession 0")
 
 ### Upgrading
 
@@ -182,9 +182,13 @@ Troubleshooting:
 
 Be sure to build with Java 6.
 
-# Release Notes
+### Release Notes
 
 See git log or the [CHANGELOG][changelog].
+
+### License
+
+Copyright (c) 2007-2013, Confluence HTTP Authenticator Team, released under a [BSD-style License][lic].
 
 [changelog]: http://github.com/chauth/confluence_http_authenticator/blob/master/CHANGELOG.md
 [atlassianmarketplace]: https://marketplace.atlassian.com/plugins/shibauth.confluence.authentication.shibboleth
