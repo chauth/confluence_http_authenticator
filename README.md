@@ -1,10 +1,9 @@
 Confluence HTTP Authenticator
 =====
-(formerly Confluence Shibboleth Authenticator)
 
 ### Overview
 
-Confluence HTTP Authenticator is an authenticator for Confluence that can be used with Shibboleth (tested with Shibboleth 1.3 and 2.0) and possibly other HTTP-authentication solutions.
+Confluence HTTP Authenticator (formerly known as Confluence Shibboleth Authenticator) is an authenticator for Confluence that can be used with Shibboleth (tested with Shibboleth 1.3 and 2.0) and possibly other HTTP-authentication solutions.
 
 Currently the authenticator takes the HTTP header that Shibboleth or something else passes into Confluence (usually REMOTE_USER) as the user's username (id) and either creates or updates a Confluence user in Confluence via Confluence API and can manage the groups memberships of that user based on Shibboleth (mace) attributes that have been configured to be passed into Confluence from Shibboleth. It relies on Shibboleth or something else to ensure that the header cannot be provided by the client itself, overriding the authentication mechanism.
 
@@ -37,7 +36,7 @@ Why isn't there support for installation of the plugin via Plugin Repository?
 ### Configuration
 
 * See How to Shibbolize Confluence to get setup.
-* See How to Configure Shibboleth Authenticator for Confluence for info on how to tweak the authenticator's config to take advantage of its many features.
+* See How to Configure Confluence HTTP Authenticator for info on how to tweak the authenticator's config to take advantage of its many features.
 * Be sure to read the read of this document for additional information about security and troubleshooting.
 
 ### How to Allow Anonymous Access to Certain Parts of Confluence
@@ -57,7 +56,7 @@ If you are running into issues where anyone accessing the space (or the whole Co
 ### Upgrading
 
 * See release notes below for details.
-* If upgrading any Confluence Shibboleth Authenticator version before v1.3 to v1.3+, please make sure to update your seraph config to use the new package name, so that the authenticator class is "shibauth.confluence.authentication.shibboleth.RemoteUserAuthenticator". For versions prior to plugin v1.3, continue to use "edu.georgetown.middleware.confluence.RemoteUserAuthenticator".
+* If upgrading any Confluence HTTP Authenticator version before v1.3 to v1.3+, please make sure to update your seraph config to use the new package name, so that the authenticator class is "shibauth.confluence.authentication.shibboleth.RemoteUserAuthenticator". For versions prior to plugin v1.3, continue to use "edu.georgetown.middleware.confluence.RemoteUserAuthenticator".
 
 ### Support
 
@@ -71,7 +70,7 @@ If you are running into issues where anyone accessing the space (or the whole Co
 
 ### Security
 
-If combining Shibboleth authentication with local authentication, please be aware that, if Confluence is using self-registration, user A could register as a username via local authN if that username doesn't exist yet, and then user B could later authenticate as that same username via the Confluence Shibboleth Authenticator. Please be very careful and understand how the plugin works before considering combining it with local or any other authN methods. (Thanks to Matt Boesch for contributing this information that he, David Lotts, and Rajeev Gupta determined together in a testing environment.)
+If combining Shibboleth authentication with local authentication, please be aware that, if Confluence is using self-registration, user A could register as a username via local authN if that username doesn't exist yet, and then user B could later authenticate as that same username via the Confluence HTTP Authenticator. Please be very careful and understand how the plugin works before considering combining it with local or any other authN methods. (Thanks to Matt Boesch for contributing this information that he, David Lotts, and Rajeev Gupta determined together in a testing environment.)
 
 ### Troubleshooting
 
@@ -96,11 +95,11 @@ More help:
 
 It helps to have debug logging of the plugin itself if something is wrong, so you can do the following to turn on debug logging, and then you can send the part of the log with the issue in the ticket (or attach the log as a file if the section is more than several lines long). To turn on debug logging, you can edit your .../confluence/WEB-INF/classes/log4j.properties file, add the following line and restart Confluence. Then after a login copy the relevant part of the confluence log into the Jira ticket in our Jira project or just attach it as a file:
 
-For building Shibboleth Authenticator for Confluence from trunk and for Shibboleth Authenticator for Confluence v1.3+, use:
+For building Confluence HTTP Authenticator from trunk and for Confluence HTTP Authenticator v1.3+, use:
 
       log4j.logger.shibauth.confluence.authentication.shibboleth=DEBUG, confluencelog
 
-For Shibboleth Authenticator for Confluence v1.0, v1.1, and v1.2 use:
+For Confluence HTTP Authenticator v1.0, v1.1, and v1.2 use:
 
       log4j.logger.edu.georgetown.middleware.confluence=DEBUG, confluencelog
 

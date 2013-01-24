@@ -227,7 +227,7 @@
         <name>Confluence HTTP Authenticator Team</name>
         <url>https://studio.plugins.atlassian.com/wiki/display/SHBL/Confluence+Shibboleth+Authenticator</url>
     </organization>
-    <name>Confluence Shibboleth Authenticator</name>
+    <name>Confluence HTTP Authenticator</name>
     <description>An Atlassian Confluence seraph authenticator that works with Shibboleth</description>
     <packaging>jar</packaging>
     <repositories>

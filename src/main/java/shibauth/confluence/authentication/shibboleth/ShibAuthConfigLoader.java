@@ -182,7 +182,7 @@ public class ShibAuthConfigLoader {
 
             // warn about property no longer supported
             if (Boolean.valueOf(configProps.getProperty(ShibAuthConstants.USING_SHIB_LOGIN_FILTER, "false")).booleanValue()) {
-                log.warn("Note: using.shib.login.filter=true is no longer supported by Confluence Shibboleth Authenticator. Please remove using.shib.login.filter from remoteUserAuthenticator.properties.");
+                log.warn("Note: using.shib.login.filter=true is no longer supported by Confluence HTTP Authenticator. Please remove using.shib.login.filter from remoteUserAuthenticator.properties.");
             }
 
             loadGroupMapping(config, configProps);
