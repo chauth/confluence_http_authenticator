@@ -11,9 +11,9 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>shibauth</groupId>
     <artifactId>remoteUserAuth</artifactId>
-    <version>2.1.17-SNAPSHOT</version>
+    <version>2.2.0-SNAPSHOT</version>
     <properties>
-        <confluence.version>4.3.2</confluence.version>
+        <confluence.version>5.0</confluence.version>
         <!-- Look at pom.xml in confluence version in https://maven.atlassian.com/content/repositories/atlassian-public/com/atlassian/confluence/confluence-project/ -->
         <crowd.version>2.5.1</crowd.version>
         <crowd.embedded.version>1.5.3</crowd.embedded.version>
