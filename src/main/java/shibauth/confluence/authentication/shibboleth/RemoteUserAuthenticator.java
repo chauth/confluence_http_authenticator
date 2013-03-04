@@ -842,7 +842,7 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
 		getLoginManager().onSuccessfulLoginAttempt(username, request);
 		getEventPublisher().publish(
 		new LoginEvent(this, username, request.getSession().getId(),
-						remoteHost, remoteIP));
+						remoteHost, remoteIP, LoginEvent.UNKNOWN));
 		LoginReason.OK.stampRequestResponse(request, response);
 	}
     
