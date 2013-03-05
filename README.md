@@ -15,8 +15,9 @@ This authenticator is also under its old name in the [Atlassian Marketplace][atl
 
 ### Notes
 
-For those upgrading to Confluence 4.3, be sure to shib guard the mobile login and logout path, e.g. the login path may be /plugins/servlet/mobile/login?originalUrl=%2Fplugins%2Fservlet%2Fmobile%23dashboard%2Fpopular. Note that these may be different depending on your version of Confluence.
-* v2.1.16 released with compatibility enhancements.
+* v2.2.x should be compatible with Confluence 5.0.x thanks to a patch by William Schneider. Due to an api change, v2.2.x is not backwards compatible with previous Confluence versions.
+* For those upgrading to Confluence 4.3 and higher, be sure to shib guard the mobile login and logout path, e.g. the login path may be /plugins/servlet/mobile/login?originalUrl=%2Fplugins%2Fservlet%2Fmobile%23dashboard%2Fpopular. Note that these may be different depending on your version of Confluence.
+* v2.1.16 is for Confluence 4.1 through the latest version of 4. If you have problems with local login, use v2.1.15.
 * Confluence authenticator plugins cannot be installed via the Plugins/Plugin Repository admin UI in Confluence per Atlassian. You must put the jar in the classpath instead. Read all comments in CONF-22266 for details.
 * Also download remoteUserAuthenticator.properties (see link next to appropriate release below) which is required along with the jar.
 * Thoroughly read through all available documentation. If you have problems, please refer to the support section below in this document.
@@ -41,46 +42,46 @@ The authenticator uses Atlassian's (Java-based) Confluence User API to make chan
 
 #### About Configuration
 
-The authenticator's config file is *remoteUserAuthenticator.properties*. A sample one comes with the version of the authenticator that you are using is provided as a separate download along with the authenticator jar, but you may need to tweak it for your environment. Back up any existing version of remoteUserAuthenticator.properties, and download the one for your version, and put it into Confluence's WEB-INF/classes directory.
+The authenticator's config file is `remoteUserAuthenticator.properties`. A sample one comes with the version of the authenticator that you are using is provided as a separate download along with the authenticator jar, but you may need to tweak it for your environment. Back up any existing version of `remoteUserAuthenticator.properties`, and download the one for your version, and put it into Confluence's `WEB-INF/classes` directory.
 
 A description of each property available in the plugin and how it can be configured is in the *remoteUserAuthenticator.properties* file provided as an additional download alongside the authenticator jar. To download that file, see [Confluence Shibboleth Authenticator].
 
 #### Basic Configuration
 
-(Note: There should NOT be quotes in the values of header.fullname and header.email as there were in a previous version of remoteUserAuthenticator.properties, the header.fullname and header.email need to match the header names in AAP.xml, and the Attribute Rules for the header names in AAP.xml need to be uncommented).
+Note: There should NOT be quotes in the values of `header.fullname` and `header.email` as there were in a previous version of `remoteUserAuthenticator.properties`, the `header.fullname` and `header.email` need to match the header names in `AAP.xml`, and the Attribute Rules for the header names in `AAP.xml` need to be uncommented.
 
-These properties are not optional, except header.fullname and header.email [which are only optional in Shib Auth for Conf v1.5 and greater (SHBL-18). See the sample config for more information on each property. Note that the values of the headers provided by Shibboleth can be empty (which will populate the Confluence user with empty values for those headers). It is strongly suggested if you want Confluence to create users, to also let it update the info (on each login), and to specify headers which more often than not will provide fullname and email values for each user (since these are used by the application).
+These properties are not optional, except `header.fullname` and `header.email`, which are only optional in Shib Auth for Conf v1.5 and greater (SHBL-18). See the sample config for more information on each property. Note that the values of the headers provided by Shibboleth can be empty (which will populate the Confluence user with empty values for those headers). It is strongly suggested if you want Confluence to create users, to also let it update the info (on each login), and to specify headers which more often than not will provide fullname and email values for each user (since these are used by the application).
 
-For this example, I made the header.fullname and header.email match the headers defined by default in AAP.xml:
+For this example, I made the `header.fullname` and `header.email` match the headers defined by default in `AAP.xml`:
 
-	create.users=true
-	update.info=true
-	default.roles=confluence-users
-	header.fullname=Shib-InetOrgPerson-displayName
-	header.email=Shib-InetOrgPerson-mail
-	header.remote_user=REMOTE_USER
-	
-Note that even if you supply update.info=true, it will not attempt to update read-only users (such as those from an LDAP repository). That way the authenticator can support having both read-only and read-write user repositories.
+    create.users=true
+    update.info=true
+    default.roles=confluence-users
+    header.fullname=Shib-InetOrgPerson-displayName
+    header.email=Shib-InetOrgPerson-mail
+    header.remote_user=REMOTE_USER
+    
+Note that even if you supply `update.info=true`, it will not attempt to update read-only users (such as those from an LDAP repository). That way the authenticator can support having both read-only and read-write user repositories.
 
-Warning: Be sure to uncomment header.remote_user in the configuration and to change it to REMOTE_USER if that is how you are passing the username in, which is the typical usage. This will be fixed in future versions.
+Warning: Be sure to uncomment `header.remote_user` in the configuration and to change it to `REMOTE_USER` if that is how you are passing the username in, which is the typical usage. This will be fixed in future versions.
 
 #### Dynamic Roles
 
-This optional feature allows the authenticator to automatically assign users to roles based on attribute values they have, list the attribute name in *header.dynamicroles.attributenames* and specify the roles each value should map to. To automatically remove the user from the role when the user no longer has the attribute value, list the role also in *purge.roles*.
+This optional feature allows the authenticator to automatically assign users to roles based on attribute values they have, list the attribute name in `header.dynamicroles.attributenames` and specify the roles each value should map to. To automatically remove the user from the role when the user no longer has the attribute value, list the role also in `purge.roles`.
 
-	header.dynamicroles.attributenames=SHIB-EP-ENTITLEMENT, Shib-EP-UnscopedAffiliation
-	header.dynamicroles.testing=test-users, qa-test-users
-	header.dynamicroles.some\:urn\:organization.com\:role\:manage=confluence-administrators
-	purge.roles=test-users,qa-test-users
+    header.dynamicroles.attributenames=SHIB-EP-ENTITLEMENT, Shib-EP-UnscopedAffiliation
+    header.dynamicroles.testing=test-users, qa-test-users
+    header.dynamicroles.some\:urn\:organization.com\:role\:manage=confluence-administrators
+    purge.roles=test-users,qa-test-users
 
 You can also use regex to map dynamically.  For example, if you wanted to take all the attributes in a header called {{nameofheader}}, and create groups in Confluence in the format 'prefix\-{{content}}' (so a user with {{nameofheader}}={{content}} becomes a member of the group {{prefix-content}}) then this would work:
 
     header.dynamicroles.attributenames=nameofheader
     
-	dynamicroles.header.nameofheader=nameofmap
+    dynamicroles.header.nameofheader=nameofmap
 
-	dynamicroles.mapper.nameofmap.match=(.*)
-	dynamicroles.mapper.nameofmap.transform=prefix-$1
+    dynamicroles.mapper.nameofmap.match=(.*)
+    dynamicroles.mapper.nameofmap.transform=prefix-$1
 
 You can then replace {{nameofheader}} and {{nameofmap}} to create your own mappings, and customise the regex ('match') and output ('transform') to suit your needs.  Only the set part (within brackets) of the regex will be passed to the transform in {{$1}}.
 
@@ -90,69 +91,69 @@ You can then replace {{nameofheader}} and {{nameofmap}} to create your own mappi
 
 #### Cleaner Usernames Using Regular Expressions
 
-This optional feature allows the authenticator to generate the username based on a regular expression based on the REMOTE_USER header instead of just using the exact value of REMOTE_USER header.
+This optional feature allows the authenticator to generate the username based on a regular expression based on the `REMOTE_USER` header instead of just using the exact value of `REMOTE_USER` header.
 
-	# Example: suppose the remote user has initial value
-	#   "https://idp.edu/idp!https://sp.edu/shibboleth!1234-56789-#00%00-TTT"
-	# and we would like it to be transformed to
-	#   "123456789A00c00@idp.edu"
-	# then we can define the following:
-	remoteuser=remoteusermap
-	remoteuser.replace=#,A,%,c,(-|TTT),,
-	remoteuser.map.remoteusermap.match = ^(http|https)://(.*?)(:|/)?[^!]*?!([^!]*?)!(.*)
-	remoteuser.map.remoteusermap.casesensitive = false
-	remoteuser.map.remoteusermap.transform = $5@$2
-	#
-	# remoteusermap is the mapping label to be used, multiple labels
-	# can be used but only 1st result from the label is chosen as remote user)
-	#
-	# .replace is pair-wise regex & replacement strings to be applied to the FINAL
-	# remote-user once the mapping has been performed. null (as replacement string)
-	# can be represented by simply empty string (e.g. '-' and 'TTT' above are removed)
+    # Example: suppose the remote user has initial value
+    #   "https://idp.edu/idp!https://sp.edu/shibboleth!1234-56789-#00%00-TTT"
+    # and we would like it to be transformed to
+    #   "123456789A00c00@idp.edu"
+    # then we can define the following:
+    remoteuser=remoteusermap
+    remoteuser.replace=#,A,%,c,(-|TTT),,
+    remoteuser.map.remoteusermap.match = ^(http|https)://(.*?)(:|/)?[^!]*?!([^!]*?)!(.*)
+    remoteuser.map.remoteusermap.casesensitive = false
+    remoteuser.map.remoteusermap.transform = $5@$2
+    #
+    # remoteusermap is the mapping label to be used, multiple labels
+    # can be used but only 1st result from the label is chosen as remote user)
+    #
+    # .replace is pair-wise regex & replacement strings to be applied to the FINAL
+    # remote-user once the mapping has been performed. null (as replacement string)
+    # can be represented by simply empty string (e.g. '-' and 'TTT' above are removed)
 
 
 #### Cleaner Full Names Using Regular Expressions
 
-This optional feature allows the authenticator to do mapping on values presented in header defined as value of header.fullname. This is for those that don't have a "display name" type attribute that can be exposed to Confluence's Shibboleth SP, but must put a full name together from multiple values, etc. This feature has similar syntax to dynamic roles. If a regex map doesn't match the input provided, then the mapping is not performed, and it will use the first value of that header.
+This optional feature allows the authenticator to do mapping on values presented in header defined as value of `header.fullname`. This is for those that don't have a "display name" type attribute that can be exposed to Confluence's Shibboleth SP, but must put a full name together from multiple values, etc. This feature has similar syntax to dynamic roles. If a regex map doesn't match the input provided, then the mapping is not performed, and it will use the first value of that header.
 
-	# Example 1: suppose the full name has the header value
-	#   "Doe; John"
-	# and we would like it to be transformed to
-	#   "John Doe"
-	# then we can define the following:
-	fullname=fullnamemap
-	fullname.map.fullnamemap.match = ^(.*);(.*)
-	fullname.map.fullnamemap.casesensitive = false
-	fullname.map.fullnamemap.transform = $2 $1
-	# Note: if the expression doesn't match, it will split the string by comma or semi-colon and get the first value, so
-	# the fullname would be:
-	#   "Doe"
+    # Example 1: suppose the full name has the header value
+    #   "Doe; John"
+    # and we would like it to be transformed to
+    #   "John Doe"
+    # then we can define the following:
+    fullname=fullnamemap
+    fullname.map.fullnamemap.match = ^(.*);(.*)
+    fullname.map.fullnamemap.casesensitive = false
+    fullname.map.fullnamemap.transform = $2 $1
+    # Note: if the expression doesn't match, it will split the string by comma or semi-colon and get the first value, so
+    # the fullname would be:
+    #   "Doe"
 
 
-	# Example 2: suppose the full name has the header value
-	#   "Doe#,%John"
-	# and we would like it to be transformed to
-	#   "John Doe"
-	# then we can define the following:
-	fullname=fullnamemap
-	fullname.replace=#,,%,,
-	fullname.map.fullnamemap.match = ^(.*),(.*)
-	fullname.map.fullnamemap.casesensitive = false
-	fullname.map.fullnamemap.transform = $2 $1
-	# Note: if the expression doesn't match, it will split the string by comma or semi-colon and get the first value, so
-	# the fullname would be:
-	#   "Doe#"
-	#
-	# fullnamemap is the mapping label to be used, multiple labels
-	# can be used but only 1st result from the label is chosen as remote user)
-	#
-	# .replace is pair-wise regex & replacement strings to be applied to the FINAL
-	# full name once the mapping has been performed. null (as replacement string)
-	# can be represented by simply empty string (e.g. '-' and 'TTT' above are removed)
+    # Example 2: suppose the full name has the header value
+    #   "Doe#,%John"
+    # and we would like it to be transformed to
+    #   "John Doe"
+    # then we can define the following:
+    fullname=fullnamemap
+    fullname.replace=#,,%,,
+    fullname.map.fullnamemap.match = ^(.*),(.*)
+    fullname.map.fullnamemap.casesensitive = false
+    fullname.map.fullnamemap.transform = $2 $1
+    # Note: if the expression doesn't match, it will split the string by comma or semi-colon and get the first value, so
+    # the fullname would be:
+    #   "Doe#"
+    #
+    # fullnamemap is the mapping label to be used, multiple labels
+    # can be used but only 1st result from the label is chosen as remote user)
+    #
+    # .replace is pair-wise regex & replacement strings to be applied to the FINAL
+    # full name once the mapping has been performed. null (as replacement string)
+    # can be represented by simply empty string (e.g. '-' and 'TTT' above are removed)
 
 #### Automatically Reloading the Configuration File
 
-Restarting Confluence after adding a dynamic mapping would have too much impact on a production environment.  To make the module check for changes to the configuration file (*remoteAuthentication.propeties*) on each user login and reloads the file if changed, set the *reload.config* property. It is also possible to set a minimal delay between the checks (in milliseconds, defaults to 0).
+Restarting Confluence after adding a dynamic mapping would have too much impact on a production environment.  To make the module check for changes to the configuration file (`remoteAuthentication.propeties`) on each user login and reloads the file if changed, set the `reload.config` property. It is also possible to set a minimal delay between the checks (in milliseconds, defaults to 0).
 
     reload.config=true
     reload.config.check.interval=5000
@@ -167,29 +168,29 @@ To convert HTTP header values to UTF-8           :
 
 If you are only using a read-only repository such as LDAP for users, then you may want to disable the options that attempt to update user information by doing this in the config:
 
-	create.users=false
-	update.info=false
+    create.users=false
+    update.info=false
 
 However, you should just be able to still have create-users as true and update-info as true and it shouldn't try to create the user (since it exists) nor should it attempt to update existing users (because it checks to see whether the user is read-only).
 
 Assuming you needed to add those read-only users to the confluence-users group, and the Confluence API has the ability to create those group memberships, the following default settings for those options should work:
 
-	default.roles=confluence-users
-	update.roles=true
+    default.roles=confluence-users
+    update.roles=true
 
 #### Using ShibLoginFilter
 
 The ShibLoginFilter was introduced in v1.5 and is turned off by default in v1.7 because it kept those wanting to use local authN from being able to do that while using the authenticator. To turn it back on you can set this to true, but it shouldn't be needed and you should see the problems with it discussed in SHBL-24 if you decide to do that. Use of the ShibLoginFilter is deprecated and it will likely be removed in a later release.
 
-	# Set this to true if you'd like to use the ShibLoginFilter that was used in v1.5, v1.5.1, and v1.6 of the plugin,
-	# which requires Confluence to be using shibauth.confluence.authentication.shibboleth.ShibLoginFilter which in some/most
-	# versions of Confluence involves Confluence's web.xml to be altered such that it contains:
-	# <filter-name>login</filter-name>
-	# <filter-class>shibauth.confluence.authentication.shibboleth.ShibLoginFilter</filter-class>
-	# See SHBL-24
+    # Set this to true if you'd like to use the ShibLoginFilter that was used in v1.5, v1.5.1, and v1.6 of the plugin,
+    # which requires Confluence to be using shibauth.confluence.authentication.shibboleth.ShibLoginFilter which in some/most
+    # versions of Confluence involves Confluence's web.xml to be altered such that it contains:
+    # <filter-name>login</filter-name>
+    # <filter-class>shibauth.confluence.authentication.shibboleth.ShibLoginFilter</filter-class>
+    # See SHBL-24
 
-	# OPTIONAL:
-	using.shib.login.filter=true
+    # OPTIONAL:
+    using.shib.login.filter=true
 
 Warning: If you are unsure, leave this commented out or set to false. If you set using.shib.login.filter to true, then local authN will not work. Use of the shib login filter is deprecated and off by default. This option was created and left here for compatibility with previous versions and will be removed completely in a future version.
 
@@ -232,18 +233,24 @@ Those with Shibboleth configuration issues should use the [Shibboleth Users mail
 
 If you have an issue with the authenticator itself, please review the [issues][issues] and then create a new issue if there is no existing issue. The authenticator support is provided on a volunteer basis.
 
+Feel free to contact someone on the team directly if you want to contribute anonymously, submit a security concern, or generallt want to mention something that shouldn't be public.
+
 More help:
 
+* v2.2.x of this plugin works with Confluence 5.0.x.
 * v2.1.x of this plugin works with Confluence 4.1.x.
 * v2.0.x of this plugin only works with Confluence 3.5.x-4.0.x. For Confluence 3.5.0-3.5.2, you must also install the Confluence patch attached to CONF-22157.
 * v1.7.4 of this plugin (or later version of v1.x before v2.0) is required for Confluence 3.4.x and below.
+
+*Needs cleanup: The following is partially out-of-date.*
+
 * If you get the error "The downloaded file is missing an atlassian-plugin.xml", it is because you are trying to install the plugin jar using the Confluence Plugin Repository administrative UI. See Installation section for additional information.
-* If you are getting the debug log message "Remote user was null or empty, can not perform authentication", this just means that the REMOTE_USER header is not being populated, which is not an issue with this plugin. As a quick check, if using Tomcat, in the AJP Coyote connector configuration part of server.xml, make sure you add tomcatAuthentication="false" or the REMOTE_USER header will not be communicated from Apache mod_jk to the AJP connector (as described in How to Shibbolize Confluence). However, please use the shibboleth-users@internet2.edu group to get support for that issue.
+* If you are getting the debug log message "Remote user was null or empty, can not perform authentication", this just means that the `REMOTE_USER` header is not being populated, which is not an issue with this plugin. As a quick check, if using Tomcat, in the AJP Coyote connector configuration part of `server.xml`, make sure you add `tomcatAuthentication="false"` or the `REMOTE_USER` header will not be communicated from Apache mod_jk to the AJP connector (as described in How to Shibbolize Confluence). However, please use the shibboleth-users@internet2.edu group to get support for that issue.
 * If you're having any trouble configuring Shibboleth or Apache/Tomcat with Shibboleth in-general, please first pose your question(s) on the shibboleth users mailing list.
-* Logout may not work properly. A workaround is to alter the logout page to indicate that the user must completely close the browser application to logout. Editing the logout page messages can be done in the ConfluenceActionSupport.properties file (/confluence/WEB-INF/classes/com/atlassian/confluence/core/ConfluenceActionSupport.properties). ConfluenceActionSupport.properties has the following message properties for the logout page: title.logout, com.atlassian.confluence.user.actions.LogoutAction.action.name, successful.logout.message, and logout.login.again. A search on any of those should bring you to the right spot. While not recommended, you're also able to edit the logout.vm file (/confluence/logout.vm) directly. Additionally, you will likely need to update any language packs you've installed (and in Confluence 2.6.0+, ConfluenceActionSupport.properties is embedded within one of the jars in Confluence, so you may need to extract it to find the properties you need to update and then just create a ConfluenceActionSupport.properties that overrides those properties or create a new language pack where those properties are changed).
-* There may be an issue in v1.0 using the current authenticator with Confluence massive running with more than one node (CONF-9040) in which there is a unique constraint exception being thrown from Hibernate/Oracle when the user gets autocreated. The reason may be that the authenticator is being called at the same time by both nodes in when userManager.getUser() for the thread on server1 returns null and the userManager.getUser() is called for the thread on server2 which also returns null. The way this could be coded around is to do a try catch around createUser() and ignore unique constraint errors, however it doesn't seem right that the authenticator is being called on both servers for a single login, so this was logged as a bug in confluence. Please click on the link above and vote on this issue if you are getting unique constraint exceptions from the authenticator when using massive.
+* Logout may not work properly. A workaround is to alter the logout page to indicate that the user must completely close the browser application to logout. Editing the logout page messages can be done in the ConfluenceActionSupport.properties file (`/confluence/WEB-INF/classes/com/atlassian/confluence/core/ConfluenceActionSupport.properties`). ConfluenceActionSupport.properties has the following message properties for the logout page: `title.logout`, `com.atlassian.confluence.user.actions.LogoutAction.action.name`, `successful.logout.message`, and `logout.login.again`. A search on any of those should bring you to the right spot. While not recommended, you're also able to edit the `logout.vm` file (`/confluence/logout.vm`) directly. Additionally, you will likely need to update any language packs you've installed (and in Confluence 2.6.0+, `ConfluenceActionSupport.properties` is embedded within one of the jars in Confluence, so you may need to extract it to find the properties you need to update and then just create a ConfluenceActionSupport.properties that overrides those properties or create a new language pack where those properties are changed).
+* There may be an issue in v1.0 using the current authenticator with Confluence massive running with more than one node (CONF-9040) in which there is a unique constraint exception being thrown from Hibernate/Oracle when the user gets autocreated. The reason may be that the authenticator is being called at the same time by both nodes in when `userManager.getUser()` for the thread on server1 returns null and the `userManager.getUser()` is called for the thread on server2 which also returns null. The way this could be coded around is to do a try catch around `createUser()` and ignore unique constraint errors, however it doesn't seem right that the authenticator is being called on both servers for a single login, so this was logged as a bug in confluence. Please click on the link above and vote on this issue if you are getting unique constraint exceptions from the authenticator when using massive.
 * Migrating from os_user schema to atlassian-user schema (see How to Improve User Search Performance) will fail if you've used v1.0 of this authenticator to autocreate users, since it creates users with null passwords. Even though the Confluence API supports creating users with null passwords, there was a bug in earlier versions of Confluence that cause Confluence to fail migration of these users (CONF-9117). The two workarounds provided by Atlassian support are to arbitrarily set a password with those users that have null passwords prior to the migration (via SQL update) (this works, but it is a little scary since you are giving a password hash field an arbitrary value, and this value is migrated also to the users table in the schema) or upgrade to the latest version of Confluence that fixes this problem (2.5.8 and 2.6.x+).
-* Versions v1.5-v1.6 did not support local Confluence authentication because of use of the ShibLoginFilter introduced in v1.5. This was fixed in v1.7. Please note the security issues that can result by using local authN and self-registration. See the Security section of this document.
+* Versions v1.5-v1.6 did not support local Confluence authentication because of use of the `ShibLoginFilter` introduced in v1.5. This was fixed in v1.7. Please note the security issues that can result by using local authN and self-registration. See the Security section of this document.
 
 ### How to Turn on Debug Logging
 
@@ -257,11 +264,11 @@ For Confluence HTTP Authenticator v1.0, v1.1, and v1.2 use:
 
       log4j.logger.edu.georgetown.middleware.confluence=DEBUG, confluencelog
 
-(Those are assuming that you have "log4j.appender.confluencelog=org.apache.log4j.ConsoleAppender" defined above it, otherwise basically do whatever you need to to enable debug logging for that package.)
+(Those are assuming that you have `log4j.appender.confluencelog=org.apache.log4j.ConsoleAppender` defined above it, otherwise basically do whatever you need to to enable debug logging for that package.)
 
 ### Contributing
 
-To contribute, read [using pull requests][fork].
+To contribute, read [using pull requests][fork]. Feel free to contact someone on the team directly if you want to contribute anonymously.
 
 #### Support
 
@@ -278,7 +285,7 @@ Although there is a Google group that we have if needed to discuss development a
 http://groups.google.com/group/confluence-shibauth-dev
 which has a mailing list for development discussion:
 confluence-shibauth-dev@googlegroups.com
-please keep conversation out of that group and mailing list if it can instead be discussed within an [issue][issues] in GitHub.
+please keep conversation out of that group and mailing list if it can instead be discussed publically within an [issue][issues] in GitHub. Otherwise, consider sneding an email directly to one or more team members.
 
 Releases can be found [here][releases].
 
