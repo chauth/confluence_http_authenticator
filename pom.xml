@@ -14,9 +14,6 @@
     <version>2.2.0-SNAPSHOT</version>
     <properties>
         <confluence.version>5.0</confluence.version>
-        <!-- Look at pom.xml in confluence version in https://maven.atlassian.com/content/repositories/atlassian-public/com/atlassian/confluence/confluence-project/ -->
-        <crowd.version>2.5.1</crowd.version>
-        <crowd.embedded.version>1.5.3</crowd.embedded.version>
     </properties>
     <issueManagement>
         <url>https://github.com/chauth/confluence_http_authenticator/issues</url>
@@ -56,6 +53,7 @@
         </license>
     </licenses>
     <developers>
+		<!-- Note: the following information is incomplete and probably out of date. See git log and release notes. -->
         <developer>
             <name>Chad LaJoie</name>
             <roles>
@@ -222,10 +220,16 @@
                 </role>
             </roles>
         </developer>
+        <developer>
+            <name>William Schneider</name>
+            <roles>
+                <role>Developer - v2.2.0 - #4/#5: Added support for Confluence 5.0</role>
+            </roles>
+        </developer>
     </developers>
     <organization>
         <name>Confluence HTTP Authenticator Team</name>
-        <url>https://studio.plugins.atlassian.com/wiki/display/SHBL/Confluence+Shibboleth+Authenticator</url>
+        <url>https://marketplace.atlassian.com/vendors/6628</url>
     </organization>
     <name>Confluence HTTP Authenticator</name>
     <description>An Atlassian Confluence seraph authenticator that works with Shibboleth</description>
@@ -310,7 +314,6 @@
             <url>http://repository.opencastproject.org/nexus/content/repositories/atlassian/</url>
         </repository>
     </repositories>
-    <!-- TODO: cleanup. was missing so just added all and some urls may be wrong. hack hack hack!!! -->
     <pluginRepositories>
         <pluginRepository>
             <snapshots>
@@ -394,64 +397,6 @@
             <version>4.6</version>
             <scope>test</scope>
         </dependency>
-		<!--
-		<dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>servlet-api</artifactId>
-            <version>2.3</version>
-            <scope>provided</scope>
-        </dependency>
-		<dependency>
-            <groupId>com.atlassian.crowd</groupId>
-            <artifactId>embedded-crowd-api</artifactId>
-            <version>${crowd.embedded.version}</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring</artifactId>
-            <version>3.0.6</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>commons-logging</groupId>
-            <artifactId>commons-logging</artifactId>
-            <version>1.1</version>
-            <scope>provided</scope>
-            <exclusions>
-                <exclusion>
-                    <groupId>logkit</groupId>
-                    <artifactId>logkit</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>avalon-framework</groupId>
-                    <artifactId>avalon-framework</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>javax.servlet</groupId>
-                    <artifactId>servlet-api</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>com.atlassian.confluence.plugin</groupId>
-            <artifactId>func-test</artifactId>
-            <version>2.3</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>net.sourceforge.jwebunit</groupId>
-            <artifactId>jwebunit-htmlunit-plugin</artifactId>
-            <version>2.2</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>net.sourceforge.nekohtml</groupId>
-            <artifactId>nekohtml</artifactId>
-            <version>1.9.12</version>
-            <scope>test</scope>
-        </dependency>
-		-->
     </dependencies>
     <build>
       <plugins>
