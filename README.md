@@ -331,6 +331,7 @@ To release a new version:
 
       git add pom.xml
       git commit -m "incrementing pom.xml version to 1.2.4-SNAPSHOT"
+	  git push
 
 9) Add release info/jar also to (this url may change):
 
