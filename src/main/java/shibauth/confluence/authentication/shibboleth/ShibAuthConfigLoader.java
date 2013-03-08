@@ -1,5 +1,5 @@
 /*
- Copyright (c) 2008-2011, Shibboleth Authenticator for Confluence Team
+ Copyright (c) 2008-2013, Confluence HTTP Authenticator Team
  All rights reserved.
 
  Redistribution and use in source and binary forms, with or without
@@ -10,7 +10,7 @@
  * Redistributions in binary form must reproduce the above copyright
    notice, this list of conditions and the following disclaimer in the
    documentation and/or other materials provided with the distribution.
- * Neither the name of the Shibboleth Authenticator for Confluence Team
+ * Neither the name of the Confluence HTTP Authenticator Team
    nor the names of its contributors may be used to endorse or promote
    products derived from this software without specific prior written permission.
 
@@ -25,7 +25,7 @@
  CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  POSSIBILITY OF SUCH DAMAGE.
-*/
+ */
 
 package shibauth.confluence.authentication.shibboleth;
 
@@ -298,7 +298,7 @@ public class ShibAuthConfigLoader {
         for (int i = 0; i < purgeRolesRegex.size(); i++) {
             String regex = purgeRolesRegex.get(i).toString();
             purgeRolesGroups.add(new GroupMapper("purge-" + i, regex, null,
-                false));
+                false, false));
             log.debug("Roles matching (" + regex + ") are to be purged.");
         }
         config.setPurgeMappings(purgeRolesGroups);
@@ -481,6 +481,14 @@ public class ShibAuthConfigLoader {
                 mapperStr + ShibAuthConstants.PART_MATCH);
             String transform = configProps.getProperty(
                 mapperStr + ShibAuthConstants.PART_TRANSFORM);
+            boolean isArray = false;
+            if (transform == null) {
+                transform = configProps.getProperty(
+                                mapperStr + ShibAuthConstants.PART_TRANSFORM_EACH);
+                if (transform != null) {
+                    isArray = true;
+                }
+            }
 
             if (match == null && transform == null) {
                 log.warn(
@@ -491,7 +499,7 @@ public class ShibAuthConfigLoader {
             boolean sensitive = Boolean.valueOf(configProps.getProperty(
                 mapperStr + ShibAuthConstants.PART_SENSITIVE, "true")).booleanValue();
             GroupMapper mapper = new GroupMapper(name, match, transform,
-                sensitive);
+                sensitive, isArray);
             mappers.add(mapper);
         }
         return mappers;
