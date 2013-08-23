@@ -922,6 +922,14 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
             log.debug("getUser(...) called. requestURL=" + request.getRequestURL() + ", remoteIP=" + remoteIP + ", remoteHost=" + remoteHost);
         }
 
+        final Principal localUser = super.getUser(request,response);
+        if (localUser != null) {
+            if (log.isDebugEnabled()) {
+                log.debug(String.format("Login for user %s succeeded via local login", localUser.getName()));
+            }
+            return localUser;
+        }
+
         // Does the user have a "Remember Me" cookie set?
         final Principal cookieUser = getUserFromCookie(request, response);
         if (cookieUser != null) {
