@@ -432,7 +432,7 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
         String remoteUser = null;
 
         if (config.getRemoteUserHeaderName() != null) {
-            String headerValue = request.getHeader(config.getRemoteUserHeaderName());
+            String headerValue = getAttribute(request, config.getRemoteUserHeaderName());
             // the Shibboleth SP sends multiple values as single value, separated by comma or semicolon
             List values = StringUtil.toListOfNonEmptyStringsDelimitedByCommaOrSemicolon(headerValue);
 
@@ -477,7 +477,7 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
         String emailAddress = null;
 
         if (config.getEmailHeaderName() != null) {
-            String headerValue = request.getHeader(config.getEmailHeaderName());
+            String headerValue = getAttribute(request, config.getEmailHeaderName());
             // The Shibboleth SP sends multiple values as single value, separated by comma or semicolon.
             List values = StringUtil.
                     toListOfNonEmptyStringsDelimitedByCommaOrSemicolon(headerValue);
@@ -520,7 +520,7 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
 
         if (config.getFullNameHeaderName() != null) {
             // assumes it is first value in list, if header is defined multiple times. Otherwise would need to call getHeaders()
-            String headerValue = request.getHeader(config.getFullNameHeaderName());
+            String headerValue = getAttribute(request, config.getFullNameHeaderName());
             // the Shibboleth SP sends multiple values as single value, separated by comma or semicolon
             List values = StringUtil.toListOfNonEmptyStringsDelimitedByCommaOrSemicolon(headerValue);
 
@@ -599,57 +599,68 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
         //process the headers by looking up only those list of registered headers
         for (Iterator headerIt = attribHeaders.iterator(); headerIt.hasNext(); ) {
             String headerName = headerIt.next().toString();
-            for (Enumeration en = request.getHeaders(headerName); en.hasMoreElements(); ) {
-                String headerValue = en.nextElement().toString();
 
-                //shib sends values in semicolon separated, so split it up too
-                List headerValues = StringUtil.toListOfNonEmptyStringsDelimitedByCommaOrSemicolon(headerValue);
-                for (int j = 0; j < headerValues.size(); j++) {
-                    headerValue = (String) headerValues.get(j);
-                    if (config.isConvertToUTF8()) {
-                        String tmp = StringUtil.convertToUTF8(headerValue);
-                        if (tmp != null) {
-                            headerValue = tmp;
-                        }
+            String headerValuesString = null;
+
+            Object attr = request.getAttribute(headerName);
+            if (attr instanceof String) {
+                headerValuesString = (String) attr;
+            }
+
+            if (headerValuesString == null) {
+                headerValuesString = "";
+                for (Enumeration en = request.getHeaders(headerName); en.hasMoreElements(); ) {
+                    headerValuesString += en.nextElement().toString();
+                }
+            }
+
+            //shib sends values in semicolon separated, so split it up too
+            List headerValues = StringUtil.toListOfNonEmptyStringsDelimitedByCommaOrSemicolon(headerValuesString);
+            for (int j = 0; j < headerValues.size(); j++) {
+                String headerValue = (String) headerValues.get(j);
+                if (config.isConvertToUTF8()) {
+                    String tmp = StringUtil.convertToUTF8(headerValue);
+                    if (tmp != null) {
+                        headerValue = tmp;
                     }
+                }
 
-                    if (log.isDebugEnabled()) {
-                        log.debug("Processing dynamicroles header=" + headerName + ", value=" + headerValue);
-                    }
+                if (log.isDebugEnabled()) {
+                    log.debug("Processing dynamicroles header=" + headerName + ", value=" + headerValue);
+                }
 
-                    Collection mappers = config.getGroupMappings(headerName);
-                    boolean found = false;
+                Collection mappers = config.getGroupMappings(headerName);
+                boolean found = false;
 
-                    for (Iterator mapperIt = mappers.iterator(); mapperIt.hasNext(); ) {
-                        GroupMapper mapper = (GroupMapper) mapperIt.next();
+                for (Iterator mapperIt = mappers.iterator(); mapperIt.hasNext(); ) {
+                    GroupMapper mapper = (GroupMapper) mapperIt.next();
 
-                        // We may get multiple groups returned by a single matched, e.g. matching "XXX" --> "A, B, C".
-                        String[] results = (String[]) StringUtil.toListOfNonEmptyStringsDelimitedByCommaOrSemicolon(
-                                mapper.process(headerValue)).toArray(new String[0]);
+                    // We may get multiple groups returned by a single matched, e.g. matching "XXX" --> "A, B, C".
+                    String[] results = (String[]) StringUtil.toListOfNonEmptyStringsDelimitedByCommaOrSemicolon(
+                            mapper.process(headerValue)).toArray(new String[0]);
 
-                        for (int i = 0; i < results.length; i++) {
-                            String result = results[i];
+                    for (int i = 0; i < results.length; i++) {
+                        String result = results[i];
 
-                            if (result.length() != 0) {
-                                if (!accumulatedRoles.contains(result)) {
-                                    if (config.isOutputToLowerCase()) {
-                                        result = result.toLowerCase();
-                                    }
-
-                                    accumulatedRoles.add(result);
-
-                                    if (log.isDebugEnabled()) {
-                                        log.debug("Found role mapping from '" + headerValue + "' to '" + result + "'");
-                                    }
+                        if (result.length() != 0) {
+                            if (!accumulatedRoles.contains(result)) {
+                                if (config.isOutputToLowerCase()) {
+                                    result = result.toLowerCase();
                                 }
-                                found = true;
+
+                                accumulatedRoles.add(result);
+
+                                if (log.isDebugEnabled()) {
+                                    log.debug("Found role mapping from '" + headerValue + "' to '" + result + "'");
+                                }
                             }
+                            found = true;
                         }
                     }
+                }
 
-                    if (log.isDebugEnabled() && !found) {
-                        log.debug("No mapper capable of processing role value=" + headerValue);
-                    }
+                if (log.isDebugEnabled() && !found) {
+                    log.debug("No mapper capable of processing role value=" + headerValue);
                 }
             }
         }
@@ -683,7 +694,7 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
         if (log.isDebugEnabled()) {
             log.debug("login(...) called. requestURL=" + request.getRequestURL() + ", username=" + username + ", remoteIP=" + remoteIP + ", remoteHost=" + remoteHost);
         }
-		
+
         // Since they aren't logged in, get the user name from the configured header (e.g. REMOTE_USER).
         String userid = createSafeUserid(getLoggedInUser(request));
 
@@ -693,7 +704,7 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
             log.debug(String.format("Login for user %s succeeded via Remember Me cookie", cookieUser.getName()));
             return true;
         }
-		
+
         // Is the incoming request flagged with Basic Auth credentials?
         if (RedirectUtils.isBasicAuthentication(request, getAuthType())) {
             final Principal basicAuthUser = getUserFromBasicAuthentication(request, response);
@@ -815,7 +826,7 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
 
         return true;
     }
-    
+
 	private void loginSuccessful(HttpServletRequest request,
 			HttpServletResponse response, String username, User user,
 			String remoteHost, String remoteIP) {
@@ -845,7 +856,7 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
 						remoteHost, remoteIP, LoginEvent.UNKNOWN));
 		LoginReason.OK.stampRequestResponse(request, response);
 	}
-    
+
     private void loginFailed(HttpServletRequest request, String username, String remoteHost, String remoteIP, String reason) {
         if (log.isDebugEnabled()) {
             log.debug("Login failed for user " + username + ". request=" + request + ", username=" + username + ", remoteHost=" + remoteHost + ", remoteIP="+ remoteIP + ", reason=" + reason);
@@ -863,18 +874,18 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
             }
         } else {
 	    	Set roles = new HashSet();
-	
+
 	        // Add user to groups.
 	        getRolesFromHeader(request, roles);
 	        assignUserToRoles(user, config.getDefaultRoles(), user);
 	        assignUserToRoles(user, roles, user);
-	
+
 	        // Make sure we don't purge default roles either
 	        roles.addAll(config.getDefaultRoles());
 	        purgeUserRoles(user, roles);
         }
     }
-	
+
 	private User getCrowdUser(String userid, HttpServletRequest request, String remoteHost, String remoteIP) {
 		CrowdService crowdService = getCrowdService();
         if (crowdService == null) {
@@ -885,7 +896,7 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
 
             throw new RuntimeException("crowdService was not wired in RemoteUserAuthenticator");
         }
-		
+
 		// ensure user is active
         User crowdUser = crowdService.getUser(userid);
         if (crowdUser != null && !crowdUser.isActive()) {
@@ -898,26 +909,26 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
             }
             return null;
         }
-		
+
 		return crowdUser;
 	}
 
     public Principal getUser(HttpServletRequest request, HttpServletResponse response) {
-        
+
         String remoteIP = request.getRemoteAddr();
         String remoteHost = request.getRemoteHost();
 
         if (log.isDebugEnabled()) {
             log.debug("getUser(...) called. requestURL=" + request.getRequestURL() + ", remoteIP=" + remoteIP + ", remoteHost=" + remoteHost);
         }
-		
+
         // Does the user have a "Remember Me" cookie set?
         final Principal cookieUser = getUserFromCookie(request, response);
         if (cookieUser != null) {
             log.debug(String.format("Login for user %s succeeded via Remember Me cookie", cookieUser.getName()));
             return cookieUser;
         }
-		
+
         // Is the incoming request flagged with Basic Auth credentials?
         if (RedirectUtils.isBasicAuthentication(request, getAuthType())) {
             final Principal basicAuthUser = getUserFromBasicAuthentication(request, response);
@@ -1029,7 +1040,7 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
         if (log.isDebugEnabled()) {
             log.debug("Authenticator is returning " + user + " from call to public Principal getUser(HttpServletRequest request, HttpServletResponse response)");
         }
-        
+
         return user;
     }
 
@@ -1270,6 +1281,19 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
         } else {
             log.warn("Cannot update null user!");
         }
+    }
+
+    public String getAttribute(HttpServletRequest request, String attributeName) {
+        String attributeValue = null;
+
+        Object attr = request.getAttribute(attributeName);
+        if (attr instanceof String)
+            attributeValue = (String) attr;
+
+        if (attributeValue == null)
+            attributeValue = request.getHeader(attributeName);
+
+        return attributeValue;
     }
 
     public CrowdService getCrowdService() {
