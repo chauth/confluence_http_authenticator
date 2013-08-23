@@ -1,5 +1,13 @@
 === Version History
 
+    2.3.0   23 Aug 2013 Changes by Gary Weaver:
+    
+        #2 Fix local login with patch - contributed by Erkki Aalto
+    
+        #10 Get shib attributes from environment variables first if available - contributed by Joakim Lundin (@iceglow)
+        
+        BSD     remoteUserAuth-2.3.0.jar, remoteUserAuthenticator.properties
+
     2.2.0   4 Mar 2013  Changes by William Schneider:
     
         Support for Confluence 5.0.
