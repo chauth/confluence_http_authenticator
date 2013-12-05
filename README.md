@@ -15,6 +15,7 @@ This authenticator is also under its old name in the [Atlassian Marketplace][atl
 
 ### Notes
 
+* v2.4.x should be compatible with Confluence 5.3.x-5.4.x (possibly beyond) by building against 5.3, per Erkki Aalto.
 * v2.2.x should be compatible with Confluence 5.0.x thanks to a patch by William Schneider. Due to an api change, v2.2.x is not backwards compatible with previous Confluence versions.
 * For those upgrading to Confluence 4.3 and higher, be sure to shib guard the mobile login and logout path, e.g. the login path may be /plugins/servlet/mobile/login?originalUrl=%2Fplugins%2Fservlet%2Fmobile%23dashboard%2Fpopular. Note that these may be different depending on your version of Confluence.
 * v2.1.16 is for Confluence 4.1 through the latest version of 4. If you have problems with local login, use v2.1.15.
@@ -239,6 +240,7 @@ Feel free to contact someone on the team directly if you want to contribute anon
 
 More help:
 
+* v2.4.x of this plugin works with Confluence 5.3.x and 5.4.x.
 * v2.2.x of this plugin works with Confluence 5.0.x.
 * v2.1.x of this plugin works with Confluence 4.1.x.
 * v2.0.x of this plugin only works with Confluence 3.5.x-4.0.x. For Confluence 3.5.0-3.5.2, you must also install the Confluence patch attached to [CONF-22157][conf22157].

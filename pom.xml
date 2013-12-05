@@ -11,9 +11,9 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>shibauth</groupId>
     <artifactId>remoteUserAuth</artifactId>
-    <version>2.3.1-SNAPSHOT</version>
+    <version>2.4.0</version>
     <properties>
-        <confluence.version>5.0</confluence.version>
+        <confluence.version>5.3</confluence.version>
     </properties>
     <issueManagement>
         <url>https://github.com/chauth/confluence_http_authenticator/issues</url>

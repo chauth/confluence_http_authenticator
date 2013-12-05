@@ -1,5 +1,11 @@
 === Version History
 
+    2.4.0   4 Dec 2013  Changes by Gary Weaver:
+    
+        #14 Change pom.xml to build against Confluence 5.3. No source change, but makes compatible with Confluence 5.3-5.4. Thanks to Erkki Aalto for this fix.
+        
+        BSD     remoteUserAuth-2.4.0.jar, remoteUserAuthenticator.properties
+
     2.3.0   23 Aug 2013 Changes by Gary Weaver:
     
         #2 Fix local login with patch - contributed by Erkki Aalto
