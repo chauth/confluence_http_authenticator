@@ -1,5 +1,5 @@
 /*
- Copyright (c) 2008-2013, Confluence HTTP Authenticator Team
+ Copyright (c) 2008-2014, Confluence HTTP Authenticator Team
  All rights reserved.
 
  Redistribution and use in source and binary forms, with or without
@@ -38,6 +38,11 @@ public class ShibAuthConstants {
     public final static String PROPERTIES_FILE = "/remoteUserAuthenticator.properties";
 
     /**
+     * Location of configuration file on classpath
+     */
+    public final static String LOCAL_LOGIN_SUPPORTED = "local.login.supported";
+
+    /**
      * create.user init parameter name
      */
     public final static String CREATE_USERS = "create.users";
@@ -73,14 +78,29 @@ public class ShibAuthConstants {
     public final static String REMOTE_USER_HEADER_NAME_PROPERTY = "header.remote_user";
 
     /**
+     * Strategy option to use to get remote_user
+     */
+    public final static String REMOTE_USER_HEADER_STRATEGY_PROPERTY = "header.remote_user.strategy";
+
+    /**
      * Name of email address header property
      */
     public final static String EMAIL_HEADER_NAME_PROPERTY = "header.email";
 
     /**
+     * Strategy option to use to get email
+     */
+    public final static String EMAIL_HEADER_STRATEGY_PROPERTY = "header.email.strategy";
+
+    /**
      * Name of full name header property
      */
     public final static String FULLNAME_HEADER_NAME_PROPERTY = "header.fullname";
+
+    /**
+     * Strategy option to use to get fullname
+     */
+    public final static String FULLNAME_HEADER_STRATEGY_PROPERTY = "header.fullname.strategy";
 
     /**
      * Name of username case conversion property
@@ -184,4 +204,5 @@ public class ShibAuthConstants {
      * See #FULL_NAME_MAP_PREFIX
      */
     public final static String FULL_NAME_MAP_PREFIX = "fullname.map.";
+
 }

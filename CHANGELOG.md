@@ -1,5 +1,15 @@
 === Version History
 
+    2.5.0   15 Mar 2014  Changes by Gary Weaver:
+
+        Added ability to configure header/attribute get strategies and whether or not to support local login.
+
+        #9 Fix for infinite recursion on login
+
+        #15 Config variable to set the number of roles to purge at login - contributed by Scott Hall (@shall0mit)
+        
+        BSD     remoteUserAuth-2.5.0.jar, remoteUserAuthenticator.properties
+
     2.4.0   4 Dec 2013  Changes by Gary Weaver:
     
         #14 Change pom.xml to build against Confluence 5.3. No source change, but makes compatible with Confluence 5.3-5.4. Thanks to Erkki Aalto for this fix.

@@ -1,5 +1,5 @@
 /*
- Copyright (c) 2008-2013, Confluence HTTP Authenticator Team
+ Copyright (c) 2008-2014, Confluence HTTP Authenticator Team
  All rights reserved.
 
  Redistribution and use in source and binary forms, with or without
@@ -74,69 +74,8 @@ import java.util.*;
 /**
  * An authenticator that uses the REMOTE_USER header as proof of authentication.
  * <p/>
- * Configuration properties are looked for in
- * <i>/remoteUserAuthenticator.properties</i> on the classpath. This file
- * may contain the following properties:
- * <ul>
- * <li><strong>convert.to.utf8</strong> - Convert all incoming header values to UTF-8</li>
- * <li><strong>create.users</strong> - Indicates whether accounts should be
- * created for individuals the first they are encountered
- * (acceptable values: true/false)</li>
- * <li><strong>update.info</strong> - Indicates whether existing accounts
- * should have their name and email address information
- * updated when the user logs in (acceptable values: true/false)</li>
- * <li><strong>default.roles</strong> - The default roles newly created
- * accounts will be given (format: comma seperated list)</li>
- * <li><strong>purge.roles</strong> - Roles to be purged automatically of users
- * who don't have attributes to regain membership anymore (comma/semicolon
- * separated regex)</li>
- * <li><strong>reload.config</strong> - Automatically reload config when
- * change</li>
- * <li><strong>header.fullname</strong> - The name of the HTTP header that
- * will carry the full name of the user</li>
- * <li><strong>header.email</strong> - The name of the HTTP header that will
- * carry the email address for the user</li>
- * <li><strong>header.remote_user</strong> - The name of the HTTP header that will
- * carry the username</li>
- * <p/>
- * <li><strong>username.convertcase</strong> - Indicates whether usernames
- * should be converted to lowercase before use</li>
- * <p/>
- * <li><strong>update.roles</strong> - Indicates whether the existing accounts
- * should have their roles updated based on the header information. note: old
- * roles are not removed if the header doesn't contain it. (Acceptable values:
- * true/false. Default to false)</li>
- * <p/>
- * <li><strong>dynamicroles.auto_create_role</strong> - should new roles be
- * automatically created in confluence (and users assigned to it). Default to false
- * <p/>
- * <li><strong>dynamicroles.header.XXX</strong> - XXX is the name of the
- * HTTP header that will carry user's role information. Lists the mapper
- * names that are supposed to handle these roles. Mapper labels separated by
- * comma or semicolon. If this entry is empty or not existing, then no dynamic
- * role mapping loaded for this particular header. Example:
- * dynamicroles.header.SHIB-EP-ENTITLEMENT = mapper1, label5</li>
- * <li><strong>dynamicroles.mapper.YYY </strong> - YYY is the label name for the
- * mapper. This mapper is responsible of matching the input and processing
- * value transformation on the input. The output of the mapper is the role
- * supplied to confluence.See further examples in properties
- * file for details.
- * <ul><li><strong>match</strong> - regex for the mapper to match against
- * the given input</li>
- * <li><strong>casesensitive</strong> - should the matching performed by 'match'
- * be case sensitive. Default to true</li>
- * <li><strong>transform</strong> - a fix string replacement of the input
- * (e.g. the group or groups). when not specified, it will simply takes the
- * input value. roles as the result of matching input (separated by comma or
- * semicolon). parts of initial input can be used here in the form
- * of $0, $1...$N where $0 represents the whole input string, $1...N represent
- * regex groupings as used in 'match' regex</li>
- * </ul>
- * Example: <br/>
- * dynamicroles.mapper.label5.match = some\:example\:(.+)\:role-(.*) <br/>
- * dynamicroles.mapper.label5.transform = $1, $2, confluence-$2
- * </li>
- * </ul>
+ * Configured via <i>/remoteUserAuthenticator.properties</i> on the classpath.
+ * See that file information about configuration and options.
  */
 public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
 
@@ -148,15 +87,6 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
     static {
         config = ShibAuthConfigLoader.getShibAuthConfiguration(null);
     }
-
-    //public RemoteUserAuthenticator() {
-        // SHBL-48/CONF-22266 - Authenticators in Confluence 3.5:
-        // * Cannot have Atlassian beans injected via Spring (see comment late in CONF-22266)
-        // * Authenticators must be classloaded and cannot be Atlassian plugins v1 or v2 (see comment late in
-        // CONF-22266), so neither setter nor constructor injection of CrowdService instance would work.
-        // * Can only get bean instances using ContainerManager after the beans have been constructed, so cannot be done
-        // here in constructor.
-    //}
 
     /**
      * Check if the configuration file should be reloaded and reload the configuration.
@@ -442,7 +372,8 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
         String remoteUser = null;
 
         if (config.getRemoteUserHeaderName() != null) {
-            String headerValue = getAttribute(request, config.getRemoteUserHeaderName());
+            String headerValue = getAttribute(request, config.getRemoteUserHeaderName(),
+                    config.getRemoteUserHeaderStrategy());
             // the Shibboleth SP sends multiple values as single value, separated by comma or semicolon
             List values = StringUtil.toListOfNonEmptyStringsDelimitedByCommaOrSemicolon(headerValue);
 
@@ -487,7 +418,7 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
         String emailAddress = null;
 
         if (config.getEmailHeaderName() != null) {
-            String headerValue = getAttribute(request, config.getEmailHeaderName());
+            String headerValue = getAttribute(request, config.getEmailHeaderName(), config.getEmailHeaderStrategy());
             // The Shibboleth SP sends multiple values as single value, separated by comma or semicolon.
             List values = StringUtil.
                     toListOfNonEmptyStringsDelimitedByCommaOrSemicolon(headerValue);
@@ -530,7 +461,8 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
 
         if (config.getFullNameHeaderName() != null) {
             // assumes it is first value in list, if header is defined multiple times. Otherwise would need to call getHeaders()
-            String headerValue = getAttribute(request, config.getFullNameHeaderName());
+            String headerValue = getAttribute(request, config.getFullNameHeaderName(),
+                    config.getFullNameHeaderStrategy());
             // the Shibboleth SP sends multiple values as single value, separated by comma or semicolon
             List values = StringUtil.toListOfNonEmptyStringsDelimitedByCommaOrSemicolon(headerValue);
 
@@ -676,6 +608,18 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
         }
     }
 
+    private boolean isSecondTimeThroughLoginWithoutReturning(HttpServletRequest request) {
+        return request.getAttribute("https://github.com/chauth/confluence_http_authenticator/issues/9") != null;
+    }
+
+    private void guardFromInfiniteLoginRecursion(HttpServletRequest request) {
+        request.setAttribute("https://github.com/chauth/confluence_http_authenticator/issues/9", "");
+    }
+
+    private void readyToReturnFromLogin(HttpServletRequest request) {
+        request.setAttribute("https://github.com/chauth/confluence_http_authenticator/issues/9", null);
+    }
+
     /**
      * @see com.atlassian.confluence.user.ConfluenceAuthenticator#login(
      *javax.servlet.http.HttpServletRequest,
@@ -688,6 +632,23 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
      */
     public boolean login(HttpServletRequest request, HttpServletResponse response, String username, String password, boolean cookie) throws AuthenticatorException {
 
+        String remoteIP = request.getRemoteAddr();
+        String remoteHost = request.getRemoteHost();
+
+        // avoid circular calls
+        if (isSecondTimeThroughLoginWithoutReturning(request)) {
+            loginFailed(request, username, remoteHost, remoteIP, "LocalUserLoginWithNoCredentials");
+
+            if (log.isDebugEnabled()) {
+                log.debug("Authenticator is returning false from second call to public boolean login(HttpServletRequest request, HttpServletResponse response, String username, String password, boolean cookie)");
+            }
+
+            readyToReturnFromLogin(request);
+            return false;
+        }
+
+        guardFromInfiniteLoginRecursion(request);
+
         // Converting reliance on getUser(request,response) to use login(...) instead. The logic flow is:
         // 1) Seraph Login filter, which is based on username/password kicks in (declared at web.xml)
         // 2) It bails out altogether and identified user as invalid (without calling any of login(request,response)
@@ -697,9 +658,6 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
         // Hence, getUser(request,response) will only be called from Seraph SecurityFilter. This authenticator can use
         // ShibLoginFilter to make sure login is performed in some versions of Confluence, but it works without it, so
         // that is off by default.
-
-        String remoteIP = request.getRemoteAddr();
-        String remoteHost = request.getRemoteHost();
 
         if (log.isDebugEnabled()) {
             log.debug("login(...) called. requestURL=" + request.getRequestURL() + ", username=" + username + ", remoteIP=" + remoteIP + ", remoteHost=" + remoteHost);
@@ -712,16 +670,20 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
         final Principal cookieUser = getUserFromCookie(request, response);
         if (cookieUser != null) {
             log.debug(String.format("Login for user %s succeeded via Remember Me cookie", cookieUser.getName()));
+            readyToReturnFromLogin(request);
             return true;
         }
 
         // Is the incoming request flagged with Basic Auth credentials?
         if (RedirectUtils.isBasicAuthentication(request, getAuthType())) {
+            // avoid circular calls
+            request.setAttribute("https://github.com/chauth/confluence_http_authenticator/issues/9", "");
             final Principal basicAuthUser = getUserFromBasicAuthentication(request, response);
             if (basicAuthUser != null) {
 				if (log.isDebugEnabled()) {
                     log.debug(String.format("Login for user %s succeeded via Basic Auth", basicAuthUser.getName()));
 				}
+                readyToReturnFromLogin(request);
                 return true;
             }
         }
@@ -733,7 +695,7 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
 
             // Calling super.login to try local login if username and password are set. Local login won't work if
             // ShibLoginFilter is used
-            if (username != null && password != null) {
+            if (config.isLocalLoginSupported() && username != null && password != null) {
                 if (log.isDebugEnabled()) {
                     log.debug("Trying local login for user " + username);
                 }
@@ -754,7 +716,7 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
                 return localLoginSuccess;
             }
             else {
-                if (log.isDebugEnabled()) {
+                if (config.isLocalLoginSupported() && log.isDebugEnabled()) {
                     log.debug("Cannot perform local login because username or password was not provided.");
                 }
 
@@ -764,6 +726,7 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
                     log.debug("Authenticator is returning false from call to public boolean login(HttpServletRequest request, HttpServletResponse response, String username, String password, boolean cookie)");
                 }
 
+                readyToReturnFromLogin(request);
                 return false;
             }
         }
@@ -804,6 +767,7 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
                 if (log.isDebugEnabled()) {
                     log.debug("Authenticator is returning false from call to public boolean login(HttpServletRequest request, HttpServletResponse response, String username, String password, boolean cookie)");
                 }
+                readyToReturnFromLogin(request);
                 return false;
             }
 
@@ -834,6 +798,7 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
             log.debug("Authenticator is returning true from call to public boolean login(HttpServletRequest request, HttpServletResponse response, String username, String password, boolean cookie)");
         }
 
+        readyToReturnFromLogin(request);
         return true;
     }
 
@@ -1301,15 +1266,34 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
         }
     }
 
-    public String getAttribute(HttpServletRequest request, String attributeName) {
+    /**
+     * Get a value from the request using one of the following strategies. Any strategy other than 1 or 2 is considered
+     * to be 0:
+     * <ul>
+     *     <li>0 - Try request.getAttribute then request.getHeader</li>
+     *     <li>1 - Use request.getAttribute</li>
+     *     <li>2 - Use request.getHeader</li>
+     * </ul>
+     * @param request
+     * @param attributeName
+     * @param strategy
+     * @return
+     */
+    public String getAttribute(HttpServletRequest request, String attributeName, int strategy) {
         String attributeValue = null;
 
-        Object attr = request.getAttribute(attributeName);
-        if (attr instanceof String)
-            attributeValue = (String) attr;
+        if (strategy != 2) {
+            Object attr = request.getAttribute(attributeName);
+            if (attr instanceof String) {
+                attributeValue = (String) attr;
+            }
+        }
 
-        if (attributeValue == null)
-            attributeValue = request.getHeader(attributeName);
+        if (strategy != 1) {
+            if (attributeValue == null) {
+                attributeValue = request.getHeader(attributeName);
+            }
+        }
 
         return attributeValue;
     }

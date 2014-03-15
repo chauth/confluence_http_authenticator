@@ -1,5 +1,5 @@
 /*
- Copyright (c) 2008-2013, Confluence HTTP Authenticator Team
+ Copyright (c) 2008-2014, Confluence HTTP Authenticator Team
  All rights reserved.
 
  Redistribution and use in source and binary forms, with or without
@@ -69,6 +69,14 @@ public class ShibAuthConfigLoader {
 
             Properties configProps = new Properties();
             configProps.load(propsIn);
+
+            // Load local.login.supported property.
+            config.setCreateUsers(
+                    Boolean.valueOf(configProps.getProperty(ShibAuthConstants.LOCAL_LOGIN_SUPPORTED, "true")).booleanValue());
+
+            if (log.isDebugEnabled()) {
+                log.debug("Setting create new users to " + config.isCreateUsers());
+            }
 
             // Load create.users property.
             config.setCreateUsers(
@@ -171,19 +179,37 @@ public class ShibAuthConfigLoader {
             config.setRemoteUserHeaderName(configProps.getProperty(ShibAuthConstants.REMOTE_USER_HEADER_NAME_PROPERTY, "REMOTE_USER"));
 
             if (log.isDebugEnabled()) {
-                log.debug("HTTP Header that may contain user's username set to: " + config.getRemoteUserHeaderName());
+                log.debug("HTTP Header/attribute that may contain user's username set to: " + config.getRemoteUserHeaderName());
+            }
+
+            config.setRemoteUserHeaderStrategy(Integer.parseInt(configProps.getProperty(ShibAuthConstants.REMOTE_USER_HEADER_STRATEGY_PROPERTY, "0")));
+
+            if (log.isDebugEnabled()) {
+                log.debug("Username header strategy set to: " + config.getRemoteUserHeaderStrategy());
             }
 
             config.setFullNameHeaderName(configProps.getProperty(ShibAuthConstants.FULLNAME_HEADER_NAME_PROPERTY, "CONF_FULL_NAME"));
 
             if (log.isDebugEnabled()) {
-                log.debug("HTTP Header that may contain user's full name set to: " + config.getFullNameHeaderName());
+                log.debug("HTTP Header/attribute that may contain user's full name set to: " + config.getFullNameHeaderName());
+            }
+
+            config.setFullNameHeaderStrategy(Integer.parseInt(configProps.getProperty(ShibAuthConstants.FULLNAME_HEADER_STRATEGY_PROPERTY, "0")));
+
+            if (log.isDebugEnabled()) {
+                log.debug("Full name header strategy set to: " + config.getFullNameHeaderStrategy());
             }
 
             config.setEmailHeaderName(configProps.getProperty(ShibAuthConstants.EMAIL_HEADER_NAME_PROPERTY, "CONF_EMAIL"));
 
             if (log.isDebugEnabled()) {
-                log.debug("HTTP Header that may contain user's email address set to: " + config.getEmailHeaderName());
+                log.debug("HTTP Header/attribute that may contain user's email address set to: " + config.getEmailHeaderName());
+            }
+
+            config.setEmailHeaderStrategy(Integer.parseInt(configProps.getProperty(ShibAuthConstants.EMAIL_HEADER_STRATEGY_PROPERTY, "0")));
+
+            if (log.isDebugEnabled()) {
+                log.debug("Email header strategy set to: " + config.getEmailHeaderStrategy());
             }
 
             config.setUsernameConvertCase(Boolean.valueOf(

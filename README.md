@@ -353,7 +353,7 @@ See git log or the [CHANGELOG][changelog].
 
 ### License
 
-Copyright (c) 2007-2013, Confluence HTTP Authenticator Team, released under a [BSD-style License][lic].
+Copyright (c) 2008-2014, Confluence HTTP Authenticator Team, released under a [BSD-style License][lic].
 
 [changelog]: http://github.com/chauth/confluence_http_authenticator/blob/master/CHANGELOG.md
 [atlassianmarketplace]: https://marketplace.atlassian.com/plugins/shibauth.confluence.authentication.shibboleth

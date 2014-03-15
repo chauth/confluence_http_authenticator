@@ -1,5 +1,5 @@
 /*
- Copyright (c) 2008-2013, Confluence HTTP Authenticator Team
+ Copyright (c) 2008-2014, Confluence HTTP Authenticator Team
  All rights reserved.
 
  Redistribution and use in source and binary forms, with or without
@@ -115,19 +115,54 @@ public class ShibAuthConfiguration {
     private long configFileLastChecked;
 
     /**
-     * HTTP Header name that contains a user's username
+     * HTTP Header or request attribute name that contains a user's username
      */
     private String remoteUserHeaderName;
 
     /**
-     * HTTP Header name that contains a user's email address
+     * Strategy option to use to get remoteUser. Default is 0:
+     * <ul>
+     *     <li>0 - Try request.getAttribute then request.getHeader</li>
+     *     <li>1 - Use request.getAttribute</li>
+     *     <li>2 - Use request.getHeader</li>
+     * </ul>
+     */
+    private int remoteUserHeaderStrategy;
+
+    /**
+     * HTTP Header or request attribute name that contains a user's email address
      */
     private String emailHeaderName;
 
     /**
-     * HTTP Header name that contains a user's full name
+     * Strategy option to use to get email. Default is 0:
+     * <ul>
+     *     <li>0 - Try request.getAttribute then request.getHeader</li>
+     *     <li>1 - Use request.getAttribute</li>
+     *     <li>2 - Use request.getHeader</li>
+     * </ul>
+     */
+    private int emailHeaderStrategy;
+
+    /**
+     * HTTP Header or request attribute name that contains a user's full name
      */
     private String fullNameHeaderName;
+
+    /**
+     * Strategy option to use to get fullName. Default is 0:
+     * <ul>
+     *     <li>0 - Try request.getAttribute then request.getHeader</li>
+     *     <li>1 - Use request.getAttribute</li>
+     *     <li>2 - Use request.getHeader</li>
+     * </ul>
+     */
+    private int fullNameHeaderStrategy;
+
+    /**
+     * Whether or not to support local login. Default is true.
+     */
+    private boolean localLoginSupported = true;
 
     /**
      * Whether or not to update name/email info for previously created users
@@ -351,6 +386,14 @@ public class ShibAuthConfiguration {
         this.remoteUserHeaderName = remoteUserHeaderName;
     }
 
+    public int getRemoteUserHeaderStrategy() {
+        return remoteUserHeaderStrategy;
+    }
+
+    public void setRemoteUserHeaderStrategy(int remoteUserHeaderStrategy) {
+        this.remoteUserHeaderStrategy = remoteUserHeaderStrategy;
+    }
+
     public String getEmailHeaderName() {
         return emailHeaderName;
     }
@@ -359,12 +402,28 @@ public class ShibAuthConfiguration {
         this.emailHeaderName = emailHeaderName;
     }
 
+    public int getEmailHeaderStrategy() {
+        return emailHeaderStrategy;
+    }
+
+    public void setEmailHeaderStrategy(int emailHeaderStrategy) {
+        this.emailHeaderStrategy = emailHeaderStrategy;
+    }
+
     public String getFullNameHeaderName() {
         return fullNameHeaderName;
     }
 
     public void setFullNameHeaderName(String fullNameHeaderName) {
         this.fullNameHeaderName = fullNameHeaderName;
+    }
+
+    public int getFullNameHeaderStrategy() {
+        return fullNameHeaderStrategy;
+    }
+
+    public void setFullNameHeaderStrategy(int fullNameHeaderStrategy) {
+        this.fullNameHeaderStrategy = fullNameHeaderStrategy;
     }
 
     public boolean isUpdateInfo() {
@@ -413,6 +472,14 @@ public class ShibAuthConfiguration {
 
     public void setUsingShibLoginFilter(boolean usingShibLoginFilter) {
         this.usingShibLoginFilter = usingShibLoginFilter;
+    }
+
+    public boolean isLocalLoginSupported() {
+        return localLoginSupported;
+    }
+
+    public void setLocalLoginSupported(boolean localLoginSupported) {
+        this.localLoginSupported = localLoginSupported;
     }
 
     /**
