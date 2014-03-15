@@ -235,7 +235,13 @@
         <developer>
             <name>Erkki Aalto</name>
             <roles>
-                <role>Contributor - v2.3.0 - #2: Fix local login</role>
+                <role>Developer - v2.3.1 - #15: Added number of roles to purge at login</role>
+            </roles>
+        </developer>
+        <developer>
+            <name>Scott Hall</name>
+            <roles>
+                <role></role>
             </roles>
         </developer>
     </developers>

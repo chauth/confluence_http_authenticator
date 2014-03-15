@@ -74,6 +74,11 @@ public class ShibAuthConfiguration {
     private List purgeMappings = new ArrayList();
 
     /**
+     * An integer value for the number of roles to purge
+     */
+    private Integer purgeRolesLimit;
+
+    /**
      * Whether to create accounts for new users or not
      */
     private boolean createUsers;
@@ -296,6 +301,15 @@ public class ShibAuthConfiguration {
     public void setReloadConfig(boolean reloadConfig) {
         this.reloadConfig = reloadConfig;
     }
+
+    public Integer getPurgeRolesLimit() {
+	return purgeRolesLimit;
+    }
+
+    public void setPurgeRolesLimit(Integer purgeRolesLimit) {
+	this.purgeRolesLimit = purgeRolesLimit;
+    }
+
 
     public long getReloadConfigCheckInterval() {
         return reloadConfigCheckInterval;

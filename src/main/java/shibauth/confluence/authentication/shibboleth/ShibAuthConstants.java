@@ -53,6 +53,11 @@ public class ShibAuthConstants {
     public final static String PURGE_ROLES = "purge.roles";
 
     /**
+     * purge.roles.limit init parameter name
+     */
+    public final static String PURGE_ROLES_LIMIT = "purge.roles.limit";
+
+    /**
      * reload.config init parameter name
      */
     public final static String RELOAD_CONFIG = "reload.config";
