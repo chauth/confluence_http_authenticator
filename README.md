@@ -17,6 +17,7 @@ This authenticator is also under its old name in the [Atlassian Marketplace][atl
 
 There are many security concerns that you should be aware of when setting up and configuring your SSO, Confluence, and the authenticator. Here are just a few, since there are too many to list here, and it is outside of the scope of this document:
 
+* Don't allow local logins unless you take steps to block the Confluence "Invite Users" feature from functioning using mod_rewrite or similar methods. The invite feature establishes a static URL "back door" into the system that allows for total control over an account name and password, which allows an attacker to impersonate an SSO-based user account.
 * If you use HTTP headers to define the username, email address, and/or fullname of users, be aware that users may be able to inject HTTP headers. If you must user HTTP headers for these, ensure that something is removing those user-provided headers. But it would be better to set the strategy for each attribute to 1 (request.getAttribute only) in the authenticator config and making adjustments as needed to your SSO to support that, if at all possible, e.g.
 
 ```
@@ -25,7 +26,6 @@ header.email.strategy=1
 header.fullname.strategy=1
 ```
 
-* Don't both allow local logins and allow users to invite other users. This basically allows willy-nilly creation of users and the potential ability to impersonate a user, which is a major security risk.
 * Consider disabling local login and not allowing anonymous access.
 
 ### Notes
