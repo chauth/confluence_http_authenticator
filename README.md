@@ -13,11 +13,11 @@ Note: Those using Crowd (not just the embedded Crowd in Confluence) with Shibbol
 
 This authenticator is also under its old name in the [Atlassian Marketplace][atlassianmarketplace]. (It was moved from Atlassian's Jira Studio when Atlassian decided to stop hosting community projects in 2013, and renamed as part of the move per discussion on the [Shibboleth Users mailing list][shibbolethuserlist].)
 
-### Security Warning
+### Be Secure!
 
-There are many security concerns that you should be aware of when setting up and configuring Confluence as well as the authenticator. Here are just a few, since there are too many to list here and it is outside of the scope of this document:
+There are many security concerns that you should be aware of when setting up and configuring your SSO, Confluence, and the authenticator. Here are just a few, since there are too many to list here, and it is outside of the scope of this document:
 
-* If you use headers to define the user, etc., be aware that users can inject headers easily, so you have the responsibility to not allow that by ensuring that something removes those user-provided headers so the authenticator will not use them. Consider setting the strategy for each attribute to 1 (request.getAttribute only) in the authenticator config and making adjustments as needed to your SSO to support that, if at all possible, e.g.
+* If you use HTTP headers to define the username, email address, and/or fullname of users, be aware that users may be able to inject HTTP headers. If you must user HTTP headers for these, ensure that something is removing those user-provided headers. But it would be better to set the strategy for each attribute to 1 (request.getAttribute only) in the authenticator config and making adjustments as needed to your SSO to support that, if at all possible, e.g.
 
 ```
 header.remote_user.strategy=1
@@ -25,7 +25,7 @@ header.email.strategy=1
 header.fullname.strategy=1
 ```
 
-* Don't allow local logins and allow users to invite other users. This basically allows willy-nilly creation of users and the ability to impersonate an existing SSO user with the invited user.
+* Don't both allow local logins and allow users to invite other users. This basically allows willy-nilly creation of users and the potential ability to impersonate a user, which is a major security risk.
 * Consider disabling local login and not allowing anonymous access.
 
 ### Notes
