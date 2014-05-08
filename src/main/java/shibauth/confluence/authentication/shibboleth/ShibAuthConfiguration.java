@@ -74,9 +74,9 @@ public class ShibAuthConfiguration {
     private List purgeMappings = new ArrayList();
 
     /**
-     * An integer value for the number of roles to purge
+     * An integer value for the number of roles to purge. Defaults to Integer.MAX_VALUE.
      */
-    private Integer purgeRolesLimit;
+    private Integer purgeRolesLimit = Integer.MAX_VALUE;
 
     /**
      * Whether to create accounts for new users or not
@@ -95,7 +95,7 @@ public class ShibAuthConfiguration {
 
     /**
      * When reloading the configuration file, how long to wait (in milliseconds) between
-     * checking the configuration file for changes?
+     * checking the configuration file for changes.
      */
     private long reloadConfigCheckInterval;
 
