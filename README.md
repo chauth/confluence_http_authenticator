@@ -30,7 +30,7 @@ header.fullname.strategy=1
 
 ### Notes
 
-* v2.4.x-2.x.x should be compatible with Confluence 5.3.x-5.4.x (possibly beyond) by building against 5.3, per Erkki Aalto.
+* v2.4.x-2.x.x should be compatible with Confluence 5.3.x up to the latest version of 5.x.x, in theory (possibly beyond).
 * v2.2.x should be compatible with Confluence 5.0.x thanks to a patch by William Schneider. Due to an api change, v2.2.x is not backwards compatible with previous Confluence versions.
 * For those upgrading to Confluence 4.3 and higher, be sure to shib guard the mobile login and logout path, e.g. the login path may be /plugins/servlet/mobile/login?originalUrl=%2Fplugins%2Fservlet%2Fmobile%23dashboard%2Fpopular. Note that these may be different depending on your version of Confluence.
 * v2.1.16 is for Confluence 4.1 through the latest version of 4. If you have problems with local login, use v2.1.15.
