@@ -13,7 +13,8 @@
     <artifactId>remoteUserAuth</artifactId>
     <version>2.5.1-SNAPSHOT</version>
     <properties>
-        <confluence.version>5.4.4</confluence.version>
+        <confluence.version>5.8.4</confluence.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
     <issueManagement>
         <url>https://github.com/chauth/confluence_http_authenticator/issues</url>
@@ -184,26 +185,6 @@
                 <enabled>true</enabled>
             </snapshots>
             <releases>
-                <enabled>false</enabled>
-            </releases>
-            <id>Codehaus Snapshots</id>
-            <url>http://snapshots.repository.codehaus.org</url>
-        </repository>
-        <repository>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-            <id>TWData</id>
-            <url>https://twdata-m2-repository.googlecode.com/svn/</url>
-        </repository>
-        <repository>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-            <releases>
                 <enabled>true</enabled>
             </releases>
             <id>Nuxeo</id>
@@ -264,26 +245,6 @@
                 <enabled>true</enabled>
             </snapshots>
             <releases>
-                <enabled>false</enabled>
-            </releases>
-            <id>Codehaus Snapshots</id>
-            <url>http://snapshots.repository.codehaus.org</url>
-        </pluginRepository>
-        <pluginRepository>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-            <id>TWData</id>
-            <url>https://twdata-m2-repository.googlecode.com/svn/</url>
-        </pluginRepository>
-        <pluginRepository>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-            <releases>
                 <enabled>true</enabled>
             </releases>
             <id>Nuxeo</id>
@@ -309,10 +270,10 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-compiler-plugin</artifactId>
-          <version>2.5.1</version>
+          <version>3.3</version>
           <configuration>
-            <source>1.6</source>
-            <target>1.6</target>
+            <source>1.7</source>
+            <target>1.7</target>
           </configuration>
         </plugin>
       </plugins>
