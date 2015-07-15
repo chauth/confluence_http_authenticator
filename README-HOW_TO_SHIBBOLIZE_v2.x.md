@@ -39,6 +39,12 @@ Most of the setup is standard Shibboleth stuff, like getting the {{{nl}ServerNam
         RewriteCond %{QUERY_STRING} ^target=%2F(.*)$
         RewriteRule ^/Shibboleth.sso/Login$ /Shibboleth.sso/Login?target=http://wiki.example.edu/%1 [R,NE]
 
+* To make mobile clients also use the Shibbolized login, add the following rewrite rules:
+
+        RewriteCond %{QUERY_STRING} ^(.*)originalUrl(.*)$
+        RewriteRule ^/plugins/servlet/mobile/login(.*) https://%{HTTP_HOST}/Shibboleth.sso/Login?target%2 [NE,L]
+        RewriteRule ^/plugins/servlet/mobile/login(.*) https://%{HTTP_HOST}/Shibboleth.sso/Login [NE,L]
+
 * For the SP itself to activate, make sure the following is setup, where / in the Location element would be /confluence  if you were serving confluence in /confluence instead of at the root.
 
 ( _See Shibboleth [v2](https://wiki.shibboleth.net/confluence/display/SHIB2) documentation for more info_ )
