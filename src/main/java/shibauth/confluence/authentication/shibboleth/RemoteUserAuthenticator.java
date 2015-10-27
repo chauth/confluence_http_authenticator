@@ -649,6 +649,17 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
 
         guardFromInfiniteLoginRecursion(request);
 
+        if (RedirectUtils.isBasicAuthentication(request, getAuthType())) {
+            final Principal basicAuthUser = getUserFromBasicAuthentication(request, response);
+            if (basicAuthUser != null) {
+                if (log.isDebugEnabled()) {
+                    log.debug(String.format("Login for user %s succeeded via Basic Auth", basicAuthUser.getName()));
+                }
+                readyToReturnFromLogin(request);
+                return true;
+            }
+        }
+
         // Converting reliance on getUser(request,response) to use login(...) instead. The logic flow is:
         // 1) Seraph Login filter, which is based on username/password kicks in (declared at web.xml)
         // 2) It bails out altogether and identified user as invalid (without calling any of login(request,response)
@@ -672,20 +683,6 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
             log.debug(String.format("Login for user %s succeeded via Remember Me cookie", cookieUser.getName()));
             readyToReturnFromLogin(request);
             return true;
-        }
-
-        // Is the incoming request flagged with Basic Auth credentials?
-        if (RedirectUtils.isBasicAuthentication(request, getAuthType())) {
-            // avoid circular calls
-            request.setAttribute("https://github.com/chauth/confluence_http_authenticator/issues/9", "");
-            final Principal basicAuthUser = getUserFromBasicAuthentication(request, response);
-            if (basicAuthUser != null) {
-				if (log.isDebugEnabled()) {
-                    log.debug(String.format("Login for user %s succeeded via Basic Auth", basicAuthUser.getName()));
-				}
-                readyToReturnFromLogin(request);
-                return true;
-            }
         }
 
         if ((userid == null) || (userid.length() <= 0)) {
