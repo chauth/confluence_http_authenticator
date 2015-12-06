@@ -3,7 +3,7 @@ Confluence HTTP Authenticator
 
 ### Overview
 
-Confluence HTTP Authenticator (formerly known as Confluence Shibboleth Authenticator) is an authenticator for Confluence that can be used with Shibboleth (tested with Shibboleth 1.3 and 2.0) and possibly other HTTP-authentication solutions.
+Confluence HTTP Authenticator (formerly known as Confluence Shibboleth Authenticator) is an authenticator for Confluence that supports request header and attribute based authentication. It can be used with Shibboleth (tested with Shibboleth 1.3 and 2.0) and possibly other HTTP authentication solutions.
 
 Currently the authenticator takes the HTTP header that Shibboleth or something else passes into Confluence (usually REMOTE_USER) as the user's username (id) and either creates or updates a Confluence user in Confluence via Confluence API and can manage the groups memberships of that user based on Shibboleth (mace) attributes that have been configured to be passed into Confluence from Shibboleth. It relies on Shibboleth or something else to ensure that the header cannot be provided by the client itself, overriding the authentication mechanism.
 
@@ -18,7 +18,7 @@ This authenticator is also under its old name in the [Atlassian Marketplace][atl
 There are many security concerns that you should be aware of when setting up and configuring your SSO, Confluence, and the authenticator. Here are just a few, since there are too many to list here, and it is outside of the scope of this document:
 
 * Don't allow local logins unless you take steps to block the Confluence "Invite Users" feature from functioning using mod_rewrite or similar methods. The invite feature establishes a static URL "back door" into the system that allows for total control over an account name and password, which allows an attacker to impersonate an SSO-based user account.
-* If you use HTTP headers to define the username, email address, and/or fullname of users, be aware that users may be able to inject HTTP headers. If you must user HTTP headers for these, ensure that something is removing those user-provided headers. But it would be better to set the strategy for each attribute to 1 (request.getAttribute only) in the authenticator config and making adjustments as needed to your SSO to support that, if at all possible, e.g.
+* If you use HTTP headers to define the username, email address, and/or fullname of users, be aware that users may be able to inject HTTP headers. If you must user HTTP headers for these, ensure that something is removing those user-provided headers. But it would be better to set the strategy for each attribute to 1 (request.getAttribute only. See remoteUserAuthenticator.properties for more information.) in the authenticator config and making adjustments as needed to your SSO to support that, if at all possible, e.g.
 
 ```
 header.remote_user.strategy=1
@@ -28,7 +28,7 @@ header.fullname.strategy=1
 
 * Consider disabling local login and not allowing anonymous access.
 
-### Notes
+### Release Notes
 
 * v2.7.x should be compatible with Confluence 5.9.1+, up to the latest version of 5.x, we hope.
 * v2.6.x should be compatible with Confluence 5.8.4+, up to the latest version of 5.8.x.
@@ -36,25 +36,23 @@ header.fullname.strategy=1
 * v2.2.x should be compatible with Confluence 5.0.x thanks to a patch by William Schneider. Due to an api change, v2.2.x is not backwards compatible with previous Confluence versions.
 * For those upgrading to Confluence 4.3 and higher, be sure to shib guard the mobile login and logout path, e.g. the login path may be /plugins/servlet/mobile/login?originalUrl=%2Fplugins%2Fservlet%2Fmobile%23dashboard%2Fpopular. Note that these may be different depending on your version of Confluence.
 * v2.1.16 is for Confluence 4.1 through the latest version of 4. If you have problems with local login, use v2.1.15.
-* Confluence authenticator plugins cannot be installed via the Plugins/Plugin Repository admin UI in Confluence per Atlassian. You must put the jar in the classpath instead. Read all comments in [CONF-22266][conf22266] for details.
+* v2.0.x of this plugin only works with Confluence 3.5.x-4.0.x. For Confluence 3.5.0-3.5.2, you must also install the Confluence patch attached to [CONF-22157][conf22157].
+* v1.7.4 of this plugin (or later version of v1.x before v2.0) is required for Confluence 3.4.x and below.
+
+### Installation Notes
+
+* This plugin does not support installation via Plugin Repository/Plugins in Confluence, and Confluence authenticator plugins in general cannot be installed via the Plugins/Plugin Repository admin UI in Confluence per Atlassian. You must put the jar in the classpath instead. Read all comments in [CONF-22266][conf22266] for details. You may get the error, "The downloaded file is missing an atlassian-plugin.xml" if you try to install it from Plugin Repository in Confluence. Instead please follow the instructions in this document to get setup.
 * Also download remoteUserAuthenticator.properties (see link next to appropriate release below) which is required along with the jar.
 * Thoroughly read through all available documentation. If you have problems, please refer to the support section below in this document.
-
-### Installation
-
-* This plugin does not support installation via Plugin Repository/Plugins in Confluence. You may get the error, "The downloaded file is missing an atlassian-plugin.xml" if you try to install it from Plugin Repository in Confluence. Instead please follow the instructions in this document to get setup.
 * Copy the jar file above into Confluence's WEB-INF/lib directory (and backup existing file). Be sure to note that versions of Confluence prior to 3.5.x require the older 1.x version of the plugin, and that Confluence 3.5.0-3.5.2 require the patch in [CONF-22157][conf22157] to Confluence.
 * Copy the sample config file above into Confluence's WEB-INF/classes directory (and backup existing file).
 * Read the pages linked in the Configuration section, as well as the rest of this page which provides important information on troubleshooting, support, and security. This plugin requires that the Shibboleth SP, Apache, Tomcat, and plugin are setup and configured correctly. If you have an alternate method for setting up or could help us by updating the documentation, please do! We appreciate your help.
 
-Why isn't there support for installation of the plugin via Plugin Repository?
-
-* Shibbolizing Confluence is just not as easy as installing a plugin currently. It requires the Shibboleth SP to be setup, Tomcat/etc. to be setup correctly to allow the REMOTE_USER header to be passed in from the SP, etc. If you were to install the plugin with everything else not set up, it might put Confluence into an unusable state until you determined how to manually remove the plugin.
-* We would need to spend time developing an administrative configuration UI. There could be benefit to an administrative configuration UI for some configuration items, although it could still be dangerous to use them.
-
 ### Configuration
 
-The following describes how to configure the authenticator. For more information on the process of Shibbolizing Confluence, see that page and [How to Shibbolize Confluence](README-HOW_TO_SHIBBOLIZE.md).
+The following describes how to configure the authenticator.
+
+If you are using this authenticator with the Shibboleth SSO, you may refer to [How to Shibbolize Confluence](README-HOW_TO_SHIBBOLIZE.md) although it is old and may be outdated.
 
 The authenticator uses Atlassian's (Java-based) Confluence User API to make changes to users and their group memberships. This means that if Atlassian's Confluence API supports those actions, then the authenticator should also be able to support those actions. If you aren't sure, try it and see (in your test environment).
 
@@ -254,14 +252,6 @@ Those with Shibboleth configuration issues should use the [Shibboleth Users mail
 If you have an issue with the authenticator itself, please review the [issues][issues] and then create a new issue if there is no existing issue. The authenticator support is provided on a volunteer basis.
 
 Feel free to contact someone on the team directly if you want to contribute anonymously, submit a security concern, or generallt want to mention something that shouldn't be public.
-
-More help:
-
-* v2.4.x of this plugin works with Confluence 5.3.x and 5.4.x.
-* v2.2.x of this plugin works with Confluence 5.0.x.
-* v2.1.x of this plugin works with Confluence 4.1.x.
-* v2.0.x of this plugin only works with Confluence 3.5.x-4.0.x. For Confluence 3.5.0-3.5.2, you must also install the Confluence patch attached to [CONF-22157][conf22157].
-* v1.7.4 of this plugin (or later version of v1.x before v2.0) is required for Confluence 3.4.x and below.
 
 *Needs cleanup: The following is partially out-of-date.*
 
