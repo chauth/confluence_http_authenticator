@@ -1,5 +1,23 @@
 === Version History
 
+    2.7.0   6 Dec 2015  Changes by Gary Weaver:
+
+        #33 Bubble up LicensingException and use userAccessor.createUser that isn't deprecated. Build against Confluence 5.9.1.
+
+        BSD     remoteUserAuth-2.7.0.jar, remoteUserAuthenticator.properties
+
+    2.6.1   31 Oct 2015  Changes by Gary Weaver:
+
+        #30 #31 Delegate to ConfluenceAuthenticator sooner in attempt to fix basic authentication support. Should be compatible with Confluence 5.8.4+, up to the latest version of 5.8.x.
+
+        BSD     remoteUserAuth-2.6.1.jar, remoteUserAuthenticator.properties
+
+    2.6.0   20 Jun 2015  Changes by Adam Bishop:
+
+        #29 Support update for Confluence 5.8.
+
+        BSD     remoteUserAuth-2.6.0.jar, remoteUserAuthenticator.properties
+
     2.5.0   15 Mar 2014  Changes by Gary Weaver:
 
         Added ability to configure header/attribute get strategies and whether or not to support local login.
