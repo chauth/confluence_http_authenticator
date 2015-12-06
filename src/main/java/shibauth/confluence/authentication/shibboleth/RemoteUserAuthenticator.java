@@ -1,5 +1,5 @@
 /*
- Copyright (c) 2008-2014, Confluence HTTP Authenticator Team
+ Copyright (c) 2008-2015, Confluence HTTP Authenticator Team
  All rights reserved.
 
  Redistribution and use in source and binary forms, with or without
@@ -41,6 +41,7 @@
 
 package shibauth.confluence.authentication.shibboleth;
 
+import bucket.user.LicensingException;
 import com.atlassian.confluence.event.events.security.LoginEvent;
 import com.atlassian.confluence.event.events.security.LoginFailedEvent;
 import com.atlassian.confluence.security.login.LoginManager;
@@ -50,6 +51,9 @@ import com.atlassian.crowd.embedded.api.CrowdService;
 import com.atlassian.crowd.embedded.api.Group;
 import com.atlassian.crowd.embedded.api.User;
 import com.atlassian.crowd.embedded.impl.ImmutableUser;
+import com.atlassian.crowd.exception.InvalidUserException;
+import com.atlassian.crowd.exception.OperationNotPermittedException;
+import com.atlassian.crowd.model.user.UserTemplate;
 import com.atlassian.seraph.auth.AuthenticatorException;
 import com.atlassian.seraph.auth.LoginReason;
 import com.atlassian.seraph.util.RedirectUtils;
@@ -63,6 +67,7 @@ import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.interceptor.DefaultTransactionAttribute;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
+import com.atlassian.user.impl.DefaultUser;
 
 import javax.servlet.ServletRequestWrapper;
 import javax.servlet.http.HttpServletRequest;
@@ -222,13 +227,13 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
 
             User crowdUser = crowdService.getUser(user.getName());
             Collection purgeMappers = config.getPurgeMappings();
-	    
-	    // limit the number of roles purged
-	    // add a counter
-	    int counter=0;
-	    // Load the value from the config
-	    int rolesLimit = config.getPurgeRolesLimit();
-	    log.debug("setting roles limit to " + rolesLimit);
+
+            // limit the number of roles purged
+            // add a counter
+            int counter = 0;
+            // Load the value from the config
+            int rolesLimit = config.getPurgeRolesLimit();
+            log.debug("setting roles limit to " + rolesLimit);
 
             List<String> roles = userAccessor.getGroupNames(userAccessor.getUser(user.getName()));
 
@@ -292,15 +297,14 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
      * @param username user name for the new user
      * @return the new user
      */
-    private void createUser(String username) {
+    private void createUser(String username, String fullName, String emailAddress) {
         if (log.isInfoEnabled()) {
             log.info("Creating user account for " + username);
         }
 
         try {
-            createUser(getUserAccessor(), username);
+            createUser(getUserAccessor(), username, fullName, emailAddress);
         } catch (Throwable t) {
-
             // Note: just catching EntityException like we used to do didn't
             // seem to cover Confluence massive with Oracle
             if (log.isDebugEnabled()) {
@@ -623,12 +627,12 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
     /**
      * @see com.atlassian.confluence.user.ConfluenceAuthenticator#login(
      *javax.servlet.http.HttpServletRequest,
-     *      javax.servlet.http.HttpServletResponse,
-     *      java.lang.String username,
-     *      java.lang.String password,
-     *      boolean cookie)
-     *      <p/>
-     *      Check if user has been authenticated by Shib. Username, password, and cookie are totally ignored.
+     * javax.servlet.http.HttpServletResponse,
+     * java.lang.String username,
+     * java.lang.String password,
+     * boolean cookie)
+     * <p/>
+     * Check if user has been authenticated by Shib. Username, password, and cookie are totally ignored.
      */
     public boolean login(HttpServletRequest request, HttpServletResponse response, String username, String password, boolean cookie) throws AuthenticatorException {
 
@@ -699,10 +703,9 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
 
                 boolean localLoginSuccess = super.login(request, response, username, password, cookie);
                 if (localLoginSuccess) {
-					User user = getCrowdUser(username, request, remoteHost, remoteIP);
+                    User user = getCrowdUser(username, request, remoteHost, remoteIP);
                     loginSuccessful(request, response, username, user, remoteHost, remoteIP);
-                }
-                else {
+                } else {
                     loginFailed(request, username, remoteHost, remoteIP, "LocalUserLoginFailed");
                 }
 
@@ -711,8 +714,7 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
                 }
 
                 return localLoginSuccess;
-            }
-            else {
+            } else {
                 if (config.isLocalLoginSupported() && log.isDebugEnabled()) {
                     log.debug("Cannot perform local login because username or password was not provided.");
                 }
@@ -751,8 +753,8 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
         // again.
         if (user == null) {
             if (config.isCreateUsers()) {
-                createUser(userid);
-    	        newUser = true;
+                createUser(userid, fullName, emailAddress);
+                newUser = true;
             } else {
                 if (log.isDebugEnabled()) {
                     log.debug("Configuration does NOT allow creation of new user accounts, authentication will fail for " +
@@ -799,39 +801,39 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
         return true;
     }
 
-	private void loginSuccessful(HttpServletRequest request,
-			HttpServletResponse response, String username, User user,
-			String remoteHost, String remoteIP) {
-		if (log.isDebugEnabled()) {
-			log.debug("Logging in user "
-					+ ((user != null) ? user.getName() : username)
-					+ ". request=" + request + ", response=" + response
-					+ ", username=" + username + ", user=" + user
-					+ ((user != null) ? ", user.getName=" + user.getName():"" ) + ", remoteHost="
-					+ remoteHost + ", remoteIP=" + remoteIP);
-		}
+    private void loginSuccessful(HttpServletRequest request,
+                                 HttpServletResponse response, String username, User user,
+                                 String remoteHost, String remoteIP) {
+        if (log.isDebugEnabled()) {
+            log.debug("Logging in user "
+                    + ((user != null) ? user.getName() : username)
+                    + ". request=" + request + ", response=" + response
+                    + ", username=" + username + ", user=" + user
+                    + ((user != null) ? ", user.getName=" + user.getName() : "") + ", remoteHost="
+                    + remoteHost + ", remoteIP=" + remoteIP);
+        }
 
-		if (user != null) {
-			// SHBL-50 - code provided by Joseph Clark and Erkki Aalto to do
-			// postlogin updates.
-			// Some of this will break eventually with new Confluence/Crowd
-			// versions.
-			putPrincipalInSessionContext(request, user);
-		}
-		// TODO: Joe Clark uses getElevatedSecurityGuard() vs.
-		// getLoginManager(). Which should we use?
-		// see:
-		// https://bitbucket.org/jaysee00/example-confluence-sso-authenticator/src/381eb95ebc08/src/main/java/com/atlassian/confluence/seraph/example/ExampleSSOAuthenticator.java
-		getLoginManager().onSuccessfulLoginAttempt(username, request);
-		getEventPublisher().publish(
-		new LoginEvent(this, username, request.getSession().getId(),
-						remoteHost, remoteIP, LoginEvent.UNKNOWN));
-		LoginReason.OK.stampRequestResponse(request, response);
-	}
+        if (user != null) {
+            // SHBL-50 - code provided by Joseph Clark and Erkki Aalto to do
+            // postlogin updates.
+            // Some of this will break eventually with new Confluence/Crowd
+            // versions.
+            putPrincipalInSessionContext(request, user);
+        }
+        // TODO: Joe Clark uses getElevatedSecurityGuard() vs.
+        // getLoginManager(). Which should we use?
+        // see:
+        // https://bitbucket.org/jaysee00/example-confluence-sso-authenticator/src/381eb95ebc08/src/main/java/com/atlassian/confluence/seraph/example/ExampleSSOAuthenticator.java
+        getLoginManager().onSuccessfulLoginAttempt(username, request);
+        getEventPublisher().publish(
+                new LoginEvent(this, username, request.getSession().getId(),
+                        remoteHost, remoteIP, LoginEvent.UNKNOWN));
+        LoginReason.OK.stampRequestResponse(request, response);
+    }
 
     private void loginFailed(HttpServletRequest request, String username, String remoteHost, String remoteIP, String reason) {
         if (log.isDebugEnabled()) {
-            log.debug("Login failed for user " + username + ". request=" + request + ", username=" + username + ", remoteHost=" + remoteHost + ", remoteIP="+ remoteIP + ", reason=" + reason);
+            log.debug("Login failed for user " + username + ". request=" + request + ", username=" + username + ", remoteHost=" + remoteHost + ", remoteIP=" + remoteIP + ", reason=" + reason);
         }
 
         getLoginManager().onFailedLoginAttempt(username, request);
@@ -840,26 +842,26 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
     }
 
     private void updateGroupMemberships(HttpServletRequest request, User user) {
-    	if (user == null) {
+        if (user == null) {
             if (log.isDebugEnabled()) {
                 log.debug("User is null, so can't update group memberships.");
             }
         } else {
-	    	Set roles = new HashSet();
+            Set roles = new HashSet();
 
-	        // Add user to groups.
-	        getRolesFromHeader(request, roles);
-	        assignUserToRoles(user, config.getDefaultRoles(), user);
-	        assignUserToRoles(user, roles, user);
+            // Add user to groups.
+            getRolesFromHeader(request, roles);
+            assignUserToRoles(user, config.getDefaultRoles(), user);
+            assignUserToRoles(user, roles, user);
 
-	        // Make sure we don't purge default roles either
-	        roles.addAll(config.getDefaultRoles());
-	        purgeUserRoles(user, roles);
+            // Make sure we don't purge default roles either
+            roles.addAll(config.getDefaultRoles());
+            purgeUserRoles(user, roles);
         }
     }
 
-	private User getCrowdUser(String userid, HttpServletRequest request, String remoteHost, String remoteIP) {
-		CrowdService crowdService = getCrowdService();
+    private User getCrowdUser(String userid, HttpServletRequest request, String remoteHost, String remoteIP) {
+        CrowdService crowdService = getCrowdService();
         if (crowdService == null) {
             loginFailed(request, userid, remoteHost, remoteIP, "AuthenticatorConfigFailure");
             if (log.isDebugEnabled()) {
@@ -869,7 +871,7 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
             throw new RuntimeException("crowdService was not wired in RemoteUserAuthenticator");
         }
 
-		// ensure user is active
+        // ensure user is active
         User crowdUser = crowdService.getUser(userid);
         if (crowdUser != null && !crowdUser.isActive()) {
             log.info("Login failed for user '" + userid + "', because user is set as inactive. remoteIP=" + remoteIP + " remoteHost=" + remoteHost);
@@ -882,8 +884,8 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
             return null;
         }
 
-		return crowdUser;
-	}
+        return crowdUser;
+    }
 
     public Principal getUser(HttpServletRequest request, HttpServletResponse response) {
 
@@ -894,7 +896,7 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
             log.debug("getUser(...) called. requestURL=" + request.getRequestURL() + ", remoteIP=" + remoteIP + ", remoteHost=" + remoteHost);
         }
 
-        final Principal localUser = super.getUser(request,response);
+        final Principal localUser = super.getUser(request, response);
         if (localUser != null) {
             if (log.isDebugEnabled()) {
                 log.debug(String.format("Login for user %s succeeded via local login", localUser.getName()));
@@ -913,14 +915,14 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
         if (RedirectUtils.isBasicAuthentication(request, getAuthType())) {
             final Principal basicAuthUser = getUserFromBasicAuthentication(request, response);
             if (basicAuthUser != null) {
-				if (log.isDebugEnabled()) {
+                if (log.isDebugEnabled()) {
                     log.debug(String.format("Login for user %s succeeded via Basic Auth", basicAuthUser.getName()));
-				}
+                }
                 return basicAuthUser;
             }
         }
 
-		// Since they aren't logged in, get the user name from
+        // Since they aren't logged in, get the user name from
         // the REMOTE_USER header
         String userid = createSafeUserid(getLoggedInUser(request));
 
@@ -946,7 +948,7 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
             userid = convertUsername(userid);
         }
 
-		// Pull name and address from headers
+        // Pull name and address from headers
         String fullName = getFullName(request, userid);
         String emailAddress = getEmailAddress(request);
 
@@ -959,7 +961,7 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
         // if we can, otherwise will try to get it again.
         if (user == null) {
             if (config.isCreateUsers()) {
-                createUser(userid);
+                createUser(userid, fullName, emailAddress);
                 newUser = true;
             } else {
                 if (log.isDebugEnabled()) {
@@ -1226,12 +1228,17 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
     // avoid "Write operations are not allowed in read-only mode" per Joseph Clark of Atlassian in
     // https://answers.atlassian.com/questions/25160/crowdservice-updateuser-causes-write-operations-are-not-allowed-in-read-only-mode
     // https://developer.atlassian.com/display/CONFDEV/Hibernate+Sessions+and+Transaction+Management+Guidelines
-    private void createUser(final UserAccessor userAccessor, final String username) {
+    private void createUser(final UserAccessor userAccessor, final String username, final String fullName, final String emailAddress) {
         if (username != null) {
             new TransactionTemplate(getTransactionManager(), new DefaultTransactionAttribute(TransactionDefinition.PROPAGATION_REQUIRED)).execute(new TransactionCallback() {
                 public Object doInTransaction(TransactionStatus status) {
                     try {
-                        userAccessor.createUser(username);
+                        userAccessor.createUser(new DefaultUser(username, null, null), null);
+                    } catch (LicensingException le) {
+                        log.error("Cannot create user '" + username + "'!", le);
+                        // if you're having licensing issues, this needs to bubble up.
+                        // see: https://github.com/chauth/confluence_http_authenticator/issues/33
+                        throw le;
                     } catch (Throwable t) {
                         log.error("Failed to create user '" + username + "'!", t);
                     }
@@ -1267,10 +1274,11 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
      * Get a value from the request using one of the following strategies. Any strategy other than 1 or 2 is considered
      * to be 0:
      * <ul>
-     *     <li>0 - Try request.getAttribute then request.getHeader</li>
-     *     <li>1 - Use request.getAttribute</li>
-     *     <li>2 - Use request.getHeader</li>
+     * <li>0 - Try request.getAttribute then request.getHeader</li>
+     * <li>1 - Use request.getAttribute</li>
+     * <li>2 - Use request.getHeader</li>
      * </ul>
+     *
      * @param request
      * @param attributeName
      * @param strategy
