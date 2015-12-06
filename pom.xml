@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-	<!--
-	Confluence HTTP Authenticator
-	formerly known as:
-	Confluence Shibboleth Authenticator,
-	Shibboleth Authenticator for Confluence,
-	and Georgetown University's remoteUserAuth
-	-->
+    <!--
+    Confluence HTTP Authenticator
+    formerly known as:
+    Confluence Shibboleth Authenticator,
+    Shibboleth Authenticator for Confluence,
+    and Georgetown University's remoteUserAuth
+    -->
     <modelVersion>4.0.0</modelVersion>
     <groupId>shibauth</groupId>
     <artifactId>remoteUserAuth</artifactId>
-    <version>2.6.2-SNAPSHOT</version>
+    <version>2.7.0-SNAPSHOT</version>
     <properties>
-        <confluence.version>5.8.4</confluence.version>
+        <confluence.version>5.9.1</confluence.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
     <issueManagement>
@@ -24,7 +24,7 @@
             <name>BSD-Style License</name>
             <distribution>manual</distribution>
             <comments>
-                Copyright (c) 2008-2014, Confluence HTTP Authenticator Team
+                Copyright (c) 2008-2015, Confluence HTTP Authenticator Team
                 All rights reserved.
 
                 Redistribution and use in source and binary forms, with or without
@@ -54,7 +54,7 @@
         </license>
     </licenses>
     <developers>
-		<!-- Note: specific contributions listed in CHANGELOG/git log -p -->
+        <!-- Note: specific contributions listed in CHANGELOG/git log -p -->
         <developer>
             <name>Chad LaJoie</name>
             <roles>
@@ -145,7 +145,9 @@
         <url>https://marketplace.atlassian.com/vendors/6628</url>
     </organization>
     <name>Confluence HTTP Authenticator</name>
-    <description>Confluence HTTP Authenticator (formerly the Confluence Shibboleth Authenticator) is a seraph authenticator for Confluence that has been tested with the Shibboleth SSO.</description>
+    <description>Confluence HTTP Authenticator (formerly the Confluence Shibboleth Authenticator) is a seraph
+        authenticator for Confluence that has been tested with the Shibboleth SSO.
+    </description>
     <packaging>jar</packaging>
     <repositories>
         <repository>
@@ -206,6 +208,10 @@
             <id>OpenCast Atlassian</id>
             <url>http://repository.opencastproject.org/nexus/content/repositories/atlassian/</url>
         </repository>
+        <repository>
+            <id>java.net</id>
+            <url>http://download.java.net/maven/2</url>
+        </repository>
     </repositories>
     <pluginRepositories>
         <pluginRepository>
@@ -265,6 +271,12 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
+            <groupId>javax</groupId>
+            <artifactId>javaee-api</artifactId>
+            <version>6.0</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>4.6</version>
@@ -272,16 +284,16 @@
         </dependency>
     </dependencies>
     <build>
-      <plugins>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-compiler-plugin</artifactId>
-          <version>3.3</version>
-          <configuration>
-            <source>1.7</source>
-            <target>1.7</target>
-          </configuration>
-        </plugin>
-      </plugins>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.3</version>
+                <configuration>
+                    <source>1.7</source>
+                    <target>1.7</target>
+                </configuration>
+            </plugin>
+        </plugins>
     </build>
 </project>
