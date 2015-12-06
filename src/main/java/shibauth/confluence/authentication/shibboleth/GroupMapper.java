@@ -1,5 +1,5 @@
 /*
- Copyright (c) 2008-2014, Confluence HTTP Authenticator Team
+ Copyright (c) 2008-2015, Confluence HTTP Authenticator Team
  All rights reserved.
 
  Redistribution and use in source and binary forms, with or without
@@ -136,8 +136,8 @@ public class GroupMapper {
      *                  GroupManager <strong>without</strong> 'match' regex is executed. if
      *                  transform is also null, then it simply return null output
      * @return the final group output value. if there are multiple groups
-     *         they are separated by comma or semicolon (provided match regex or
-     *         transform has specified the comma/semicolon
+     * they are separated by comma or semicolon (provided match regex or
+     * transform has specified the comma/semicolon
      */
     public String process(String initValue) {
         String value = initValue;

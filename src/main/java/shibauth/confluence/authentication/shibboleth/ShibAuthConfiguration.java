@@ -1,5 +1,5 @@
 /*
- Copyright (c) 2008-2014, Confluence HTTP Authenticator Team
+ Copyright (c) 2008-2015, Confluence HTTP Authenticator Team
  All rights reserved.
 
  Redistribution and use in source and binary forms, with or without
@@ -122,9 +122,9 @@ public class ShibAuthConfiguration {
     /**
      * Strategy option to use to get remoteUser. Default is 0:
      * <ul>
-     *     <li>0 - Try request.getAttribute then request.getHeader</li>
-     *     <li>1 - Use request.getAttribute</li>
-     *     <li>2 - Use request.getHeader</li>
+     * <li>0 - Try request.getAttribute then request.getHeader</li>
+     * <li>1 - Use request.getAttribute</li>
+     * <li>2 - Use request.getHeader</li>
      * </ul>
      */
     private int remoteUserHeaderStrategy;
@@ -137,9 +137,9 @@ public class ShibAuthConfiguration {
     /**
      * Strategy option to use to get email. Default is 0:
      * <ul>
-     *     <li>0 - Try request.getAttribute then request.getHeader</li>
-     *     <li>1 - Use request.getAttribute</li>
-     *     <li>2 - Use request.getHeader</li>
+     * <li>0 - Try request.getAttribute then request.getHeader</li>
+     * <li>1 - Use request.getAttribute</li>
+     * <li>2 - Use request.getHeader</li>
      * </ul>
      */
     private int emailHeaderStrategy;
@@ -152,9 +152,9 @@ public class ShibAuthConfiguration {
     /**
      * Strategy option to use to get fullName. Default is 0:
      * <ul>
-     *     <li>0 - Try request.getAttribute then request.getHeader</li>
-     *     <li>1 - Use request.getAttribute</li>
-     *     <li>2 - Use request.getHeader</li>
+     * <li>0 - Try request.getAttribute then request.getHeader</li>
+     * <li>1 - Use request.getAttribute</li>
+     * <li>2 - Use request.getHeader</li>
      * </ul>
      */
     private int fullNameHeaderStrategy;
@@ -338,11 +338,11 @@ public class ShibAuthConfiguration {
     }
 
     public Integer getPurgeRolesLimit() {
-	return purgeRolesLimit;
+        return purgeRolesLimit;
     }
 
     public void setPurgeRolesLimit(Integer purgeRolesLimit) {
-	this.purgeRolesLimit = purgeRolesLimit;
+        this.purgeRolesLimit = purgeRolesLimit;
     }
 
 
