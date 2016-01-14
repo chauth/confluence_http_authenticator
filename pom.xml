@@ -11,9 +11,9 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>shibauth</groupId>
     <artifactId>remoteUserAuth</artifactId>
-    <version>2.7.1-SNAPSHOT</version>
+    <version>2.7.1</version>
     <properties>
-        <confluence.version>5.9.1</confluence.version>
+        <confluence.version>5.9.4</confluence.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
     <issueManagement>
@@ -24,7 +24,7 @@
             <name>BSD-Style License</name>
             <distribution>manual</distribution>
             <comments>
-                Copyright (c) 2008-2015, Confluence HTTP Authenticator Team
+                Copyright (c) 2008-2016, Confluence HTTP Authenticator Team
                 All rights reserved.
 
                 Redistribution and use in source and binary forms, with or without
@@ -139,6 +139,12 @@
                 <role>Developer</role>
             </roles>
         </developer>
+        <developer>
+            <name>Georg Kallidis</name>
+            <roles>
+                <role>Developer</role>
+            </roles>
+        </developer>
     </developers>
     <organization>
         <name>Confluence HTTP Authenticator Team</name>
@@ -151,99 +157,20 @@
     <packaging>jar</packaging>
     <repositories>
         <repository>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-            <releases>
+              <id>atlassian-public</id>
+              <url>https://maven.atlassian.com/repository/public</url>
+              <snapshots>
                 <enabled>true</enabled>
-            </releases>
-            <id>Atlassian Public</id>
-            <url>https://maven.atlassian.com/content/repositories/atlassian-public/</url>
-        </repository>
-        <repository>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-            <releases>
-                <enabled>false</enabled>
-            </releases>
-            <id>Atlassian Public Snaphots</id>
-            <url>https://maven.atlassian.com/content/repositories/atlassian-public-snapshot/</url>
-        </repository>
-        <repository>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-            <id>Atlassian 3rd-party Repository</id>
-            <url>https://maven.atlassian.com/content/repositories/atlassian-3rdparty/</url>
-        </repository>
-        <repository>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-            <id>central-m2-repository</id>
-            <name>Central Maven 2 Repository</name>
-            <url>http://repo1.maven.org/maven2</url>
-        </repository>
-        <repository>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-            <id>Nuxeo</id>
-            <url>https://maven.nuxeo.org/nexus/content/repositories/public/</url>
-        </repository>
-        <repository>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-            <id>OpenCast Atlassian</id>
-            <url>http://repository.opencastproject.org/nexus/content/repositories/atlassian/</url>
-        </repository>
-        <repository>
-            <id>java.net</id>
-            <url>http://download.java.net/maven/2</url>
+                <updatePolicy>never</updatePolicy>
+                <checksumPolicy>warn</checksumPolicy>
+              </snapshots>
+               <releases>
+                 <enabled>true</enabled>
+                 <checksumPolicy>warn</checksumPolicy>
+              </releases>
         </repository>
     </repositories>
     <pluginRepositories>
-        <pluginRepository>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-            <id>Atlassian Public</id>
-            <url>https://maven.atlassian.com/content/repositories/atlassian-public/</url>
-        </pluginRepository>
-        <pluginRepository>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-            <releases>
-                <enabled>false</enabled>
-            </releases>
-            <id>Atlassian Public Snaphots</id>
-            <url>https://maven.atlassian.com/content/repositories/atlassian-public-snapshot/</url>
-        </pluginRepository>
-        <pluginRepository>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-            <id>Atlassian 3rd-party Repository</id>
-            <url>https://maven.atlassian.com/content/repositories/atlassian-3rdparty/</url>
-        </pluginRepository>
         <pluginRepository>
             <snapshots>
                 <enabled>true</enabled>
@@ -284,7 +211,7 @@
         </dependency>
     </dependencies>
     <build>
-        <plugins>
+        <plugins>            
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
