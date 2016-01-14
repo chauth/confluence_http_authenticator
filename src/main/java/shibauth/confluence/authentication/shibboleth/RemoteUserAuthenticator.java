@@ -59,6 +59,7 @@ import com.atlassian.seraph.auth.LoginReason;
 import com.atlassian.seraph.util.RedirectUtils;
 import com.atlassian.spring.container.ContainerManager;
 import com.atlassian.user.GroupManager;
+import com.atlassian.user.security.password.Credential;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.transaction.PlatformTransactionManager;
@@ -235,7 +236,7 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
             int rolesLimit = config.getPurgeRolesLimit();
             log.debug("setting roles limit to " + rolesLimit);
 
-            List<String> roles = userAccessor.getGroupNames(userAccessor.getUser(user.getName()));
+            List<String> roles = userAccessor.getGroupNames(userAccessor.getUserByName(user.getName()));
 
             for (int i = 0; i < roles.size(); i++) {
                 String role = roles.get(i);
@@ -1233,7 +1234,7 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
             new TransactionTemplate(getTransactionManager(), new DefaultTransactionAttribute(TransactionDefinition.PROPAGATION_REQUIRED)).execute(new TransactionCallback() {
                 public Object doInTransaction(TransactionStatus status) {
                     try {
-                        userAccessor.createUser(new DefaultUser(username, null, null), null);
+                        userAccessor.createUser(new DefaultUser(username, null, null), Credential.NONE);
                     } catch (LicensingException le) {
                         log.error("Cannot create user '" + username + "'!", le);
                         // if you're having licensing issues, this needs to bubble up.
