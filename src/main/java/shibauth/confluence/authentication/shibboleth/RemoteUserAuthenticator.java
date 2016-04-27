@@ -1146,7 +1146,7 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
         while (it.hasNext()) {
             String replaceFromRegex = it.next().toString();
 
-            // Someone didn't fill up pair-wise entry, ignore this regex.
+            // Someone didn't fill up pair-wise entry, ignore this regex (which must be the last one).
             if (!it.hasNext()) {
                 if (replaceFromRegex.length() != 0) {
                     if (log.isDebugEnabled()) {
