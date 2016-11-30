@@ -13,7 +13,7 @@
     <artifactId>remoteUserAuth</artifactId>
     <version>2.7.2-SNAPSHOT</version>
     <properties>
-        <confluence.version>5.9.4</confluence.version>
+        <confluence.version>6.0.2</confluence.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
     <issueManagement>
@@ -211,7 +211,7 @@
         </dependency>
     </dependencies>
     <build>
-        <plugins>            
+        <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
