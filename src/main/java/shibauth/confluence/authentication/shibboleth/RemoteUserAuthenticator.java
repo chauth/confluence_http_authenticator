@@ -833,6 +833,10 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
     }
 
     private void loginFailed(HttpServletRequest request, String username, String remoteHost, String remoteIP, String reason) {
+        // Fix based on https://github.com/chauth/confluence_http_authenticator/issues/41#issuecomment-263465311
+        if (username == null) {
+            username = "(none)";
+        }
         if (log.isDebugEnabled()) {
             log.debug("Login failed for user " + username + ". request=" + request + ", username=" + username + ", remoteHost=" + remoteHost + ", remoteIP=" + remoteIP + ", reason=" + reason);
         }
