@@ -71,7 +71,7 @@ public class ShibAuthConfigLoader {
             configProps.load(propsIn);
 
             // Load local.login.supported property.
-            config.setCreateUsers(
+            config.setLocalLoginSupported(
                     Boolean.valueOf(configProps.getProperty(ShibAuthConstants.LOCAL_LOGIN_SUPPORTED, "true")).booleanValue());
 
             if (log.isDebugEnabled()) {
