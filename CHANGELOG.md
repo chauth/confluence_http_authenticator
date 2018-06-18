@@ -1,5 +1,21 @@
 === Version History
 
+    2.7.3  ...   Changes by Joyita Das
+    
+        #48 Build against Confluence 6.8.3
+
+    2.7.2   6 Mar 2015  Changes by Christian Mäder, Senastien Delcoigne, Vladimir Menci, Georg Kallidis
+
+        #44 Local login property was incorrectly loaded in configuration. Property was stored in CreateUsers property instead, also corrects debug logs for isLocalLoginSupported property, 
+        #41 Workaround Confluence 6 behaviour change
+        #38,#39 Added Test, fix StringUtils toList including empty string
+        - Update versions: slf4j, compiler 
+        Build against Confluence 6.0.7, #41 also confirms working with v6.5.2., 6.6.0  
+
+    2.7.1   14 Jan 2016  Changes by Gary Weaver:
+
+        #34 Deprecation Fix
+
     2.7.0   6 Dec 2015  Changes by Gary Weaver:
 
         #33 Bubble up LicensingException and use userAccessor.createUser that isn't deprecated. Build against Confluence 5.9.1.

@@ -306,7 +306,7 @@ To build, type:
 
 When committing, please try to include the issue number when possible in the beginning on the comment, e.g.:
 
-    svn commit -m "#123 Added compatibility for Confluence v2.5"
+    git commit -m "#123 Added compatibility for Confluence v2.5"
 
 #### Releasing a New Version
 
@@ -360,7 +360,7 @@ See git log or the [CHANGELOG][changelog].
 
 ### License
 
-Copyright (c) 2008-2014, Confluence HTTP Authenticator Team, released under a [BSD-style License][lic].
+Copyright (c) 2008-2018, Confluence HTTP Authenticator Team, released under a [BSD-style License][lic].
 
 [changelog]: http://github.com/chauth/confluence_http_authenticator/blob/master/CHANGELOG.md
 [atlassianmarketplace]: https://marketplace.atlassian.com/plugins/shibauth.confluence.authentication.shibboleth
