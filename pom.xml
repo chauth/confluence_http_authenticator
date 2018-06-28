@@ -11,9 +11,9 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>shibauth</groupId>
     <artifactId>remoteUserAuth</artifactId>
-    <version>2.7.3-SNAPSHOT</version>
+    <version>2.7.3</version>
     <properties>
-        <confluence.version>6.0.7</confluence.version><!--  minimal version, based on information in issue #41, also confirms working with v 6.5.2., 6.6.0 -->
+        <confluence.version>6.0.7</confluence.version><!--  minimal version, based on information in issue #41, also confirms working with v 6.5.2., 6.6.0 , tested with 6.8.3-->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
     <issueManagement>
@@ -141,6 +141,13 @@
         </developer>
         <developer>
             <name>Georg Kallidis</name>
+            <roles>
+                <role>Developer</role>
+            </roles>
+        </developer>
+    </developers>
+    <developer>
+            <name>Joyita Das</name>
             <roles>
                 <role>Developer</role>
             </roles>
