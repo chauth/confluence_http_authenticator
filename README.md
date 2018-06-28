@@ -30,7 +30,9 @@ header.fullname.strategy=1
 
 ### Release Notes
 
-* v2.7.x should be compatible with Confluence 5.9.1+, up to the latest version of 5.x, we hope.
+* 
+* v2.7.2[+] should be compatible with Confluence 6.0.7+, up to the latest version of 6.x, we hope.
+* v2.7.0-v.2.7.1 should be compatible with Confluence 5.9.1+, up to the latest version of 5.x.
 * v2.6.x should be compatible with Confluence 5.8.4+, up to the latest version of 5.8.x.
 * v2.4.x-2.5.x should be compatible with Confluence 5.3.x up to the latest version of 5.7.x.
 * v2.2.x should be compatible with Confluence 5.0.x thanks to a patch by William Schneider. Due to an api change, v2.2.x is not backwards compatible with previous Confluence versions.
@@ -287,16 +289,12 @@ Please feel free to assist others with the authenticator itself and its configur
 
 #### Building
 
-Build assumes Java 6+, Maven 3+. Atlassian SDK does not need to be installed, as it is an authenticator jar loaded on
+Build assumes Java 6+ (7+ since 2.6.x releases), Maven 3+. Atlassian SDK does not need to be installed, as it is an authenticator jar loaded on
 classpath, not a plugin, nor can it or should it be, even in Confluence 4.x+.
 
 For larger changes, you'd want to create an [issue][issues] first to ask if it would be something that would be of interest to everyone.
 
-Although there is a Google group that we have if needed to discuss development as a team:
-http://groups.google.com/group/confluence-shibauth-dev
-which has a mailing list for development discussion:
-confluence-shibauth-dev@googlegroups.com
-please keep conversation out of that group and mailing list if it can instead be discussed publically within an [issue][issues] in GitHub. Otherwise, consider sneding an email directly to one or more team members.
+Please discuss publically within an [issue][issues] in GitHub. Otherwise, consider sending an email directly to one or more team members.
 
 Releases can be found [here][releases].
 
@@ -352,7 +350,8 @@ To release a new version:
 
 Troubleshooting:
 
-Be sure to build with Java 6.
+Check Java issues here:
+  https://confluence.atlassian.com/doc/supported-platforms-207488198.html#SupportedPlatforms-Java
 
 ### Release Notes
 

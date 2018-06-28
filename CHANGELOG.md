@@ -1,10 +1,10 @@
 === Version History
 
-    2.7.3  ...   Changes by Joyita Das
+    2.7.3  28 June 2018  Changes by Joyita Das
     
-        #48 Build against Confluence 6.8.3
+        #48 Build against Confluence 6.8.3 with java 1.8._121. fix last build, cft. #49.
 
-    2.7.2   6 Mar 2015  Changes by Christian Mäder, Senastien Delcoigne, Vladimir Menci, Georg Kallidis
+    2.7.2   6 Mar 2018  Changes by Christian Mäder, Senastien Delcoigne, Vladimir Menci, Georg Kallidis
 
         #44 Local login property was incorrectly loaded in configuration. Property was stored in CreateUsers property instead, also corrects debug logs for isLocalLoginSupported property, 
         #41 Workaround Confluence 6 behaviour change
