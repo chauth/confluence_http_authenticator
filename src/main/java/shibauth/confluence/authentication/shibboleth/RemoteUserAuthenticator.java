@@ -383,24 +383,29 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
             List values = StringUtil.toListOfNonEmptyStringsDelimitedByCommaOrSemicolon(headerValue);
 
             if (values != null && values.size() > 0) {
-                // use the first in the list, if header is defined multiple times. Otherwise should call getHeaders().
-                remoteUser = (String) values.get(0);
+                List values = StringUtil.getCNMatches(values);
 
-                if (log.isDebugEnabled()) {
-                    log.debug("Got remoteUser '" + remoteUser + "' for header '" + config.getRemoteUserHeaderName() +
-                            "'");
-                }
+                if (values != null && values.size() > 0) {
+                    // use the first in the list, if header is defined multiple times. Otherwise should call getHeaders().
+                    remoteUser = (String) values.get(0);
 
-                if (config.isConvertToUTF8()) {
-                    String tmp = StringUtil.convertToUTF8(remoteUser);
-                    if (tmp != null) {
-                        remoteUser = tmp;
-                        if (log.isDebugEnabled()) {
-                            log.debug("remoteUser converted to UTF-8 '" + remoteUser + "' for header '" + config.
-                                    getRemoteUserHeaderName() + "'");
+                    if (log.isDebugEnabled()) {
+                        log.debug("Got remoteUser '" + remoteUser + "' for header '" + config.getRemoteUserHeaderName() +
+                                "'");
+                    }
+
+                    if (config.isConvertToUTF8()) {
+                        String tmp = StringUtil.convertToUTF8(remoteUser);
+                        if (tmp != null) {
+                            remoteUser = tmp;
+                            if (log.isDebugEnabled()) {
+                                log.debug("remoteUser converted to UTF-8 '" + remoteUser + "' for header '" + config.
+                                        getRemoteUserHeaderName() + "'");
+                            }
                         }
                     }
                 }
+
             }
 
         } else {
@@ -1328,3 +1333,4 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
         return (GroupManager) ContainerManager.getComponent("groupManager");
     }
 }
+

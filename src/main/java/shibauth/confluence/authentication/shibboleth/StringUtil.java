@@ -87,6 +87,23 @@ public class StringUtil {
         return results;
     }
 
+    /**
+     * Get Common Name by Regex from List according to X.500 Directory Specification *
+     */
+    public static List getCNMatches(List list) {
+        Pattern p = Pattern.compile("^CN=");
+
+        List matches = new ArrayList();
+
+        for (int i = 0; i < list.size(); i++) {
+            if (p.matcher(list.get(i)).matches()) {
+                matches.add(list.get(i));
+            }
+        }
+
+        return matches;
+    }
+
     // PLEASE DO NOT CHANGE THIS METHOD WITHOUT GETTING AGREEMENT FROM JUHA OJALUOMA AND ERKKI AALTO. THIS METHOD WAS
     // CONTRIBUTED BY HELSINKI IN BOTH SHBL-5 AND AGAIN IN SHBL-29.
     public static String convertToUTF8(String s) {
@@ -134,3 +151,4 @@ public class StringUtil {
         return false;
     }
 }
+
