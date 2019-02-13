@@ -103,6 +103,16 @@ public class ShibAuthConstants {
     public final static String FULLNAME_HEADER_STRATEGY_PROPERTY = "header.fullname.strategy";
 
     /**
+     * Regex filter value to get property from header
+     */
+    public final static String USERNAME_FILTER_REGEX_PROPERTY = "username.filter";
+
+    /**
+     * Strategy option to use to get fullname
+     */
+    public final static String USERNAME_FILTER_STRATEGY_PROPERTY = "username.filter.strategy";
+
+    /**
      * Name of username case conversion property
      */
     public final static String USERNAME_CASE_CONVERT_PROPERTY = "username.convertcase";

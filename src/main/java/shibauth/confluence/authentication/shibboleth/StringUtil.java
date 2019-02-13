@@ -88,16 +88,18 @@ public class StringUtil {
     }
 
     /**
-     * Get Common Name by Regex from List according to X.500 Directory Specification *
+     * Get user id attribute by Regex from List according to X.500 Directory Specification *
      */
     public static List getCNMatches(List list) {
-        Pattern p = Pattern.compile("^CN=");
+        Pattern p = Pattern.compile(config.getUsernameRegexFilter());
 
         List matches = new ArrayList();
 
         for (int i = 0; i < list.size(); i++) {
-            if (p.matcher(list.get(i)).matches()) {
-                matches.add(list.get(i));
+            Matcher m = p.matcher(list.get(i));
+
+            if (m.matches()) {
+                matches.add(m.group(0));
             }
         }
 

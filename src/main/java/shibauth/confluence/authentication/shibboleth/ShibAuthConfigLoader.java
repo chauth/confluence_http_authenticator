@@ -194,6 +194,18 @@ public class ShibAuthConfigLoader {
                 log.debug("HTTP Header/attribute that may contain user's full name set to: " + config.getFullNameHeaderName());
             }
 
+            config.setUsernameFilterStrategy(Integer.parseInt(configProps.getProperty(ShibAuthConstants.USERNAME_FILTER_STRATEGY_PROPERTY, "0")));
+
+            if (log.isDebugEnabled()) {
+                log.debug("Username filter strategy set to: " + config.getUsernameFilterStrategy());
+            }
+
+            config.setUsernameRegexFilter(configProps.getProperty(ShibAuthConstants.USERNAME_FILTER_REGEX_PROPERTY, "^CN="));
+
+            if (log.isDebugEnabled()) {
+                log.debug("Regex attribute to extract user id from header is set to: " + config.getUsernameRegexFilter());
+            }
+
             config.setFullNameHeaderStrategy(Integer.parseInt(configProps.getProperty(ShibAuthConstants.FULLNAME_HEADER_STRATEGY_PROPERTY, "0")));
 
             if (log.isDebugEnabled()) {
