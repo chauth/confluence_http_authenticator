@@ -145,8 +145,7 @@
                 <role>Developer</role>
             </roles>
         </developer>
-    </developers>
-    <developer>
+       <developer>
             <name>Joyita Das</name>
             <roles>
                 <role>Developer</role>
