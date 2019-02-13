@@ -387,7 +387,7 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
                 remoteUser = (String) values.get(0);
 
                 if (config.getUsernameFilterStrategy() == 1) {
-                    List attributes = StringUtil.getCNMatches(values);
+                    List attributes = StringUtil.getLDAPRegexAttributeList(values, config.getUsernameRegexFilter());
 
                     if (attributes != null && attributes.size() > 0) {
                         // use the first attribute in the header, if attribute is defined multiple times.

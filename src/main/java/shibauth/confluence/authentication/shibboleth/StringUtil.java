@@ -35,6 +35,8 @@ import org.apache.commons.logging.LogFactory;
 import java.io.UnsupportedEncodingException;
 import java.util.*;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class StringUtil {
 
@@ -90,16 +92,18 @@ public class StringUtil {
     /**
      * Get user id attribute by Regex from List according to X.500 Directory Specification *
      */
-    public static List getCNMatches(List list) {
-        Pattern p = Pattern.compile(config.getUsernameRegexFilter());
+    public static List getLDAPRegexAttributeList(List<String> list, String usernameRegexFilter) {
+        Pattern p = Pattern.compile(usernameRegexFilter);
 
         List matches = new ArrayList();
 
         for (int i = 0; i < list.size(); i++) {
             Matcher m = p.matcher(list.get(i));
 
-            if (m.matches()) {
-                matches.add(m.group(0));
+            String tmpResult = m.group(0);
+
+            if (m.matches() && tmpResult != null && !tmpResult.equals("") ) {
+                matches.add(tmpResult);
             }
         }
 
