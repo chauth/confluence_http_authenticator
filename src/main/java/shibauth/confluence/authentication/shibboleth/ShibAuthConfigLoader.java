@@ -200,7 +200,7 @@ public class ShibAuthConfigLoader {
                 log.debug("Username filter strategy set to: " + config.getUsernameFilterStrategy());
             }
 
-            config.setUsernameRegexFilter(configProps.getProperty(ShibAuthConstants.USERNAME_FILTER_REGEX_PROPERTY, "^CN="));
+            config.setUsernameRegexFilter(configProps.getProperty(ShibAuthConstants.USERNAME_FILTER_REGEX_PROPERTY, "^CN=(.*)"));
 
             if (log.isDebugEnabled()) {
                 log.debug("Regex attribute to extract user id from header is set to: " + config.getUsernameRegexFilter());
