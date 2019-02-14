@@ -109,6 +109,12 @@ Note: If you are having trouble mapping roles, try using Shibboleth on the same 
 
 Look at the HTTP headers. The header.dynamicroles.attributenames values need to match the HTTP Header names coming from the SP. If you're not seeing the headers you want, talk to your Shibboleth administrator or email the [Shibboleth Users mailing list][shibbolethuserlist] to get Shibboleth support (and first try turning on debug logging in Shibboleth to make sure the IdP is sending the SP what you think it should be).
 
+#### Getting Usernames From Different LDAP Attributes in HTTP Header Using Regular Expressions
+
+This optional feature may be applied almost immediately after reading the `REMOTE_USER` HTTP header before cleaning username (next section). By default the header is splitted by the characters "[,;]" * into a list. The default strategy (username.filter.strategy=0) now fetches the first entry of the list and puts it into the username pipeline. On the other side the strategy username.filter.strategy=1 allows the authenticator to skip this behaviour and investigate each entry in the list. The first entry, which has a non empty matching group, i.e. matches the regular expression defined in username.filter will be set to the username at this point. If nothing matches the fallback will be the default result.
+
+* not yet configurable defined in StringUtil.SEPARATOR.
+ 
 #### Cleaner Usernames Using Regular Expressions
 
 This optional feature allows the authenticator to generate the username based on a regular expression based on the `REMOTE_USER` header instead of just using the exact value of `REMOTE_USER` header.
@@ -289,64 +295,15 @@ Please feel free to assist others with the authenticator itself and its configur
 
 #### Building
 
-Build assumes Java 6+ (7+ since 2.6.x releases), Maven 3+. Atlassian SDK does not need to be installed, as it is an authenticator jar loaded on
-classpath, not a plugin, nor can it or should it be, even in Confluence 4.x+.
+Read [TECHNICAL_HOWTO.md].
 
-For larger changes, you'd want to create an [issue][issues] first to ask if it would be something that would be of interest to everyone.
-
-Please discuss publically within an [issue][issues] in GitHub. Otherwise, consider sending an email directly to one or more team members.
-
-Releases can be found [here][releases].
-
-To build, type:
-
-    mvn clean install
-
-When committing, please try to include the issue number when possible in the beginning on the comment, e.g.:
-
-    git commit -m "#123 Added compatibility for Confluence v2.5"
+Please discuss publically within an [issue][issues] in GitHub.
 
 #### Releasing a New Version
 
-To release a new version:
+To release a new version, read [TECHNICAL_HOWTO.md].
 
-1) Add yourself to the list of developers in the pom.xml.
-
-2) Build and manually test jar in target/*.jar (or have someone test)
-
-      mvn clean install
-
-3) Edit pom.xml to be new release version (remove "-SNAPSHOT" from release version, e.g. change from 1.2.3-SNAPSHOT to 1.2.3)
-
-4) Build and manually test again as needed (or have someone test)
-
-      mvn clean install
-
-5) Put changes from git log into release info in the CHANGELOG.md (note: prior releases used Jira ticket id, but newer releases should use the #(GitHub issue num) format, e.g. "#123 Added compatibility for Confluence v2.5").
-
-6) Copy new release to releases directory, add pom.xml change and new release, commit, and push, then tag, and push tags:
-
-      cp target/(name of jar).jar releases/
-      git add releases
-      git add pom.xml
-      git commit -m "releasing 1.2.3"
-      git push
-      git tag v1.2.3
-      git push --tags
-
-7) Edit pom.xml to increment patch version and add "-SNAPSHOT" to version (e.g. change from 1.2.3 to 1.2.4-SNAPSHOT).
-
-8) Add pom.xml, commit, and push.
-
-      git add pom.xml
-      git commit -m "incrementing pom.xml version to 1.2.4-SNAPSHOT"
-	  git push
-
-9) Add release info/jar also to (this url may change):
-
-      https://plugins.atlassian.com/plugins/shibauth.confluence.authentication.shibboleth
-
-10) Have fun!
+Releases can be found [here][releases].
 
 Troubleshooting:
 
@@ -359,7 +316,7 @@ See git log or the [CHANGELOG][changelog].
 
 ### License
 
-Copyright (c) 2008-2018, Confluence HTTP Authenticator Team, released under a [BSD-style License][lic].
+Copyright (c) 2008-2019, Confluence HTTP Authenticator Team, released under a [BSD-style License][lic].
 
 [changelog]: http://github.com/chauth/confluence_http_authenticator/blob/master/CHANGELOG.md
 [atlassianmarketplace]: https://marketplace.atlassian.com/plugins/shibauth.confluence.authentication.shibboleth
