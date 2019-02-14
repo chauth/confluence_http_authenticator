@@ -160,9 +160,9 @@ public class GroupMapper {
         //perform matches first
         Pattern p = null;
         if (isCaseSensitive()) {
-            p = Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
-        } else {
             p = Pattern.compile(regex);
+        } else {
+            p = Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
         }
 
         Matcher m = p.matcher(value);
