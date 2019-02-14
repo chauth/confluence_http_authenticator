@@ -111,9 +111,16 @@ Look at the HTTP headers. The header.dynamicroles.attributenames values need to 
 
 #### Getting Usernames From Different LDAP Attributes in HTTP Header Using Regular Expressions
 
-This optional feature may be applied almost immediately after reading the `REMOTE_USER` HTTP header before cleaning username (next section). By default the header is splitted by the characters "[,;]" * into a list. The default strategy (username.filter.strategy=0) now fetches the first entry of the list and puts it into the username pipeline. On the other side the strategy username.filter.strategy=1 allows the authenticator to skip this behaviour and investigate each entry in the list. The first entry, which has a non empty matching group, i.e. matches the regular expression defined in username.filter will be set to the username at this point. If nothing matches the fallback will be the default result.
+This optional feature may be applied almost immediately after reading the `REMOTE_USER` HTTP header before cleaning username (next section). By default the header is splitted by the characters "[,;]" * into a list. The default strategy
 
-* not yet configurable defined in StringUtil.SEPARATOR.
+    username.filter.strategy=0
+    
+now fetches the first entry of the list and puts it into the username pipeline. On the other side the strategy
+     username.filter.strategy=1 
+     
+allows the authenticator to skip this behaviour and investigate each entry in the list. The first entry, which has a non empty matching group, i.e. matches the regular expression defined in username.filter will be set to the username at this point. If nothing matches the fallback will be the default result.
+
+  * not yet configurable defined in StringUtil.SEPARATOR.
  
 #### Cleaner Usernames Using Regular Expressions
 
@@ -295,13 +302,13 @@ Please feel free to assist others with the authenticator itself and its configur
 
 #### Building
 
-Read [TECHNICAL_HOWTO.md].
+Read [technical howto][technical].
 
 Please discuss publically within an [issue][issues] in GitHub.
 
 #### Releasing a New Version
 
-To release a new version, read [TECHNICAL_HOWTO.md].
+To release a new version, read [technical howto][technical].
 
 Releases can be found [here][releases].
 
@@ -329,3 +336,4 @@ Copyright (c) 2008-2019, Confluence HTTP Authenticator Team, released under a [B
 [conf22157]: https://jira.atlassian.com/browse/CONF-22157 "Custom authenticators which subclass ConfluenceAuthenticator are broken in Confluence 3.5"
 [conf9040]: https://jira.atlassian.com/browse/CONF-9040 "Authenticator (subclass of DefaultAuthenticator) can be called twice at almost exactly same time by 2 or more clustered servers"
 [conf9117]: https://jira.atlassian.com/browse/CONF-9117 "Confluence API supports adding user with null password, but users will null passwords produce NullPointerException when using the osuser to atlassian-user migration utility jsp"
+[technical]: https://github.com/chauth/confluence_http_authenticator/blob/master/TECHNICAL_HOW_TO.md

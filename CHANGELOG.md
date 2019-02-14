@@ -1,4 +1,5 @@
-=== Version History
+Version History
+=====
 
     2.7.4  .. .. 2019  
       #52 Add option to not truncate HTTP header, and #pr/53 Added support of getting username from different LDAP attributes in HTTP header.
