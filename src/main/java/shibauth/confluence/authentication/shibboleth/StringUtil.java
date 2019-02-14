@@ -35,6 +35,8 @@ import org.apache.commons.logging.LogFactory;
 import java.io.UnsupportedEncodingException;
 import java.util.*;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class StringUtil {
 
@@ -87,6 +89,27 @@ public class StringUtil {
         return results;
     }
 
+    /**
+     * Get user id attribute by Regex from List according to X.500 Directory Specification *
+     */
+    public static List getLDAPRegexAttributeList(List<String> list, String usernameRegexFilter) {
+        Pattern p = Pattern.compile(usernameRegexFilter);
+
+        List matches = new ArrayList();
+
+        for (int i = 0; i < list.size(); i++) {
+            Matcher m = p.matcher(list.get(i));
+
+            String tmpResult = m.group(0);
+
+            if (m.matches() && tmpResult != null && !tmpResult.equals("") ) {
+                matches.add(tmpResult);
+            }
+        }
+
+        return matches;
+    }
+
     // PLEASE DO NOT CHANGE THIS METHOD WITHOUT GETTING AGREEMENT FROM JUHA OJALUOMA AND ERKKI AALTO. THIS METHOD WAS
     // CONTRIBUTED BY HELSINKI IN BOTH SHBL-5 AND AGAIN IN SHBL-29.
     public static String convertToUTF8(String s) {
@@ -134,3 +157,4 @@ public class StringUtil {
         return false;
     }
 }
+

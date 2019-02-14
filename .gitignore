@@ -15,4 +15,5 @@ dist/
 nbdist/
 nbactions.xml
 nb-configuration.xml
+.history
 effective-pom.xml

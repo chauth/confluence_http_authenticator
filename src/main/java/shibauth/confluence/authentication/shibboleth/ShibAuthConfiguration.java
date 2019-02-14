@@ -130,6 +130,20 @@ public class ShibAuthConfiguration {
     private int remoteUserHeaderStrategy;
 
     /**
+     * Strategy option to extract user id from header. Default is 0:
+     * <ul>
+     * <li>0 - Get user id attribute value as first attribute from the header</li>
+     * <li>1 - Use username.filter to get custom attribute</li>
+     * </ul>
+     */
+    private int usernameFilterStrategy;
+
+    /**
+     * Regex attribute to extract user id from header
+     */
+    private String usernameRegexFilter;
+
+    /**
      * HTTP Header or request attribute name that contains a user's email address
      */
     private String emailHeaderName;
@@ -392,6 +406,22 @@ public class ShibAuthConfiguration {
 
     public void setRemoteUserHeaderStrategy(int remoteUserHeaderStrategy) {
         this.remoteUserHeaderStrategy = remoteUserHeaderStrategy;
+    }
+
+    public int getUsernameFilterStrategy() {
+        return usernameFilterStrategy;
+    }
+
+    public void setUsernameFilterStrategy(int usernameFilterStrategy) {
+        this.usernameFilterStrategy = usernameFilterStrategy;
+    }
+
+    public String getUsernameRegexFilter() {
+        return usernameRegexFilter;
+    }
+
+    public void setUsernameRegexFilter(String usernameRegexFilter) {
+        this.usernameRegexFilter = usernameRegexFilter;
     }
 
     public String getEmailHeaderName() {
