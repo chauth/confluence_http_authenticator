@@ -100,10 +100,12 @@ public class StringUtil {
         for (int i = 0; i < list.size(); i++) {
             Matcher m = p.matcher(list.get(i));
 
-            String tmpResult = m.group(0);
+            if (m.matches()) {
+                String tmpResult = m.group(1);
 
-            if (m.matches() && tmpResult != null && !tmpResult.equals("") ) {
-                matches.add(tmpResult);
+                if (tmpResult != null && !tmpResult.equals("") ) {
+                    matches.add(tmpResult);
+                }
             }
         }
 
