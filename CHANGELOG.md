@@ -1,4 +1,10 @@
-=== Version History
+Version History
+=====
+
+    2.7.4  .. .. 2019  
+      #52 Add option to not truncate HTTP header, and #pr/53 Added support of getting username from different LDAP attributes in HTTP header.
+      
+      #37 GroupMapper case sensitivity logic error (dfault is case sensitive)
 
     2.7.3  28 June 2018  Changes by Joyita Das
     
