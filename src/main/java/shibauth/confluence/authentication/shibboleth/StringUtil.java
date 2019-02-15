@@ -101,7 +101,7 @@ public class StringUtil {
             Matcher m = p.matcher(list.get(i));
 
             if (m.matches()) {
-                String tmpResult = m.group(0);
+                String tmpResult = m.group(1);
 
                 if (tmpResult != null && !tmpResult.equals("") ) {
                     matches.add(tmpResult);
