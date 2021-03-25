@@ -31,7 +31,9 @@ header.fullname.strategy=1
 ### Release Notes
 
 * 
-* v2.7.2[+] should be compatible with Confluence 6.0.7+, up to the latest version of 6.x, we hope.
+* v2.7.4[+] 
+* v2.7.3 should be compatible up to the latest version of 7.8.1, see also issue #57.
+* v2.7.2-2.7.3 should be compatible with Confluence 6.0.7+, up to the latest version of 6.x
 * v2.7.0-v.2.7.1 should be compatible with Confluence 5.9.1+, up to the latest version of 5.x.
 * v2.6.x should be compatible with Confluence 5.8.4+, up to the latest version of 5.8.x.
 * v2.4.x-2.5.x should be compatible with Confluence 5.3.x up to the latest version of 5.7.x.

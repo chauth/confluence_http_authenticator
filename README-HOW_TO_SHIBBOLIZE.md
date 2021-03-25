@@ -24,7 +24,8 @@ Another variant of this documentation is here: https://wiki.umbc.edu/display/MW/
 * Configure the Seraph layer to use the plugin by modifying {{WEB-INF/classes/seraph-config.xml}}:
   * Replace the {{authenticator}} element's {{class}} attribute with one of these values depending on the version of the plugin you are using (note: this should be the package name and class name of your class if you have made such customizations):
      * _For plugin version v1.0-1.2 use_: "edu.georgetown.middleware.confluence.RemoteUserAuthenticator"
-     * _For plugin version v1.3\+ use_: "shibauth.confluence.authentication.shibboleth.RemoteUserAuthenticator"
+     * _For plugin version v1.3\+ use_: "shibauth.confluence.authentication.shibboleth.RemoteUserAuthenticator
+   Instead of replacing you might want to add a new authenticator keeping the the original authenticator "com.atlassian.confluence.user.ConfluenceAuthenticator" commented.
   * In the {{init-params}} element, set both the {{login.url}} and {{link.login.url}} parameter values to one of these:
      * if your wiki is only accessible via https:
 
