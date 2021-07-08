@@ -337,6 +337,14 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
             userBuilder.emailAddress(crowdUser.getEmailAddress());
             userBuilder.name(crowdUser.getName());
 
+            if ((fullName == null) && (crowdUser.getDisplayName() == null || (crowdUser.getDisplayName().length() == 0))) {
+                if (log.isDebugEnabled()) {
+                    log.debug("User full name was null or empty. Defaulting full name to user id.");
+                }
+
+                fullName = user.getName();
+            }
+
             if ((fullName != null) && !fullName.equals(crowdUser.getDisplayName())) {
                 if (log.isDebugEnabled()) {
                     log.debug("Updating user fullName to '" + fullName + "'");
@@ -513,14 +521,6 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
             }
         }
 
-        if ((fullName == null) || (fullName.length() == 0)) {
-            if (log.isDebugEnabled()) {
-                log.debug("User full name was null or empty. Defaulting full name to user id.");
-            }
-
-            fullName = userid;
-        }
-
         return fullName;
     }
 
@@ -635,179 +635,19 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
 
     /**
      * @see com.atlassian.confluence.user.ConfluenceAuthenticator#login(
-     *javax.servlet.http.HttpServletRequest,
-     * javax.servlet.http.HttpServletResponse,
-     * java.lang.String username,
-     * java.lang.String password,
-     * boolean cookie)
+     * javax.servlet.http.HttpServletRequest,
+     * javax.servlet.http.HttpServletResponse, java.lang.String username,
+     * java.lang.String password, boolean cookie)
      * <p/>
-     * Check if user has been authenticated by Shib. Username, password, and cookie are totally ignored.
+     * Log the attempt and pass through to ConfluenceAuthenticator
      */
     public boolean login(HttpServletRequest request, HttpServletResponse response, String username, String password, boolean cookie) throws AuthenticatorException {
-
-        String remoteIP = request.getRemoteAddr();
-        String remoteHost = request.getRemoteHost();
-
-        // avoid circular calls
-        if (isSecondTimeThroughLoginWithoutReturning(request)) {
-            loginFailed(request, username, remoteHost, remoteIP, "LocalUserLoginWithNoCredentials");
-
-            if (log.isDebugEnabled()) {
-                log.debug("Authenticator is returning false from second call to public boolean login(HttpServletRequest request, HttpServletResponse response, String username, String password, boolean cookie)");
-            }
-
-            readyToReturnFromLogin(request);
-            return false;
-        }
-
-        guardFromInfiniteLoginRecursion(request);
-
-        if (RedirectUtils.isBasicAuthentication(request, getAuthType())) {
-            final Principal basicAuthUser = getUserFromBasicAuthentication(request, response);
-            if (basicAuthUser != null) {
-                if (log.isDebugEnabled()) {
-                    log.debug(String.format("Login for user %s succeeded via Basic Auth", basicAuthUser.getName()));
-                }
-                readyToReturnFromLogin(request);
-                return true;
-            }
-        }
-
-        // Converting reliance on getUser(request,response) to use login(...) instead. The logic flow is:
-        // 1) Seraph Login filter, which is based on username/password kicks in (declared at web.xml)
-        // 2) It bails out altogether and identified user as invalid (without calling any of login(request,response)
-        //    declared here.
-        // 3) Seraph Security filter kicks in (declared at web.xml)
-        // 4) It calls getUser(request,response) and assign roles to known user.
-        // Hence, getUser(request,response) will only be called from Seraph SecurityFilter. This authenticator can use
-        // ShibLoginFilter to make sure login is performed in some versions of Confluence, but it works without it, so
-        // that is off by default.
-
         if (log.isDebugEnabled()) {
-            log.debug("login(...) called. requestURL=" + request.getRequestURL() + ", username=" + username + ", remoteIP=" + remoteIP + ", remoteHost=" + remoteHost);
+            String remoteIP = request.getHeader("X-Forwarded-For");
+            log.debug("login(...) called. requestURL=" + request.getRequestURL() + ", username=" + username + ", remoteIP=" + remoteIP);
         }
 
-        // Since they aren't logged in, get the user name from the configured header (e.g. REMOTE_USER).
-        String userid = createSafeUserid(getLoggedInUser(request));
-
-        // Does the user have a "Remember Me" cookie set?
-        final Principal cookieUser = getUserFromCookie(request, response);
-        if (cookieUser != null) {
-            log.debug(String.format("Login for user %s succeeded via Remember Me cookie", cookieUser.getName()));
-            readyToReturnFromLogin(request);
-            return true;
-        }
-
-        if ((userid == null) || (userid.length() <= 0)) {
-            if (log.isDebugEnabled()) {
-                log.debug("Remote user was null or empty.");
-            }
-
-            // Calling super.login to try local login if username and password are set. Local login won't work if
-            // ShibLoginFilter is used
-            if (config.isLocalLoginSupported() && username != null && password != null) {
-                if (log.isDebugEnabled()) {
-                    log.debug("Trying local login for user " + username);
-                }
-
-                boolean localLoginSuccess = super.login(request, response, username, password, cookie);
-                if (localLoginSuccess) {
-                    User user = getCrowdUser(username, request, remoteHost, remoteIP);
-                    loginSuccessful(request, response, username, user, remoteHost, remoteIP);
-                } else {
-                    loginFailed(request, username, remoteHost, remoteIP, "LocalUserLoginFailed");
-                }
-
-                if (log.isDebugEnabled()) {
-                    log.debug("Authenticator is returning " + localLoginSuccess + " from call to public boolean login(HttpServletRequest request, HttpServletResponse response, String username, String password, boolean cookie)");
-                }
-
-                return localLoginSuccess;
-            } else {
-                if (config.isLocalLoginSupported() && log.isDebugEnabled()) {
-                    log.debug("Cannot perform local login because username or password was not provided.");
-                }
-
-                loginFailed(request, username, remoteHost, remoteIP, "LocalUserLoginWithNoCredentials");
-
-                if (log.isDebugEnabled()) {
-                    log.debug("Authenticator is returning false from call to public boolean login(HttpServletRequest request, HttpServletResponse response, String username, String password, boolean cookie)");
-                }
-
-                readyToReturnFromLogin(request);
-                return false;
-            }
-        }
-
-        // Now that we know we will be trying to log the user in,
-        // let's see if we should reload the config file first
-        checkReloadConfig();
-
-        // Convert username to all lowercase because of issues with case, at least in earlier versions of Confluence.
-        if (config.isUsernameConvertCase()) {
-            userid = convertUsername(userid);
-        }
-
-        User crowdUser = getCrowdUser(userid, request, remoteHost, remoteIP);
-
-        // Pull name and address from headers
-        String fullName = getFullName(request, userid);
-        String emailAddress = getEmailAddress(request);
-
-        // Try to get the user's account based on the user name
-        Principal user = getUser(userid);
-        boolean newUser = false;
-
-        // User didn't exist or was problem getting it. we'll try to create it if we can, otherwise will try to get it
-        // again.
-        if (user == null) {
-            if (config.isCreateUsers()) {
-                createUser(userid, fullName, emailAddress);
-                newUser = true;
-            } else {
-                if (log.isDebugEnabled()) {
-                    log.debug("Configuration does NOT allow creation of new user accounts, authentication will fail for " +
-                            username);
-                }
-
-                loginFailed(request, username, remoteHost, remoteIP, "CreateUserDisabled");
-
-                if (log.isDebugEnabled()) {
-                    log.debug("Authenticator is returning false from call to public boolean login(HttpServletRequest request, HttpServletResponse response, String username, String password, boolean cookie)");
-                }
-                readyToReturnFromLogin(request);
-                return false;
-            }
-
-            user = getUser(userid);
-            if (user != null) {
-                // update the first time even if update not set, because we need to set full name and email
-                updateUser(crowdUser, fullName, emailAddress);
-            } else {
-                // this could be a warning rather than debug, but in certain environments it might happen more often.
-                if (log.isDebugEnabled()) {
-                    log.debug("Got null user after creating user " + username + " so could not update it to set its fullname or email.");
-                }
-            }
-        } else {
-            if (config.isUpdateInfo()) {
-                updateUser(crowdUser, fullName, emailAddress);
-            }
-        }
-
-        if (config.isUpdateRoles() || newUser) {
-            updateGroupMemberships(request, crowdUser);
-        }
-
-        // kick off login related methods
-        loginSuccessful(request, response, userid, crowdUser, remoteHost, remoteIP);
-
-        if (log.isDebugEnabled()) {
-            log.debug("Authenticator is returning true from call to public boolean login(HttpServletRequest request, HttpServletResponse response, String username, String password, boolean cookie)");
-        }
-
-        readyToReturnFromLogin(request);
-        return true;
+        return super.login(request, response, username, password, cookie);
     }
 
     private void loginSuccessful(HttpServletRequest request,
