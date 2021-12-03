@@ -13,7 +13,8 @@
     <artifactId>remoteUserAuth</artifactId>
     <version>2.7.4-SNAPSHOT</version>
     <properties>
-        <confluence.version>6.0.7</confluence.version><!--  minimal version, based on information in issue #41, also confirms working with v 6.5.2., 6.6.0 , tested with 6.8.3 -->
+        <confluence.version>7.4.13</confluence.version><!--  upgrade from 6.0.7 . -->
+        <!--  may setting to the lastest version or override on command line with -Dconfluence.version=7.13.2  -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
     <issueManagement>
@@ -229,8 +230,8 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.8.1</version>
                 <configuration>
-                    <source>1.7</source>
-                    <target>1.7</target>
+                    <source>1.8</source>
+                    <target>1.8</target>
                 </configuration>
             </plugin>
         </plugins>

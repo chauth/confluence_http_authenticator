@@ -41,7 +41,29 @@
 
 package shibauth.confluence.authentication.shibboleth;
 
-import bucket.user.LicensingException;
+import java.io.File;
+import java.security.Principal;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Enumeration;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
+
+import javax.servlet.ServletRequestWrapper;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.TransactionDefinition;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.interceptor.DefaultTransactionAttribute;
+import org.springframework.transaction.support.TransactionCallback;
+import org.springframework.transaction.support.TransactionTemplate;
+
 import com.atlassian.confluence.event.events.security.LoginEvent;
 import com.atlassian.confluence.event.events.security.LoginFailedEvent;
 import com.atlassian.confluence.security.login.LoginManager;
@@ -51,31 +73,15 @@ import com.atlassian.crowd.embedded.api.CrowdService;
 import com.atlassian.crowd.embedded.api.Group;
 import com.atlassian.crowd.embedded.api.User;
 import com.atlassian.crowd.embedded.impl.ImmutableUser;
-import com.atlassian.crowd.exception.InvalidUserException;
-import com.atlassian.crowd.exception.OperationNotPermittedException;
-import com.atlassian.crowd.model.user.UserTemplate;
 import com.atlassian.seraph.auth.AuthenticatorException;
 import com.atlassian.seraph.auth.LoginReason;
 import com.atlassian.seraph.util.RedirectUtils;
 import com.atlassian.spring.container.ContainerManager;
 import com.atlassian.user.GroupManager;
-import com.atlassian.user.security.password.Credential;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.springframework.transaction.PlatformTransactionManager;
-import org.springframework.transaction.TransactionDefinition;
-import org.springframework.transaction.TransactionStatus;
-import org.springframework.transaction.interceptor.DefaultTransactionAttribute;
-import org.springframework.transaction.support.TransactionCallback;
-import org.springframework.transaction.support.TransactionTemplate;
 import com.atlassian.user.impl.DefaultUser;
+import com.atlassian.user.security.password.Credential;
 
-import javax.servlet.ServletRequestWrapper;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.File;
-import java.security.Principal;
-import java.util.*;
+import bucket.user.LicensingException;
 
 /**
  * An authenticator that uses the REMOTE_USER header as proof of authentication.
@@ -336,6 +342,10 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
             userBuilder.displayName(crowdUser.getDisplayName());
             userBuilder.emailAddress(crowdUser.getEmailAddress());
             userBuilder.name(crowdUser.getName());
+
+            if (log.isDebugEnabled()) {
+                log.debug("Updating from user name to '" + crowdUser.getName() + "'");
+            }
 
             if ((fullName != null) && !fullName.equals(crowdUser.getDisplayName())) {
                 if (log.isDebugEnabled()) {
@@ -1248,6 +1258,7 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
                     try {
                         userAccessor.createUser(new DefaultUser(username, null, null), Credential.NONE);
                     } catch (LicensingException le) {
+                        // upgrade to non deprecated LicenseUserLimitExceededException
                         log.error("Cannot create user '" + username + "'!", le);
                         // if you're having licensing issues, this needs to bubble up.
                         // see: https://github.com/chauth/confluence_http_authenticator/issues/33
