@@ -32,7 +32,8 @@ When committing, please try to include the issue number when possible in the beg
 
     mvn clean install
 
-3. Edit pom.xml to be new release version (remove "-SNAPSHOT" from release version, e.g. change from 1.2.3-SNAPSHOT to 1.2.3)
+3. Edit pom.xml to be new release version (remove "-SNAPSHOT" from release version, e.g. change from 1.2.3-SNAPSHOT to 1.2.3).
+
 
 4. Build and manually test again as needed (or have someone test)
 
@@ -68,6 +69,28 @@ cp target/(name of jar).jar releases/
       https://plugins.atlassian.com/plugins/shibauth.confluence.authentication.shibboleth
 
 10. Have fun!
+
+## Experimentals Use Maven Release
+
+Alternatively (experimental) use instead of the versioning steps in 3.- 7. the following commands (this requires no uncommitted changes):
+    
+    mvn release:prepare -DdryRun=true -Dtag=v<version>
+    
+Revisit release.properties and tags in pom.next, etc. and if all checks are done
+
+    mvn release:clean
+    
+Remove -DdryRun=true (example shows version=v2.7.4)
+ 
+    mvn release:prepare  -Dtag=v2.7.4
+    
+    mvn release:performs
+    
+Optional, to remove the backups, but wait ..
+
+    mvn release:clean
+    
+Of course, the edit changes and the release in sub folder releases have to be added manually still.
 
 ### Release Notes
 
