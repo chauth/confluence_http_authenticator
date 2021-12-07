@@ -13,7 +13,7 @@
     <artifactId>remoteUserAuth</artifactId>
     <version>2.7.4-SNAPSHOT</version>
     <properties>
-        <confluence.version>7.4.13</confluence.version><!--  upgrade from 6.0.7 . -->
+        <confluence.version>7.11.6</confluence.version><!--  upgrade from 6.0.7 . -->
         <!--  may setting to the lastest version or override on command line with -Dconfluence.version=7.13.2  -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
