@@ -52,6 +52,11 @@ public class ShibAuthConstants {
      */
     public final static String DEFAULT_ROLES = "default.roles";
 
+    /** 
+     * Name of the user account to create new users through 
+     */
+    public static final String ADMIN_USER_ID = "adminUserId";
+
     /**
      * purge.roles init parameter name
      */
