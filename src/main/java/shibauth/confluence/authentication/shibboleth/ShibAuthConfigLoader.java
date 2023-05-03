@@ -177,7 +177,7 @@ public class ShibAuthConfigLoader {
 
             config.setDefaultRoles(defaultRoles);
 
-            config.setAdminUserId(configProps.getProperty(ShibAuthConstants.ADMIN_ID, "ADMIN_USER_ID"));
+            config.setAdminUserId(configProps.getProperty(ShibAuthConstants.ADMIN_USER_ID, "ADMIN_USER_ID"));
             if (log.isDebugEnabled()) {
                 log.debug("Setting adminUserId to " + config.getAdminUserId());
             }
