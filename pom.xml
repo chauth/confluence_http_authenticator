@@ -225,7 +225,7 @@
     </dependencies>
     <scm>
     <connection>scm:git:https://github.com/chauth/confluence_http_authenticator.git</connection>
-    <developerConnection>scm:git:ssh://git@github.com:chauth/confluence_http_authenticator.git</developerConnection>    
+    <developerConnection>scm:git:ssh://git@github.com/chauth/confluence_http_authenticator</developerConnection>    
     <url>https://github.com/chauth/confluence_http_authenticator</url>
     <tag>HEAD</tag>
   </scm>
