@@ -66,8 +66,11 @@ import org.springframework.transaction.support.TransactionTemplate;
 
 import com.atlassian.confluence.event.events.security.LoginEvent;
 import com.atlassian.confluence.event.events.security.LoginFailedEvent;
+import com.atlassian.confluence.license.exception.LicenseUserLimitExceededException;
 import com.atlassian.confluence.security.login.LoginManager;
+import com.atlassian.confluence.user.AuthenticatedUserThreadLocal;
 import com.atlassian.confluence.user.ConfluenceAuthenticator;
+import com.atlassian.confluence.user.ConfluenceUser;
 import com.atlassian.confluence.user.UserAccessor;
 import com.atlassian.crowd.embedded.api.CrowdService;
 import com.atlassian.crowd.embedded.api.Group;
@@ -80,8 +83,6 @@ import com.atlassian.spring.container.ContainerManager;
 import com.atlassian.user.GroupManager;
 import com.atlassian.user.impl.DefaultUser;
 import com.atlassian.user.security.password.Credential;
-
-import bucket.user.LicensingException;
 
 /**
  * An authenticator that uses the REMOTE_USER header as proof of authentication.
@@ -1253,11 +1254,14 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
     // https://developer.atlassian.com/display/CONFDEV/Hibernate+Sessions+and+Transaction+Management+Guidelines
     private void createUser(final UserAccessor userAccessor, final String username, final String fullName, final String emailAddress) {
         if (username != null) {
+            // will always return as getAdminUserId() is the string ADMIN_USER_ID if undefined
+            ConfluenceUser user = userAccessor.getUserByName(config.getAdminUserId());
+            if (user != null) AuthenticatedUserThreadLocal.set(user);            
             new TransactionTemplate(getTransactionManager(), new DefaultTransactionAttribute(TransactionDefinition.PROPAGATION_REQUIRED)).execute(new TransactionCallback() {
                 public Object doInTransaction(TransactionStatus status) {
                     try {
                         userAccessor.createUser(new DefaultUser(username, null, null), Credential.NONE);
-                    } catch (LicensingException le) {
+                    } catch (LicenseUserLimitExceededException le) {
                         // upgrade to non deprecated LicenseUserLimitExceededException
                         log.error("Cannot create user '" + username + "'!", le);
                         // if you're having licensing issues, this needs to bubble up.

@@ -88,6 +88,7 @@ public class ShibAuthConfiguration {
      */
     private List defaultRoles;
 
+
     /**
      * Automatically reload the configuration file when changed
      */
@@ -217,6 +218,19 @@ public class ShibAuthConfiguration {
      * Whether or not web.xml has been configured to use ShibLoginFilter or not.
      */
     private boolean usingShibLoginFilter;
+
+    /**
+     * Which user account to use to create new users with.
+     */
+    private String adminUserId;
+
+    public String getAdminUserId() {
+      return adminUserId;
+    }
+
+    public void setAdminUserId(String adminUserId) {
+      this.adminUserId = adminUserId;
+    }
 
     /**
      * Should this pluggin try to create new groups as indicated

@@ -176,6 +176,12 @@ public class ShibAuthConfigLoader {
             }
 
             config.setDefaultRoles(defaultRoles);
+
+            config.setAdminUserId(configProps.getProperty(ShibAuthConstants.ADMIN_USER_ID, "ADMIN_USER_ID"));
+            if (log.isDebugEnabled()) {
+                log.debug("Setting adminUserId to " + config.getAdminUserId());
+            }
+
             config.setRemoteUserHeaderName(configProps.getProperty(ShibAuthConstants.REMOTE_USER_HEADER_NAME_PROPERTY, "REMOTE_USER"));
 
             if (log.isDebugEnabled()) {
