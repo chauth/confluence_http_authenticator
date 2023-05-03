@@ -219,13 +219,13 @@
          <dependency>
              <groupId>org.slf4j</groupId>
              <artifactId>slf4j-simple</artifactId>
-             <version>1.7.30</version>
+             <version>1.7.36</version>
              <scope>test</scope>
          </dependency>
     </dependencies>
     <scm>
     <connection>scm:git:https://github.com/chauth/confluence_http_authenticator.git</connection>
-    <developerConnection>scm:git:https://github.com/chauth/confluence_http_authenticator.git</developerConnection>    
+    <developerConnection>scm:git:ssh://git@github.com:chauth/confluence_http_authenticator.git</developerConnection>    
     <url>https://github.com/chauth/confluence_http_authenticator</url>
     <tag>HEAD</tag>
   </scm>
