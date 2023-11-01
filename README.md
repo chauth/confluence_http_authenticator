@@ -87,6 +87,12 @@ Note that even if you supply `update.info=true`, it will not attempt to update r
 
 Warning: Be sure to uncomment `header.remote_user` in the configuration and to change it to `REMOTE_USER` if that is how you are passing the username in, which is the typical usage. This will be fixed in future versions.
 
+#### Change since Confluence v8
+
+To create users `adminUserId` has to be set to a user id, which has user role having sufficient privileges to create users (default user id is set to "placeholder" ADMIN_USER_ID):
+
+    adminUserId=<adminuserid>
+
 #### Dynamic Roles
 
 This optional feature allows the authenticator to automatically assign users to roles based on attribute values they have, list the attribute name in `header.dynamicroles.attributenames` and specify the roles each value should map to. To automatically remove the user from the role when the user no longer has the attribute value, list the role also in `purge.roles`.

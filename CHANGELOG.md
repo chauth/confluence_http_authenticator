@@ -1,7 +1,12 @@
 Version History
 =====
 
-    2.7.4  .. .. 2019  
+   2.7.6  MM DD YYYY  
+
+   2.7.5   Mai 03 2023
+      #63  Fix create a user with Confluence v8.1.1 (https://github.com/chauth/confluence_http_authenticator/pull/64 from john-pw:master) removed deprecated LicensingException, fix reference in ShibauthConfigLoader to ShibAuthConstants.ADMIN_USER_ID (default value /placeholder).
+
+    2.7.4  Dec 07 2021  
       #52 Add option to not truncate HTTP header, and #pr/53 Added support of getting username from different LDAP attributes in HTTP header.
       
       #37 GroupMapper case sensitivity logic error (dfault is case sensitive)
