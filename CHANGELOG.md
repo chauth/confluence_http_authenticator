@@ -1,7 +1,11 @@
 Version History
 =====
 
-   2.7.6  MM DD YYYY  
+   3.0.0  27 Feb 2026  
+   Changes by Georg Kallidis
+     - Update from javax to jakarta requird for confluence 10 https://confluence.atlassian.com/doc/confluence-10-0-release-notes-1612579091.html.
+     - No backward compatibility because of this package change!
+     - Set Java version to 21.
 
    2.7.5   Mai 03 2023
       #63  Fix create a user with Confluence v8.1.1 (https://github.com/chauth/confluence_http_authenticator/pull/64 from john-pw:master) removed deprecated LicensingException, fix reference in ShibauthConfigLoader to ShibAuthConstants.ADMIN_USER_ID (default value /placeholder).

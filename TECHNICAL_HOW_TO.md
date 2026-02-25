@@ -5,7 +5,7 @@ This explains how to build and release the plugin.
 
 ## Building
 
-Build assumes Java 6+ (7+ since 2.6.x releases), Maven 3+. Atlassian SDK does not need to be installed, as it is an authenticator jar loaded on
+Build assumes Java 21 since v3.0.0, (previously 7+ since 2.6.x releases), Maven 3+. Atlassian SDK does not need to be installed, as it is an authenticator jar loaded on
 classpath, not a plugin, nor can it or should it be, even in Confluence 4.x+.
 
 For larger changes, you'd want to create an [issue][issues] first to ask if it would be something that would be of interest to everyone.

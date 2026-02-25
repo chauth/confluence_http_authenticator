@@ -51,10 +51,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import javax.servlet.ServletRequestWrapper;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.transaction.PlatformTransactionManager;
@@ -64,8 +60,10 @@ import org.springframework.transaction.interceptor.DefaultTransactionAttribute;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
 
+import com.atlassian.confluence.event.events.security.LoginDetails;
 import com.atlassian.confluence.event.events.security.LoginEvent;
 import com.atlassian.confluence.event.events.security.LoginFailedEvent;
+import com.atlassian.confluence.event.events.security.LoginDetails.LoginSource;
 import com.atlassian.confluence.license.exception.LicenseUserLimitExceededException;
 import com.atlassian.confluence.security.login.LoginManager;
 import com.atlassian.confluence.user.AuthenticatedUserThreadLocal;
@@ -84,6 +82,10 @@ import com.atlassian.user.GroupManager;
 import com.atlassian.user.impl.DefaultUser;
 import com.atlassian.user.security.password.Credential;
 
+import jakarta.servlet.ServletRequestWrapper;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+
 /**
  * An authenticator that uses the REMOTE_USER header as proof of authentication.
  * <p/>
@@ -93,6 +95,9 @@ import com.atlassian.user.security.password.Credential;
 public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
 
     private static final long serialVersionUID = -5608187140008286795L;
+    /**
+     * jcl -> jcl-over-slf4j -> log4j-slf4j2-impl
+     */
     private final static Log log = LogFactory.getLog(RemoteUserAuthenticator.class);
     private static ShibAuthConfiguration config;
 
@@ -646,8 +651,8 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
 
     /**
      * @see com.atlassian.confluence.user.ConfluenceAuthenticator#login(
-     *javax.servlet.http.HttpServletRequest,
-     * javax.servlet.http.HttpServletResponse,
+     *jakarta.servlet..http.HttpServletRequest,
+     * jakarta.servlet..http.HttpServletResponse,
      * java.lang.String username,
      * java.lang.String password,
      * boolean cookie)
@@ -848,6 +853,7 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
         getEventPublisher().publish(
                 new LoginEvent(this, username, request.getSession().getId(),
                         remoteHost, remoteIP, LoginEvent.UNKNOWN));
+
         LoginReason.OK.stampRequestResponse(request, response);
     }
 
@@ -861,8 +867,11 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
         }
 
         getLoginManager().onFailedLoginAttempt(username, request);
+
+        //  LoginDetails for LoginFailedEvent from AuditListener ?
+        LoginDetails logDetails = new LoginDetails( LoginSource.SSO, null );
         getEventPublisher().publish(new LoginFailedEvent(this, reason, request.getSession().getId(),
-                remoteHost, remoteIP));
+                remoteHost, remoteIP, logDetails));
     }
 
     private void updateGroupMemberships(HttpServletRequest request, User user) {
@@ -955,6 +964,7 @@ public class RemoteUserAuthenticator extends ConfluenceAuthenticator {
                 log.debug("Remote user was null or empty, can not perform authentication.");
             }
 
+            // or just anonymous?
             loginFailed(request, userid, remoteHost, remoteIP, "NoUsername");
 
             if (log.isDebugEnabled()) {

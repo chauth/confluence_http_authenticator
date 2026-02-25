@@ -30,8 +30,8 @@ header.fullname.strategy=1
 
 ### Release Notes
 
-*
-* v2.7.6 in dev
+* v3.0.0 Requires Java 21, Confluence 10.x which moves with Jakarta Servlet Specifications package from javax to jakarta.
+* v2.7.6 in dev branch., requires Java 11 and at least Confluence 8.1.1, up to Confluence v9.1.1.
 * v2.7.5 require Java 11 and at least Confluence 8.1.1, see issue #63, #64
 * v2.7.4[+] require Java 8 and at least Confluence 7.11.6, see issue #61, #62
 * v2.7.3 should be compatible up to the latest version of 7.8.1, see also issue #57.
