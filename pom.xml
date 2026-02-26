@@ -10,7 +10,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>shibauth</groupId>
     <artifactId>remoteUserAuth</artifactId>
-    <version>3.0.0</version>
+    <version>3.0.1-SNAPSHOT</version>
     <properties>
         <confluence.version>10.2.3</confluence.version><!-- checked with up to 8.5.3 LTR, checked with v9.1.1, which still allows Java 11, 9.1.1, updated to 10.2.3 which is java 17  -->
         <!--  may setting to the lastest version or override on command line with -Dconfluence.version=8.5.3   -->
