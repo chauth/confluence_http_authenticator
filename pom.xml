@@ -18,6 +18,12 @@
         <!-- Confluence 10 allows Java 11 and 17 -->
         <maven.compiler.release>21</maven.compiler.release>
     </properties>
+    <distributionManagement>
+          <repository>
+            <id>github</id>
+            <url>https://github.com/chauth/confluence_http_authenticator</url>
+          </repository>
+</distributionManagement>
     <issueManagement>
         <url>https://github.com/chauth/confluence_http_authenticator/issues</url>
     </issueManagement>
